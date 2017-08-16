@@ -1,18 +1,28 @@
 {
   "extends": "./tsconfig.es5.json",
+
   "compilerOptions": {
     "emitDecoratorMetadata": true,
+    "rootDir": "./src",
+    "moduleResolution": "node",
     "experimentalDecorators": true,
     "outDir": "../out-tsc/spec",
     "module": "commonjs",
     "target": "es6",
-    "baseUrl": "",
+    "baseUrl": "./src",
     "types": [
       "jest",
+      "jasmine",
       "node"
-    ]
+    ],
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "skipLibCheck": true,
   },
   "files": [
     "**/*.spec.ts"
   ]
 }
+

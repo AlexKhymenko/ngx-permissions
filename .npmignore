@@ -33,3 +33,6 @@ Desktop.ini
 src/*
 build/*
 application/*
+
+# Tests
+coverage/*
