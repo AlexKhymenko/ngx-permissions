@@ -1,7 +1,3 @@
-/**
- * Created by Oleksandr.Khymenko on 13.03.2017.
- */
-
 import {
     Directive, Input, OnInit, ElementRef, OnChanges, SimpleChanges, OnDestroy,
     ViewContainerRef, TemplateRef
@@ -23,7 +19,6 @@ export class PermissionsDirective implements OnInit, OnDestroy {
                 private templateRef: TemplateRef<EvryIfPermissionContext>) {}
 
     ngOnInit(): void {
-        console.log('trololo', this.permissionsOnly);
         this.initPermissionSubscription = this.permissionsService.permissions$.subscribe((permissions) => {
             if (!this.permissionsService.hasPermission(this.permissionsOnly)) {
                 this.viewContainer.clear();
