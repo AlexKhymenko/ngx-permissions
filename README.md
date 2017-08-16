@@ -25,7 +25,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 // Import your library
-import { SampleModule } from 'ngx-permissions';
+import { NgxPermissions } from 'ngx-permissions';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,7 @@ import { SampleModule } from 'ngx-permissions';
     BrowserModule,
 
     // Specify your library as an import
-    LibraryModule
+     NgxPermissions.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -47,6 +47,9 @@ Once your library is imported, you can use its components, directives and pipes 
 
 ```xml
 <!-- You can now use your library component in app.component.html -->
+<div *permissions permissionsOnly="ADMIN">
+
+</div>
 <h1>
   {{title}}
 </h1>

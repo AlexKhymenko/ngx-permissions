@@ -6,7 +6,7 @@ import {
     Directive, Input, OnInit, ElementRef, OnChanges, SimpleChanges, OnDestroy,
     ViewContainerRef, TemplateRef
 } from "@angular/core";
-import { EvryPermissionsService } from "./permissions.service";
+import { PermissionsService } from "./permissions.service";
 import { Subscription } from "rxjs/Subscription";
 
 @Directive({
@@ -18,7 +18,7 @@ export class PermissionsDirective implements OnInit, OnDestroy {
 
     private initPermissionSubscription: Subscription;
 
-    constructor(private permissionsService: EvryPermissionsService,
+    constructor(private permissionsService: PermissionsService,
                 private viewContainer: ViewContainerRef,
                 private templateRef: TemplateRef<EvryIfPermissionContext>) {}
 
