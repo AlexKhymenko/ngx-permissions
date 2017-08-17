@@ -3,6 +3,16 @@
 
 *Permission based access control for your angular applications*
 
+## Table of contents
+
+- [About](#about)
+- [Installation](#installation)
+- [Consuming library](#consuming-library)
+- [Controlling access in views]($controlling-access-in-views)
+- [Usage with Routes](#usage-with-routes)
+- [Development](#development)
+- [License](#license)
+
 ## Installation
 
 To install this library, run:
@@ -11,7 +21,7 @@ To install this library, run:
 $ npm install ngx-permissions --save
 ```
 
-## Consuming your library
+## Consuming library
 
 Once you have published your library to npm, you can import your library in any Angular application by running:
 
@@ -28,7 +38,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 // Import your library
-import { NgxPermissions } from 'ngx-permissions';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   declarations: [
@@ -38,7 +48,7 @@ import { NgxPermissions } from 'ngx-permissions';
     BrowserModule,
 
     // Specify your library as an import
-     NgxPermissions.forRoot()
+     NgxPermissionsModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -48,7 +58,7 @@ export class AppModule { }
 
 SharedModule
 
-If you use a SharedModule that you import in multiple other feature modules, you can export the TranslateModule to make sure you don't have to import it in every module.
+If you use a SharedModule that you import in multiple other feature modules, you can export the NgxPermissionsModule to make sure you don't have to import it in every module.
 ```typescript
 @NgModule({
     exports: [
@@ -93,35 +103,52 @@ export class AppComponent implements OnInit {
 }
 ```
 
+## Controlling access in views
 
+Overview
+----------------------------
 
-Then use them in Your templates
+1. [Permission directive](#permission-directive)
+  1. [Basic usage](#basic-usage)
+
+Permission directive
+----------------------------
+  
+Permission module exposes directive `permissions` that can show/hide elements of your application based on set of permissions.
+
+Permission directive accepts several attributes:
 
 | Attribute             | Value                    | Description      |
-| ----------------------|:------------------------:| ----------------|
+| :----------------------|:------------------------:| :----------------|
 | `permissionsOnly`     | <code>[String &#124; String[]]</code>   | Single or multiple permissions allowed to access content | 
 | `permissionsExcept`   | <code>[String &#124; String[]]</code>   | Single or multiple permissions denied to access content|
 
-```xml
-<!-- You can now use your library component in app.component.html -->
-You can use as Array
+### Basic usage
+
+Directives accepts either single permission that has to be met in order to display it's content:
+ 
+```html
 <ng-template permissions [permissionsOnly]="['ADMIN']">
- I will not see it
-</ng-template>
-or as one string
-<ng-template permissions [permissionsOnly]="'GUEST'">
-  I will see it
-</ng-template>
-
-<ng-template permissions [permissionsExcept]="['ADMINNNN']">
-  <div>I will see it except adminnnnnnn</div>
-</ng-template>
-
-<ng-template permissions [permissionsExcept]="['ADMIN']">
-  <div>I Should not see it except admin</div>
-</ng-template>
+    <div>You can see this text congrats</div>
+ </ng-template>
+ 
+ <ng-template permissions [permissionsExcept]="['JOHNY']">
+   <div> All will see it except JOHNY</div>
+ </ng-template>
 ```
 
+Or set of permissions separated by 'coma':
+
+```html
+<ng-template permissions [permissionsOnly]="['ADMIN', 'GUEST']">
+    <div>You can see this text congrats</div>
+</ng-template>
+
+ <ng-template permissions [permissionsExcept]="['ADMIN', 'JOHNY']">
+   <div>All will see it except admin and Johny</div>
+ </ng-template>
+```
+ 
 Usage with Routes
 ----------------------------
 
