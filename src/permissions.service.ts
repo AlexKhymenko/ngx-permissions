@@ -14,7 +14,7 @@ export class PermissionsService {
         this.permissionsSource.next([]);
     }
 
-    public hasPermission(permission: string) {
+    public hasPermission(permission: string | string[]) {
         if (!permission) {
             return true;
         }
@@ -25,7 +25,7 @@ export class PermissionsService {
         }
 
 
-        return this.permissionsSource.value['includes'](permission);
+        return this.permissionsSource.value.includes(permission);
     }
 
     public loadPermissions(permissions) {
