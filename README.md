@@ -5,10 +5,9 @@
 
 ## Table of contents
 
-- [About](#about)
 - [Installation](#installation)
 - [Consuming library](#consuming-library)
-- [Controlling access in views]($controlling-access-in-views)
+- [Controlling access in views](#controlling-access-in-views)
 - [Usage with Routes](#usage-with-routes)
 - [Development](#development)
 - [License](#license)
@@ -262,6 +261,12 @@ When `PermissionGuard` service will be called it would expect user to have eithe
 [//]: <> (> :bulb: **Note**   
           > Between values in array operator **OR** is used to create alternative. If you need **AND** operator between permissions define additional `PermRole` containing set of those. 
 )
+
+Property redirectTo
+----------------------------
+
+Property redirectTo:
+  - when used as `String` defines single redirection rule
 
 ### Single redirection rule
 
