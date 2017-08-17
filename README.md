@@ -95,9 +95,9 @@ export class AppComponent implements OnInit {
 Then use them in Your templates
 
 | Attribute             | Value                    | Description      |
-| ----------------------|:------------------------:| ----------------:|
+| ----------------------|:------------------------:| ----------------|
 | `permissionsOnly`     | <code>[String &#124; String[]]</code>   | Single or multiple permissions allowed to access content | 
-| `permissionsExcept`   | <code>[String &#124; String[]]</code>   | Single or multiple roles/permissions denied to access content|
+| `permissionsExcept`   | <code>[String &#124; String[]]</code>   | Single or multiple permissions denied to access content|
 
 ```xml
 <!-- You can now use your library component in app.component.html -->
