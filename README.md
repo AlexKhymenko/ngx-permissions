@@ -6,6 +6,7 @@ Permission based access control for your angular applications
 
 - [Installation](#installation)
 - [Consuming library](#consuming-library)
+- [Managing Permissions]($managing-permissions)
 - [Controlling access in views](#controlling-access-in-views)
 - [Usage with Routes](#usage-with-routes)
 - [Development](#development)
@@ -100,6 +101,8 @@ export class AppComponent implements OnInit {
   }
 }
 ```
+### Managing permissions
+
 
 Overview
 ----------------------------
