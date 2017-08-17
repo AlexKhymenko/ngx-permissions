@@ -31,4 +31,12 @@ export class PermissionsService {
     public loadPermissions(permissions) {
       this.permissionsSource.next(permissions);
     }
+
+    public addPermission(permission) {
+        const permissions = [
+            ...this.permissionsSource.value,
+            permission
+        ];
+        this.permissionsSource.next(permissions)
+    }
 }

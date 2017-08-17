@@ -53,6 +53,19 @@ describe('Permission directive angular except', () => {
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
     })
+
+    it ('Should hide component when permission added', () => {
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('123');
+        permissionService.addPermission(PermissionsTestEnum.ADMIN);
+        fixture.detectChanges();
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+    })
 });
 
 describe('Permission directive angular only', () => {
@@ -91,5 +104,18 @@ describe('Permission directive angular only', () => {
         fixture.detectChanges();
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
+    });
+
+    it ('Should show component when permission added', () => {
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
+        fixture.detectChanges();
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionService.addPermission(PermissionsTestEnum.ADMIN);
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+
+        expect(content2.innerHTML).toEqual('123');
     })
 });
