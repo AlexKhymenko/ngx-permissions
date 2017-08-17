@@ -32,12 +32,22 @@ export class PermissionsService {
       this.permissionsSource.next(permissions);
     }
 
-    public addPermission(permission: string) {
-        const permissions = [
-            ...this.permissionsSource.value,
-            permission
-        ];
-        this.permissionsSource.next(permissions)
+    public addPermission(permission: string | string[]) {
+        if (Array.isArray(permission)) {
+            const permissions = [
+                ...this.permissionsSource.value,
+                ...permission
+            ];
+            this.permissionsSource.next(permissions)
+
+        } else {
+            const permissions = [
+                ...this.permissionsSource.value,
+                permission
+            ];
+            this.permissionsSource.next(permissions)
+        }
+
     }
     public removePermission(permission: string) {
         const permissions = this.permissionsSource.value.filter((value) => {

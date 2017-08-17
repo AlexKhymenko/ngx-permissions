@@ -101,6 +101,93 @@ export class AppComponent implements OnInit {
 }
 ```
 
+Overview
+----------------------------
+
+1. [Introduction](#introduction)
+2. [Defining permissions](#defining-permissions)
+  1. [Individual permissions](#individual-permissions)
+  2. [Multiple permissions](#multiple-permissions)
+3. [Removing permissions](#removing-permissions)
+4. [Retrieving permissions](#retrieving-permissions)
+
+Introduction
+----------------------------
+
+Let's start with little explanation **what** permission is. Permission is the most atomic **ability** that a user can have 
+in your application. So you can think about permission as a smallest action that user can do inside your site. 
+
+But can `user` or `anonymous` be a permission? Technically yes, but from business point of view you should treat them 
+as Roles that are more complex objects that can store more complex logic. 
+
+> :bulb: **Note**   
+> It's a good convention to start permission with a verb and combine them with resource or object, so permissions like `readDocuments` or `listSongs` 
+are meaningful and easy to understand for other programmes. Notice that they are named lowerCamelCase for easy differentiation form roles.
+ 
+Defining permissions
+----------------------------
+So, how do you tell Permission what does 'readDocuments' or 'listSongs' mean and how to know if the current user belongs
+to those definitions?
+
+Well, Permission allows you to set different 'permissions' definitions along with the logic that determines if the current 
+session belongs to them. To do that library exposes special container `PermissionsService` that allows you to manipulate them freely.
+
+### Individual permissions
+
+To add permissions individually `PermissionsService` exposes method `addPermission` that generic usage is shown below or add as array: 
+
+```typescript
+[...]
+ ngOnInit() {
+    this.permissionsService.addPermission('changeSomething')
+    this.permissionsService.addPermission(['changeSomething', 'anotherAlso'])
+ }
+
+```
+
+### Multiple permissions
+
+To define multiple permissions  method `loadPermissions` can be used. The only 
+difference from `definePermission` is that it accepts `Array` of permission names instead of single one. 
+
+
+Often meet example of usage is set of permissions (e.g. received from server after user login) that you will iterate over to 
+check if permission is valid.
+
+```typescript
+const permissions = ['listMeeting', 'seeMeeting', 'editMeeting', 'deleteMeeting']
+PermissionsService.loadPermissions(permissions) 
+```
+NOTE: This method will remove older permissions and pass only new;
+
+Removing permissions
+----------------------------
+
+You can easily remove **all** permissions form the `PermissionsService` (e.g. after user logged out or switched profile) by calling:  
+
+```typescript
+PermissionsService.flushPermissions();
+```
+
+Alternatively you can use `removePermission` to delete defined permissions manually:
+
+```typescript
+PermissionsService.removePermission('user');
+```
+
+Retrieving permissions
+----------------------------
+
+And to get all user permissions use method `getPermissions` or use Observable `permissions$`:
+
+```typescript
+var permissions = PermissionsService.getPermissions();
+
+PermissionsService.permissions$.subscribe((permissions) => {
+    console.log(permissions)
+})
+```
+
 ## Controlling access in views
 
 Overview
