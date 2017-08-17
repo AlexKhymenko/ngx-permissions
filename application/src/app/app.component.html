@@ -9,12 +9,21 @@
 
 <router-outlet></router-outlet>
 
-<ng-template permissions permissionsOnly="['ADMIN']">
- I will not see it
+<ng-template permissions [permissionsOnly]="['ADMIN']">
+  <div>I will see it only admin</div>
 </ng-template>
 
 <ng-template permissions [permissionsOnly]="['GUEST']">
-  I will see it
+  <div>I will not see it only guest</div>
+</ng-template>
+
+<ng-template permissions [permissionsExcept]="['ADMINNNN']">
+  <div>I will see it except adminnnnnnn</div>
+</ng-template>
+
+<ng-template permissions [permissionsExcept]="['ADMIN']">
+
+  <div>I Should not see it except admin</div>
 </ng-template>
 
 <div *permissions permissionsOnly="['Guest']">
