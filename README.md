@@ -88,19 +88,34 @@ export class AppComponent implements OnInit {
     })
   }
 }
-
 ```
+
+
+
 Then use them in Your templates
+
+| Attribute             | Value                   | Description      |
+| -------------         |:-------------:          | ----------------:|
+| `permissionsOnly`     | `[String | String[]`]   | Single or multiple permissions allowed to access content | 
+| `permissionsExcept`   | `[String | String[]`]   | Single or multiple roles/permissions denied to access content|
 
 ```xml
 <!-- You can now use your library component in app.component.html -->
-You can yse as Array
-<ng-template permissions permissionsOnly="['ADMIN']">
+You can use as Array
+<ng-template permissions [permissionsOnly]="['ADMIN']">
  I will not see it
 </ng-template>
 or as one string
 <ng-template permissions [permissionsOnly]="'GUEST'">
   I will see it
+</ng-template>
+
+<ng-template permissions [permissionsExcept]="['ADMINNNN']">
+  <div>I will see it except adminnnnnnn</div>
+</ng-template>
+
+<ng-template permissions [permissionsExcept]="['ADMIN']">
+  <div>I Should not see it except admin</div>
 </ng-template>
 ```
 
