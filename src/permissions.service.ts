@@ -28,15 +28,21 @@ export class PermissionsService {
         return this.permissionsSource.value.includes(permission);
     }
 
-    public loadPermissions(permissions) {
+    public loadPermissions(permissions: string[]) {
       this.permissionsSource.next(permissions);
     }
 
-    public addPermission(permission) {
+    public addPermission(permission: string) {
         const permissions = [
             ...this.permissionsSource.value,
             permission
         ];
         this.permissionsSource.next(permissions)
+    }
+    public removePermission(permission: string) {
+        const permissions = this.permissionsSource.value.filter((value) => {
+            return value != permission;
+        });
+        this.permissionsSource.next(permissions);
     }
 }
