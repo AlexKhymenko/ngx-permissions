@@ -266,14 +266,6 @@ const appRoutes: Routes = [
 export class AppRoutingModule {}
 ```
 
-
-[//]: <> (> :bulb: **Note**   
-          > When the state to which user will be redirected is not defined note that he will be intercepted be general `$urlRouterProvider.otherwise()` rule.)
-
-
-
-
-
 ----------------------------
 
 | --- |
