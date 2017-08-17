@@ -96,8 +96,8 @@ Then use them in Your templates
 
 | Attribute             | Value                    | Description      |
 | ----------------------|:------------------------:| ----------------:|
-| `permissionsOnly`     | `[String &#124 String[] ]`   | Single or multiple permissions allowed to access content | 
-| `permissionsExcept`   | `[String &#124 String[] ]`   | Single or multiple roles/permissions denied to access content|
+| `permissionsOnly`     | `[String&#124;String[]]`   | Single or multiple permissions allowed to access content | 
+| `permissionsExcept`   | `[String&#124;String[]]`   | Single or multiple roles/permissions denied to access content|
 
 ```xml
 <!-- You can now use your library component in app.component.html -->
