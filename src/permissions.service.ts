@@ -45,4 +45,8 @@ export class PermissionsService {
         });
         this.permissionsSource.next(permissions);
     }
+
+    public getPermissions() {
+        return this.permissionsSource.value;
+    }
 }
