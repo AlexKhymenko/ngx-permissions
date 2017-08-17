@@ -119,6 +119,162 @@ or as one string
 </ng-template>
 ```
 
+Usage with Routes
+----------------------------
+
+1. [Introduction](#introduction)
+2. [Property only and except](#property-only-and-except)
+  1. [Single permission/role](#single-permissionrole)
+  2. [Multiple permissions/roles](#multiple-permissionsroles) 
+3. [Property redirectTo](#property-redirectto)
+  1. [Single rule redirection](#single-redirection-rule)
+
+Introduction
+----------------------------
+
+Now you are ready to start working with controlling access to the states of your application. In order to restrict any state ngx-permission rely on angular-route's `data` property, reserving key `permissions` allowing to define authorization configuration.
+
+Permissions object accepts following properties:
+
+| Property        | Accepted value                   |
+| :-------------- | :------------------------------- |
+| `only`          | [`String`\|`Array`]              |
+| `except`        | [`String`\|`Array`]              |
+| `redirectTo`    | [`String`]                       |
+
+Property only and except
+----------------------------
+
+Property `only`:
+  - is used to explicitly define permission or role that are allowed to access the state   
+  - when used as `String` contains single permission or role
+  - when used as `Array` contains set of permissions and/or roles
+
+Property `except`: 
+  - is used to explicitly define permission or role that are denied to access the state
+  - when used as `String` contains single permission or role
+  - when used as `Array` contains set of permissions and/or roles
+
+[//]: <> (> :fire: **Important**   
+          > If you combine both `only` and `except` properties you have to make sure they are not excluding each other, because denied roles/permissions would not allow access the state for users even if allowed ones would pass them.   
+)
+ 
+#### Single permission/role 
+
+In simplest cases you allow users having single role permission to access the state. To achieve that you can pass as `String` desired role/permission to only/except property:
+
+```typescript
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { HomeComponent } from './home/home.component';
+import { PermissionsGuard } from 'ngx-permissions';
+
+const appRoutes: Routes = [
+  { path: 'home',
+    component: HomeComponent,
+    canActivate: [PermissionsGuard],
+    data: {
+      permissions: {
+        only: 'ADMIN'
+      }
+    }
+  },
+];
+@NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AppRoutingModule {}
+
+```
+
+In given case when user is trying to access `home` state `PermissionsGuard` service is called checking if `isAuthorized` permission is valid: 
+  - if permission definition is not found it stops transition
+
+#### Multiple permissions/roles 
+
+Often several permissions/roles are sufficient to allow/deny user to access the state. Then array value comes in handy:  
+
+```typescript
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { HomeComponent } from './home/home.component';
+import { PermissionsGuard } from 'ngx-permissions';
+
+const appRoutes: Routes = [
+  { path: 'home',
+    component: HomeComponent,
+    canActivate: [PermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ADMIN', 'MODERATOR']
+      }
+    }
+  },
+];
+@NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AppRoutingModule {}
+```
+
+When `PermissionGuard` service will be called it would expect user to have either `ADMIN` or `MODERATOR` permissions to pass him to `home` route.
+
+[//]: <> (> :bulb: **Note**   
+          > Between values in array operator **OR** is used to create alternative. If you need **AND** operator between permissions define additional `PermRole` containing set of those. 
+)
+
+### Single redirection rule
+
+In case you want to redirect to some specific state when user is not authorized pass to `redirectTo` path of that route.
+
+```typescript
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { HomeComponent } from './home/home.component';
+import { PermissionsGuard } from 'ngx-permissions';
+
+const appRoutes: Routes = [
+  { path: 'home',
+    component: HomeComponent,
+    canActivate: [PermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ADMIN', 'MODERATOR'],
+        redirectTo: 'another-route'
+      }
+    }
+  },
+];
+@NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AppRoutingModule {}
+```
+
+> :bulb: **Note**   
+> When the state to which user will be redirected is not defined note that he will be intercepted be general `$urlRouterProvider.otherwise()` rule.
+
+
+
+
+----------------------------
+
+| --- |
 ## Development
 
 To generate all `*.js`, `*.d.ts` and `*.metadata.json` files:
