@@ -283,7 +283,7 @@ To get specific role use method `getRole`:
 let role = RolesService.getRole('roleName');
 ```
 
-And to get all roles form `RolesService` use method `getRoles` or use Observable roles$:
+And to get all roles form `RolesService` use method `getRoles` or use `Observable roles$`:
 
 ```typescript
 let roles = RolesService.getRoles();
