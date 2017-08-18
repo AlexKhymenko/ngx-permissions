@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { PermissionsDirective } from './permissions.directive';
 import { PermissionsService } from './permissions.service';
 import { PermissionsGuard } from './router/permissions-guard.service';
+import { RolesService } from './roles.service';
 
 export * from './permissions.directive';
 export * from './permissions.service';
@@ -24,7 +25,8 @@ export class NgxPermissionsModule {
       ngModule: NgxPermissionsModule,
       providers: [
         PermissionsService,
-        PermissionsGuard
+        PermissionsGuard,
+        RolesService
       ]
     };
   }

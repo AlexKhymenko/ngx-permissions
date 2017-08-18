@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NgxPermissionsModule } from './index';
 import { TestBed } from '@angular/core/testing';
 import { PermissionsService } from './permissions.service';
+import { RolesService } from './roles.service';
 
 enum PermissionsTestEnum {
     ADMIN = <any> 'ADMIN',
@@ -145,4 +146,37 @@ describe('Permission directive angular only', () => {
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
     })
+});
+
+describe('Permission directive angular roles only', () => {
+    @Component({selector: 'test-comp',
+        template: `<ng-template permissions [permissionsOnly]="'ADMIN'"><div>123</div></ng-template>`})
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissions;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(RolesService);
+
+    });
+
+
+    it('Should show the component', () => {
+        // rolesService.addRole('ADMIN', [])
+        // permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
+        //
+        // fixture.detectChanges();
+        // let content = fixture.debugElement.nativeElement.querySelector('div');
+        // expect(content).toBeTruthy();
+        // expect(content.innerHTML).toEqual('123');
+    });
 });
