@@ -1,5 +1,7 @@
 import { RolesService } from './roles.service';
 import { inject, TestBed } from '@angular/core/testing';
+import { RolesStore } from './store/roles.store';
+import { NgxPermissionsModule } from './index';
 
 enum RoleNamesEnum {
     ADMIN = <any>'ADMIN',
@@ -10,7 +12,7 @@ describe('Roles Service', () => {
     let localService: RolesService;
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [RolesService]
+            imports: [NgxPermissionsModule.forRoot()]
         });
     });
 

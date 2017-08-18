@@ -1,0 +1,28 @@
+  <h1>
+      Lazy Module Works
+  </h1>
+
+<button routerLink="/">Back</button>
+<button routerLink="/lazy/except-should">SHOULD go to isolate except should page testing except</button>
+<button routerLink="/lazy/except-should-not">SHOULD NOT go to isolate except should page testing except</button>
+<button routerLink="/lazy/only-should">SHOULD go to isolate except should page testing only</button>
+<button routerLink="/lazy/only-should-not">SHOULD NOT go to only-should-not except should page testing only</button>
+
+<ng-template permissions [permissionsOnly]="['ADMIN']">
+  <div> LAZY I will see it only admin</div>
+</ng-template>
+
+<ng-template permissions [permissionsOnly]="['GUEST']">
+  <div style="color: red">LAZY I SHOULD not see it only guest</div>
+</ng-template>
+
+<ng-template permissions [permissionsExcept]="['ADMINNNN']">
+  <div>LAZY I will see it except adminnnnnnn</div>
+</ng-template>
+
+<ng-template permissions [permissionsExcept]="['ADMIN']">
+  <div style="color: red">LAZY I Should not see it except admin</div>
+</ng-template>
+
+
+<div> ENd on lazy Module</div>

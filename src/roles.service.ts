@@ -4,12 +4,25 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Role } from './model/role.model';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { RolesStore } from './store/roles.store';
 
-type RolesObject = {[name: string] : Role}
+export const USE_ROLES_STORE = new InjectionToken('USE_ROLES_STORE');
+
+export type RolesObject = {[name: string] : Role}
+
+@Injectable()
 export class RolesService {
-    private rolesSource = new BehaviorSubject<RolesObject>({});
+    private rolesSource: BehaviorSubject<RolesObject>;
 
-    public roles$ = this.rolesSource.asObservable();
+    public roles$: Observable<RolesObject>;
+
+    constructor(@Inject(USE_ROLES_STORE) private isolate: boolean = false,
+                private rolesStore: RolesStore) {
+        this.rolesSource = this.isolate ? new BehaviorSubject<RolesObject>({}) : this.rolesStore.rolesSource;
+        this.roles$ = this.rolesSource.asObservable();
+    }
 
     public addRole(name: string, validationFunction: Function | string[]) {
         const roles = {

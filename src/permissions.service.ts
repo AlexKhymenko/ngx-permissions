@@ -1,14 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { PermissionsStore } from './store/permissions.store';
+
+export const USE_PERMISSIONS_STORE = new InjectionToken('USE_PERMISSIONS_STORE');
+
 
 @Injectable()
 export class PermissionsService {
 
-    public permissionsSource =  new BehaviorSubject<any[]>([]);
-    public permissions$ = this.permissionsSource.asObservable();
+    private permissionsSource: any;
+    public permissions$: Observable<any>;
 
-    constructor() { }
+    constructor(@Inject(USE_PERMISSIONS_STORE) private isolate: boolean = false,
+                private permissionsStore: PermissionsStore) {
+        this.permissionsSource = this.isolate ? new BehaviorSubject<any[]>([]) : this.permissionsStore.permissionsSource;
+        this.permissions$ = this.permissionsSource.asObservable();
+    }
 
     public flushPermissions() {
         this.permissionsSource.next([]);

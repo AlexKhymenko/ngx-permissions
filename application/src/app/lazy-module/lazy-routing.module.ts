@@ -1,22 +1,16 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { HomeComponent } from './home/home.component';
 import { PermissionsGuard } from 'ngx-permissions';
+import { LazyComponentComponent } from './lazy-component/lazy-component.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 const appRoutes: Routes = [
-  { path: 'home',
-    component: HomeComponent,
-    canActivate: [PermissionsGuard],
-    data: {
-      permissions: {
-        only: 'ADMIN',
-        redirectTo: '/except-should'
-      }
-    }
+  { path: '',
+    component: LazyComponentComponent,
   },
   {
     path: 'except-should',
-    component: HomeComponent,
+    component: LazyComponentComponent,
     canActivate: [PermissionsGuard],
     data: {
       permissions: {
@@ -25,8 +19,18 @@ const appRoutes: Routes = [
     }
   },
   {
+    path: 'only-should',
+    component: LazyComponentComponent,
+    canActivate: [PermissionsGuard],
+    data: {
+      permissions: {
+        only: 'ADMIN'
+      }
+    }
+  },
+  {
     path: 'except-should-not',
-    component: HomeComponent,
+    component: LazyComponentComponent,
     canActivate: [PermissionsGuard],
     data: {
       permissions: {
@@ -36,20 +40,18 @@ const appRoutes: Routes = [
   },
   {
     path: 'only-should-not',
-    component: HomeComponent,
+    component: LazyComponentComponent,
     canActivate: [PermissionsGuard],
     data: {
       permissions: {
-        except: 'ADMIN'
+        only: 'GUEST'
       }
     }
-  },
-  { path: 'lazy', loadChildren: 'app/lazy-module/lazy-module.module#LazyModule' },
-  { path: 'lazy-isolate', loadChildren: 'app/lazy-isolate/lazy-isolate.module#LazyIsolateModule' },
+  }
 ];
 @NgModule({
   imports: [
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forChild(appRoutes),
   ],
   exports: [
     RouterModule
@@ -58,4 +60,4 @@ const appRoutes: Routes = [
     // CanDeactivateGuard
   ]
 })
-export class AppRoutingModule {}
+export class LazyRoutingModule {}

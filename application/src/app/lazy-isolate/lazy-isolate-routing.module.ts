@@ -1,22 +1,15 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { HomeComponent } from './home/home.component';
+import { IsolateComponent } from './isolate/isolate.component';
 import { PermissionsGuard } from 'ngx-permissions';
 
 const appRoutes: Routes = [
-  { path: 'home',
-    component: HomeComponent,
-    canActivate: [PermissionsGuard],
-    data: {
-      permissions: {
-        only: 'ADMIN',
-        redirectTo: '/except-should'
-      }
-    }
+  { path: '',
+    component: IsolateComponent,
   },
   {
     path: 'except-should',
-    component: HomeComponent,
+    component: IsolateComponent,
     canActivate: [PermissionsGuard],
     data: {
       permissions: {
@@ -25,31 +18,39 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'except-should-not',
-    component: HomeComponent,
+    path: 'only-should',
+    component: IsolateComponent,
     canActivate: [PermissionsGuard],
     data: {
       permissions: {
-        except: 'ADMIN'
+        only: 'GUEST'
+      }
+    }
+  },
+  {
+    path: 'except-should-not',
+    component: IsolateComponent,
+    canActivate: [PermissionsGuard],
+    data: {
+      permissions: {
+        except: 'GUEST'
       }
     }
   },
   {
     path: 'only-should-not',
-    component: HomeComponent,
+    component: IsolateComponent,
     canActivate: [PermissionsGuard],
     data: {
       permissions: {
-        except: 'ADMIN'
+        only: 'ADMIN'
       }
     }
-  },
-  { path: 'lazy', loadChildren: 'app/lazy-module/lazy-module.module#LazyModule' },
-  { path: 'lazy-isolate', loadChildren: 'app/lazy-isolate/lazy-isolate.module#LazyIsolateModule' },
+  }
 ];
 @NgModule({
   imports: [
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forChild(appRoutes),
   ],
   exports: [
     RouterModule
@@ -58,4 +59,4 @@ const appRoutes: Routes = [
     // CanDeactivateGuard
   ]
 })
-export class AppRoutingModule {}
+export class LazyIsolateRoutingModule {}
