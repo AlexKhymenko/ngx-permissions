@@ -1,8 +1,8 @@
 export class Role {
     name: string;
-    validationFunction: Function;
+    validationFunction: Function | string[];
 
-    constructor(name: string, validationFunction: Function) {
+    constructor(name: string, validationFunction: Function | string[]) {
         this.name = name;
         this.validationFunction = validationFunction;
     }
