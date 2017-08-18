@@ -78,15 +78,15 @@ export class RolesService {
         }
     }
 
-    private hasRolePermission(roles: RolesObject, roleName: string | string[]) {
+    private hasRolePermission(roles: RolesObject, roleName: string | string[]): boolean {
         return Object.keys(roles).some((key) => {
             if (Array.isArray(roles[key].validationFunction)) {
                 if (this.isString(roleName)) {
-                    return roles[key].validationFunction['includes'](roleName);
+                    return (<string[]>roles[key].validationFunction).includes(<string>roleName);
                 }
 
                 if (Array.isArray(roleName)) {
-                    return roles[key].validationFunction['some'](v => {
+                    return (<string[]>roles[key].validationFunction).some((v: any) => {
                         return roleName.includes(v);
                     });
                 }

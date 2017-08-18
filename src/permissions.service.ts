@@ -27,7 +27,7 @@ export class PermissionsService {
             return true;
         }
         if (Array.isArray(permission)) {
-          return this.permissionsSource.value.some(v => {
+          return this.permissionsSource.value.some((v: any) => {
             return permission.includes(v);
           });
         }
@@ -58,7 +58,7 @@ export class PermissionsService {
 
     }
     public removePermission(permission: string) {
-        const permissions = this.permissionsSource.value.filter((value) => {
+        const permissions = this.permissionsSource.value.filter((value: any) => {
             return value != permission;
         });
         this.permissionsSource.next(permissions);

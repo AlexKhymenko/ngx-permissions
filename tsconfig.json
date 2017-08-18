@@ -4,6 +4,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "rootDir": "./src",
+    "strict": true,
     "lib": [
       "es2015",
       "dom"
