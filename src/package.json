@@ -1,6 +1,6 @@
 {
   "name": "ngx-permissions",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "repository": {
     "type": "git",
     "url": "https://github.com/AlexKhymenko/ngx-permissions"
@@ -31,6 +31,10 @@
     "guard",
     "router",
     "ngx-router",
+    "ngx-permissions",
+    "ng-permissions",
+    "ng-permission",
+    "ngx-permission",
     "angular2-router",
     "angular4-router",
     "access-control",
