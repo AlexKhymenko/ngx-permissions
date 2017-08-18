@@ -5,9 +5,9 @@ import { Role } from './model/role.model';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 
-
+type RolesObject = {[name: string] : Role}
 export class RolesService {
-    private rolesSource = new BehaviorSubject<{[name: string] : Role}>({});
+    private rolesSource = new BehaviorSubject<RolesObject>({});
 
     public roles$ = this.rolesSource.asObservable();
 
@@ -45,15 +45,45 @@ export class RolesService {
         return this.rolesSource.value[name];
     }
 
-    // public checkOnlyRoles(names: string | string[]) {
-    //     if (Array.isArray(names)) {
-    //         const rolesValidations = this.checkValidationFunctions();
-    //     } else {
-    //
-    //     }
-    // }
-    //
-    //
-    // private checkValidationFunctions(roles) {
-    // }
+
+    public hasOnlyRoles(names: string | string[]) {
+        if (this.hasRoleKey(names) || this.hasRolePermission(this.rolesSource.value, names)) {
+            return true
+        } else {
+            return false;
+        }
+
+    }
+
+    private hasRoleKey(roleName: string | string[]): boolean {
+        if (Array.isArray(roleName)) {
+            return Object.keys(this.rolesSource.value).some((key) => {
+                return roleName.includes(key)
+            });
+        } else {
+            return !!this.rolesSource.value[roleName];
+        }
+    }
+
+    private hasRolePermission(roles: RolesObject, roleName: string | string[]) {
+        return Object.keys(roles).some((key) => {
+            if (Array.isArray(roles[key].validationFunction)) {
+                if (this.isString(roleName)) {
+                    return roles[key].validationFunction['includes'](roleName);
+                }
+
+                if (Array.isArray(roleName)) {
+                    return roles[key].validationFunction['some'](v => {
+                        return roleName.includes(v);
+                    });
+                }
+            }
+
+            return true;
+        })
+    }
+
+    private isString(variable: any) {
+        return typeof variable === 'string' || variable instanceof String
+    }
 }

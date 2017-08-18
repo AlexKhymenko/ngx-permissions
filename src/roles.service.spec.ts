@@ -61,4 +61,33 @@ describe('Roles Service', () => {
                 ADMIN: {name: "ADMIN", validationFunction: ['Nice']},
                 GUEST: {name: "GUEST", validationFunction: ['Awesome']}})
     });
+
+    it ('return true when role name is present in Roles object', () => {
+        expect(Object.keys(localService.getRoles()).length).toEqual(0);
+        localService.addRoles({
+            ADMIN: ['Nice'],
+            GUEST: ["Awesome"]
+        });
+
+        expect(Object.keys(localService.getRoles()).length).toEqual(2);
+        expect(localService.hasOnlyRoles('ADMIN')).toEqual(true);
+        expect(localService.hasOnlyRoles('SHOULDNOTHAVEROLE')).toEqual(false);
+        expect(localService.hasOnlyRoles(['ADMIN'])).toEqual(true);
+        expect(localService.hasOnlyRoles(['ADMIN', 'IRIISISTABLE'])).toEqual(true);
+    });
+
+    it ('return true when role permission name is present in Roles object', () => {
+        expect(Object.keys(localService.getRoles()).length).toEqual(0);
+        localService.addRoles({
+            ADMIN: ['Nice'],
+            GUEST: ["Awesome"]
+        });
+
+        expect(Object.keys(localService.getRoles()).length).toEqual(2);
+        expect(localService.hasOnlyRoles('Nice')).toEqual(true);
+        expect(localService.hasOnlyRoles(['Nice'])).toEqual(true);
+        expect(localService.hasOnlyRoles(['Nice', 'IRRISISTABLE'])).toEqual(true);
+        expect(localService.hasOnlyRoles('SHOULDNOTHAVEROLE')).toEqual(false)
+        expect(localService.hasOnlyRoles(['SHOULDNOTHAVEROLE'])).toEqual(false)
+    });
 });
