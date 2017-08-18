@@ -7,6 +7,7 @@ Permission based access control for your angular applications
 - [Installation](#installation)
 - [Consuming library](#consuming-library)
 - [Managing Permissions](#managing-permissions)
+- [Managing Roles](#managing-roles)
 - [Controlling access in views](#controlling-access-in-views)
 - [Usage with Routes](#usage-with-routes)
 - [Development](#development)
@@ -191,6 +192,108 @@ PermissionsService.permissions$.subscribe((permissions) => {
 })
 ```
 
+## Managing roles
+
+Before start
+----------------------------
+
+Make sure you are familiar with:
+- [Managing permissions](#managing-permissions)   
+
+Overview
+----------------------------
+
+1. [Introduction](#before-start)
+2. [Defining roles](#defining-roles)
+  1. [Individual roles](#individual-roles)
+  2. [Multiple roles](#multiple-roles)
+3. [Removing roles](#removing-roles)
+4. [Getting all roles](#getting-all-roles)
+
+Introduction
+----------------------------
+By definition a role is a named set of abilities (permissions) by which a specific group of users is identified. 
+So for example `USER` or `ANONYMOUS` would be roles and not permissions. We can represent our `USER` role as a group of permissions that the role should be able to perform. For example: `listArticles`, `editArticles` and other custom server/browser validated privileges.    
+
+> :bulb: **Note**   
+> It's a good convention to name roles with UPPER_CASE, so roles like `ACCOUNTANT` or `ADMIN` are easier to distinguish from permissions.
+
+Defining roles
+----------------------------
+
+### Individual roles
+
+Similarly to permissions we are gonna use here `RolesService` that exposes `addRole` allowing to define custom roles used by users in your application. 
+
+```typescript
+[...]
+
+RolesService
+  .addRole('ROLE_NAME', ['permissionNameA', 'permissionNameB', 'permissionNameC', ...])
+  
+
+```
+
+Usage of `addRole` is very similar to `addPermissions`:
+
+```typescript
+RolesService
+  // Permission array validated role
+  // Library will internally validate if 'listEvents' and 'editEvents' permissions are valid when checking if role is valid   
+  .addRole('ADMIN', ['listEvents', 'editEvents']);  
+  
+```
+
+### Multiple roles
+
+Service `RolesService` allows you define multiple roles with `addRoles` method. This method accepts `Object` containing keys as a role names and corresponding validators as values. 
+
+```typescript
+RolesService    
+  // Or use your own function/service to validate role
+  .addRoles({
+    'USER': ['canReadInvoices'],
+    'ADMIN': ['canReadInvoices','canEditInvoices','canUploadImages']
+  });
+```
+
+> :bulb: **Note**   
+
+Removing roles
+----------------------------
+
+To remove **all** roles use `flushRoles` method:  
+
+```typescript
+RolesService.flushRoles();
+```
+
+Alternatively you can use `removeRole` to delete defined role manually:
+
+```typescript
+RolesService.removeRole('USER');
+```
+
+Getting all roles
+----------------------------
+
+To get specific role use method `getRole`:
+
+```javascript
+let role = RolesService.getRole('roleName');
+```
+
+And to get all roles form `RolesService` use method `getRoles` or use `Observable roles$`:
+
+```typescript
+let roles = RolesService.getRoles();
+
+RolesService.roles$.subscribe((data) => {
+    console.log(data);
+})
+```
+
+
 ## Controlling access in views
 
 Overview
@@ -217,6 +320,12 @@ Directives accepts either single permission that has to be met in order to displ
  
 ```html
 <ng-template permissions [permissionsOnly]="['ADMIN']">
+    <div>You can see this text congrats</div>
+ </ng-template>
+ <ng-template permissions [permissionsOnly]="'ADMIN'">
+    <div>You can see this text congrats</div>
+ </ng-template>
+  <ng-template permissions permissionsOnly"ADMIN">
     <div>You can see this text congrats</div>
  </ng-template>
  
