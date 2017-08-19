@@ -1,14 +1,12 @@
-
-
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Role } from './model/role.model';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
-import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { Inject, Injectable, OpaqueToken } from '@angular/core';
 import { RolesStore } from './store/roles.store';
 
-export const USE_ROLES_STORE = new InjectionToken('USE_ROLES_STORE');
+export const USE_ROLES_STORE = new OpaqueToken('USE_ROLES_STORE');
 
 export type RolesObject = {[name: string] : Role}
 

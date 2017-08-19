@@ -1,7 +1,4 @@
-import {
-    Directive, Input, OnInit, ElementRef, OnChanges, SimpleChanges, OnDestroy,
-    ViewContainerRef, TemplateRef
-} from "@angular/core";
+import { Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from "@angular/core";
 import { PermissionsService } from "./permissions.service";
 import { Subscription } from "rxjs/Subscription";
 import { RolesService } from './roles.service';

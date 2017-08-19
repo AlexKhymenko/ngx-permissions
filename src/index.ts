@@ -6,6 +6,8 @@ import { RolesService, USE_ROLES_STORE } from './roles.service';
 import { PermissionsStore } from './store/permissions.store';
 import { RolesStore } from './store/roles.store';
 
+export * from './store/roles.store'
+export * from './store/permissions.store'
 export * from './permissions.directive';
 export * from './permissions.service';
 export * from './roles.service';
@@ -35,13 +37,13 @@ export class NgxPermissionsModule {
     return {
       ngModule: NgxPermissionsModule,
       providers: [
-        PermissionsService,
-        PermissionsGuard,
-        RolesService,
-        PermissionsStore,
-        RolesStore,
-        {provide: USE_PERMISSIONS_STORE, useValue: config.permissionsIsolate},
-        {provide: USE_ROLES_STORE, useValue: config.rolesIsolate},
+            PermissionsStore,
+            RolesStore,
+            PermissionsService,
+            PermissionsGuard,
+            RolesService,
+            {provide: USE_PERMISSIONS_STORE, useValue: config.permissionsIsolate},
+            {provide: USE_ROLES_STORE, useValue: config.rolesIsolate},
       ]
     };
   }

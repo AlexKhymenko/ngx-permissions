@@ -1,9 +1,9 @@
-import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { Inject, Injectable, OpaqueToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { PermissionsStore } from './store/permissions.store';
 
-export const USE_PERMISSIONS_STORE = new InjectionToken('USE_PERMISSIONS_STORE');
+export const USE_PERMISSIONS_STORE = new OpaqueToken('USE_PERMISSIONS_STORE');
 
 
 @Injectable()
