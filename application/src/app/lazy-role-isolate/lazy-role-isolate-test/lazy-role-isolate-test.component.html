@@ -1,0 +1,34 @@
+<p>
+  LAZY Isolate works!
+</p>
+<button routerLink="/">Back</button>
+<button routerLink="/lazy-roles-isolate/except-should">SHOULD go to isolate except should page testing except</button>
+<button routerLink="/lazy-roles-isolate/except-should-not">SHOULD NOT go to isolate except should page testing except</button>
+<button routerLink="/lazy-roles-isolate/only-should">SHOULD go to isolate except should page testing only</button>
+<button routerLink="/lazy-roles-isolate/only-should-not">SHOULD NOT go to only-should-not except should page testing only</button>
+<button routerLink="/lazy-roles-isolate/only-permissions-should">SHOULD go to only-should-not except should page testing only</button>
+<!--<button routerLink="/lazy-roles-isolate/only-permissions-not-should">SHOULD NOT go to only-should-not except should page testing only</button>-->
+<button routerLink="/lazy-roles-isolate/except-permissions-should-not">SHOULD NOT go to only-should-not except should page testing only</button>
+
+<div style="background-color: green">
+  Should see something
+  <ng-template permissions [permissionsOnly]="['GUEST']">
+    <div> LAZY I will see it only GUEST</div>
+  </ng-template>
+</div>
+
+
+<ng-template permissions [permissionsOnly]="['ADMIN']">
+  <div style="color: red">LAZY I SHOULD not see it only guest</div>
+</ng-template>
+
+<ng-template permissions [permissionsExcept]="['GUESTTTT']">
+  <div>LAZY I will see it except guestttt</div>
+</ng-template>
+
+<ng-template permissions [permissionsExcept]="['GUEST']">
+  <div style="color: red">LAZY I Should not see it except admin</div>
+</ng-template>
+
+
+<div> ENd on lazy ISOLATE Module</div>

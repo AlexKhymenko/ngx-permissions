@@ -46,6 +46,7 @@ const appRoutes: Routes = [
   },
   { path: 'lazy', loadChildren: 'app/lazy-module/lazy-module.module#LazyModule' },
   { path: 'lazy-isolate', loadChildren: 'app/lazy-isolate/lazy-isolate.module#LazyIsolateModule' },
+  { path: 'lazy-roles-isolate', loadChildren: 'app/lazy-role-isolate/lazy-role-isolate.module#LazyRoleIsolateModule' },
 ];
 @NgModule({
   imports: [
