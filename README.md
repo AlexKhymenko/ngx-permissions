@@ -131,6 +131,22 @@ export class AppComponent implements OnInit {
   }
 }
 ```
+
+Usage in templates 
+
+```html
+<div *permissionsOnly="['ADMIN', 'GUEST']">
+    <div>You can see this text congrats</div>
+</div>
+
+<ng-template permissions permissionsOnly="ADMIN">
+  <div>You can see this text congrats</div>
+ </ng-template>
+ 
+ <ng-template permissions [permissionsExcept]="['JOHNY']">
+   <div> All will see it except JOHNY</div>
+ </ng-template>
+```
 ### Managing permissions
 
 
@@ -354,7 +370,7 @@ Directives accepts either single permission that has to be met in order to displ
  <ng-template permissions [permissionsOnly]="'ADMIN'">
     <div>You can see this text congrats</div>
  </ng-template>
-  <ng-template permissions permissionsOnly"ADMIN">
+  <ng-template permissions permissionsOnly="ADMIN">
     <div>You can see this text congrats</div>
  </ng-template>
  
