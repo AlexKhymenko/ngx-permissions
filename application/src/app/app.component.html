@@ -33,6 +33,15 @@
   </div>
 </div>
 
+<div style="background-color: green">
+  THis USES BOTH only and except
+
+  <ng-template  [permissionsOnly]="['ADMIN']" [permissionsExcept]="'HHHH'" >
+    Usage on both only and except
+    I SHOULD SEE see it only admin
+  </ng-template>
+</div>
+
 
 <ng-template permissions [permissionsOnly]="['GUEST']">
   <div>I will not see it only guest</div>
