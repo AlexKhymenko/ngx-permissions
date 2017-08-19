@@ -581,7 +581,7 @@ $ npm run lint
 ```
 ## Thank You
 
-`Thank You for using the library and support.`
+`Thank You for using the library and support. HAVE A GREAT DAY!`
 
 ## License
 
