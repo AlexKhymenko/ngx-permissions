@@ -408,3 +408,95 @@ describe('Permission directive angular roles except array', () => {
         expect(content.innerHTML).toEqual('123');
     })
 });
+
+describe('Permission directive angular testing different selectors *permmisionsOnly', () => {
+    @Component({selector: 'test-comp',
+        template: `<div *permissionsOnly="['ADMIN']"><div>123</div></div>`})
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissions;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(RolesService);
+
+    });
+
+
+    it('Should show the component when key of role is the same', () => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        rolesService.addRole('ADMIN', ['Awsesome']);
+        fixture.detectChanges();
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+
+        fixture.detectChanges();
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    });
+
+    it('Should hide the component when key of role is the same', () => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        rolesService.addRole('GG', ['Awsesome']);
+        fixture.detectChanges();
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+
+        fixture.detectChanges();
+        expect(content2).toEqual(null);
+
+    });
+});
+
+describe('Permission directive angular testing different selectors *permmisionsExcept', () => {
+    @Component({selector: 'test-comp',
+        template: `<div *permissionsExcept="['ADMIN']"><div>123</div></div>`})
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissions;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(RolesService);
+
+    });
+
+
+    it('Should show the component when key of role is the same', () => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        rolesService.addRole('Guest', ['Awsesome']);
+        fixture.detectChanges();
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        fixture.detectChanges();
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    });
+
+    it('Should hide the component when key of role is the same', () => {
+        rolesService.addRole('ADMIN', ['Awsesome']);
+        fixture.detectChanges();
+
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+    });
+});
