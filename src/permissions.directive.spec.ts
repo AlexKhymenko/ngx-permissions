@@ -66,7 +66,7 @@ describe('Permission directive angular except', () => {
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
 
-    }
+    });
 
     it ('Should show component when permission removed', () => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
@@ -80,7 +80,7 @@ describe('Permission directive angular except', () => {
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toBeTruthy();
         expect(content2.innerHTML).toEqual('123');
-    })
+    });
 });
 
 describe('Permission directive angular only', () => {

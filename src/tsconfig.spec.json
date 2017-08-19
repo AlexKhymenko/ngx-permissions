@@ -17,6 +17,7 @@
     ],
     "lib": [
       "es6",
+      "es7",
       "dom"
     ],
     "skipLibCheck": true,
