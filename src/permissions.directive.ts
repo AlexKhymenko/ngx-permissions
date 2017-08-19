@@ -9,7 +9,7 @@ import 'rxjs/add/observable/merge';
 import { Observable } from 'rxjs/Observable';
 
 @Directive({
-    selector: '[permissions]'
+    selector: '[permissions],[permissionsOnly],[permissionsExcept]'
 })
 export class PermissionsDirective implements OnInit, OnDestroy {
 

@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { RolesStore } from './store/roles.store';
 
 export const USE_ROLES_STORE = new InjectionToken('USE_ROLES_STORE');
