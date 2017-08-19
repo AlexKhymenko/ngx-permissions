@@ -374,7 +374,26 @@ Or set of permissions separated by 'coma':
    <div>All will see it except admin and Johny</div>
  </ng-template>
 ```
- 
+
+Or just simply by *
+```html
+<div *permissionsOnly="['ADMIN', 'GUEST']">
+    <div>You can see this text congrats</div>
+</div>
+
+ <div *permissionsExcept="['ADMIN', 'JOHNY']">
+   <div>All will see it except admin and Johny</div>
+ </div>
+```
+ > Note: You cant use `*` style with other * style directives like `*ngIf`. You should wrap them. And YES i don't like it either.
+  ```html
+   <div *permissionsOnly="['ADMIN', 'GUEST']">
+    <div *ngIf="true">
+      You can see this text congrats
+    </div>
+   </div>
+   ```
+
 Usage with Routes
 ----------------------------
 
@@ -544,6 +563,9 @@ To lint all `*.ts` files:
 ```bash
 $ npm run lint
 ```
+## Thank You
+
+`Thank You for using the library and support.`
 
 ## License
 
