@@ -70,6 +70,35 @@ export class SharedModule { }
 ```
 > Note: Never call a forRoot static method in the SharedModule. You might end up with different instances of the service in your injector tree. But you can use forChild if necessary.
 
+##### Lazy loaded modules
+
+When you lazy load a module, you should use the `forChild` static method to import the `NgxPermissionsModule`.
+
+Since lazy loaded modules use a different injector from the rest of your application, you can configure them separately.
+You can also isolate the service by using `permissionsIsolate: true` or `rolesIsolate: true`. In which case the service is a completely isolated instance.
+Otherwise, by default, it will share its data with other instances of the service.
+
+```typescript
+@NgModule({
+    imports: [
+        NgxPermissionsModule.forChild()
+    ]
+})
+export class LazyLoadedModule { }
+```
+
+```typescript
+@NgModule({
+    imports: [
+        NgxPermissionsModule.forChild({
+        permissionsIsolate: true, 
+        rolesIsolate: true})
+    ]
+})
+export class LazyIsolatedLoadedModule { }
+```
+
+
 Once your library is imported, you can use its components, directives and pipes in your Angular application:
 
 Import service to the main application and load permissions
