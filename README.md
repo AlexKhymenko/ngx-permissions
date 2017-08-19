@@ -1,6 +1,6 @@
 # ngx-permissions
 
-Permission based access control for your angular applications
+Permission based access control for your angular applications(AOT, lazy modules compatible)
 
 ## Table of contents
 
