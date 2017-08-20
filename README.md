@@ -287,6 +287,10 @@ RolesService
   // Library will internally validate if 'listEvents' and 'editEvents' permissions are valid when checking if role is valid   
   .addRole('ADMIN', ['listEvents', 'editEvents']);  
   
+RolesService.addRole('Guest', () => {
+      return this.sessionService.checkSession();
+  });  
+  
 ```
 
 ### Multiple roles
@@ -298,7 +302,10 @@ RolesService
   // Or use your own function/service to validate role
   .addRoles({
     'USER': ['canReadInvoices'],
-    'ADMIN': ['canReadInvoices','canEditInvoices','canUploadImages']
+    'ADMIN': ['canReadInvoices','canEditInvoices','canUploadImages'],
+    'GUEST': () => {
+        return this.sessionService.checkSessions();
+    }
   });
 ```
 
