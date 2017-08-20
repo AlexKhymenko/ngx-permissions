@@ -69,9 +69,29 @@ export class RolesService {
 
     private hasRoleKey(roleName: string | string[]): Promise<boolean> {
         if (Array.isArray(roleName)) {
-            return Promise.resolve(Object.keys(this.rolesSource.value).some((key) => {
-                return roleName.includes(key)
-            }));
+            let promises = [];
+            Object.keys(this.rolesSource.value).forEach((key) => {
+                if (!!this.rolesSource.value[key] && !!this.rolesSource.value[key].validationFunction && this.isFunction(this.rolesSource.value[key].validationFunction) && !this.isPromise(this.rolesSource.value[key].validationFunction)) {
+                    return promises.push(Promise.resolve(((<Function>this.rolesSource.value[key].validationFunction)())));
+                }
+
+                if (!!this.rolesSource.value[key] && !!this.rolesSource.value[key].validationFunction && this.isFunction(this.rolesSource.value[key].validationFunction) && this.isPromise(this.rolesSource.value[key].validationFunction)) {
+                   return promises.push(<Promise<any>>(<Function>this.rolesSource.value[key].validationFunction)());
+                }
+
+                promises.push(Promise.resolve(roleName.includes(key)));
+            });
+
+
+            return Promise.all(promises).then(pr => {
+                return (<any[]>pr).some((v) => {
+                    return v == true;
+                })
+            });
+
+            // return Promise.resolve(Object.keys(this.rolesSource.value).some((key) => {
+            //     return roleName.includes(key)
+            // }));
         } else {
             if (!!this.rolesSource.value[roleName] && !!this.rolesSource.value[roleName].validationFunction && this.isFunction(this.rolesSource.value[roleName].validationFunction) && !this.isPromise(this.rolesSource.value[roleName].validationFunction)) {
                 return Promise.resolve(((<Function>this.rolesSource.value[roleName].validationFunction)()));
