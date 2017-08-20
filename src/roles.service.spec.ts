@@ -1,5 +1,5 @@
 import { RolesService } from './roles.service';
-import { inject, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 import { RolesStore } from './store/roles.store';
 import { NgxPermissionsModule } from './index';
 
@@ -64,7 +64,7 @@ describe('Roles Service', () => {
                 GUEST: {name: "GUEST", validationFunction: ['Awesome']}})
     });
 
-    it ('return true when role name is present in Roles object', () => {
+    it ('return true when role name is present in Roles object', fakeAsync(() => {
         expect(Object.keys(localService.getRoles()).length).toEqual(0);
         localService.addRoles({
             ADMIN: ['Nice'],
@@ -72,24 +72,47 @@ describe('Roles Service', () => {
         });
 
         expect(Object.keys(localService.getRoles()).length).toEqual(2);
-        expect(localService.hasOnlyRoles('ADMIN')).toEqual(true);
-        expect(localService.hasOnlyRoles('SHOULDNOTHAVEROLE')).toEqual(false);
-        expect(localService.hasOnlyRoles(['ADMIN'])).toEqual(true);
-        expect(localService.hasOnlyRoles(['ADMIN', 'IRIISISTABLE'])).toEqual(true);
-    });
+        localService.hasOnlyRoles('ADMIN').then((data) => {
+            expect(data).toEqual(true);
+        });
 
-    it ('return true when role permission name is present in Roles object', () => {
+        localService.hasOnlyRoles('SHOULDNOTHAVEROLE').then(data => {
+            expect(data).toEqual(false);
+        });
+
+        localService.hasOnlyRoles(['ADMIN']).then((data) => {
+            expect(data).toEqual(true);
+        });
+        localService.hasOnlyRoles(['ADMIN', 'IRIISISTABLE']).then((data) => {
+            expect(data).toEqual(true);
+        });
+    }));
+
+    it ('return true when role permission name is present in Roles object', fakeAsync(() => {
         expect(Object.keys(localService.getRoles()).length).toEqual(0);
         localService.addRoles({
             ADMIN: ['Nice'],
             GUEST: ["Awesome"]
         });
 
+
+
         expect(Object.keys(localService.getRoles()).length).toEqual(2);
-        expect(localService.hasOnlyRoles('Nice')).toEqual(true);
-        expect(localService.hasOnlyRoles(['Nice'])).toEqual(true);
-        expect(localService.hasOnlyRoles(['Nice', 'IRRISISTABLE'])).toEqual(true);
-        expect(localService.hasOnlyRoles('SHOULDNOTHAVEROLE')).toEqual(false)
-        expect(localService.hasOnlyRoles(['SHOULDNOTHAVEROLE'])).toEqual(false)
-    });
+        localService.hasOnlyRoles('Nice').then((data) => {
+            expect(data).toEqual(true);
+        });
+        localService.hasOnlyRoles(['Nice']).then((data) => {
+            expect(data).toEqual(true);
+        });
+        localService.hasOnlyRoles(['Nice', 'IRRISISTABLE']).then((data) => {
+            expect(data).toEqual(true);
+        });
+        localService.hasOnlyRoles('SHOULDNOTHAVEROLE').then((data) => {
+            expect(data).toEqual(false);
+        });
+        localService.hasOnlyRoles(['SHOULDNOTHAVEROLE']).then((data) => {
+            expect(data).toEqual(false);
+        });
+
+    }));
 });

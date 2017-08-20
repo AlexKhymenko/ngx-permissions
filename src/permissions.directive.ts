@@ -24,21 +24,27 @@ export class PermissionsDirective implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.initPermissionSubscription = Observable.merge(this.permissionsService.permissions$, this.rolesService.roles$).subscribe((permissions) => {
             if (!!this.permissionsOnly) {
-                if (this.permissionsService.hasPermission(this.permissionsOnly) || this.rolesService.hasOnlyRoles(this.permissionsOnly)) {
-                    this.viewContainer.clear();
-                    this.viewContainer.createEmbeddedView(this.templateRef);
-                } else {
-                    this.viewContainer.clear();
-                }
+                Promise.all([this.permissionsService.hasPermission(this.permissionsOnly), this.rolesService.hasOnlyRoles(this.permissionsOnly)])
+                    .then(([permissionPr,  roles]) => {
+                    if (permissionPr || roles) {
+                        this.viewContainer.clear();
+                        this.viewContainer.createEmbeddedView(this.templateRef);
+                    } else {
+                        this.viewContainer.clear();
+                    }
+                })
             }
 
             if (!!this.permissionsExcept) {
-                if (this.permissionsService.hasPermission(this.permissionsExcept) || this.rolesService.hasOnlyRoles(this.permissionsExcept)) {
-                    this.viewContainer.clear();
-                } else {
-                    this.viewContainer.clear();
-                    this.viewContainer.createEmbeddedView(this.templateRef);
-                }
+                Promise.all([this.permissionsService.hasPermission(this.permissionsExcept), this.rolesService.hasOnlyRoles(this.permissionsExcept)])
+                    .then(([permissionsPr, roles]) => {
+                    if (permissionsPr || roles) {
+                        this.viewContainer.clear();
+                    } else {
+                        this.viewContainer.clear();
+                        this.viewContainer.createEmbeddedView(this.templateRef);
+                    }
+                })
             }
         });
     }

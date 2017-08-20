@@ -1,7 +1,7 @@
 import { PermissionsDirective } from './permissions.directive';
 import { Component } from '@angular/core';
 import { NgxPermissionsModule } from './index';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PermissionsService } from './permissions.service';
 import { RolesService } from './roles.service';
 
@@ -39,48 +39,64 @@ describe('Permission directive angular except', () => {
     });
 
 
-    it('Should not show component', () => {
+    it('Should not show component', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
-
+        tick();
         fixture.detectChanges();
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
-    });
-    it ('Should show the component', () => {
-        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
 
-        fixture.detectChanges();
+    }));
+
+    it('Should  show the component', fakeAsync(() => {
+        permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+    }));
+
+    it ('Should show the component', fakeAsync(() => {
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
+        detectChanges(fixture);
+
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
-    });
+    }));
 
-    it ('Should hide component when permission added', () => {
+    it ('Should hide component when permission added', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toBeTruthy();
         expect(content2.innerHTML).toEqual('123');
+
         permissionService.addPermission(PermissionsTestEnum.ADMIN);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
+    }));
 
-    });
-
-    it ('Should show component when permission removed', () => {
+    it ('Should show component when permission removed', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
 
 
         permissionService.removePermission(PermissionsTestEnum.ADMIN);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toBeTruthy();
         expect(content2.innerHTML).toEqual('123');
-    });
+    }));
 });
 
 describe('Permission directive angular only', () => {
@@ -105,47 +121,51 @@ describe('Permission directive angular only', () => {
     });
 
 
-    it('Should show the component', () => {
+    it('Should show the component', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
+        detectChanges(fixture);
 
-        fixture.detectChanges();
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
-    });
-    it ('Should not show the component', () => {
+    }));
+    it ('Should not show the component', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
+        detectChanges(fixture);
 
-        fixture.detectChanges();
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
-    });
+    }));
 
-    it ('Should show component when permission added', () => {
+    it ('Should show component when permission added', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
         permissionService.addPermission(PermissionsTestEnum.ADMIN);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toBeTruthy();
 
         expect(content2.innerHTML).toEqual('123');
-    })
+    }));
 
-    it ('Should hide component when permission removed', () => {
+    it ('Should hide component when permission removed', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toBeTruthy();
         expect(content2.innerHTML).toEqual('123');
 
         permissionService.removePermission(PermissionsTestEnum.ADMIN);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
-    })
+    }));
 });
 
 describe('Permission directive angular roles only', () => {
@@ -170,47 +190,52 @@ describe('Permission directive angular roles only', () => {
     });
 
 
-    it('Should show the component when key of role is the same', () => {
+    it('Should show the component when key of role is the same', fakeAsync(() => {
         rolesService.addRole('ADMIN', ['Awsesome']);
+        detectChanges(fixture);
 
-        fixture.detectChanges();
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
-    });
-    it ('should show the component when permissions array is the same ', () => {
+    }));
+    it ('should show the component when permissions array is the same ', fakeAsync(() => {
         rolesService.addRole('GG', ['ADMIN']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
-    });
+    }));
 
-    it ('should hide the component when user deletes all roles', () => {
+    it ('should hide the component when user deletes all roles', fakeAsync(() => {
         rolesService.addRole('ADMIN', ['Awsesome']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
 
         rolesService.flushRoles();
+        tick();
         fixture.detectChanges();
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toEqual(null);
-    })
+    }));
 
-    it ('should hide the component when user deletes one role', () => {
+    it ('should hide the component when user deletes one role', fakeAsync(() => {
         rolesService.addRole('ADMIN', ['Awsesome']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
 
         rolesService.removeRole("ADMIN");
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toEqual(null);
-    })
+    }));
 });
 describe('Permission directive angular roles only array', () => {
     @Component({selector: 'test-comp',
@@ -234,47 +259,53 @@ describe('Permission directive angular roles only array', () => {
     });
 
 
-    it('Should show the component when key of role is the same', () => {
+    it('Should show the component when key of role is the same', fakeAsync(() => {
         rolesService.addRole('ADMIN', ['Awsesome']);
+        detectChanges(fixture);
 
-        fixture.detectChanges();
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
-    });
-    it ('should show the component when permissions array is the same ', () => {
+    }));
+    it ('should show the component when permissions array is the same ', fakeAsync(() => {
         rolesService.addRole('GG', ['ADMIN']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
-    });
+    }));
 
-    it ('should hide the component when user deletes all roles', () => {
+    it ('should hide the component when user deletes all roles', fakeAsync(() => {
         rolesService.addRole('GG', ['ADMIN']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
 
         rolesService.flushRoles();
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toEqual(null);
-    })
+    }));
 
-    it ('should hide the component when user deletes one roles', () => {
+    it ('should hide the component when user deletes one roles', fakeAsync(() => {
         rolesService.addRole('GG', ['ADMIN']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
 
         rolesService.removeRole("GG");
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toEqual(null);
-    })
+    }));
 });
 
 describe('Permission directive angular roles except', () => {
@@ -299,48 +330,53 @@ describe('Permission directive angular roles except', () => {
     });
 
 
-    it('Should hide the component when key of role is the same', () => {
+    it('Should hide the component when key of role is the same', fakeAsync(() => {
         rolesService.addRole('ADMIN', ['Awsesome']);
+        detectChanges(fixture);
 
-        fixture.detectChanges();
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
-    });
-    it ('should show the component when permissions array is the same ', () => {
+    }));
+    it ('should show the component when permissions array is the same ', fakeAsync(() => {
         rolesService.addRole('GG', ['ADMIN']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
 
-    });
+    }));
 
-    it ('should show the component when user deletes all roles', () => {
+    it ('should show the component when user deletes all roles', fakeAsync(() => {
         rolesService.addRole('ADMIN', ['Awsesome']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toEqual(null);
 
         rolesService.flushRoles();
-        let content = fixture.debugElement.nativeElement.querySelector('div');
+        detectChanges(fixture);
 
-        fixture.detectChanges();
+        let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
-    })
+    }));
 
-    it ('should show the component when user deletes one role', () => {
+    it ('should show the component when user deletes one role', fakeAsync(() => {
         rolesService.addRole('ADMIN', ['Awsesome']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toEqual(null);
 
         rolesService.removeRole("ADMIN");
+        detectChanges(fixture);
+
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
 
-        fixture.detectChanges();
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
-    })
+    }));
 });
 describe('Permission directive angular roles except array', () => {
     @Component({selector: 'test-comp',
@@ -364,49 +400,55 @@ describe('Permission directive angular roles except array', () => {
     });
 
 
-    it('Should show the component when key of role is the same', () => {
+    it('Should show the component when key of role is the same', fakeAsync(() => {
         rolesService.addRole('ADMIN', ['Awsesome']);
+        detectChanges(fixture);
 
-        fixture.detectChanges();
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
 
-    });
-    it ('should show the component when permissions array is the same ', () => {
+    }));
+    it ('should show the component when permissions array is the same ', fakeAsync(() => {
         rolesService.addRole('GG', ['ADMIN']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
 
-    });
+    }));
 
-    it ('should show the component when user deletes all roles', () => {
+    it ('should show the component when user deletes all roles', fakeAsync(() => {
         rolesService.addRole('GG', ['ADMIN']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toEqual(null);
 
         rolesService.flushRoles();
+        detectChanges(fixture);
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
 
-        fixture.detectChanges();
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
-    })
+    }));
 
-    it ('should show the component when user deletes one roles', () => {
+    it ('should show the component when user deletes one roles', fakeAsync(() => {
         rolesService.addRole('GG', ['ADMIN']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toEqual(null);
 
         rolesService.removeRole("GG");
+        detectChanges(fixture);
+
+
         let content = fixture.debugElement.nativeElement.querySelector('div');
 
-        fixture.detectChanges();
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
-    })
+    }));
 });
 
 describe('Permission directive angular testing different selectors *permmisionsOnly', () => {
@@ -431,31 +473,32 @@ describe('Permission directive angular testing different selectors *permmisionsO
     });
 
 
-    it('Should show the component when key of role is the same', () => {
+    it('Should show the component when key of role is the same', fakeAsync(() => {
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
+
         rolesService.addRole('ADMIN', ['Awsesome']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
 
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
 
-        fixture.detectChanges();
         expect(content2).toBeTruthy();
         expect(content2.innerHTML).toEqual('<div>123</div>');
-    });
+    }));
 
-    it('Should hide the component when key of role is the same', () => {
+    it('Should hide the component when key of role is the same', fakeAsync(() => {
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
+
         rolesService.addRole('GG', ['Awsesome']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
 
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
-
-        fixture.detectChanges();
         expect(content2).toEqual(null);
 
-    });
+    }));
 });
 
 describe('Permission directive angular testing different selectors *permmisionsExcept', () => {
@@ -480,23 +523,33 @@ describe('Permission directive angular testing different selectors *permmisionsE
     });
 
 
-    it('Should show the component when key of role is the same', () => {
+    it('Should show the component when key of role is the same', fakeAsync(() => {
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
         rolesService.addRole('Guest', ['Awsesome']);
-        fixture.detectChanges();
+        detectChanges(fixture);
+
 
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
-        fixture.detectChanges();
         expect(content2).toBeTruthy();
         expect(content2.innerHTML).toEqual('<div>123</div>');
-    });
+    }));
 
-    it('Should hide the component when key of role is the same', () => {
+    it('Should hide the component when key of role is the same', fakeAsync(() => {
         rolesService.addRole('ADMIN', ['Awsesome']);
+        tick();
         fixture.detectChanges();
+
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
-    });
+    }));
 });
+
+
+function detectChanges(fixture) {
+    tick();
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+}

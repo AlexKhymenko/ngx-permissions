@@ -22,18 +22,18 @@ export class PermissionsService {
         this.permissionsSource.next([]);
     }
 
-    public hasPermission(permission: string | string[]) {
+    public hasPermission(permission: string | string[]): Promise<boolean> {
         if (!permission) {
-            return true;
+            return Promise.resolve(true)
         }
         if (Array.isArray(permission)) {
-          return this.permissionsSource.value.some((v: any) => {
-            return permission.includes(v);
-          });
+            return Promise.resolve(this.permissionsSource.value.some((v: any) => {
+                return permission.includes(v);
+            }));
         }
 
 
-        return this.permissionsSource.value.includes(permission);
+        return Promise.resolve(this.permissionsSource.value.includes(permission));
     }
 
     public loadPermissions(permissions: string[]) {

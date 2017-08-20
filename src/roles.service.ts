@@ -57,11 +57,11 @@ export class RolesService {
     }
 
 
-    public hasOnlyRoles(names: string | string[]) {
+    public hasOnlyRoles(names: string | string[]): Promise<boolean> {
         if (this.hasRoleKey(names) || this.hasRolePermission(this.rolesSource.value, names)) {
-            return true
+            return Promise.resolve(true);
         } else {
-            return false;
+            return Promise.resolve(false);
         }
 
     }
