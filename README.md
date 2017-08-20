@@ -288,7 +288,7 @@ RolesService
   .addRole('ADMIN', ['listEvents', 'editEvents']);  
   
 RolesService.addRole('Guest', () => {
-      return this.sessionService.checkSession();
+      return this.sessionService.checkSession().toPromise();
   });  
   
 ```
@@ -304,7 +304,7 @@ RolesService
     'USER': ['canReadInvoices'],
     'ADMIN': ['canReadInvoices','canEditInvoices','canUploadImages'],
     'GUEST': () => {
-        return this.sessionService.checkSessions();
+        return this.sessionService.checkSessions().toPromise();
     }
   });
 ```
