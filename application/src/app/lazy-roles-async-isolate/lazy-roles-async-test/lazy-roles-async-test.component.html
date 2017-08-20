@@ -1,0 +1,47 @@
+<p>
+  LAZY Isolate works!
+</p>
+<button routerLink="/">Back</button>
+<button routerLink="/lazy-roles-isolate/except-should">SHOULD go to isolate except should page testing except</button>
+<button routerLink="/lazy-roles-isolate/except-should-not">SHOULD NOT go to isolate except should page testing except</button>
+<button routerLink="/lazy-roles-isolate/only-should">SHOULD go to isolate except should page testing only</button>
+<button routerLink="/lazy-roles-isolate/only-should-not">SHOULD NOT go to only-should-not except should page testing only</button>
+<button routerLink="/lazy-roles-isolate/only-permissions-should">SHOULD go to only-should-not except should page testing only</button>
+<!--<button routerLink="/lazy-roles-isolate/only-permissions-not-should">SHOULD NOT go to only-should-not except should page testing only</button>-->
+<button routerLink="/lazy-roles-isolate/except-permissions-should-not">SHOULD NOT go to only-should-not except should page testing only</button>
+
+<div style="background-color: green">
+  Should see something
+  <ng-template permissions [permissionsOnly]="'ADMIN_TRUE'">
+    LAZY I will see it only GUEST
+  </ng-template>
+</div>
+
+
+<div style="background-color: red">
+  <ng-template permissions [permissionsOnly]="'ADMIN_FALSE'">
+    <div>LAZY I SHOULD not see it only guest</div>
+  </ng-template>
+</div>
+
+<div style="background-color: green">
+  la
+  <ng-template permissions [permissionsOnly]="'ADMIN_RESOLVE_TRUE'">
+    LAZY I SHOULD not see it ADMIN RESOLVE TRUE guest
+  </ng-template>
+</div>
+
+<div class="background-color: red">
+  <ng-template permissions [permissionsOnly]="'ADMIN_RESOLVE_FALSE'">
+    <div style="color: red"> I SHOULD NOT SEE RESOLVE FALSE</div>
+  </ng-template>
+</div>
+
+<div style="background-color: red">
+  <ng-template permissions [permissionsOnly]="'ADMIN_REJECT'">
+    <div>LAZY I Should not see it ADMIN REJECT admin</div>
+  </ng-template>
+</div>
+
+
+<div> ENd on lazy ISOLATE Module</div>
