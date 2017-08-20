@@ -73,6 +73,13 @@ export class RolesService {
                 return roleName.includes(key)
             }));
         } else {
+            if (!!this.rolesSource.value[roleName] && !!this.rolesSource.value[roleName].validationFunction && this.isFunction(this.rolesSource.value[roleName].validationFunction) && !this.isPromise(this.rolesSource.value[roleName].validationFunction)) {
+                return Promise.resolve(((<Function>this.rolesSource.value[roleName].validationFunction)()));
+            }
+
+            if (!!this.rolesSource.value[roleName] && !!this.rolesSource.value[roleName].validationFunction && this.isFunction(this.rolesSource.value[roleName].validationFunction) && this.isPromise(this.rolesSource.value[roleName].validationFunction)) {
+                return <Promise<any>>(<Function>this.rolesSource.value[roleName].validationFunction)();
+            }
             return Promise.resolve(!!this.rolesSource.value[roleName])
         }
     }
@@ -91,6 +98,10 @@ export class RolesService {
                 }
             }
 
+            if (this.isFunction(roles[key].validationFunction)) {
+                return false;
+            }
+
             return true;
         }));
     }
@@ -99,9 +110,16 @@ export class RolesService {
         return typeof variable === 'string' || variable instanceof String
     }
 
-    private isFunction(functionToCheck) {
+    private isFunction(functionToCheck: any) {
         let getType = {};
         return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
     }
 
+    private isPromise(promise: any) {
+        if (typeof promise.then === 'function') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

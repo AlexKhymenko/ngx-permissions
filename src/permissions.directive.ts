@@ -32,6 +32,8 @@ export class PermissionsDirective implements OnInit, OnDestroy {
                     } else {
                         this.viewContainer.clear();
                     }
+                }).catch(() => {
+                    this.viewContainer.clear();
                 })
             }
 
@@ -44,6 +46,8 @@ export class PermissionsDirective implements OnInit, OnDestroy {
                         this.viewContainer.clear();
                         this.viewContainer.createEmbeddedView(this.templateRef);
                     }
+                }).catch(() => {
+                    this.viewContainer.clear();
                 })
             }
         });
