@@ -58,26 +58,27 @@ export class RolesService {
 
 
     public hasOnlyRoles(names: string | string[]): Promise<boolean> {
-        if (this.hasRoleKey(names) || this.hasRolePermission(this.rolesSource.value, names)) {
-            return Promise.resolve(true);
-        } else {
-            return Promise.resolve(false);
-        }
-
+        return Promise.all([this.hasRoleKey(names), this.hasRolePermission(this.rolesSource.value, names)]).then(([roles, permissions]) => {
+            if (roles || permissions) {
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 
-    private hasRoleKey(roleName: string | string[]): boolean {
+    private hasRoleKey(roleName: string | string[]): Promise<boolean> {
         if (Array.isArray(roleName)) {
-            return Object.keys(this.rolesSource.value).some((key) => {
+            return Promise.resolve(Object.keys(this.rolesSource.value).some((key) => {
                 return roleName.includes(key)
-            });
+            }));
         } else {
-            return !!this.rolesSource.value[roleName];
+            return Promise.resolve(!!this.rolesSource.value[roleName])
         }
     }
 
-    private hasRolePermission(roles: RolesObject, roleName: string | string[]): boolean {
-        return Object.keys(roles).some((key) => {
+    private hasRolePermission(roles: RolesObject, roleName: string | string[]): Promise<boolean> {
+        return Promise.resolve(Object.keys(roles).some((key) => {
             if (Array.isArray(roles[key].validationFunction)) {
                 if (this.isString(roleName)) {
                     return (<string[]>roles[key].validationFunction).includes(<string>roleName);
@@ -91,10 +92,16 @@ export class RolesService {
             }
 
             return true;
-        })
+        }));
     }
 
     private isString(variable: any) {
         return typeof variable === 'string' || variable instanceof String
     }
+
+    private isFunction(functionToCheck) {
+        let getType = {};
+        return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+    }
+
 }
