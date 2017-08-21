@@ -3,6 +3,15 @@ import { Role } from './model/role.model';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/first';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/mergeAll';
+import 'rxjs/add/operator/concatAll';
+import 'rxjs/add/observable/merge';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/onErrorResumeNext';
+import 'rxjs/add/observable/onErrorResumeNext';
 import { Inject, Injectable, OpaqueToken } from '@angular/core';
 import { RolesStore } from './store/roles.store';
 
@@ -72,34 +81,28 @@ export class RolesService {
             let promises = [];
             Object.keys(this.rolesSource.value).forEach((key) => {
                 if (!!this.rolesSource.value[key] && !!this.rolesSource.value[key].validationFunction && this.isFunction(this.rolesSource.value[key].validationFunction) && !this.isPromise(this.rolesSource.value[key].validationFunction)) {
-                    return promises.push(Promise.resolve(((<Function>this.rolesSource.value[key].validationFunction)())));
+                    return promises.push(Observable.from(Promise.resolve((<Function>this.rolesSource.value[key].validationFunction)())).catch(() => {
+                        return Observable.of(false);
+                    }) );
                 }
 
-                if (!!this.rolesSource.value[key] && !!this.rolesSource.value[key].validationFunction && this.isFunction(this.rolesSource.value[key].validationFunction) && this.isPromise(this.rolesSource.value[key].validationFunction)) {
-                   return promises.push(<Promise<any>>(<Function>this.rolesSource.value[key].validationFunction)());
-                }
-
-                promises.push(Promise.resolve(roleName.includes(key)));
+                promises.push(Observable.of(roleName.includes(key)));
             });
 
-
-            return Promise.all(promises).then(pr => {
-                return (<any[]>pr).some((v) => {
-                    return v == true;
-                })
+            return Observable.merge(promises).mergeAll().first((data) => {
+                return data !== false;
+            }, () => true, false).toPromise().then((data) => {
+                return data;
             });
 
             // return Promise.resolve(Object.keys(this.rolesSource.value).some((key) => {
             //     return roleName.includes(key)
             // }));
         } else {
-            if (!!this.rolesSource.value[roleName] && !!this.rolesSource.value[roleName].validationFunction && this.isFunction(this.rolesSource.value[roleName].validationFunction) && !this.isPromise(this.rolesSource.value[roleName].validationFunction)) {
+            if (!!this.rolesSource.value[roleName] && !!this.rolesSource.value[roleName].validationFunction && this.isFunction(this.rolesSource.value[roleName].validationFunction)) {
                 return Promise.resolve(((<Function>this.rolesSource.value[roleName].validationFunction)()));
             }
 
-            if (!!this.rolesSource.value[roleName] && !!this.rolesSource.value[roleName].validationFunction && this.isFunction(this.rolesSource.value[roleName].validationFunction) && this.isPromise(this.rolesSource.value[roleName].validationFunction)) {
-                return <Promise<any>>(<Function>this.rolesSource.value[roleName].validationFunction)();
-            }
             return Promise.resolve(!!this.rolesSource.value[roleName])
         }
     }
@@ -136,10 +139,6 @@ export class RolesService {
     }
 
     private isPromise(promise: any) {
-        if (typeof promise.then === 'function') {
-            return true;
-        } else {
-            return false;
-        }
+        return Object.prototype.toString.call(promise) === "[object Promise]"
     }
 }

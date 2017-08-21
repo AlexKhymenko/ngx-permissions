@@ -663,6 +663,7 @@ describe('Permission directive angular testing different async functions in role
         expect(content2.innerHTML).toEqual('<div>123</div>');
     }));
 
+
     it('Should not show the component when promise returns false value', fakeAsync(() => {
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
@@ -699,6 +700,137 @@ describe('Permission directive angular testing different async functions in role
         detectChanges(fixture);
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toEqual(null);
+    }));
+
+    it('Should  show the component when one of the promises fulfills ', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        rolesService.addRole('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        rolesService.addRole('GUEST', () => {
+            return Promise.resolve(true);
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges()
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+    it('Should  show the component when one of the promises fulfills with 0 value', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        rolesService.addRole('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        rolesService.addRole('GUEST', () => {
+            return Promise.resolve();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges()
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+    it('Should not show the component when all promises fails', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        rolesService.addRole('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        rolesService.addRole('GUEST', () => {
+            return Promise.reject();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should show the component when one of promises returns true', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+
+        rolesService.addRole('GUEST', () => {
+            return true;
+        });
+
+
+        rolesService.addRole('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+
+    it('Should not show the component when all promises fails', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        rolesService.addRole('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        rolesService.addRole('GUEST', ['awesome']);
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+
+    it('Should show the component when one rejects but another one fullfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        rolesService.addRole('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        rolesService.addRole('awesome', ['GUEST']);
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
     }));
 });
 
