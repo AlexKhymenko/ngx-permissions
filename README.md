@@ -390,13 +390,14 @@ Permission directive accepts several attributes:
 | :----------------------|:------------------------:| :----------------|
 | `permissionsOnly`     | <code>[String &#124; String[]]</code>   | Single or multiple permissions allowed to access content | 
 | `permissionsExcept`   | <code>[String &#124; String[]]</code>   | Single or multiple permissions denied to access content|
-
+| `(permissionsAuthorized)`   | EventEmitter       | EventEmitter emitted when authorized                         |
+| `(permissionsUnauthorized)` | EventEmitter       | EventEmitter emitted when unAuthorized                       |
 ### Basic usage
 
 Directives accepts either single permission that has to be met in order to display it's content:
  
 ```html
-<ng-template permissions [permissionsOnly]="['ADMIN']">
+<ng-template permissions [permissionsOnly]="['ADMIN']" (permissionsAuthorized)="yourCustomAuthorizedFunction()" (permissionsUnauthorized)="yourCustomAuthorizedFunction()">
     <div>You can see this text congrats</div>
  </ng-template>
  <ng-template permissions [permissionsOnly]="'ADMIN'">
