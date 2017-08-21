@@ -834,6 +834,435 @@ describe('Permission directive angular testing different async functions in role
     }));
 });
 
+describe('Permission directive angular testing different async functions in permissions via array', () => {
+    @Component({selector: 'test-comp',
+        template: `<div *permissionsOnly="['ADMIN','GUEST']"><div>123</div></div>`})
+    class TestComp {
+        data: any;
+    }
+
+    let permissionsService;
+    let permissions;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        permissionsService = fixture.debugElement.injector.get(PermissionsService);
+
+    });
+
+
+    it('Should show the component when promise returns truthy value', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        // rolesService.addRole('ADMIN', () => {
+        //     return Promise.resolve();
+        // });
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+        detectChanges(fixture);
+        tick();
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+
+    it('Should not show the component when promise returns false value', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        permissionsService.addPermission('ADMIN', () => {
+            return false;
+        });
+        detectChanges(fixture);
+        tick();
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should show the component when promise returns truthy value', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.resolve(true);
+        });
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+    it('Should not show the component when promise rejects', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should  show the component when one of the promises fulfills ', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.resolve();
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.reject();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+    it('Should  show the component when one of the promises fulfills with 0 value', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.resolve();
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.resolve();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges()
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+    it('Should not show the component when all promises fails', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.reject();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should show the component when one of promises returns true', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+
+        permissionsService.addPermission('GUEST', () => {
+            return true;
+        });
+
+
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+
+    it('Should not show the component when all promises fails', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.resolve(true)
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+
+    it('Should show the component when one rejects but another one fullfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return true;
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+});
+
+
+describe('Permission directive angular testing different async functions in permissions via string', () => {
+    @Component({selector: 'test-comp',
+        template: `<div *permissionsOnly="'ADMIN'"><div>123</div></div>`})
+    class TestComp {
+        data: any;
+    }
+
+    let permissionsService;
+    let permissions;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        permissionsService = fixture.debugElement.injector.get(PermissionsService);
+
+    });
+
+
+    it('Should show the component when promise returns truthy value', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        // rolesService.addRole('ADMIN', () => {
+        //     return Promise.resolve();
+        // });
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+        detectChanges(fixture);
+        tick();
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+
+    it('Should not show the component when promise returns false value', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        permissionsService.addPermission('ADMIN', () => {
+            return false;
+        });
+        detectChanges(fixture);
+        tick();
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should show the component when promise returns truthy value', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.resolve(true);
+        });
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+    it('Should not show the component when promise rejects', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should  show the component when one of the promises fulfills ', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.resolve();
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.resolve(true);
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges()
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+    it('Should  show the component when one of the promises fulfills with 0 value', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.resolve();
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.reject();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges()
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+    it('Should not show the component when all promises fails', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.reject();
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.reject();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should show the component when one of promises returns true', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.reject();
+        });
+
+
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+
+    it('Should not show the component when all promises fails', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return Promise.resolve(true)
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.reject();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+
+    it('Should show the component when one rejects but another one fullfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.reject();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+});
+
 
 function detectChanges(fixture) {
     tick();

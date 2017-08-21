@@ -99,7 +99,13 @@ export class RolesService {
             // }));
         } else {
             if (!!this.rolesSource.value[roleName] && !!this.rolesSource.value[roleName].validationFunction && this.isFunction(this.rolesSource.value[roleName].validationFunction)) {
-                return Promise.resolve(((<Function>this.rolesSource.value[roleName].validationFunction)()));
+                return Promise.resolve(((<Function>this.rolesSource.value[roleName].validationFunction)())).then((data) => {
+                    if (data !== false) {
+                        return true;
+                    } else {
+                        return data;
+                    }
+                });
             }
 
             return Promise.resolve(!!this.rolesSource.value[roleName])

@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { PermissionsStore } from './store/permissions.store';
 import { Permission } from './model/permission.model';
+import { falseIfMissing } from 'protractor/built/util';
 
 
 export type PermissionsObject = {[name: string] : Permission}
@@ -53,7 +54,13 @@ export class PermissionsService {
         if (!!this.permissionsSource.value[permission] && !!this.permissionsSource.value[permission].validationFunction && this.isFunction(this.permissionsSource.value[permission].validationFunction)) {
             let imutableValue = {...this.permissionsSource.value};
 
-            return Promise.resolve(((<Function>this.permissionsSource.value[permission].validationFunction)(permission, imutableValue)));
+            return Promise.resolve(((<Function>this.permissionsSource.value[permission].validationFunction)(permission, imutableValue))).then((data) => {
+                if (data !== false) {
+                    return true;
+                } else {
+                    return data;
+                }
+            });
         }
 
         return Promise.resolve(!!this.permissionsSource.value[permission]);
