@@ -218,8 +218,10 @@ To add permissions individually `PermissionsService` exposes method `addPermissi
 
 APP_INITIALIZER is defined in angular/core. You include it in your app.module.ts like this.
 
-import { APP_INITIALIZER } from '@angular/core';
+
 APP_INITIALIZER is an OpaqueToken that references the ApplicationInitStatus service. ApplicationInitStatus is a multi provider. It supports multiple dependencies and you can use it in your providers list multiple times. It is used like this.
+```typescript
+import { APP_INITIALIZER } from '@angular/core';
 
 @NgModule({
   providers: [
@@ -232,6 +234,7 @@ APP_INITIALIZER is an OpaqueToken that references the ApplicationInitStatus serv
     }]
 })
 export class AppModule { }
+```
 
 Validation function are injected with any angular services. There are 2 local injectables available that can be used to implement more complex validation logic.
 
