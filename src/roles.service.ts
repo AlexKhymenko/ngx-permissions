@@ -77,7 +77,7 @@ export class RolesService {
 
     private hasRoleKey(roleName: string | string[]): Promise<boolean> {
         if (Array.isArray(roleName)) {
-            let promises = [];
+            let promises:any[] = [];
             Object.keys(this.rolesSource.value).forEach((key) => {
                 if (!!this.rolesSource.value[key] && !!this.rolesSource.value[key].validationFunction && this.isFunction(this.rolesSource.value[key].validationFunction) && !this.isPromise(this.rolesSource.value[key].validationFunction)) {
                     return promises.push(Observable.from(Promise.resolve((<Function>this.rolesSource.value[key].validationFunction)())).catch(() => {
@@ -88,9 +88,9 @@ export class RolesService {
                 promises.push(Observable.of(roleName.includes(key)));
             });
 
-            return Observable.merge(promises).mergeAll().first((data) => {
+            return Observable.merge(promises).mergeAll().first((data: any) => {
                 return data !== false;
-            }, () => true, false).toPromise().then((data) => {
+            }, () => true, false).toPromise().then((data: any) => {
                 return data;
             });
 
