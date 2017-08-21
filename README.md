@@ -279,6 +279,10 @@ RolesService
 RolesService.addRole('Guest', () => {
       return this.sessionService.checkSession().toPromise();
   }); 
+
+RolesService.addRole('Guest', () => {
+      return true;
+  }); 
 ```
 
 Validation function are injected with any angular services. There are 2 local injectables available that can be used to implement more complex validation logic.
