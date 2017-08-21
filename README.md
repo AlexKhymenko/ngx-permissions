@@ -675,6 +675,10 @@ $ npm run lint
 
 `Thank You for using the library and support. HAVE A GREAT DAY!`
 
+## For google
+angular 2 permissions, angular 4 permissions, angular permissions, angular 5 permissions ng2 permissions ng permissions
+ng-permissions ng2-permissions angular2 permissions  angular4 permissions angular 5 permissions
+
 ## License
 
 MIT © [Oleksandr Khymenko](mailto:alexanderKhymenko@gmail.com)
