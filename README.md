@@ -190,10 +190,43 @@ To add permissions individually `PermissionsService` exposes method `addPermissi
  ngOnInit() {
     this.permissionsService.addPermission('changeSomething')
     this.permissionsService.addPermission(['changeSomething', 'anotherAlso'])
+    this.permissionsService.addPermission('changeSomething', () => {
+        return true;
+    })
+     
+    this.permissionsService.addPermission('anotherPermissions', (permissionName, permissionsObject) => {
+        return !!permissionsObject[permissionName];
+    });
+    this.permissionsService.addPermission(['anotherPermissions', 'AnotherOne'], (permissionName, permissionsObject) => {
+        return !!permissionsObject[permissionName];
+    });
+     
+    //Will add validation function to every permission
+     this.permissionsService.addPermission(['anotherPermissions', 'AnotherOne'], (permissionName, permissionsObject) => {
+         return !!permissionsObject[permissionName];
+     });
+     
+     this.permissionsService.addPermission('permissions', (permissionName, permissionsObject) => {
+       return this.checkSession().toPromise();
+     });
  }
 
 ```
 
+Validation function are injected with any angular services. There are 2 local injectables available that can be used to implement more complex validation logic.
+
+| Injectable Local       | Description                                                               | 
+| :--------------------- | :------------------------------------------------------------------------ |
+| `permissionName`       | String representing name of checked permission                            |
+| `permissionsObject`    | Object of store permissions storing permissions properties                            |
+
+
+It also have to return one of values to properly represent results:
+ 
+| Validation result      | Returned value             | 
+| :--------------------- | :------------------------- |
+| Valid                  | [`true`\|`$q.resolve()` Dont resolve(false)]   |
+| Invalid                | [`false`\|`$q.reject()` Can also be resolve true]   |
 ### Multiple permissions
 
 To define multiple permissions  method `loadPermissions` can be used. The only 
@@ -206,6 +239,9 @@ check if permission is valid.
 ```typescript
 const permissions = ['listMeeting', 'seeMeeting', 'editMeeting', 'deleteMeeting']
 PermissionsService.loadPermissions(permissions) 
+PermissionsService.loadPermissions(permissions, (permissionName, permissionStore) => {
+    return !!permissionStore[permissionName];
+}) 
 ```
 NOTE: This method will remove older permissions and pass only new;
 
