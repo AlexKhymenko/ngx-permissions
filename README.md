@@ -156,7 +156,7 @@ Overview
 1. [Introduction](#introduction)
 2. [Defining permissions](#defining-permissions)
   1. [Individual permissions](#individual-permissions)
-  2. [To load permissions before application start up](#To-load-permissions-before-application-start-up)
+  2. [To load permissions before application start up](#to-load-permissions-before-application-start-up)
   3. [Multiple permissions](#multiple-permissions)
 3. [Removing permissions](#removing-permissions)
 4. [Retrieving permissions](#retrieving-permissions)
