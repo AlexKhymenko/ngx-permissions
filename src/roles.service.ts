@@ -7,14 +7,13 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeAll';
-import 'rxjs/add/operator/concatAll';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
-import 'rxjs/add/operator/onErrorResumeNext';
-import 'rxjs/add/observable/onErrorResumeNext';
 import { Inject, Injectable, OpaqueToken } from '@angular/core';
 import { RolesStore } from './store/roles.store';
 
+
+//TODO: Change on Injection token when angular removes opaque token
 export const USE_ROLES_STORE = new OpaqueToken('USE_ROLES_STORE');
 
 export type RolesObject = {[name: string] : Role}
@@ -121,6 +120,7 @@ export class RolesService {
                 }
             }
 
+            //Should not validate if role declaration is function if will check in previous method
             if (this.isFunction(roles[key].validationFunction)) {
                 return false;
             }

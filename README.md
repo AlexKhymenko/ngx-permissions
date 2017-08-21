@@ -276,8 +276,29 @@ Similarly to permissions we are gonna use here `RolesService` that exposes `addR
 RolesService
   .addRole('ROLE_NAME', ['permissionNameA', 'permissionNameB', 'permissionNameC', ...])
   
-
+RolesService.addRole('Guest', () => {
+      return this.sessionService.checkSession().toPromise();
+  }); 
 ```
+
+Validation function are injected with any angular services. There are 2 local injectables available that can be used to implement more complex validation logic.
+
+| Parameter              | Description                                                               | 
+| :--------------------- | :------------------------------------------------------------------------ |
+| `roleName`             | String representing name of checked role                                  |
+| `transitionProperties` | Array or validation function |
+
+
+It also have to return one of values to properly represent results:
+ 
+| Validation result      | Returned value             | 
+| :--------------------- | :------------------------- |
+| Valid                  | [`true`\|`Promise.resolve() but it should not resolve false`]   |
+| Invalid                | [`false`\|`Promise.reject() or Promise.resolve(false)`]   |
+
+ > Note: Right now to make request to the backend it only supports promises
+ > Note: If at least one of request fulfils it will show the component
+
 
 Usage of `addRole` is very similar to `addPermissions`:
 
