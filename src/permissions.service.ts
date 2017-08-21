@@ -2,6 +2,10 @@ import { Inject, Injectable, OpaqueToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { PermissionsStore } from './store/permissions.store';
+import { Permission } from './model/permission.model';
+
+
+export type PermissionsObject = {[name: string] : Permission}
 
 export const USE_PERMISSIONS_STORE = new OpaqueToken('USE_PERMISSIONS_STORE');
 
@@ -14,12 +18,12 @@ export class PermissionsService {
 
     constructor(@Inject(USE_PERMISSIONS_STORE) private isolate: boolean = false,
                 private permissionsStore: PermissionsStore) {
-        this.permissionsSource = this.isolate ? new BehaviorSubject<any[]>([]) : this.permissionsStore.permissionsSource;
+        this.permissionsSource = this.isolate ? new BehaviorSubject<PermissionsObject>({}) : this.permissionsStore.permissionsSource;
         this.permissions$ = this.permissionsSource.asObservable();
     }
 
     public flushPermissions() {
-        this.permissionsSource.next([]);
+        this.permissionsSource.next({});
     }
 
     public hasPermission(permission: string | string[]): Promise<boolean> {
@@ -27,44 +31,85 @@ export class PermissionsService {
             return Promise.resolve(true)
         }
         if (Array.isArray(permission)) {
-            return Promise.resolve(this.permissionsSource.value.some((v: any) => {
-                return permission.includes(v);
-            }));
+            let promises:any[] = [];
+            Object.keys(this.permissionsSource.value).forEach((key) => {
+                if (!!this.permissionsSource.value[key] && !!this.permissionsSource.value[key].validationFunction && this.isFunction(this.permissionsSource.value[key].validationFunction)) {
+                    promises.push(Observable.from(Promise.resolve((<Function>this.permissionsSource.value[key].validationFunction)())).catch(() => {
+                        return Observable.of(false);
+                    }) );
+                }
+
+                promises.push(Observable.of(permission.includes(key)));
+            });
+
+            return Observable.merge(promises).mergeAll().first((data: any) => {
+                return data !== false;
+            }, () => true, false).toPromise().then((data: any) => {
+                return data;
+            });
         }
 
+        if (!!this.permissionsSource.value[permission] && !!this.permissionsSource.value[permission].validationFunction && this.isFunction(this.permissionsSource.value[permission].validationFunction)) {
+            return Promise.resolve(((<Function>this.permissionsSource.value[permission].validationFunction)()));
+        }
 
-        return Promise.resolve(this.permissionsSource.value.includes(permission));
+        return Promise.resolve(this.permissionsSource.value[permission]);
     }
 
-    public loadPermissions(permissions: string[]) {
-      this.permissionsSource.next(permissions);
+    public loadPermissions(permissions: string[], validationFunction?: Function) {
+        permissions.forEach((p) => {
+            this.addPermissionToBehaviorSubject(p, validationFunction);
+        })
     }
 
-    public addPermission(permission: string | string[]) {
+    public addPermission(permission: string | string[], validationFunction?: Function) {
         if (Array.isArray(permission)) {
-            const permissions = [
-                ...this.permissionsSource.value,
-                ...permission
-            ];
-            this.permissionsSource.next(permissions)
+            permission.forEach((p) => {
+                this.addPermissionToBehaviorSubject(p, validationFunction);
+            })
 
         } else {
-            const permissions = [
-                ...this.permissionsSource.value,
-                permission
-            ];
-            this.permissionsSource.next(permissions)
-        }
+            this.addPermissionToBehaviorSubject(permission, validationFunction);
 
+        }
     }
-    public removePermission(permission: string) {
-        const permissions = this.permissionsSource.value.filter((value: any) => {
-            return value != permission;
-        });
+    public removePermission(permissionName: string) {
+        let permissions = {
+            ...this.permissionsSource.value
+        };
+        delete permissions[permissionName];
         this.permissionsSource.next(permissions);
+    }
+
+    public getPermission(name: string) {
+        return this.permissionsSource.value[name];
     }
 
     public getPermissions() {
         return this.permissionsSource.value;
+    }
+
+    private addPermissionToBehaviorSubject(name: string, validationFunction?: Function) {
+        if (!!validationFunction && this.isFunction(validationFunction)) {
+            const roles = {
+                ...this.permissionsSource.value,
+                [name]: {name, validationFunction}
+            };
+            this.permissionsSource.next(roles)
+        } else {
+            const roles = {
+                ...this.permissionsSource.value,
+                [name]: {name}
+            };
+
+            this.permissionsSource.next(roles)
+        }
+
+
+    }
+
+    private isFunction(functionToCheck: any) {
+        let getType = {};
+        return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
     }
 }
