@@ -49,7 +49,7 @@
   <div>I will not see it only guest</div>
 </ng-template>
 
-<ng-template permissions [permissionsExcept]="['ADMINNNN']">
+<ng-template permissions [permissionsExcept]="['ADMINNNN']" (permissionsAuthorized)="authorized()" (permissionsUnauthorized)="unAuthorized()">
   <div>I will see it except adminnnnnnn</div>
 </ng-template>
 

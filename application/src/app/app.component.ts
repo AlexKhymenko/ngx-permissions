@@ -16,5 +16,12 @@ export class AppComponent implements OnInit {
     this.permissionsService.loadPermissions(['ADMIN'])
   }
 
+  public unAuthorized() {
+    console.log('unAuthorized');
+  }
+
+  public authorized() {
+    console.log('authorizes')
+  }
 
 }
