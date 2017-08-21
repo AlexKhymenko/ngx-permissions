@@ -156,7 +156,8 @@ Overview
 1. [Introduction](#introduction)
 2. [Defining permissions](#defining-permissions)
   1. [Individual permissions](#individual-permissions)
-  2. [Multiple permissions](#multiple-permissions)
+  2. [To load permissions before application start up](#To-load-permissions-before-application-start-up)
+  3. [Multiple permissions](#multiple-permissions)
 3. [Removing permissions](#removing-permissions)
 4. [Retrieving permissions](#retrieving-permissions)
 
@@ -212,6 +213,25 @@ To add permissions individually `PermissionsService` exposes method `addPermissi
  }
 
 ```
+
+### To load permissions before application start up
+
+APP_INITIALIZER is defined in angular/core. You include it in your app.module.ts like this.
+
+import { APP_INITIALIZER } from '@angular/core';
+APP_INITIALIZER is an OpaqueToken that references the ApplicationInitStatus service. ApplicationInitStatus is a multi provider. It supports multiple dependencies and you can use it in your providers list multiple times. It is used like this.
+
+@NgModule({
+  providers: [
+    DictionaryService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (ds: DictionaryService, ps: PermissionsService ) => function() {return ds.load().then((data) => {return ps.loadPermissions(data)})},
+      deps: [LoadService, PermissionsService],
+      multi: true
+    }]
+})
+export class AppModule { }
 
 Validation function are injected with any angular services. There are 2 local injectables available that can be used to implement more complex validation logic.
 

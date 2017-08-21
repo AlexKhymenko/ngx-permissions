@@ -3,7 +3,14 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { PermissionsStore } from './store/permissions.store';
 import { Permission } from './model/permission.model';
-import { falseIfMissing } from 'protractor/built/util';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/first';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/mergeAll';
+import 'rxjs/add/observable/merge';
+import 'rxjs/add/observable/from';
 
 
 export type PermissionsObject = {[name: string] : Permission}
