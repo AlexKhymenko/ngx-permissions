@@ -225,8 +225,8 @@ It also have to return one of values to properly represent results:
  
 | Validation result      | Returned value             | 
 | :--------------------- | :------------------------- |
-| Valid                  | [`true`\|`$q.resolve()` Dont resolve(false)]   |
-| Invalid                | [`false`\|`$q.reject()` Can also be resolve true]   |
+| Valid                  | [`true`\|`Promise.resolve() but it should not resolve false`]   |
+| Invalid                | [`false`\|`Promise.reject() or Promise.resolve(false)`]   |
 ### Multiple permissions
 
 To define multiple permissions  method `loadPermissions` can be used. The only 
