@@ -32,16 +32,16 @@ export class PermissionsService {
         }
         if (Array.isArray(permission)) {
             let promises:any[] = [];
-            Object.keys(this.permissionsSource.value).forEach((key) => {
+            permission.forEach((key) => {
                 if (!!this.permissionsSource.value[key] && !!this.permissionsSource.value[key].validationFunction && this.isFunction(this.permissionsSource.value[key].validationFunction)) {
-                    promises.push(Observable.from(Promise.resolve((<Function>this.permissionsSource.value[key].validationFunction)())).catch(() => {
+                    return promises.push(Observable.from(Promise.resolve((<Function>this.permissionsSource.value[key].validationFunction)())).catch(() => {
                         return Observable.of(false);
                     }) );
+                } else {
+                    promises.push(Observable.of(!!this.permissionsSource.value[key));
                 }
 
-                promises.push(Observable.of(permission.includes(key)));
             });
-
             return Observable.merge(promises).mergeAll().first((data: any) => {
                 return data !== false;
             }, () => true, false).toPromise().then((data: any) => {

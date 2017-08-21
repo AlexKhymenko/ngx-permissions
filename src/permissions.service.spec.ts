@@ -80,26 +80,88 @@ describe('Permissions Service', () => {
         });
     }));
 
-    // it ('return true when role permission name is present in permission object', fakeAsync(() => {
-    //     expect(Object.keys(localService.getPermissions()).length).toEqual(0);
-    //     localService.addPermission([<any>PermissionsNamesEnum.ADMIN, PermissionsNamesEnum.GUEST]);
-    //
-    //     expect(Object.keys(localService.getPermissions()).length).toEqual(2);
-    //     localService.hasPermission('Nice').then((data) => {
-    //         expect(data).toEqual(true);
-    //     });
-    //     localService.hasPermission(['Nice']).then((data) => {
-    //         expect(data).toEqual(true);
-    //     });
-    //     localService.hasPermission(['Nice', 'IRRISISTABLE']).then((data) => {
-    //         expect(data).toEqual(true);
-    //     });
-    //     localService.hasPermission('SHOULDNOTHAVEROLE').then((data) => {
-    //         expect(data).toEqual(false);
-    //     });
-    //     localService.hasPermission(['SHOULDNOTHAVEROLE']).then((data) => {
-    //         expect(data).toEqual(false);
-    //     });
-    //
-    // }));
+    it ('return true when role permission function return true', fakeAsync(() => {
+        expect(Object.keys(localService.getPermissions()).length).toEqual(0);
+        localService.addPermission(<any>PermissionsNamesEnum.ADMIN, () => {
+            return true
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(1);
+        localService.hasPermission('ADMIN').then((data) => {
+            expect(data).toEqual(true);
+        });
+
+        localService.addPermission(<any>PermissionsNamesEnum.GUEST, () => {
+            return false
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(2);
+        localService.hasPermission('GUEST').then((data) => {
+            expect(data).toEqual(false);
+        });
+
+        localService.addPermission(<any>'TEST1', () => {
+            return Promise.resolve(true)
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(3);
+        localService.hasPermission('TEST1').then((data) => {
+            expect(data).toEqual(true);
+        });
+        localService.addPermission(<any>'TEST2', () => {
+            return Promise.resolve(false)
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(4);
+        localService.hasPermission('TEST2').then((data) => {
+            expect(data).toEqual(false);
+        });
+
+        // localService.addPermission(<any>'TEST3', () => {
+        //     return Promise.reject()
+        // });
+        // expect(Object.keys(localService.getPermissions()).length).toEqual(5);
+        // localService.hasPermission('TEST3').then((data) => {
+        //     expect(data).toEqual(false);
+        // });
+    }));
+
+    it ('return true when role permissions[array] function return true', fakeAsync(() => {
+        expect(Object.keys(localService.getPermissions()).length).toEqual(0);
+        localService.addPermission(<any>[PermissionsNamesEnum.ADMIN], () => {
+            return true
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(1);
+
+        localService.hasPermission('ADMIN').then((data) => {
+            expect(data).toEqual(true);
+        });
+
+        localService.addPermission(<any>[PermissionsNamesEnum.GUEST], () => {
+            return false
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(2);
+        localService.hasPermission('GUEST').then((data) => {
+            expect(data).toEqual(false);
+        });
+
+        localService.addPermission(<any>['TEST1'], () => {
+            return Promise.resolve(true)
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(3);
+        localService.hasPermission('TEST1').then((data) => {
+            expect(data).toEqual(true);
+        });
+        localService.addPermission(<any>['TEST9'], () => {
+            return Promise.resolve(false)
+        });
+        // expect(Object.keys(localService.getPermissions()).length).toEqual(4);
+        localService.hasPermission(['TEST9']).then((data) => {
+            expect(data).toEqual(false);
+        });
+
+        // localService.addPermission(<any>['TEST3'], () => {
+        //     return Promise.reject()
+        // });
+        // expect(Object.keys(localService.getPermissions()).length).toEqual(5);
+        // localService.hasPermission('TEST3').then((data) => {
+        //     expect(data).toEqual(false);
+        // });
+    }));
 });
