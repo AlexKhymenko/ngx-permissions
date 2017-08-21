@@ -53,7 +53,7 @@ export class PermissionsService {
             return Promise.resolve(((<Function>this.permissionsSource.value[permission].validationFunction)()));
         }
 
-        return Promise.resolve(this.permissionsSource.value[permission]);
+        return Promise.resolve(!!this.permissionsSource.value[permission]);
     }
 
     public loadPermissions(permissions: string[], validationFunction?: Function) {

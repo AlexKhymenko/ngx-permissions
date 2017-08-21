@@ -31,84 +31,73 @@ describe('Permissions Service', () => {
         expect(localService.getPermission(<any>PermissionsNamesEnum.ADMIN)).toBeTruthy();
     })
     //
-    // it ('should remove role from role object', () => {
-    //     expect(localService.getRoles()[PermissionsNamesEnum.ADMIN]).toBeFalsy();
-    //     localService.addRole(<any>PermissionsNamesEnum.ADMIN, ['edit', 'remove']);
-    //     expect(localService.getRoles()[PermissionsNamesEnum.ADMIN]).toBeTruthy();
-    //     localService.removeRole(<any>PermissionsNamesEnum.ADMIN);
-    //     expect(localService.getRoles()[PermissionsNamesEnum.ADMIN]).toBeFalsy();
-    // });
+    it ('should remove permission from role object', () => {
+        expect(localService.getPermissions()[PermissionsNamesEnum.ADMIN]).toBeFalsy();
+        localService.addPermission(<any>PermissionsNamesEnum.ADMIN, );
+        expect(localService.getPermissions()[PermissionsNamesEnum.ADMIN]).toBeTruthy();
+        localService.removePermission(<any>PermissionsNamesEnum.ADMIN);
+        expect(localService.getPermissions()[PermissionsNamesEnum.ADMIN]).toBeFalsy();
+    });
+
+    it ('should remove all permisssions from object', () => {
+        expect(Object.keys(localService.getPermissions()).length).toEqual(0);
+        localService.addPermission(<any>PermissionsNamesEnum.ADMIN, );
+        localService.addPermission(<any>PermissionsNamesEnum.GUEST, );
+        expect(Object.keys(localService.getPermissions()).length).toEqual(2);
+        localService.flushPermissions();
+        expect(Object.keys(localService.getPermissions()).length).toEqual(0);
+    });
+
+    it ('should add multiple permissions', () => {
+        expect(Object.keys(localService.getPermissions()).length).toEqual(0);
+        localService.addPermission([<any>PermissionsNamesEnum.ADMIN, PermissionsNamesEnum.GUEST]);
+
+        expect(Object.keys(localService.getPermissions()).length).toEqual(2);
+        expect(localService.getPermissions()).toEqual(
+            {
+                ADMIN: {name: "ADMIN"},
+                GUEST: {name: "GUEST"}});
+    });
+
+    it ('return true when permission name is present in permissions object', fakeAsync(() => {
+        expect(Object.keys(localService.getPermissions()).length).toEqual(0);
+        localService.addPermission([<any>PermissionsNamesEnum.ADMIN, PermissionsNamesEnum.GUEST]);
+
+        expect(Object.keys(localService.getPermissions()).length).toEqual(2);
+        localService.hasPermission('ADMIN').then((data) => {
+            expect(data).toEqual(true);
+        });
+
+        localService.hasPermission('SHOULDNOTHAVEROLE').then(data => {
+            expect(data).toEqual(false);
+        });
+
+        localService.hasPermission(['ADMIN']).then((data) => {
+            expect(data).toEqual(true);
+        });
+        localService.hasPermission(['ADMIN', 'IRIISISTABLE']).then((data) => {
+            expect(data).toEqual(true);
+        });
+    }));
+
+    // it ('return true when role permission name is present in permission object', fakeAsync(() => {
+    //     expect(Object.keys(localService.getPermissions()).length).toEqual(0);
+    //     localService.addPermission([<any>PermissionsNamesEnum.ADMIN, PermissionsNamesEnum.GUEST]);
     //
-    // it ('should remove all roles from object', () => {
-    //     expect(Object.keys(localService.getRoles()).length).toEqual(0);
-    //     localService.addRole(<any>PermissionsNamesEnum.ADMIN, ['edit', 'remove']);
-    //     localService.addRole(<any>PermissionsNamesEnum.GUEST, ['edit', 'remove']);
-    //     expect(Object.keys(localService.getRoles()).length).toEqual(2);
-    //     localService.flushRoles();
-    //     expect(Object.keys(localService.getRoles()).length).toEqual(0);
-    // });
-    //
-    // it ('should add multiple roles', () => {
-    //     expect(Object.keys(localService.getRoles()).length).toEqual(0);
-    //     localService.addRoles({
-    //         ADMIN: ['Nice'],
-    //         GUEST: ["Awesome"]
-    //     });
-    //
-    //     expect(Object.keys(localService.getRoles()).length).toEqual(2);
-    //     expect(localService.getRoles()).toEqual(
-    //         {
-    //             ADMIN: {name: "ADMIN", validationFunction: ['Nice']},
-    //             GUEST: {name: "GUEST", validationFunction: ['Awesome']}})
-    // });
-    //
-    // it ('return true when role name is present in Roles object', fakeAsync(() => {
-    //     expect(Object.keys(localService.getRoles()).length).toEqual(0);
-    //     localService.addRoles({
-    //         ADMIN: ['Nice'],
-    //         GUEST: ["Awesome"]
-    //     });
-    //
-    //     expect(Object.keys(localService.getRoles()).length).toEqual(2);
-    //     localService.hasOnlyRoles('ADMIN').then((data) => {
+    //     expect(Object.keys(localService.getPermissions()).length).toEqual(2);
+    //     localService.hasPermission('Nice').then((data) => {
     //         expect(data).toEqual(true);
     //     });
-    //
-    //     localService.hasOnlyRoles('SHOULDNOTHAVEROLE').then(data => {
+    //     localService.hasPermission(['Nice']).then((data) => {
+    //         expect(data).toEqual(true);
+    //     });
+    //     localService.hasPermission(['Nice', 'IRRISISTABLE']).then((data) => {
+    //         expect(data).toEqual(true);
+    //     });
+    //     localService.hasPermission('SHOULDNOTHAVEROLE').then((data) => {
     //         expect(data).toEqual(false);
     //     });
-    //
-    //     localService.hasOnlyRoles(['ADMIN']).then((data) => {
-    //         expect(data).toEqual(true);
-    //     });
-    //     localService.hasOnlyRoles(['ADMIN', 'IRIISISTABLE']).then((data) => {
-    //         expect(data).toEqual(true);
-    //     });
-    // }));
-    //
-    // it ('return true when role permission name is present in Roles object', fakeAsync(() => {
-    //     expect(Object.keys(localService.getRoles()).length).toEqual(0);
-    //     localService.addRoles({
-    //         ADMIN: ['Nice'],
-    //         GUEST: ["Awesome"]
-    //     });
-    //
-    //
-    //
-    //     expect(Object.keys(localService.getRoles()).length).toEqual(2);
-    //     localService.hasOnlyRoles('Nice').then((data) => {
-    //         expect(data).toEqual(true);
-    //     });
-    //     localService.hasOnlyRoles(['Nice']).then((data) => {
-    //         expect(data).toEqual(true);
-    //     });
-    //     localService.hasOnlyRoles(['Nice', 'IRRISISTABLE']).then((data) => {
-    //         expect(data).toEqual(true);
-    //     });
-    //     localService.hasOnlyRoles('SHOULDNOTHAVEROLE').then((data) => {
-    //         expect(data).toEqual(false);
-    //     });
-    //     localService.hasOnlyRoles(['SHOULDNOTHAVEROLE']).then((data) => {
+    //     localService.hasPermission(['SHOULDNOTHAVEROLE']).then((data) => {
     //         expect(data).toEqual(false);
     //     });
     //
