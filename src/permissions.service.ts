@@ -34,11 +34,12 @@ export class PermissionsService {
             let promises:any[] = [];
             permission.forEach((key) => {
                 if (!!this.permissionsSource.value[key] && !!this.permissionsSource.value[key].validationFunction && this.isFunction(this.permissionsSource.value[key].validationFunction)) {
-                    return promises.push(Observable.from(Promise.resolve((<Function>this.permissionsSource.value[key].validationFunction)())).catch(() => {
+                    let imutableValue = {...this.permissionsSource.value};
+                    return promises.push(Observable.from(Promise.resolve((<Function>this.permissionsSource.value[key].validationFunction)(key, imutableValue))).catch(() => {
                         return Observable.of(false);
                     }) );
                 } else {
-                    promises.push(Observable.of(!!this.permissionsSource.value[key));
+                    promises.push(Observable.of(!!this.permissionsSource.value[key]));
                 }
 
             });
@@ -50,7 +51,9 @@ export class PermissionsService {
         }
 
         if (!!this.permissionsSource.value[permission] && !!this.permissionsSource.value[permission].validationFunction && this.isFunction(this.permissionsSource.value[permission].validationFunction)) {
-            return Promise.resolve(((<Function>this.permissionsSource.value[permission].validationFunction)()));
+            let imutableValue = {...this.permissionsSource.value};
+
+            return Promise.resolve(((<Function>this.permissionsSource.value[permission].validationFunction)(permission, imutableValue)));
         }
 
         return Promise.resolve(!!this.permissionsSource.value[permission]);

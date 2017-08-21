@@ -151,10 +151,15 @@ describe('Permissions Service', () => {
         localService.addPermission(<any>['TEST9'], () => {
             return Promise.resolve(false)
         });
-        // expect(Object.keys(localService.getPermissions()).length).toEqual(4);
+        expect(Object.keys(localService.getPermissions()).length).toEqual(4);
         localService.hasPermission(['TEST9']).then((data) => {
             expect(data).toEqual(false);
         });
+
+        localService.addPermission(<any>['TEST11'], (name, store) => {
+            return Promise.resolve(false)
+        });
+
 
         // localService.addPermission(<any>['TEST3'], () => {
         //     return Promise.reject()
@@ -163,5 +168,32 @@ describe('Permissions Service', () => {
         // localService.hasPermission('TEST3').then((data) => {
         //     expect(data).toEqual(false);
         // });
+    }));
+
+    it ('return call function with name and store in array', fakeAsync(() => {
+
+        localService.addPermission(<any>['TEST11'], (n, store) => {
+            expect(n).toEqual('TEST11');
+            expect(n).toEqual('TEST11');
+            expect(store['TEST11']).toBeTruthy();
+            return Promise.resolve(n)
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(1);
+        localService.hasPermission(['TEST11']).then((data) => {
+            expect(data).toEqual(true);
+        });
+    }));
+
+    it ('return call function with name and store in string', fakeAsync(() => {
+        localService.addPermission(<any>['TEST11'], (n, store) => {
+            expect(n).toEqual('TEST11');
+            expect(n).toEqual('TEST11');
+            expect(store['TEST11']).toBeTruthy();
+            return Promise.resolve(true)
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(1);
+        localService.hasPermission('TEST11').then((data) => {
+            expect(data).toEqual(true);
+        });
     }));
 });
