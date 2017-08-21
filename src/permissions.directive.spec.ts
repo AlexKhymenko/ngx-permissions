@@ -1046,6 +1046,51 @@ describe('Permission directive angular testing different async functions in perm
         expect(content2).toBeTruthy();
         expect(content2.innerHTML).toEqual('<div>123</div>');
     }));
+
+    it('Should show the component when one rejects but another one fullfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.reject();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+    it('Should show the component when functions with name and store fullfils', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', (name, store) => {
+            expect(store[name].name).toBeTruthy();
+            return name === 'ADMIN'
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.reject();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
 });
 
 
@@ -1245,6 +1290,29 @@ describe('Permission directive angular testing different async functions in perm
         expect(content).toEqual(null);
         permissionsService.addPermission('ADMIN', () => {
             return true;
+        });
+
+        permissionsService.addPermission('GUEST', () => {
+            return Promise.reject();
+        });
+
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+        fixture.detectChanges();
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('<div>123</div>');
+    }));
+
+    it('Should show the component when functions with name and store fullfils', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+        permissionsService.addPermission('ADMIN', (name, store) => {
+            expect(store[name].name).toBeTruthy();
+            return name === 'ADMIN'
         });
 
         permissionsService.addPermission('GUEST', () => {
