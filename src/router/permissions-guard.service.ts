@@ -11,22 +11,7 @@ export class PermissionsGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
         const permissions = route.data['permissions'] as PermissionsRouterData;
-        if (permissions.only) {
-            return Promise.all([this.permissionsService.hasPermission(permissions.only), this.rolesService.hasOnlyRoles(permissions.only)])
-                .then(([permissionsPr, roles]) => {
-                    if (permissionsPr || roles)  {
-                        return true;
-                    } else {
-                        if (permissions.redirectTo) {
-                            this.router.navigate([permissions.redirectTo]);
-                            return false;
-                        } else {
-                            return false;
-                        }
-                    }
-                })
 
-        }
         if (permissions.except) {
             return Promise.all([this.permissionsService.hasPermission(permissions.except), this.rolesService.hasOnlyRoles(permissions.except)])
                 .then(([permissionsPr, roles]) => {
@@ -38,10 +23,34 @@ export class PermissionsGuard implements CanActivate {
                             return false;
                         }
                     } else {
+                        if (permissions.only) {
+                            return this.checkOnlyPermissions(permissions);
+                        }
                         return true;
                     }
                 })
         }
+
+        if (permissions.only) {
+            return this.checkOnlyPermissions(permissions);
+        }
+
         return true;
+    }
+
+    private checkOnlyPermissions(permissions) {
+        return Promise.all([this.permissionsService.hasPermission(permissions.only), this.rolesService.hasOnlyRoles(permissions.only)])
+            .then(([permissionsPr, roles]) => {
+                if (permissionsPr || roles)  {
+                    return true;
+                } else {
+                    if (permissions.redirectTo) {
+                        this.router.navigate([permissions.redirectTo]);
+                        return false;
+                    } else {
+                        return false;
+                    }
+                }
+            })
     }
 }
