@@ -631,6 +631,7 @@ Property redirectTo:
 
 In case you want to redirect to some specific state when user is not authorized pass to `redirectTo` path of that route.
 
+
 ```typescript
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -644,7 +645,7 @@ const appRoutes: Routes = [
     data: {
       permissions: {
         only: ['ADMIN', 'MODERATOR'],
-        redirectTo: 'another-route'
+        redirectTo: '/another-route'
       }
     }
   },

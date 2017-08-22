@@ -79,6 +79,52 @@ const appRoutes: Routes = [
   { path: 'lazy-isolate', loadChildren: 'app/lazy-isolate/lazy-isolate.module#LazyIsolateModule' },
   { path: 'lazy-roles-isolate', loadChildren: 'app/lazy-role-isolate/lazy-role-isolate.module#LazyRoleIsolateModule' },
   { path: 'lazy-roles-async-isolate', loadChildren: 'app/lazy-roles-async-isolate/lazy-roles-async-isolate.module#LazyRolesAsyncIsolateModule' },
+
+
+  {
+    path: 'test',
+    canActivate: [],
+    children: [
+      {
+        path: '',
+        redirectTo: 'reports',
+        pathMatch: 'full'
+
+      },
+      {
+        path: 'reports',
+        component: HomeComponent,
+        canActivate: [PermissionsGuard],
+        data: {
+          permissions: {
+            only: 'ADMsIN',
+            redirectTo: '/403'
+          }
+        },
+        children: [
+          {
+            path: '',
+            redirectTo: 'report-lines',
+            pathMatch: 'full'
+          },
+          {
+            path: 'reports-list',
+            component: HomeComponent
+          },
+          {
+            path: 'report-lines',
+            component: HomeComponent
+          },
+
+        ]
+      },
+    ]
+  },
+
+  {
+    path: '403',
+    component: HomeComponent
+  },
 ];
 @NgModule({
   imports: [
