@@ -37,38 +37,39 @@ export class PermissionsDirective implements OnInit, OnDestroy {
                 this.firstRun = true;
                 return;
             }
-            if (!!this.permissionsOnly) {
-                Promise.all([this.permissionsService.hasPermission(this.permissionsOnly), this.rolesService.hasOnlyRoles(this.permissionsOnly)])
-                    .then(([permissionPr,  roles]) => {
-                    if (permissionPr || roles) {
-                        this.permissionsAuthorized.emit();
-                        this.viewContainer.clear();
-                        this.viewContainer.createEmbeddedView(this.templateRef);
-                    } else {
-                        this.permissionsUnauthorized.emit();
-                        this.viewContainer.clear();
-                    }
-                }).catch(() => {
-                    this.permissionsUnauthorized.emit();
-                    this.viewContainer.clear();
-                })
-            }
 
             if (!!this.permissionsExcept) {
-                Promise.all([this.permissionsService.hasPermission(this.permissionsExcept), this.rolesService.hasOnlyRoles(this.permissionsExcept)])
+                 Promise.all([this.permissionsService.hasPermission(this.permissionsExcept), this.rolesService.hasOnlyRoles(this.permissionsExcept)])
                     .then(([permissionsPr, roles]) => {
-                    if (permissionsPr || roles) {
-                        this.permissionsUnauthorized.emit();
-                        this.viewContainer.clear();
-                    } else {
-                        this.permissionsAuthorized.emit();
+                        if (permissionsPr || roles) {
+                            this.permissionsUnauthorized.emit();
+                            this.viewContainer.clear();
+                        } else {
+                            if (!!this.permissionsOnly) {
+                                throw false;
+                            } else {
+                                this.permissionsAuthorized.emit();
+                                this.viewContainer.clear();
+                                this.viewContainer.createEmbeddedView(this.templateRef);
+                            }
+
+
+                        }
+                    }).catch(() => {
+                        if (!!this.permissionsOnly) {
+                            this.checkIfPermissionsOnly();
+                            return;
+                        }
+
                         this.viewContainer.clear();
                         this.viewContainer.createEmbeddedView(this.templateRef);
-                    }
-                }).catch(() => {
-                    this.permissionsUnauthorized.emit();
-                    this.viewContainer.clear();
-                })
+                });
+                return;
+            }
+
+
+            if (!!this.permissionsOnly) {
+                this.checkIfPermissionsOnly();
             }
         });
     }
@@ -77,6 +78,23 @@ export class PermissionsDirective implements OnInit, OnDestroy {
         if (!!this.initPermissionSubscription) {
             this.initPermissionSubscription.unsubscribe();
         }
+    }
+
+    private checkIfPermissionsOnly() {
+        return Promise.all([this.permissionsService.hasPermission(this.permissionsOnly), this.rolesService.hasOnlyRoles(this.permissionsOnly)])
+            .then(([permissionPr,  roles]) => {
+                if (permissionPr || roles) {
+                    this.permissionsAuthorized.emit();
+                    this.viewContainer.clear();
+                    this.viewContainer.createEmbeddedView(this.templateRef);
+                } else {
+                    this.permissionsUnauthorized.emit();
+                    this.viewContainer.clear();
+                }
+            }).catch(() => {
+            this.permissionsUnauthorized.emit();
+            this.viewContainer.clear();
+        })
     }
 }
 

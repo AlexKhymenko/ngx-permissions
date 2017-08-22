@@ -57,7 +57,6 @@ export class PermissionsService {
                 return data;
             });
         }
-
         if (!!this.permissionsSource.value[permission] && !!this.permissionsSource.value[permission].validationFunction && this.isFunction(this.permissionsSource.value[permission].validationFunction)) {
             let imutableValue = {...this.permissionsSource.value};
 

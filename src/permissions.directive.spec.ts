@@ -1332,6 +1332,287 @@ describe('Permission directive angular testing different async functions in perm
 });
 
 
+
+describe('Permission  directive angular testing  different only and accept together async functions in permissions via string', () => {
+    @Component({selector: 'test-comp',
+        template: `<ng-template permissionsOnly="ADMIN" permissionsExcept="MANAGER"><div>123</div></ng-template>`})
+    class TestComp {
+        data: any;
+    }
+
+    let permissionsService;
+    let permissions;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        permissionsService = fixture.debugElement.injector.get(PermissionsService);
+
+    });
+
+
+    it('Should show the component when permission except not available and only fullfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('123');
+    }));
+
+    it('Should NOT show the component when permission except fulfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        permissionsService.addPermission('MANAGER', () => {
+            return true;
+        });
+
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should NOT show the component when permission except fulfills even when only also fullfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        permissionsService.addPermission('MANAGER', () => {
+            return true;
+        });
+
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should show the component when permission except fulfills with function that returns false and only fullfiles', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        permissionsService.addPermission('MANAGER', () => {
+            return false;
+        });
+
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('123');
+
+    }));
+});
+
+
+describe('Permission  directive angular testing  different only and accept together async functions in permissions via array', () => {
+    @Component({selector: 'test-comp',
+        template: `<ng-template [permissionsOnly]="['ADMIN', 'GUEST']" [permissionsExcept]="['MANAGER']"><div>123</div></ng-template>`})
+    class TestComp {
+        data: any;
+    }
+
+    let permissionsService;
+    let permissions;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        permissionsService = fixture.debugElement.injector.get(PermissionsService);
+
+    });
+
+
+    it('Should show the component when permission except not available and only fullfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        tick();
+        tick();
+        tick();
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('123');
+    }));
+
+    it('Should NOT show the component when permission except fulfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        permissionsService.addPermission('MANAGER', () => {
+            return true;
+        });
+
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should NOT show the component when permission except fulfills even when only also fullfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        permissionsService.addPermission('MANAGER', () => {
+            return true;
+        });
+
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should show the component when permission except fulfills with function that returns false and only fullfiles', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        permissionsService.addPermission('MANAGER', () => {
+            return false;
+        });
+
+        permissionsService.addPermission('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('123');
+
+    }));
+});
+
+describe('Permission  directive angular testing  different only and accept together async functions in roles via array', () => {
+    @Component({selector: 'test-comp',
+        template: `<ng-template [permissionsOnly]="['ADMIN', 'GUEST']" [permissionsExcept]="['MANAGER']"><div>123</div></ng-template>`})
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissions;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(RolesService);
+
+    });
+
+
+    it('Should show the component when role except not available and only fullfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        rolesService.addRole('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('123');
+    }));
+
+    it('Should NOT show the component when role except fulfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        rolesService.addRole('MANAGER', () => {
+            return true;
+        });
+
+        rolesService.addRole('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should NOT show the component when role except fulfills even when only also fullfills', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        rolesService.addRole('MANAGER', () => {
+            return true;
+        });
+
+        rolesService.addRole('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it('Should show the component when role except fulfills with function that returns false and only fullfiles', fakeAsync(() => {
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        rolesService.addRole('MANAGER', () => {
+            return false;
+        });
+
+        rolesService.addRole('ADMIN', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('123');
+
+    }));
+});
+
 function detectChanges(fixture) {
     tick();
     fixture.detectChanges();
