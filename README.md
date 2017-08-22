@@ -173,6 +173,9 @@ as Roles that are more complex objects that can store more complex logic.
 > :bulb: **Note**   
 > It's a good convention to start permission with a verb and combine them with resource or object, so permissions like `readDocuments` or `listSongs` 
 are meaningful and easy to understand for other programmes. Notice that they are named lowerCamelCase for easy differentiation form roles.
+
+> :skull: **Warning**   
+> This library is intended for simplify the client side development workflow in a role based web application. **DO NOT RELY ONLY ON THIS CHECKS FOR YOU APPLICATION SECURITY!** Client side checks can be easily bypassed, so always implement the checks on the backend!
  
 Defining permissions
 ----------------------------
