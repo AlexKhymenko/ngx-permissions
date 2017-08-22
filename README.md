@@ -511,6 +511,8 @@ Usage with Routes
   2. [Multiple permissions/roles](#multiple-permissionsroles) 
 3. [Property redirectTo](#property-redirectto)
   1. [Single rule redirection](#single-redirection-rule)
+4. [Common use cases](#common-use-cases)
+  1. [Two guards when first make request for authorisation and gets permissions second checks for permissions](#two-guards-when-first-make-request-for-authorisation-and-gets-permissions-second-checks-for-permissions)
 
 Introduction
 ----------------------------
@@ -656,6 +658,47 @@ export class AppRoutingModule {}
 ```
 
 ----------------------------
+
+
+##Common use cases
+
+### Two guards when first make request for authorisation and gets permissions second checks for permissions
+
+This method only works with `angular 4.3.2` or higher see https://github.com/angular/angular/issues/15670
+
+There are a lot of times you have 2 guard one for authorisation when it makes request for permissions and second is permissions guard
+and you want them to work in chain. To make them work in chain You should use them next
+
+```typescript
+
+let routes = [
+  { path: '', 
+    canActivate: [AuthGuard],
+    children: [
+      {path: 'component', 
+      component: ComponentName, 
+      canActivate: [PermissionsGuard],
+      data: {
+         permissions: {
+           only: ['ADMIN', 'MODERATOR'],
+           redirectTo: 'another-route'
+         }
+       }}
+    ]
+  }
+]
+```
+> Note: Make sure the permission request in chained in auth guard
+> ```js 
+    canActivate() {
+        return authLogin().then(() => {
+            return this.authPermissions.getPermissions('url');
+        }).then((permissions) => {
+            this.permissions.service.loadPermissions(permissions)
+        )
+    }
+```
+
 
 | --- |
 ## Development
