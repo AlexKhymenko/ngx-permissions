@@ -456,13 +456,14 @@ Permission directive accepts several attributes:
 | `(permissionsUnauthorized)` | EventEmitter       | EventEmitter emitted when unAuthorized                       |
 ### Basic usage
 
-Directives accepts either single permission that has to be met in order to display it's content:
+Directives accepts either single permission that has to be met in order to display it's content,
+You can use both `permissionsOnly` and `permissionsExcept` at the same time:
  
 ```html
 <ng-template permissions [permissionsOnly]="['ADMIN']" (permissionsAuthorized)="yourCustomAuthorizedFunction()" (permissionsUnauthorized)="yourCustomAuthorizedFunction()">
     <div>You can see this text congrats</div>
  </ng-template>
- <ng-template permissions [permissionsOnly]="'ADMIN'">
+ <ng-template permissions [permissionsOnly]="'ADMIN'"  [permissionsExcept]="'Manager'">
     <div>You can see this text congrats</div>
  </ng-template>
   <ng-template permissions permissionsOnly="ADMIN">
@@ -484,6 +485,9 @@ Or set of permissions separated by 'coma':
  <ng-template permissions [permissionsExcept]="['ADMIN', 'JOHNY']">
    <div>All will see it except admin and Johny</div>
  </ng-template>
+  <ng-template permissions [permissionsExcept]="['ADMIN', 'JOHNY']" [permissionsOnly]="['MANAGER']">
+    <div>All will see it except admin and Johny</div>
+  </ng-template>
 ```
 
 Or just simply by *
@@ -550,7 +554,7 @@ Property `except`:
 #### Single permission/role 
 
 In simplest cases you allow users having single role permission to access the state. To achieve that you can pass as `String` desired role/permission to only/except property:
-
+You can use `except` and `only` at the same time;
 ```typescript
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -599,7 +603,8 @@ const appRoutes: Routes = [
     canActivate: [PermissionsGuard],
     data: {
       permissions: {
-        only: ['ADMIN', 'MODERATOR']
+        only: ['ADMIN', 'MODERATOR'],
+        except: ['GUEST']
       }
     }
   },
