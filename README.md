@@ -660,7 +660,7 @@ export class AppRoutingModule {}
 ----------------------------
 
 
-##Common use cases
+## Common use cases
 
 ### Two guards when first make request for authorisation and gets permissions second checks for permissions
 
@@ -689,9 +689,12 @@ let routes = [
 ]
 ```
 > Note: Make sure the permission request in chained in auth guard
-> ```js 
+ ```js 
     canActivate() {
-        return authLogin().then(() => {
+        return authLogin().then((obj) => {
+            // or load here if you dont need second request
+            // this.permissions.service.loadPermissions(obj.permissions)
+           
             return this.authPermissions.getPermissions('url');
         }).then((permissions) => {
             this.permissions.service.loadPermissions(permissions)
