@@ -38,7 +38,7 @@ export class PermissionsGuard implements CanActivate {
         return true;
     }
 
-    private checkOnlyPermissions(permissions) {
+    private checkOnlyPermissions(permissions: any) {
         return Promise.all([this.permissionsService.hasPermission(permissions.only), this.rolesService.hasOnlyRoles(permissions.only)])
             .then(([permissionsPr, roles]) => {
                 if (permissionsPr || roles)  {
