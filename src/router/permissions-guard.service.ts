@@ -15,14 +15,14 @@ export class PermissionsGuard implements CanActivate {
             return Promise.all([this.permissionsService.hasPermission(permissions.only), this.rolesService.hasOnlyRoles(permissions.only)])
                 .then(([permissionsPr, roles]) => {
                     if (permissionsPr || roles)  {
+                        return true;
+                    } else {
                         if (permissions.redirectTo) {
                             this.router.navigate([permissions.redirectTo]);
                             return false;
                         } else {
-                            return true;
+                            return false;
                         }
-                    } else {
-                        return false;
                     }
                 })
 
@@ -31,14 +31,14 @@ export class PermissionsGuard implements CanActivate {
             return Promise.all([this.permissionsService.hasPermission(permissions.except), this.rolesService.hasOnlyRoles(permissions.except)])
                 .then(([permissionsPr, roles]) => {
                     if (permissionsPr || roles)  {
-                        return false;
-                    } else {
                         if  (permissions.redirectTo) {
                             this.router.navigate([permissions.redirectTo]);
                             return false;
                         } else {
-                            return true;
+                            return false;
                         }
+                    } else {
+                        return true;
                     }
                 })
         }
