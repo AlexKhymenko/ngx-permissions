@@ -14,6 +14,27 @@ const appRoutes: Routes = [
       }
     }
   },
+
+  { path: 'home3',
+    component: HomeComponent,
+    canActivate: [PermissionsGuard],
+    data: {
+      permissions: {
+        except: 'ADMIN',
+        redirectTo: '/except-should'
+      }
+    }
+  },
+  { path: 'home4',
+    component: HomeComponent,
+    canActivate: [PermissionsGuard],
+    data: {
+      permissions: {
+        except: 'ADMINNN',
+        redirectTo: '/except-should'
+      }
+    }
+  },
   { path: 'home1',
     component: HomeComponent,
     canActivate: [PermissionsGuard],
