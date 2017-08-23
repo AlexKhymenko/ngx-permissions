@@ -139,11 +139,11 @@ Usage in templates
     <div>You can see this text congrats</div>
 </div>
 
-<ng-template permissions permissionsOnly="ADMIN">
+<ng-template permissionsOnly="ADMIN">
   <div>You can see this text congrats</div>
  </ng-template>
  
- <ng-template permissions [permissionsExcept]="['JOHNY']">
+ <ng-template [permissionsExcept]="['JOHNY']">
    <div> All will see it except JOHNY</div>
  </ng-template>
 ```
@@ -444,7 +444,7 @@ Overview
 Permission directive
 ----------------------------
   
-Permission module exposes directive `permissions` that can show/hide elements of your application based on set of permissions.
+Permission module exposes directive `permissionsOnly` and `permissionsExcept` that can show/hide elements of your application based on set of permissions.
 
 Permission directive accepts several attributes:
 
@@ -460,17 +460,17 @@ Directives accepts either single permission that has to be met in order to displ
 You can use both `permissionsOnly` and `permissionsExcept` at the same time:
  
 ```html
-<ng-template permissions [permissionsOnly]="['ADMIN']" (permissionsAuthorized)="yourCustomAuthorizedFunction()" (permissionsUnauthorized)="yourCustomAuthorizedFunction()">
+<ng-template [permissionsOnly]="['ADMIN']" (permissionsAuthorized)="yourCustomAuthorizedFunction()" (permissionsUnauthorized)="yourCustomAuthorizedFunction()">
     <div>You can see this text congrats</div>
  </ng-template>
- <ng-template permissions [permissionsOnly]="'ADMIN'"  [permissionsExcept]="'Manager'">
+ <ng-template [permissionsOnly]="'ADMIN'"  [permissionsExcept]="'Manager'">
     <div>You can see this text congrats</div>
  </ng-template>
-  <ng-template permissions permissionsOnly="ADMIN">
+  <ng-template permissionsOnly="ADMIN">
     <div>You can see this text congrats</div>
  </ng-template>
  
- <ng-template permissions [permissionsExcept]="['JOHNY']">
+ <ng-template [permissionsExcept]="['JOHNY']">
    <div> All will see it except JOHNY</div>
  </ng-template>
 ```
@@ -478,14 +478,14 @@ You can use both `permissionsOnly` and `permissionsExcept` at the same time:
 Or set of permissions separated by 'coma':
 
 ```html
-<ng-template permissions [permissionsOnly]="['ADMIN', 'GUEST']">
+<ng-template [permissionsOnly]="['ADMIN', 'GUEST']">
     <div>You can see this text congrats</div>
 </ng-template>
 
- <ng-template permissions [permissionsExcept]="['ADMIN', 'JOHNY']">
+ <ng-template [permissionsExcept]="['ADMIN', 'JOHNY']">
    <div>All will see it except admin and Johny</div>
  </ng-template>
-  <ng-template permissions [permissionsExcept]="['ADMIN', 'JOHNY']" [permissionsOnly]="['MANAGER']">
+  <ng-template [permissionsExcept]="['ADMIN', 'JOHNY']" [permissionsOnly]="['MANAGER']">
     <div>All will see it except admin and Johny</div>
   </ng-template>
 ```
