@@ -4,8 +4,9 @@ import { async, fakeAsync, inject, TestBed } from '@angular/core/testing';
 import { PermissionsService } from '../permissions.service';
 import { RolesService } from '../roles.service';
 import { NgxPermissionsModule } from '../index';
-import { Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { tick } from "@angular/core/testing";
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('Permissions guard only', () => {
 
@@ -243,6 +244,139 @@ describe('Permissions guard Except and only together', () => {
         permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404']);
+        })
+    }));
+});
+
+
+describe('Permissions guard use only dynamically', () => {
+
+    let permissionGuard: PermissionsGuard;
+    let fakeRouter;
+    let route;
+    let testRouter;
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+
+            imports: [NgxPermissionsModule.forRoot(),
+
+                RouterTestingModule.withRoutes(
+                [
+                    {
+                        path: 'crisis-center/:id',
+                        redirectTo: '404',
+                        data: {
+                            permissions: {
+                                except: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
+                                    console.log(route.url);
+                                        console.log(route);
+                                    console.log(awesome);
+                                    return true;
+                                }
+                            },
+                        }
+                    },
+            ])]
+        });
+    });
+    beforeEach(inject([PermissionsService, RolesService], (service: PermissionsService, rolesService: RolesService, router: Router) => {
+        fakeRouter = <any>{navigate: () => {}};
+
+        service.addPermission('MANAGER');
+        // fakeRouter = router;
+        spyOn(fakeRouter, 'navigate');
+        permissionGuard = new PermissionsGuard(service, rolesService, fakeRouter as Router);
+    }));
+
+    it('should create an instance', () => {
+        expect(permissionGuard).toBeTruthy();
+    });
+
+    it ('sholud return true when only matches and it should not check only', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
+                   if (route.data.path.includes(44)) {
+                       return ['MANAGER']
+                   } else {
+                       return 'notManager'
+                   }
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(true);
+        })
+    }));
+
+    it ('should return true when except matches and it should ', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
+                    if (route.data.path.includes('doesntInclude')) {
+                        return ['MANAGER']
+                    } else {
+                        return 'notManager'
+                    }
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(true);
+        })
+    }));
+
+    it ('should return true when except doens"t match but only matches it should  true', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
+                    if (route.data.path.includes('doesntInclude')) {
+                        return ['MANAGER']
+                    } else {
+                        return 'notManager'
+                    }
+                },
+                only: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
+                    if (route.data.path.includes('44')) {
+                        return ['MANAGER']
+                    } else {
+                        return 'notManager'
+                    }
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(true);
+        })
+    }));
+
+    it ('should return true when except doens"t match but only matches it should true', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
+                    if (route.data.path.includes('doesntInclude')) {
+                        return ['MANAGER']
+                    } else {
+                        return 'notManager'
+                    }
+                },
+                only: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
+                    if (route.data.path.includes('gg')) {
+                        return ['MANAGER']
+                    } else {
+                        return 'notManager'
+                    }
+                },
+                redirectTo: '/404'
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['/404']);
         })
     }));
 });

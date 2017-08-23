@@ -1,5 +1,5 @@
 export interface PermissionsRouterData {
-    only: string | string[];
-    except: string | string[];
-    redirectTo: string | Function;
+    only?: string | string[] | Function;
+    except?: string | string[] | Function;
+    redirectTo?: string | Function;
 }
