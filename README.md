@@ -586,6 +586,7 @@ export class AppRoutingModule {}
 
 In given case when user is trying to access `home` state `PermissionsGuard` service is called checking if `isAuthorized` permission is valid: 
   - if permission definition is not found it stops transition
+ 
 
 #### Multiple permissions/roles 
 
@@ -625,6 +626,84 @@ When `PermissionGuard` service will be called it would expect user to have eithe
 [//]: <> (> :bulb: **Note**   
           > Between values in array operator **OR** is used to create alternative. If you need **AND** operator between permissions define additional `PermRole` containing set of those. 
 )
+
+#### Dynamic access
+
+You can find states that would require to verify access dynamically - often depending on parameters.     
+
+Let's imagine situation where user want to modify the invoice. We need to check every time if he is allowed to do that on state level. We are gonna use `ActivatedRouteSnapshot` and `RouterStateSnapshot`   object to check weather he is able to do that.
+
+> To make AOT compatible you should export function. 
+> Below is presented code AOT Compatible
+
+AOT compatible 
+```typescript
+export function testPermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  if (route.params['id'] === 42) {
+    return ['MANAGER', "UTILS"]
+  } else {
+    return 'ADMIN'
+  }
+}
+const appRoutes: Routes = [
+  { path: 'dynamic/:id',
+      component: HomeComponent,
+      canActivate: [PermissionsGuard],
+      data: {
+        permissions: {
+          only: testPermissions
+        }
+      }
+    }
+];
+@NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+,
+```
+
+> :skull: **Warning**   
+> Below is presented code not AOT compatible
+
+```typescript
+const appRoutes: Routes = [
+  { path: 'dynamic/:id',
+      component: HomeComponent,
+      canActivate: [PermissionsGuard],
+      data: {
+        permissions: {
+          only: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+              if (route.params['id'] === 42) {
+                  return ['MANAGER', "UTILS"]
+                } else {
+                  return 'ADMIN'
+                }
+          }
+        }
+      }
+    }
+];
+@NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+,
+```
+
+So whenever we try access state with param `isEditable` set to true additional check for permission `canEdit` will be made. Otherwise only `canRead` will be required.
+
+> :fire: **Important**   
+> Notice that function require to always return array of roles/permissions in order to work properly. 
+
 
 Property redirectTo
 ----------------------------

@@ -1,13 +1,15 @@
-import { RouterModule, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home/home.component';
 import { PermissionsGuard } from 'ngx-permissions';
 
 
-export function testPermissions(route: any, state: any) {
-  console.log('route', route);
-  console.log('state', state);
-  return true;
+export function testPermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  if (route.params['id'] === 42) {
+    return ['MANAGER', "UTILS"]
+  } else {
+    return 'ADMIN'
+  }
 }
 const appRoutes: Routes = [
   { path: 'home',
