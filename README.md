@@ -531,8 +531,8 @@ Permissions object accepts following properties:
 
 | Property        | Accepted value                   |
 | :-------------- | :------------------------------- |
-| `only`          | [`String`\|`Array`]              |
-| `except`        | [`String`\|`Array`]              |
+| `only`          | [`String`\|`Array`\|`Function`]              |
+| `except`        | [`String`\|`Array`\|`Function`]              |
 | `redirectTo`    | [`String`]                       |
 
 Property only and except
