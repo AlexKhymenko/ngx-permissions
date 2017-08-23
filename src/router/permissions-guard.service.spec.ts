@@ -381,3 +381,96 @@ describe('Permissions guard use only dynamically', () => {
     }));
 });
 
+describe('Permissions guard test redirectTo path parameters dynamically', () => {
+
+    let permissionGuard: PermissionsGuard;
+    let fakeRouter;
+    let route;
+    let testRouter;
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+
+            imports: [NgxPermissionsModule.forRoot(),
+
+                RouterTestingModule.withRoutes(
+                    [
+                        {
+                            path: 'crisis-center/:id',
+                            redirectTo: '404',
+                            data: {
+                                permissions: {
+                                    except: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
+                                        console.log(route.url);
+                                        console.log(route);
+                                        console.log(awesome);
+                                        return true;
+                                    },
+                                    redirectTo: {
+                                        navigationCommands: ['123'],
+                                        navigationExtras: {
+                                            skipLocationChange: true
+                                        }
+                                    }
+                                },
+                            }
+                        },
+                    ])]
+        });
+    });
+    beforeEach(inject([PermissionsService, RolesService], (service: PermissionsService, rolesService: RolesService, router: Router) => {
+        fakeRouter = <any>{navigate: () => {}};
+
+        service.addPermission('MANAGER');
+        // fakeRouter = router;
+        spyOn(fakeRouter, 'navigate');
+        permissionGuard = new PermissionsGuard(service, rolesService, fakeRouter as Router);
+    }));
+
+    it('should create an instance', () => {
+        expect(permissionGuard).toBeTruthy();
+    });
+
+    it ('sholud redirect to parameters specified on navigation commands and navigationExtras', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: "TIED",
+                redirectTo: {
+                    navigationCommands: ['123'],
+                    navigationExtras: {
+                        skipLocationChange: true
+                    }
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
+
+        })
+    }));
+
+    it ('sholud redirect to parameters specified in navigation commands and navigationExtras', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: "TIED",
+                redirectTo: {
+                    navigationCommands: (route, state) => {
+                        return ['123']
+                    },
+                    navigationExtras: (route, state) => {
+                       return {
+                           skipLocationChange: true
+                       }
+                    }
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
+
+        })
+    }));
+});

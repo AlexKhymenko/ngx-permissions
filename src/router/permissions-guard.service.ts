@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, NavigationExtras, Router, RouterStateSnapshot } from '@angular/router';
 import { PermissionsService } from '../permissions.service';
 import { PermissionsRouterData } from '../model/permissions-router-data.model';
 import { RolesService } from "../roles.service";
-import { isFunction } from '../utils/utils';
+import { isFunction, isPlainObject } from '../utils/utils';
 
+
+type RedirectToNavigationParameters = {
+    navigationCommands: any[] | Function,
+    navigationExtras?: NavigationExtras | Function
+}
 @Injectable()
 export class PermissionsGuard implements CanActivate {
 
@@ -24,7 +29,7 @@ export class PermissionsGuard implements CanActivate {
                 .then(([permissionsPr, roles]) => {
                     if (permissionsPr || roles)  {
                         if  (permissions.redirectTo) {
-                            this.router.navigate([permissions.redirectTo]);
+                            this.redirectToAnotherRoute(permissions.redirectTo, route, state);
                             return false;
                         } else {
                             return false;
@@ -58,12 +63,48 @@ export class PermissionsGuard implements CanActivate {
                     return true;
                 } else {
                     if (permissions.redirectTo) {
-                        this.router.navigate([permissions.redirectTo]);
+                        this.redirectToAnotherRoute(permissions.redirectTo, route, state);
                         return false;
                     } else {
                         return false;
                     }
                 }
             })
+    }
+
+
+
+    private redirectToAnotherRoute(redirectTo: string | any[] | RedirectToNavigationParameters, route : ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        if(this.isRedirectionWithParameters(redirectTo)) {
+            if (this.hasNavigationExtrasAsFunction(redirectTo)) {
+                (<RedirectToNavigationParameters>redirectTo).navigationExtras = ((<RedirectToNavigationParameters>redirectTo).navigationExtras as Function)(route, state);
+            }
+
+            if (this.hasNavigationCommandsAsFunction(redirectTo)) {
+                (<RedirectToNavigationParameters>redirectTo).navigationCommands = ((<RedirectToNavigationParameters>redirectTo).navigationCommands as Function)(route, state);
+            }
+
+            this.router.navigate(((<RedirectToNavigationParameters>redirectTo).navigationCommands as any[]), ((<RedirectToNavigationParameters> redirectTo).navigationExtras as NavigationExtras));
+            return;
+        }
+
+        if (Array.isArray(redirectTo)) {
+            this.router.navigate(redirectTo);
+        } else {
+            this.router.navigate([redirectTo]);
+        }
+    }
+
+    private isRedirectionWithParameters(object: any | RedirectToNavigationParameters): boolean {
+        return isPlainObject(object) && !!object.navigationCommands || !!object.navigationExtras;
+    }
+
+
+    private hasNavigationExtrasAsFunction(redirectTo: any): boolean {
+        return !!(<RedirectToNavigationParameters> redirectTo).navigationExtras && isFunction((<RedirectToNavigationParameters> redirectTo).navigationExtras)
+    }
+
+    private hasNavigationCommandsAsFunction(redirectTo: any): boolean {
+        return !!(<RedirectToNavigationParameters> redirectTo).navigationCommands && isFunction((<RedirectToNavigationParameters> redirectTo).navigationCommands);
     }
 }
