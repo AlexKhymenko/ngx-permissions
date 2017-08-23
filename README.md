@@ -516,6 +516,7 @@ Usage with Routes
 2. [Property only and except](#property-only-and-except)
   1. [Single permission/role](#single-permissionrole)
   2. [Multiple permissions/roles](#multiple-permissionsroles) 
+  3. [Dynamic access](#dynamic-access)
 3. [Property redirectTo](#property-redirectto)
   1. [Single rule redirection](#single-redirection-rule)
 4. [Common use cases](#common-use-cases)
@@ -656,15 +657,6 @@ const appRoutes: Routes = [
       }
     }
 ];
-@NgModule({
-  imports: [
-    RouterModule.forRoot(appRoutes)
-  ],
-  exports: [
-    RouterModule
-  ]
-})
-,
 ```
 
 > :skull: **Warning**   
@@ -688,22 +680,12 @@ const appRoutes: Routes = [
       }
     }
 ];
-@NgModule({
-  imports: [
-    RouterModule.forRoot(appRoutes)
-  ],
-  exports: [
-    RouterModule
-  ]
-})
-,
 ```
 
-So whenever we try access state with param `isEditable` set to true additional check for permission `canEdit` will be made. Otherwise only `canRead` will be required.
+So whenever we try access state with param `id = 42` set to true additional check for permission `manager and utils` will be made. Otherwise only `ADMIN` will be required.
 
 > :fire: **Important**   
-> Notice that function require to always return array of roles/permissions in order to work properly. 
-
+> Notice that function require to always return array or string of roles/permissions in order to work properly. 
 
 Property redirectTo
 ----------------------------
