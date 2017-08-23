@@ -3,6 +3,12 @@ import { NgModule } from '@angular/core';
 import { HomeComponent } from './home/home.component';
 import { PermissionsGuard } from 'ngx-permissions';
 
+
+export function testPermissions(route: any, state: any) {
+  console.log('route', route);
+  console.log('state', state);
+  return true;
+}
 const appRoutes: Routes = [
   { path: 'home',
     component: HomeComponent,
@@ -22,6 +28,15 @@ const appRoutes: Routes = [
       permissions: {
         except: 'ADMIN',
         redirectTo: '/except-should'
+      }
+    }
+  },
+  { path: 'dynamic/:id',
+    component: HomeComponent,
+    canActivate: [PermissionsGuard],
+    data: {
+      permissions: {
+        only: testPermissions
       }
     }
   },

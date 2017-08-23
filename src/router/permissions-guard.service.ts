@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 import { PermissionsService } from '../permissions.service';
 import { PermissionsRouterData } from '../model/permissions-router-data.model';
 import { RolesService } from "../roles.service";
-import { isFunction } from 'util';
+import { isFunction } from '../utils/utils';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
