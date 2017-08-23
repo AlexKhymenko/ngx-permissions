@@ -122,7 +122,11 @@ export class PermissionsGuard implements CanActivate {
 
 
 
-    private redirectToAnotherRoute(redirectTo: string | any[] | RedirectToNavigationParameters, route : ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    private redirectToAnotherRoute(redirectTo: string | any[] | RedirectToNavigationParameters | Function, route : ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        if(isFunction(redirectTo)) {
+            redirectTo = (redirectTo as Function)(route, state);
+        }
+
         if(this.isRedirectionWithParameters(redirectTo)) {
             if (this.hasNavigationExtrasAsFunction(redirectTo)) {
                 (<RedirectToNavigationParameters>redirectTo).navigationExtras = ((<RedirectToNavigationParameters>redirectTo).navigationExtras as Function)(route, state);

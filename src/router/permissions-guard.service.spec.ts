@@ -643,6 +643,49 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
         })
     }));
 
+    it ('redirect to dashboard when canEdit agenda fails only', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: [ 'canReadAgenda', 'canEditAgenda' , "canRun"],
+                redirectTo: {
+                    canReadAgenda: 'agendaList',
+                    canEditAgenda: (route, state) => {
+                        return 'dashboard'
+                    },
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
+        })
+    }));
+
+    it ('redirect to dashboard when canEdit agenda fails with objectProperty only', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: [ 'canReadAgenda', 'canEditAgenda' , "canRun"],
+                redirectTo: {
+                    canReadAgenda: 'agendaList',
+                    canEditAgenda: {
+                        navigationCommands: ['123'],
+                        navigationExtras: {
+                            skipLocationChange: true
+                        }
+                    },
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
+        })
+    }));
+
     it ('redirect to default when only fails but there is no redirection rule', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
 
@@ -662,6 +705,8 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
         })
     }));
+
+
 
     it ('sholud path when nothing fails in only blaock', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
