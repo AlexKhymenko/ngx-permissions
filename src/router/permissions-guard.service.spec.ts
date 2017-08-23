@@ -474,3 +474,212 @@ describe('Permissions guard test redirectTo path parameters dynamically', () => 
         })
     }));
 });
+
+
+describe('Permissions guard test redirectTo path multiple redirectionRule', () => {
+
+    let permissionGuard: PermissionsGuard;
+    let fakeRouter;
+    let route;
+    let testRouter;
+    let fakeService;
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+
+            imports: [NgxPermissionsModule.forRoot()]
+        });
+    });
+    beforeEach(inject([PermissionsService, RolesService], (service: PermissionsService, rolesService: RolesService) => {
+        fakeRouter = <any>{navigate: () => {}};
+
+        service.addPermission('canReadAgenda');
+        fakeService = service;
+        // fakeRouter = router;
+        spyOn(fakeRouter, 'navigate');
+        permissionGuard = new PermissionsGuard(service, rolesService, fakeRouter as Router);
+    }));
+
+    it('should create an instance', () => {
+        expect(permissionGuard).toBeTruthy();
+    });
+
+    it ('sholud redirect dashboard can canRead Agenda fullfils can edit agenda fails', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: [ 'canEditAgenda', 'canReadAgenda', "canRun"],
+                redirectTo: {
+                    canReadAgenda: 'agendaList',
+                    canEditAgenda: 'dashboard',
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['agendaList']);
+        })
+    }));
+
+    it ('sholud redirect to run when there is permission canRun and it fails', fakeAsync(() => {
+        fakeService.addPermission('canEditAgenda');
+
+        route = { data: {
+            permissions: {
+                except: ["canRun", 'canReadAgenda', 'canEditAgenda' ],
+                redirectTo: {
+                    canReadAgenda: 'agendaList',
+                    canEditAgenda: 'dashboard',
+                    canRun: 'run',
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['agendaList']);
+        })
+    }));
+
+    it ('sholud path when nothing fails', fakeAsync(() => {
+        fakeService.addPermission('canEditAgenda');
+
+        route = { data: {
+            permissions: {
+                except: ['aweomse', 'awesome'],
+                redirectTo: {
+                    canReadAgenda: 'agendaList',
+                    canEditAgenda: 'dashboard',
+                    canRun: 'run',
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(true);
+        })
+    }));
+
+    it ('redirect to default route when it fails but there is no redirect rule for that permission', fakeAsync(() => {
+
+        route = { data: {
+            permissions: {
+                except: ['canReadAgenda', 'canEditAgenda'],
+                redirectTo: {
+                    canRun: 'run',
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
+
+        })
+    }));
+
+    it ('redirect to only failed route when except passes but only fails', fakeAsync(() => {
+
+        route = { data: {
+            permissions: {
+                except: ['canEditAgenda'],
+                only: [ 'canRunAgenda'],
+                redirectTo: {
+                    canReadAgenda: 'agendaList',
+                    canRunAgenda: 'dashboard',
+                    canRun: 'run',
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
+
+        })
+    }));
+
+    it ('path if except and only passes', fakeAsync(() => {
+        fakeService.addPermission('canRunAgenda');
+        route = { data: {
+            permissions: {
+                except: ['canEditAgenda'],
+                only: [ 'canRunAgenda'],
+                redirectTo: {
+                    canReadAgenda: 'agendaList',
+                    canRunAgenda: 'dashboard',
+                    canRun: 'run',
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(true);
+
+        })
+    }));
+
+
+    it ('redirect fail on can editAgenda and redirect to dashboard', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: [ 'canReadAgenda', 'canEditAgenda' , "canRun"],
+                redirectTo: {
+                    canReadAgenda: 'agendaList',
+                    canEditAgenda: 'dashboard',
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
+        })
+    }));
+
+    it ('redirect to default when only fails but there is no redirection rule', fakeAsync(() => {
+        fakeService.addPermission('canEditAgenda');
+
+        route = { data: {
+            permissions: {
+                only: ['canReadAgenda', 'canEditAgenda', 'Can run' ],
+                redirectTo: {
+                    canReadAgenda: 'agendaList',
+                    canEditAgenda: 'dashboard',
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
+        })
+    }));
+
+    it ('sholud path when nothing fails in only blaock', fakeAsync(() => {
+        fakeService.addPermission('canEditAgenda');
+
+        route = { data: {
+            permissions: {
+                only: ['canEditAgenda'],
+                redirectTo: {
+                    canReadAgenda: 'agendaList',
+                    canEditAgenda: 'dashboard',
+                    canRun: 'run',
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(true);
+        })
+    }));
+});

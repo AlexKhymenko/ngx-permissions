@@ -4,7 +4,12 @@ import { PermissionsService } from '../permissions.service';
 import { PermissionsRouterData } from '../model/permissions-router-data.model';
 import { RolesService } from "../roles.service";
 import { isFunction, isPlainObject } from '../utils/utils';
-
+import { Observable } from 'rxjs/Observable';
+import  'rxjs/add/observable/forkJoin'
+import  'rxjs/add/observable/from'
+import  'rxjs/add/operator/mergeMap'
+import  'rxjs/add/operator/do'
+import  'rxjs/add/operator/map'
 
 type RedirectToNavigationParameters = {
     navigationCommands: any[] | Function,
@@ -24,7 +29,46 @@ export class PermissionsGuard implements CanActivate {
             permissions.except = (purePermissions.except as Function)(route, state);
         }
 
+        if (isFunction(permissions.only)) {
+            permissions.only = (purePermissions.only as Function)(route, state);
+        }
+
         if (!!permissions.except) {
+            if (!!permissions.redirectTo && isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo)) {
+                if (Array.isArray(permissions.except)) {
+                    let failedPermission = '';
+                    return Observable.from(permissions.except)
+                        .mergeMap((data) => {
+                            return Observable.forkJoin([this.permissionsService.hasPermission(<string | string[]>data), this.rolesService.hasOnlyRoles(<string | string[]>data)]).do((hasPerm) => {
+                                const dontHavePermissions = hasPerm.every((data) => {
+                                    return data === false;
+                                });
+                                if (!dontHavePermissions) {
+                                    failedPermission = data;
+                                }
+                            })
+                        }).first((data: any[]) => {
+                        return data.some((data) => {
+                            return data === true;
+                        })
+                    }, () => true, false).mergeMap((isAllFalse) => {
+                            if (!!failedPermission) {
+                                if (!!permissions.redirectTo && permissions.redirectTo[<any>failedPermission]) {
+                                    this.redirectToAnotherRoute((<any>permissions.redirectTo)[failedPermission], route, state);
+                                } else {
+                                    this.redirectToAnotherRoute((<any>permissions.redirectTo)['default'], route, state);
+                                }
+                            }
+                            if (!isAllFalse && permissions.only) {
+                                return this.onlyRedirectCheck(permissions, route, state);
+                            }
+                            return Observable.of(!isAllFalse);
+                    }).toPromise()
+                }
+            }
+
+
+
             return Promise.all([this.permissionsService.hasPermission(<string | string[]>permissions.except), this.rolesService.hasOnlyRoles(<string | string[]>permissions.except)])
                 .then(([permissionsPr, roles]) => {
                     if (permissionsPr || roles)  {
@@ -44,6 +88,10 @@ export class PermissionsGuard implements CanActivate {
         }
 
         if (permissions.only) {
+
+            if (!!permissions.only && isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo)) {
+                return this.onlyRedirectCheck(permissions, route, state)
+            }
             return this.checkOnlyPermissions(permissions, route, state);
         }
 
@@ -96,7 +144,7 @@ export class PermissionsGuard implements CanActivate {
     }
 
     private isRedirectionWithParameters(object: any | RedirectToNavigationParameters): boolean {
-        return isPlainObject(object) && !!object.navigationCommands || !!object.navigationExtras;
+        return isPlainObject(object) && (!!object.navigationCommands || !!object.navigationExtras);
     }
 
 
@@ -106,5 +154,33 @@ export class PermissionsGuard implements CanActivate {
 
     private hasNavigationCommandsAsFunction(redirectTo: any): boolean {
         return !!(<RedirectToNavigationParameters> redirectTo).navigationCommands && isFunction((<RedirectToNavigationParameters> redirectTo).navigationCommands);
+    }
+
+    private onlyRedirectCheck(permissions: any, route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+        let failedPermission = '';
+        return Observable.from(permissions.only)
+            .mergeMap((data: string) => {
+                return Observable.forkJoin([this.permissionsService.hasPermission(<string | string[]>data), this.rolesService.hasOnlyRoles(<string | string[]>data)]).do((hasPerm) => {
+                    const failed = hasPerm.every((data) => {
+                        return data === false;
+                    });
+                    if (failed) {
+                        failedPermission = data;
+                    }
+                })
+            }).first((data: any[]) => {
+                return data.every((data) => {
+                    return data === false;
+                })
+            }, () => true, false).mergeMap((isAllFalse: boolean): Observable<boolean> => {
+                if (!!failedPermission) {
+                    if (!!permissions.redirectTo && permissions.redirectTo[<any>failedPermission]) {
+                        this.redirectToAnotherRoute((<any>permissions.redirectTo)[failedPermission], route, state);
+                    } else {
+                        this.redirectToAnotherRoute((<any>permissions.redirectTo)['default'], route, state);
+                    }
+                }
+                return Observable.of(!isAllFalse);
+            }).toPromise()
     }
 }
