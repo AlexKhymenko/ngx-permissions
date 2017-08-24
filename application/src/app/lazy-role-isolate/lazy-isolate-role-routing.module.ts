@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { PermissionsGuard } from 'ngx-permissions';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 import { LazyRoleIsolateTestComponent } from './lazy-role-isolate-test/lazy-role-isolate-test.component';
 
 const appRoutes: Routes = [
@@ -10,7 +10,7 @@ const appRoutes: Routes = [
   {
     path: 'except-should',
     component: LazyRoleIsolateTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADDDMIN'
@@ -20,7 +20,7 @@ const appRoutes: Routes = [
   {
     path: 'only-should',
     component: LazyRoleIsolateTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'ADMIN'
@@ -30,7 +30,7 @@ const appRoutes: Routes = [
   {
     path: 'except-should-not',
     component: LazyRoleIsolateTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADMIN'
@@ -40,7 +40,7 @@ const appRoutes: Routes = [
   {
     path: 'only-should-not',
     component: LazyRoleIsolateTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'GG'
@@ -50,7 +50,7 @@ const appRoutes: Routes = [
   {
     path: 'only-permissions-should',
     component: LazyRoleIsolateTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'NICE'
@@ -60,7 +60,7 @@ const appRoutes: Routes = [
   {
     path: 'except-permissions-should-not',
     component: LazyRoleIsolateTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'NICE'

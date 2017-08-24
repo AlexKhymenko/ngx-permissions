@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PermissionsService } from 'ngx-permissions';
-import { RolesService } from 'ngx-permissions';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { NgxRolesService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-isolate',
@@ -9,8 +9,8 @@ import { RolesService } from 'ngx-permissions';
 })
 export class IsolateComponent implements OnInit {
 
-  constructor(private permissionsService: PermissionsService,
-              private roleService: RolesService) { }
+  constructor(private permissionsService: NgxPermissionsService,
+              private roleService: NgxRolesService) { }
 
   ngOnInit() {
     this.permissionsService.addPermission('GUEST')

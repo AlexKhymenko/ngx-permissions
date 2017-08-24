@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { PermissionsGuard } from 'ngx-permissions';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 import { LazyRolesAsyncTestComponent } from './lazy-roles-async-test/lazy-roles-async-test.component';
 
 const appRoutes: Routes = [
@@ -10,7 +10,7 @@ const appRoutes: Routes = [
   {
     path: 'except-should',
     component: LazyRolesAsyncTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADDDMIN'
@@ -20,7 +20,7 @@ const appRoutes: Routes = [
   {
     path: 'only-should',
     component: LazyRolesAsyncTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'ADMIN'
@@ -30,7 +30,7 @@ const appRoutes: Routes = [
   {
     path: 'except-should-not',
     component: LazyRolesAsyncTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADMIN'
@@ -40,7 +40,7 @@ const appRoutes: Routes = [
   {
     path: 'only-should-not',
     component: LazyRolesAsyncTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'GG'
@@ -50,7 +50,7 @@ const appRoutes: Routes = [
   {
     path: 'only-permissions-should',
     component: LazyRolesAsyncTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'NICE'
@@ -60,7 +60,7 @@ const appRoutes: Routes = [
   {
     path: 'except-permissions-should-not',
     component: LazyRolesAsyncTestComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'NICE'

@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Role } from './model/role.model';
+import { NgxRole } from '../model/role.model';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
@@ -10,22 +10,22 @@ import 'rxjs/add/operator/mergeAll';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
 import { Inject, Injectable, OpaqueToken } from '@angular/core';
-import { RolesStore } from './store/roles.store';
+import { NgxRolesStore } from '../store/roles.store';
 
 
 //TODO: Change on Injection token when angular removes opaque token
 export const USE_ROLES_STORE = new OpaqueToken('USE_ROLES_STORE');
 
-export type RolesObject = {[name: string] : Role}
+export type RolesObject = {[name: string] : NgxRole}
 
 @Injectable()
-export class RolesService {
+export class NgxRolesService {
     private rolesSource: BehaviorSubject<RolesObject>;
 
     public roles$: Observable<RolesObject>;
 
     constructor(@Inject(USE_ROLES_STORE) private isolate: boolean = false,
-                private rolesStore: RolesStore) {
+                private rolesStore: NgxRolesStore) {
         this.rolesSource = this.isolate ? new BehaviorSubject<RolesObject>({}) : this.rolesStore.rolesSource;
         this.roles$ = this.rolesSource.asObservable();
     }

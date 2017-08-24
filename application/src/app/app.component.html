@@ -20,7 +20,7 @@
 
 <div style="background-color: green">
   I SHOULD SEE it (
-  <ng-template permissions [permissionsOnly]="['ADMIN']">
+  <ng-template permissions [ngxPermissionsOnly]="['ADMIN']">
     I SHOULD SEE see it only admin
   </ng-template>
 </div>
@@ -28,13 +28,13 @@
 
 <div style="background-color: green">
   I SHOULD SEE it 2 (
-  <ng-template [permissionsOnly]="['ADMIN']">
+  <ng-template [ngxPermissionsOnly]="['ADMIN']">
     I SHOULD SEE see it only admin
   </ng-template>
 </div>
 
 <div style="background-color: green">
-  <div *permissionsOnly="['ADMIN']">
+  <div *ngxPermissionsOnly="['ADMIN']">
     I SHOULD SEE see it only admin
   </div>
 </div>
@@ -42,21 +42,21 @@
 <div style="background-color: green">
   THis USES BOTH only and except
 
-  <ng-template  [permissionsOnly]="['ADMIN']" [permissionsExcept]="'HHHH'" >
+  <ng-template  [ngxPermissionsOnly]="['ADMIN']" [ngxPermissionsExcept]="'HHHH'" >
     Usage on both only and except
     I SHOULD SEE see it only admin
   </ng-template>
 </div>
 
 
-<ng-template permissions [permissionsOnly]="['GUEST']">
+<ng-template permissions [ngxPermissionsOnly]="['GUEST']">
   <div>I will not see it only guest</div>
 </ng-template>
 
-<ng-template permissions [permissionsExcept]="['ADMINNNN']" (permissionsAuthorized)="authorized()" (permissionsUnauthorized)="unAuthorized()">
+<ng-template permissions [ngxPermissionsExcept]="['ADMINNNN']" (permissionsAuthorized)="authorized()" (permissionsUnauthorized)="unAuthorized()">
   <div>I will see it except adminnnnnnn</div>
 </ng-template>
 
-<ng-template permissions [permissionsExcept]="['ADMIN']">
+<ng-template permissions [ngxPermissionsExcept]="['ADMIN']">
   <div>I Should not see it except admin</div>
 </ng-template>

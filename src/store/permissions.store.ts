@@ -3,7 +3,7 @@ import { Observable} from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class PermissionsStore {
+export class NgxPermissionsStore {
 
     public permissionsSource = new BehaviorSubject({});
     public permissions$ = this.permissionsSource.asObservable();

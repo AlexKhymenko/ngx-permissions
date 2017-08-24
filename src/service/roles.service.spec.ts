@@ -1,7 +1,7 @@
-import { RolesService } from './roles.service';
+import { NgxRolesService } from './roles.service';
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
-import { RolesStore } from './store/roles.store';
-import { NgxPermissionsModule } from './index';
+import { NgxRolesStore } from '../store/roles.store';
+import { NgxPermissionsModule } from '../index';
 
 enum RoleNamesEnum {
     ADMIN = <any>'ADMIN',
@@ -9,14 +9,14 @@ enum RoleNamesEnum {
 }
 
 describe('Roles Service', () => {
-    let localService: RolesService;
+    let localService: NgxRolesService;
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [NgxPermissionsModule.forRoot()]
         });
     });
 
-    beforeEach(inject([RolesService], (service: RolesService) => {
+    beforeEach(inject([NgxRolesService], (service: NgxRolesService) => {
         localService = service;
     }));
 

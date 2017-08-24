@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { PermissionsGuard } from 'ngx-permissions';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 import { LazyComponentComponent } from './lazy-component/lazy-component.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
@@ -11,7 +11,7 @@ const appRoutes: Routes = [
   {
     path: 'except-should',
     component: LazyComponentComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADDDMIN'
@@ -21,7 +21,7 @@ const appRoutes: Routes = [
   {
     path: 'only-should',
     component: LazyComponentComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'ADMIN'
@@ -31,7 +31,7 @@ const appRoutes: Routes = [
   {
     path: 'except-should-not',
     component: LazyComponentComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADMIN'
@@ -41,7 +41,7 @@ const appRoutes: Routes = [
   {
     path: 'only-should-not',
     component: LazyComponentComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'GUEST'

@@ -1,8 +1,8 @@
 import { Inject, Injectable, OpaqueToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { PermissionsStore } from './store/permissions.store';
-import { Permission } from './model/permission.model';
+import { NgxPermissionsStore } from '../store/permissions.store';
+import { NgxPermission } from '../model/permission.model';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/first';
@@ -13,19 +13,19 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
 
 
-export type PermissionsObject = {[name: string] : Permission}
+export type PermissionsObject = {[name: string] : NgxPermission}
 
 export const USE_PERMISSIONS_STORE = new OpaqueToken('USE_PERMISSIONS_STORE');
 
 
 @Injectable()
-export class PermissionsService {
+export class NgxPermissionsService {
 
     private permissionsSource: any;
     public permissions$: Observable<any>;
 
     constructor(@Inject(USE_PERMISSIONS_STORE) private isolate: boolean = false,
-                private permissionsStore: PermissionsStore) {
+                private permissionsStore: NgxPermissionsStore) {
         this.permissionsSource = this.isolate ? new BehaviorSubject<PermissionsObject>({}) : this.permissionsStore.permissionsSource;
         this.permissions$ = this.permissionsSource.asObservable();
     }

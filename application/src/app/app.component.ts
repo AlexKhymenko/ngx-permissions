@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PermissionsService } from 'ngx-permissions';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import { PermissionsService } from 'ngx-permissions';
 })
 export class AppComponent implements OnInit {
   title = 'app';
-  constructor(private permissionsService: PermissionsService) {
+  constructor(private permissionsService: NgxPermissionsService) {
 
   }
 

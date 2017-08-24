@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, NavigationExtras, Router, RouterStateSnapshot } from '@angular/router';
-import { PermissionsService } from '../permissions.service';
-import { PermissionsRouterData } from '../model/permissions-router-data.model';
-import { RolesService } from "../roles.service";
+import { NgxPermissionsService } from '../service/permissions.service';
+import { NgxPermissionsRouterData } from '../model/permissions-router-data.model';
+import { NgxRolesService } from "../service/roles.service";
 import { isFunction, isPlainObject, isString } from '../utils/utils';
 import { Observable } from 'rxjs/Observable';
 import  'rxjs/add/observable/forkJoin'
@@ -16,13 +16,13 @@ type RedirectToNavigationParameters = {
     navigationExtras?: NavigationExtras | Function
 }
 @Injectable()
-export class PermissionsGuard implements CanActivate {
+export class NgxPermissionsGuard implements CanActivate {
 
-    constructor(private permissionsService: PermissionsService, private  rolesService: RolesService, private router: Router) {}
+    constructor(private permissionsService: NgxPermissionsService, private  rolesService: NgxRolesService, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
-        const purePermissions = route.data['permissions'] as PermissionsRouterData;
-        let permissions: PermissionsRouterData = {
+        const purePermissions = route.data['permissions'] as NgxPermissionsRouterData;
+        let permissions: NgxPermissionsRouterData = {
             ...purePermissions
         };
         if (isFunction(permissions.except)) {
@@ -109,7 +109,7 @@ export class PermissionsGuard implements CanActivate {
     }
 
     private checkOnlyPermissions(purePermissions: any, route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        let permissions: PermissionsRouterData = {
+        let permissions: NgxPermissionsRouterData = {
             ...purePermissions
         };
         if (isFunction(purePermissions.only)) {

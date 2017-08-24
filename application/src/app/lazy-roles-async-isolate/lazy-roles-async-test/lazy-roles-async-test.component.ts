@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RolesService } from 'ngx-permissions';
+import { NgxRolesService } from 'ngx-permissions';
 import { AsyncTestService } from '../async-test.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { AsyncTestService } from '../async-test.service';
 })
 export class LazyRolesAsyncTestComponent implements OnInit {
 
-  constructor(private rolesServices: RolesService, private asyncTest: AsyncTestService) { }
+  constructor(private rolesServices: NgxRolesService, private asyncTest: AsyncTestService) { }
 
   ngOnInit() {
     this.rolesServices.addRole("ADMIN_TRUE", () => {

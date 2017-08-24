@@ -1,4 +1,4 @@
-export class Permission {
+export class NgxPermission {
     name: string;
     validationFunction: Function;
 

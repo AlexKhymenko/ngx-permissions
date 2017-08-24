@@ -1,8 +1,8 @@
 
 
-import { PermissionsService } from './permissions.service';
+import { NgxPermissionsService } from './permissions.service';
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
-import { NgxPermissionsModule } from './index';
+import { NgxPermissionsModule } from '../index';
 
 enum PermissionsNamesEnum {
     ADMIN = <any>'ADMIN',
@@ -10,14 +10,14 @@ enum PermissionsNamesEnum {
 }
 
 describe('Permissions Service', () => {
-    let localService: PermissionsService;
+    let localService: NgxPermissionsService;
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [NgxPermissionsModule.forRoot()]
         });
     });
 
-    beforeEach(inject([PermissionsService], (service: PermissionsService) => {
+    beforeEach(inject([NgxPermissionsService], (service: NgxPermissionsService) => {
         localService = service;
     }));
 

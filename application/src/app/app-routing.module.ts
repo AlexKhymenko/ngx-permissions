@@ -1,7 +1,7 @@
 import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home/home.component';
-import { PermissionsGuard } from 'ngx-permissions';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 
 
 export function testPermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -14,7 +14,7 @@ export function testPermissions(route: ActivatedRouteSnapshot, state: RouterStat
 const appRoutes: Routes = [
   { path: 'home',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'ADMIN',
@@ -25,7 +25,7 @@ const appRoutes: Routes = [
 
   { path: 'home3',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADMIN',
@@ -35,7 +35,7 @@ const appRoutes: Routes = [
   },
   { path: 'dynamic/:id',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: testPermissions
@@ -44,7 +44,7 @@ const appRoutes: Routes = [
   },
   { path: 'home4',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADMINNN',
@@ -54,7 +54,7 @@ const appRoutes: Routes = [
   },
   { path: 'home1',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'ADMIN1',
@@ -65,7 +65,7 @@ const appRoutes: Routes = [
   {
     path: 'except-should',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADDDMIN'
@@ -75,7 +75,7 @@ const appRoutes: Routes = [
   {
     path: 'except-should-not',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADMIN'
@@ -85,7 +85,7 @@ const appRoutes: Routes = [
   {
     path: 'only-should-not',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADMIN'
@@ -111,7 +111,7 @@ const appRoutes: Routes = [
       {
         path: 'reports',
         component: HomeComponent,
-        canActivate: [PermissionsGuard],
+        canActivate: [NgxPermissionsGuard],
         data: {
           permissions: {
             only: 'ADMsIN',

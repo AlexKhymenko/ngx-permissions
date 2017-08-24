@@ -1,16 +1,16 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { PermissionsDirective } from './permissions.directive';
-import { PermissionsService, USE_PERMISSIONS_STORE } from './permissions.service';
-import { PermissionsGuard } from './router/permissions-guard.service';
-import { RolesService, USE_ROLES_STORE } from './roles.service';
-import { PermissionsStore } from './store/permissions.store';
-import { RolesStore } from './store/roles.store';
+import { NgxPermissionsDirective } from './directive/permissions.directive';
+import { NgxPermissionsService, USE_PERMISSIONS_STORE } from './service/permissions.service';
+import { NgxPermissionsGuard } from './router/permissions-guard.service';
+import { NgxRolesService, USE_ROLES_STORE } from './service/roles.service';
+import { NgxPermissionsStore } from './store/permissions.store';
+import { NgxRolesStore } from './store/roles.store';
 
 export * from './store/roles.store'
 export * from './store/permissions.store'
-export * from './permissions.directive';
-export * from './permissions.service';
-export * from './roles.service';
+export * from './directive/permissions.directive';
+export * from './service/permissions.service';
+export * from './service/roles.service';
 export * from './router/permissions-guard.service';
 export * from './model/permissions-router-data.model'
 export * from './model/role.model'
@@ -26,10 +26,10 @@ export interface NgxPermissionsModuleConfig {
   imports: [
   ],
   declarations: [
-    PermissionsDirective
+    NgxPermissionsDirective
   ],
   exports: [
-    PermissionsDirective
+    NgxPermissionsDirective
   ]
 })
 export class NgxPermissionsModule {
@@ -37,11 +37,11 @@ export class NgxPermissionsModule {
     return {
       ngModule: NgxPermissionsModule,
       providers: [
-            PermissionsStore,
-            RolesStore,
-            PermissionsService,
-            PermissionsGuard,
-            RolesService,
+            NgxPermissionsStore,
+            NgxRolesStore,
+            NgxPermissionsService,
+            NgxPermissionsGuard,
+            NgxRolesService,
             {provide: USE_PERMISSIONS_STORE, useValue: config.permissionsIsolate},
             {provide: USE_ROLES_STORE, useValue: config.rolesIsolate},
       ]
@@ -54,9 +54,9 @@ export class NgxPermissionsModule {
             providers: [
                 {provide: USE_PERMISSIONS_STORE, useValue: config.permissionsIsolate},
                 {provide: USE_ROLES_STORE, useValue: config.rolesIsolate},
-                PermissionsService,
-                RolesService,
-                PermissionsGuard
+                NgxPermissionsService,
+                NgxRolesService,
+                NgxPermissionsGuard
             ]
         };
     }

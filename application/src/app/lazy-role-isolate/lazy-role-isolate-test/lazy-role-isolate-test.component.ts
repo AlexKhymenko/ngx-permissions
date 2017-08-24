@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RolesService } from 'ngx-permissions';
+import { NgxRolesService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-lazy-role-isolate-test',
@@ -8,7 +8,7 @@ import { RolesService } from 'ngx-permissions';
 })
 export class LazyRoleIsolateTestComponent implements OnInit {
 
-  constructor(private rolesService: RolesService) { }
+  constructor(private rolesService: NgxRolesService) { }
 
   ngOnInit() {
     this.rolesService.addRole('ADMIN', ['NICE']);

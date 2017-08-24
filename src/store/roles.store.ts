@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable} from 'rxjs/Observable';
 
-export class RolesStore {
+export class NgxRolesStore {
 
     public rolesSource = new BehaviorSubject({});
 

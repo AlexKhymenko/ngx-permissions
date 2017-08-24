@@ -2,21 +2,21 @@ import {
     Directive, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef,
     ViewContainerRef
 } from "@angular/core";
-import { PermissionsService } from "./permissions.service";
+import { NgxPermissionsService } from "../service/permissions.service";
 import { Subscription } from "rxjs/Subscription";
-import { RolesService } from './roles.service';
+import { NgxRolesService } from '../service/roles.service';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/combineLatest';
 import { Observable } from 'rxjs/Observable';
 
 @Directive({
-    selector: '[permissions],[permissionsOnly],[permissionsExcept]'
+    selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
 })
-export class PermissionsDirective implements OnInit, OnDestroy {
+export class NgxPermissionsDirective implements OnInit, OnDestroy {
 
-    @Input() permissionsOnly: any;
+    @Input() ngxPermissionsOnly: any;
 
-    @Input() permissionsExcept: any;
+    @Input() ngxPermissionsExcept: any;
 
     @Output() permissionsAuthorized = new EventEmitter();
     @Output() permissionsUnauthorized = new EventEmitter();
@@ -25,8 +25,8 @@ export class PermissionsDirective implements OnInit, OnDestroy {
 
     private firstRun = false;
 
-    constructor(private permissionsService: PermissionsService,
-                private rolesService: RolesService,
+    constructor(private permissionsService: NgxPermissionsService,
+                private rolesService: NgxRolesService,
                 private viewContainer: ViewContainerRef,
                 private templateRef: TemplateRef<EvryIfPermissionContext>) {}
 
@@ -38,14 +38,14 @@ export class PermissionsDirective implements OnInit, OnDestroy {
                 return;
             }
 
-            if (!!this.permissionsExcept) {
-                 Promise.all([this.permissionsService.hasPermission(this.permissionsExcept), this.rolesService.hasOnlyRoles(this.permissionsExcept)])
+            if (!!this.ngxPermissionsExcept) {
+                 Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsExcept), this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept)])
                     .then(([permissionsPr, roles]) => {
                         if (permissionsPr || roles) {
                             this.permissionsUnauthorized.emit();
                             this.viewContainer.clear();
                         } else {
-                            if (!!this.permissionsOnly) {
+                            if (!!this.ngxPermissionsOnly) {
                                 throw false;
                             } else {
                                 this.permissionsAuthorized.emit();
@@ -56,7 +56,7 @@ export class PermissionsDirective implements OnInit, OnDestroy {
 
                         }
                     }).catch(() => {
-                        if (!!this.permissionsOnly) {
+                        if (!!this.ngxPermissionsOnly) {
                             this.checkIfPermissionsOnly();
                             return;
                         }
@@ -68,7 +68,7 @@ export class PermissionsDirective implements OnInit, OnDestroy {
             }
 
 
-            if (!!this.permissionsOnly) {
+            if (!!this.ngxPermissionsOnly) {
                 this.checkIfPermissionsOnly();
             }
         });
@@ -81,7 +81,7 @@ export class PermissionsDirective implements OnInit, OnDestroy {
     }
 
     private checkIfPermissionsOnly() {
-        return Promise.all([this.permissionsService.hasPermission(this.permissionsOnly), this.rolesService.hasOnlyRoles(this.permissionsOnly)])
+        return Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsOnly), this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly)])
             .then(([permissionPr,  roles]) => {
                 if (permissionPr || roles) {
                     this.permissionsAuthorized.emit();

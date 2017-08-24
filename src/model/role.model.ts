@@ -1,4 +1,4 @@
-export class Role {
+export class NgxRole {
     name: string;
     validationFunction: Function | string[];
 

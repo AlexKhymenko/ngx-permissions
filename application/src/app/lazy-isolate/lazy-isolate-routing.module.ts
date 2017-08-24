@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { IsolateComponent } from './isolate/isolate.component';
-import { PermissionsGuard } from 'ngx-permissions';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 
 const appRoutes: Routes = [
   { path: '',
@@ -10,7 +10,7 @@ const appRoutes: Routes = [
   {
     path: 'except-should',
     component: IsolateComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADDDMIN'
@@ -20,7 +20,7 @@ const appRoutes: Routes = [
   {
     path: 'only-should',
     component: IsolateComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'GUEST'
@@ -30,7 +30,7 @@ const appRoutes: Routes = [
   {
     path: 'except-should-not',
     component: IsolateComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'GUEST'
@@ -40,7 +40,7 @@ const appRoutes: Routes = [
   {
     path: 'only-should-not',
     component: IsolateComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'ADMIN'

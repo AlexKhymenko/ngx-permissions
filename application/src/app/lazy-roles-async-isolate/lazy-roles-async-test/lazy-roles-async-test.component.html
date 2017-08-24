@@ -12,33 +12,33 @@
 
 <div style="background-color: green">
   Should see something
-  <ng-template permissions [permissionsOnly]="'ADMIN_TRUE'">
+  <ng-template permissions [ngxPermissionsOnly]="'ADMIN_TRUE'">
     LAZY I will see it only GUEST
   </ng-template>
 </div>
 
 
 <div style="background-color: red">
-  <ng-template permissions [permissionsOnly]="'ADMIN_FALSE'">
+  <ng-template permissions [ngxPermissionsOnly]="'ADMIN_FALSE'">
     <div>LAZY I SHOULD not see it only guest</div>
   </ng-template>
 </div>
 
 <div style="background-color: green">
   la
-  <ng-template permissions [permissionsOnly]="'ADMIN_RESOLVE_TRUE'">
+  <ng-template permissions [ngxPermissionsOnly]="'ADMIN_RESOLVE_TRUE'">
     LAZY I SHOULD not see it ADMIN RESOLVE TRUE guest
   </ng-template>
 </div>
 
 <div class="background-color: red">
-  <ng-template permissions [permissionsOnly]="'ADMIN_RESOLVE_FALSE'">
+  <ng-template permissions [ngxPermissionsOnly]="'ADMIN_RESOLVE_FALSE'">
     <div style="color: red"> I SHOULD NOT SEE RESOLVE FALSE</div>
   </ng-template>
 </div>
 
 <div style="background-color: red">
-  <ng-template permissions [permissionsOnly]="'ADMIN_REJECT'">
+  <ng-template permissions [ngxPermissionsOnly]="'ADMIN_REJECT'">
     <div>LAZY I Should not see it ADMIN REJECT admin</div>
   </ng-template>
 </div>

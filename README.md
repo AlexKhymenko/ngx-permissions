@@ -105,7 +105,7 @@ Import service to the main application and load permissions
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
-import { PermissionsService } from 'ngx-permissions';
+import { NgxPermissionsService } from 'ngx-permissions';
 import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-root',
@@ -116,7 +116,7 @@ export class AppComponent implements OnInit {
 
   title = 'app';
 
-   constructor(private permissionsService: PermissionsService,
+   constructor(private permissionsService: NgxPermissionsService,
                private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -135,15 +135,15 @@ export class AppComponent implements OnInit {
 Usage in templates 
 
 ```html
-<div *permissionsOnly="['ADMIN', 'GUEST']">
+<div *ngxPermissionsOnly="['ADMIN', 'GUEST']">
     <div>You can see this text congrats</div>
 </div>
 
-<ng-template permissionsOnly="ADMIN">
+<ng-template ngxPermissionsOnly="ADMIN">
   <div>You can see this text congrats</div>
  </ng-template>
  
- <ng-template [permissionsExcept]="['JOHNY']">
+ <ng-template [ngxPermissionsExcept]="['JOHNY']">
    <div> All will see it except JOHNY</div>
  </ng-template>
 ```
@@ -183,11 +183,11 @@ So, how do you tell Permission what does 'readDocuments' or 'listSongs' mean and
 to those definitions?
 
 Well, Permission allows you to set different 'permissions' definitions along with the logic that determines if the current 
-session belongs to them. To do that library exposes special container `PermissionsService` that allows you to manipulate them freely.
+session belongs to them. To do that library exposes special container `NgxPermissionsService` that allows you to manipulate them freely.
 
 ### Individual permissions
 
-To add permissions individually `PermissionsService` exposes method `addPermission` that generic usage is shown below or add as array: 
+To add permissions individually `NgxPermissionsService` exposes method `addPermission` that generic usage is shown below or add as array: 
 
 ```typescript
 [...]
@@ -231,8 +231,8 @@ import { APP_INITIALIZER } from '@angular/core';
     DictionaryService,
     {
       provide: APP_INITIALIZER,
-      useFactory: (ds: DictionaryService, ps: PermissionsService ) => function() {return ds.load().then((data) => {return ps.loadPermissions(data)})},
-      deps: [LoadService, PermissionsService],
+      useFactory: (ds: DictionaryService, ps: NgxPermissionsService ) => function() {return ds.load().then((data) => {return ps.loadPermissions(data)})},
+      deps: [LoadService, NgxPermissionsService],
       multi: true
     }]
 })
@@ -264,8 +264,8 @@ check if permission is valid.
 
 ```typescript
 const permissions = ['listMeeting', 'seeMeeting', 'editMeeting', 'deleteMeeting']
-PermissionsService.loadPermissions(permissions) 
-PermissionsService.loadPermissions(permissions, (permissionName, permissionStore) => {
+NgxPermissionsService.loadPermissions(permissions) 
+NgxPermissionsService.loadPermissions(permissions, (permissionName, permissionStore) => {
     return !!permissionStore[permissionName];
 }) 
 ```
@@ -274,16 +274,16 @@ NOTE: This method will remove older permissions and pass only new;
 Removing permissions
 ----------------------------
 
-You can easily remove **all** permissions form the `PermissionsService` (e.g. after user logged out or switched profile) by calling:  
+You can easily remove **all** permissions form the `NgxPermissionsService` (e.g. after user logged out or switched profile) by calling:  
 
 ```typescript
-PermissionsService.flushPermissions();
+NgxPermissionsService.flushPermissions();
 ```
 
 Alternatively you can use `removePermission` to delete defined permissions manually:
 
 ```typescript
-PermissionsService.removePermission('user');
+NgxPermissionsService.removePermission('user');
 ```
 
 Retrieving permissions
@@ -292,9 +292,9 @@ Retrieving permissions
 And to get all user permissions use method `getPermissions` or use Observable `permissions$`:
 
 ```typescript
-var permissions = PermissionsService.getPermissions();
+var permissions = NgxPermissionsService.getPermissions();
 
-PermissionsService.permissions$.subscribe((permissions) => {
+NgxPermissionsService.permissions$.subscribe((permissions) => {
     console.log(permissions)
 })
 ```
@@ -335,14 +335,14 @@ Similarly to permissions we are gonna use here `RolesService` that exposes `addR
 ```typescript
 [...]
 
-RolesService
+NgxRolesService
   .addRole('ROLE_NAME', ['permissionNameA', 'permissionNameB', 'permissionNameC', ...])
   
-RolesService.addRole('Guest', () => {
+NgxRolesService.addRole('Guest', () => {
       return this.sessionService.checkSession().toPromise();
   }); 
 
-RolesService.addRole('Guest', () => {
+NgxRolesService.addRole('Guest', () => {
       return true;
   }); 
 ```
@@ -369,12 +369,12 @@ It also have to return one of values to properly represent results:
 Usage of `addRole` is very similar to `addPermissions`:
 
 ```typescript
-RolesService
-  // Permission array validated role
+NgxRolesService
+  NgxPermission
   // Library will internally validate if 'listEvents' and 'editEvents' permissions are valid when checking if role is valid   
   .addRole('ADMIN', ['listEvents', 'editEvents']);  
   
-RolesService.addRole('Guest', () => {
+NgxRolesService.addRole('Guest', () => {
       return this.sessionService.checkSession().toPromise();
   });  
   
@@ -382,10 +382,10 @@ RolesService.addRole('Guest', () => {
 
 ### Multiple roles
 
-Service `RolesService` allows you define multiple roles with `addRoles` method. This method accepts `Object` containing keys as a role names and corresponding validators as values. 
+Service `NgxRolesService` allows you define multiple roles with `addRoles` method. This method accepts `Object` containing keys as a role names and corresponding validators as values. 
 
 ```typescript
-RolesService    
+NgxRolesService    
   // Or use your own function/service to validate role
   .addRoles({
     'USER': ['canReadInvoices'],
@@ -404,13 +404,13 @@ Removing roles
 To remove **all** roles use `flushRoles` method:  
 
 ```typescript
-RolesService.flushRoles();
+NgxRolesService.flushRoles();
 ```
 
 Alternatively you can use `removeRole` to delete defined role manually:
 
 ```typescript
-RolesService.removeRole('USER');
+NgxRolesService.removeRole('USER');
 ```
 
 Getting all roles
@@ -419,15 +419,15 @@ Getting all roles
 To get specific role use method `getRole`:
 
 ```javascript
-let role = RolesService.getRole('roleName');
+let role = NgxRolesService.getRole('roleName');
 ```
 
-And to get all roles form `RolesService` use method `getRoles` or use `Observable roles$`:
+And to get all roles form `NgxRolesService` use method `getRoles` or use `Observable roles$`:
 
 ```typescript
-let roles = RolesService.getRoles();
+let roles = NgxRolesService.getRoles();
 
-RolesService.roles$.subscribe((data) => {
+NgxRolesService.roles$.subscribe((data) => {
     console.log(data);
 })
 ```
@@ -444,33 +444,33 @@ Overview
 Permission directive
 ----------------------------
   
-Permission module exposes directive `permissionsOnly` and `permissionsExcept` that can show/hide elements of your application based on set of permissions.
+Permission module exposes directive `ngxPermissionsOnly` and `ngxPermissionsExcept` that can show/hide elements of your application based on set of permissions.
 
 Permission directive accepts several attributes:
 
 | Attribute             | Value                    | Description      |
 | :----------------------|:------------------------:| :----------------|
-| `permissionsOnly`     | <code>[String &#124; String[]]</code>   | Single or multiple permissions allowed to access content | 
-| `permissionsExcept`   | <code>[String &#124; String[]]</code>   | Single or multiple permissions denied to access content|
+| `ngxPermissionsOnly`     | <code>[String &#124; String[]]</code>   | Single or multiple permissions allowed to access content | 
+| `ngxPermissionsExcept`   | <code>[String &#124; String[]]</code>   | Single or multiple permissions denied to access content|
 | `(permissionsAuthorized)`   | EventEmitter       | EventEmitter emitted when authorized                         |
 | `(permissionsUnauthorized)` | EventEmitter       | EventEmitter emitted when unAuthorized                       |
 ### Basic usage
 
 Directives accepts either single permission that has to be met in order to display it's content,
-You can use both `permissionsOnly` and `permissionsExcept` at the same time:
+You can use both `ngxPermissionsOnly` and `ngxPermissionsExcept` at the same time:
  
 ```html
-<ng-template [permissionsOnly]="['ADMIN']" (permissionsAuthorized)="yourCustomAuthorizedFunction()" (permissionsUnauthorized)="yourCustomAuthorizedFunction()">
+<ng-template [ngPpermissionsOnly]="['ADMIN']" (permissionsAuthorized)="yourCustomAuthorizedFunction()" (permissionsUnauthorized)="yourCustomAuthorizedFunction()">
     <div>You can see this text congrats</div>
  </ng-template>
- <ng-template [permissionsOnly]="'ADMIN'"  [permissionsExcept]="'Manager'">
+ <ng-template [ngPpermissionsOnly]="'ADMIN'"  [ngxPermissionsExcept]="'Manager'">
     <div>You can see this text congrats</div>
  </ng-template>
-  <ng-template permissionsOnly="ADMIN">
+  <ng-template ngxPpermissionsOnly="ADMIN">
     <div>You can see this text congrats</div>
  </ng-template>
  
- <ng-template [permissionsExcept]="['JOHNY']">
+ <ng-template [ngxPermissionsExcept]="['JOHNY']">
    <div> All will see it except JOHNY</div>
  </ng-template>
 ```
@@ -478,31 +478,31 @@ You can use both `permissionsOnly` and `permissionsExcept` at the same time:
 Or set of permissions separated by 'coma':
 
 ```html
-<ng-template [permissionsOnly]="['ADMIN', 'GUEST']">
+<ng-template [ngPpermissionsOnly]="['ADMIN', 'GUEST']">
     <div>You can see this text congrats</div>
 </ng-template>
 
- <ng-template [permissionsExcept]="['ADMIN', 'JOHNY']">
+ <ng-template [ngxPermissionsExcept]="['ADMIN', 'JOHNY']">
    <div>All will see it except admin and Johny</div>
  </ng-template>
-  <ng-template [permissionsExcept]="['ADMIN', 'JOHNY']" [permissionsOnly]="['MANAGER']">
+  <ng-template [ngxPermissionsExcept]="['ADMIN', 'JOHNY']" [ngPpermissionsOnly]="['MANAGER']">
     <div>All will see it except admin and Johny</div>
   </ng-template>
 ```
 
 Or just simply by *
 ```html
-<div *permissionsOnly="['ADMIN', 'GUEST']">
+<div *ngPpermissionsOnly="['ADMIN', 'GUEST']">
     <div>You can see this text congrats</div>
 </div>
 
- <div *permissionsExcept="['ADMIN', 'JOHNY']">
+ <div *ngxPermissionsExcept="['ADMIN', 'JOHNY']">
    <div>All will see it except admin and Johny</div>
  </div>
 ```
  > Note: You cant use `*` style with other * style directives like `*ngIf`. You should wrap them. And YES i don't like it either.
   ```html
-   <div *permissionsOnly="['ADMIN', 'GUEST']">
+   <div *ngPpermissionsOnly="['ADMIN', 'GUEST']">
     <div *ngIf="true">
       You can see this text congrats
     </div>
@@ -624,7 +624,7 @@ const appRoutes: Routes = [
 export class AppRoutingModule {}
 ```
 
-When `PermissionGuard` service will be called it would expect user to have either `ADMIN` or `MODERATOR` permissions to pass him to `home` route.
+When `NgxPermissionsGuard` service will be called it would expect user to have either `ADMIN` or `MODERATOR` permissions to pass him to `home` route.
 
 [//]: <> (> :bulb: **Note**   
           > Between values in array operator **OR** is used to create alternative. If you need **AND** operator between permissions define additional `PermRole` containing set of those. 
@@ -651,7 +651,7 @@ export function testPermissions(route: ActivatedRouteSnapshot, state: RouterStat
 const appRoutes: Routes = [
   { path: 'dynamic/:id',
       component: HomeComponent,
-      canActivate: [PermissionsGuard],
+      canActivate: [NgxPermissionsGuard],
       data: {
         permissions: {
           only: testPermissions
@@ -668,7 +668,7 @@ const appRoutes: Routes = [
 const appRoutes: Routes = [
   { path: 'dynamic/:id',
       component: HomeComponent,
-      canActivate: [PermissionsGuard],
+      canActivate: [NgxPermissionsGuard],
       data: {
         permissions: {
           only: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
@@ -706,12 +706,12 @@ In case you want to redirect to some specific state when user is not authorized 
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home/home.component';
-import { PermissionsGuard } from 'ngx-permissions';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 
 const appRoutes: Routes = [
   { path: 'home',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: ['ADMIN', 'MODERATOR'],
@@ -740,7 +740,7 @@ In order to pass additional properties like params use pass `redirectTo` as obje
 const appRoutes: Routes = [
   { path: 'home',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: ['ADMIN', 'MODERATOR'],
@@ -786,7 +786,7 @@ The simplest example of multiple redirection rules are redirection based on pair
   const appRoutes: Routes = [
     { path: 'home',
       component: HomeComponent,
-      canActivate: [PermissionsGuard],
+      canActivate: [NgxPermissionsGuard],
       data: {
        permissions: {
                only: ['canReadAgenda','canEditAgenda'],
@@ -818,7 +818,7 @@ If you need more control over redirection parameters `Object` as a value can be 
   const appRoutes: Routes = [
     { path: 'home',
       component: HomeComponent,
-      canActivate: [PermissionsGuard],
+      canActivate: [NgxPermissionsGuard],
       data: {
          permissions: {
                only: ['canEditAgenda'],
@@ -856,7 +856,7 @@ To present usage `redirectTo` as `Object` with values as `Function` in a state d
  const appRoutes: Routes = [
     { path: 'home',
       component: HomeComponent,
-      canActivate: [PermissionsGuard],
+      canActivate: [NgxPermissionsGuard],
       data: {
        permissions: {
               only: ['canReadAgenda','canEditAgenda'],
@@ -913,7 +913,7 @@ Similarly to examples showing defining dynamic access to state redirection can a
 const appRoutes: Routes = [
     { path: 'home/:isEditable',
       component: HomeComponent,
-      canActivate: [PermissionsGuard],
+      canActivate: [NgxPermissionsGuard],
       data: {
       permissions: {
              only: ['canReadAgenda','canEditAgenda'],
@@ -973,7 +973,7 @@ let routes = [
     children: [
       {path: 'component', 
       component: ComponentName, 
-      canActivate: [PermissionsGuard],
+      canActivate: [NgxPermissionsGuard],
       data: {
          permissions: {
            only: ['ADMIN', 'MODERATOR'],

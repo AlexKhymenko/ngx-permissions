@@ -1,16 +1,16 @@
-import { PermissionsDirective } from './permissions.directive';
+import { NgxPermissionsDirective } from './permissions.directive';
 import { Component } from '@angular/core';
-import { NgxPermissionsModule } from './index';
+import { NgxPermissionsModule } from '../index';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { PermissionsService } from './permissions.service';
-import { RolesService } from './roles.service';
+import { NgxPermissionsService } from '../service/permissions.service';
+import { NgxRolesService } from '../service/roles.service';
 
 enum PermissionsTestEnum {
     ADMIN = <any> 'ADMIN',
     GUEST = <any> 'GUEST'
 }
 
-describe('PermissionsDirective', () => {
+describe('NgxPermissionsDirective', () => {
     it('should create an instance', () => {
         // const directive = new PermissionsDirective();
         expect(true).toBeTruthy();
@@ -19,7 +19,7 @@ describe('PermissionsDirective', () => {
 
 describe('Permission directive angular except', () => {
     @Component({selector: 'test-comp',
-        template: `<ng-template permissions [permissionsExcept]="'ADMIN'"><div>123</div></ng-template>`})
+        template: `<ng-template permissions [ngxPermissionsExcept]="'ADMIN'"><div>123</div></ng-template>`})
     class TestComp {
         data: any;
     }
@@ -34,7 +34,7 @@ describe('Permission directive angular except', () => {
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        permissionService = fixture.debugElement.injector.get(PermissionsService);
+        permissionService = fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
@@ -101,7 +101,7 @@ describe('Permission directive angular except', () => {
 
 describe('Permission directive angular only', () => {
     @Component({selector: 'test-comp',
-        template: `<ng-template permissions [permissionsOnly]="'ADMIN'"><div>123</div></ng-template>`})
+        template: `<ng-template permissions [ngxPermissionsOnly]="'ADMIN'"><div>123</div></ng-template>`})
     class TestComp {
         data: any;
     }
@@ -116,7 +116,7 @@ describe('Permission directive angular only', () => {
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        permissionService = fixture.debugElement.injector.get(PermissionsService);
+        permissionService = fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
@@ -170,7 +170,7 @@ describe('Permission directive angular only', () => {
 
 describe('Permission directive angular roles only', () => {
     @Component({selector: 'test-comp',
-        template: `<ng-template permissions [permissionsOnly]="'ADMIN'"><div>123</div></ng-template>`})
+        template: `<ng-template permissions [ngxPermissionsOnly]="'ADMIN'"><div>123</div></ng-template>`})
     class TestComp {
         data: any;
     }
@@ -185,7 +185,7 @@ describe('Permission directive angular roles only', () => {
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(RolesService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
 
     });
 
@@ -239,7 +239,7 @@ describe('Permission directive angular roles only', () => {
 });
 describe('Permission directive angular roles only array', () => {
     @Component({selector: 'test-comp',
-        template: `<ng-template permissions [permissionsOnly]="['ADMIN', 'GUEST']"><div>123</div></ng-template>`})
+        template: `<ng-template permissions [ngxPermissionsOnly]="['ADMIN', 'GUEST']"><div>123</div></ng-template>`})
     class TestComp {
         data: any;
     }
@@ -254,7 +254,7 @@ describe('Permission directive angular roles only array', () => {
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(RolesService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
 
     });
 
@@ -310,7 +310,7 @@ describe('Permission directive angular roles only array', () => {
 
 describe('Permission directive angular roles except', () => {
     @Component({selector: 'test-comp',
-        template: `<ng-template permissions [permissionsExcept]="'ADMIN'"><div>123</div></ng-template>`})
+        template: `<ng-template permissions [ngxPermissionsExcept]="'ADMIN'"><div>123</div></ng-template>`})
     class TestComp {
         data: any;
     }
@@ -325,7 +325,7 @@ describe('Permission directive angular roles except', () => {
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(RolesService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
 
     });
 
@@ -380,7 +380,7 @@ describe('Permission directive angular roles except', () => {
 });
 describe('Permission directive angular roles except array', () => {
     @Component({selector: 'test-comp',
-        template: `<ng-template permissions [permissionsExcept]="['ADMIN', 'GUEST']"><div>123</div></ng-template>`})
+        template: `<ng-template permissions [ngxPermissionsExcept]="['ADMIN', 'GUEST']"><div>123</div></ng-template>`})
     class TestComp {
         data: any;
     }
@@ -395,7 +395,7 @@ describe('Permission directive angular roles except array', () => {
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(RolesService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
 
     });
 
@@ -453,7 +453,7 @@ describe('Permission directive angular roles except array', () => {
 
 describe('Permission directive angular testing different selectors *permmisionsOnly', () => {
     @Component({selector: 'test-comp',
-        template: `<div *permissionsOnly="['ADMIN']"><div>123</div></div>`})
+        template: `<div *ngxPermissionsOnly="['ADMIN']"><div>123</div></div>`})
     class TestComp {
         data: any;
     }
@@ -468,7 +468,7 @@ describe('Permission directive angular testing different selectors *permmisionsO
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(RolesService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
 
     });
 
@@ -503,7 +503,7 @@ describe('Permission directive angular testing different selectors *permmisionsO
 
 describe('Permission directive angular testing different selectors *permmisionsExcept', () => {
     @Component({selector: 'test-comp',
-        template: `<div *permissionsExcept="['ADMIN']"><div>123</div></div>`})
+        template: `<div *ngxPermissionsExcept="['ADMIN']"><div>123</div></div>`})
     class TestComp {
         data: any;
     }
@@ -518,7 +518,7 @@ describe('Permission directive angular testing different selectors *permmisionsE
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(RolesService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
 
     });
 
@@ -548,7 +548,7 @@ describe('Permission directive angular testing different selectors *permmisionsE
 
 describe('Permission directive angular testing different async functions in roles', () => {
     @Component({selector: 'test-comp',
-        template: `<div *permissionsOnly="'ADMIN'"><div>123</div></div>`})
+        template: `<div *ngxPermissionsOnly="'ADMIN'"><div>123</div></div>`})
     class TestComp {
         data: any;
     }
@@ -563,7 +563,7 @@ describe('Permission directive angular testing different async functions in role
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(RolesService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
 
     });
 
@@ -626,7 +626,7 @@ describe('Permission directive angular testing different async functions in role
 
 describe('Permission directive angular testing different async functions in roles via array', () => {
     @Component({selector: 'test-comp',
-        template: `<div *permissionsOnly="['ADMIN','GUEST']"><div>123</div></div>`})
+        template: `<div *ngxPermissionsOnly="['ADMIN','GUEST']"><div>123</div></div>`})
     class TestComp {
         data: any;
     }
@@ -641,7 +641,7 @@ describe('Permission directive angular testing different async functions in role
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(RolesService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
 
     });
 
@@ -836,7 +836,7 @@ describe('Permission directive angular testing different async functions in role
 
 describe('Permission directive angular testing different async functions in permissions via array', () => {
     @Component({selector: 'test-comp',
-        template: `<div *permissionsOnly="['ADMIN','GUEST']"><div>123</div></div>`})
+        template: `<div *ngxPermissionsOnly="['ADMIN','GUEST']"><div>123</div></div>`})
     class TestComp {
         data: any;
     }
@@ -851,7 +851,7 @@ describe('Permission directive angular testing different async functions in perm
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        permissionsService = fixture.debugElement.injector.get(PermissionsService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
@@ -1096,7 +1096,7 @@ describe('Permission directive angular testing different async functions in perm
 
 describe('Permission directive angular testing different async functions in permissions via string', () => {
     @Component({selector: 'test-comp',
-        template: `<div *permissionsOnly="'ADMIN'"><div>123</div></div>`})
+        template: `<div *ngxPermissionsOnly="'ADMIN'"><div>123</div></div>`})
     class TestComp {
         data: any;
     }
@@ -1111,7 +1111,7 @@ describe('Permission directive angular testing different async functions in perm
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        permissionsService = fixture.debugElement.injector.get(PermissionsService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
@@ -1335,7 +1335,7 @@ describe('Permission directive angular testing different async functions in perm
 
 describe('Permission  directive angular testing  different only and accept together async functions in permissions via string', () => {
     @Component({selector: 'test-comp',
-        template: `<ng-template permissionsOnly="ADMIN" permissionsExcept="MANAGER"><div>123</div></ng-template>`})
+        template: `<ng-template ngxPermissionsOnly="ADMIN" ngxPermissionsExcept="MANAGER"><div>123</div></ng-template>`})
     class TestComp {
         data: any;
     }
@@ -1350,7 +1350,7 @@ describe('Permission  directive angular testing  different only and accept toget
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        permissionsService = fixture.debugElement.injector.get(PermissionsService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
@@ -1430,7 +1430,7 @@ describe('Permission  directive angular testing  different only and accept toget
 
 describe('Permission  directive angular testing  different only and accept together async functions in permissions via array', () => {
     @Component({selector: 'test-comp',
-        template: `<ng-template [permissionsOnly]="['ADMIN', 'GUEST']" [permissionsExcept]="['MANAGER']"><div>123</div></ng-template>`})
+        template: `<ng-template [ngxPermissionsOnly]="['ADMIN', 'GUEST']" [ngxPermissionsExcept]="['MANAGER']"><div>123</div></ng-template>`})
     class TestComp {
         data: any;
     }
@@ -1445,7 +1445,7 @@ describe('Permission  directive angular testing  different only and accept toget
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        permissionsService = fixture.debugElement.injector.get(PermissionsService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
@@ -1524,7 +1524,7 @@ describe('Permission  directive angular testing  different only and accept toget
 
 describe('Permission  directive angular testing  different only and accept together async functions in roles via array', () => {
     @Component({selector: 'test-comp',
-        template: `<ng-template [permissionsOnly]="['ADMIN', 'GUEST']" [permissionsExcept]="['MANAGER']"><div>123</div></ng-template>`})
+        template: `<ng-template [ngxPermissionsOnly]="['ADMIN', 'GUEST']" [ngxPermissionsExcept]="['MANAGER']"><div>123</div></ng-template>`})
     class TestComp {
         data: any;
     }
@@ -1539,7 +1539,7 @@ describe('Permission  directive angular testing  different only and accept toget
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(RolesService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
 
     });
 
