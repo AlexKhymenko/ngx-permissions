@@ -863,10 +863,10 @@ To present usage `redirectTo` as `Object` with values as `Function` in a state d
        permissions: {
               only: ['canReadAgenda','canEditAgenda'],
               redirectTo: {
-                canReadAgenda: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {
+                canReadAgenda: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeStateSnapshot: RouterStateSnapshot) => {
                   return 'dashboard';
                 },
-                canEditAgenda: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {
+                canEditAgenda: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeStateSnapshot: RouterStateSnapshot) => {
                   return {
                       navigationCommands: ['/dashboard'],
                       navigationExtras: {
@@ -894,7 +894,7 @@ To present usage `redirectTo` as `Object` with values as `Function` in a state d
 > `navigationCommands` and `navigationExtras` reserved words. Matching parameter to router.navigate function
 
 ```typescript
-export function canReadAgenda(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {                                                 
+export function canReadAgenda(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeStateSnapshot: RouterStateSnapshot) => {                                                 
     return 'dashboard';
 },
 
@@ -919,7 +919,7 @@ const appRoutes: Routes = [
       data: {
       permissions: {
              only: ['canReadAgenda','canEditAgenda'],
-             redirectTo: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {
+             redirectTo: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot) => {
                if(activateRouteSnapshot.params['id'] === 42){
                  return 'login';
                } else {
@@ -943,7 +943,7 @@ const appRoutes: Routes = [
 > Above code is not AOT compatible to make it AOT compatible extract it to function
 
 ```typescript
-export function redirectToFunc(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {
+export function redirectToFunc(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot) => {
      if(activateRouteSnapshot.params['id'] === 42){
        return 'login';
      } else {
