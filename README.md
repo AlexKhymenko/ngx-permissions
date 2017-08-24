@@ -460,10 +460,10 @@ Directives accepts either single permission that has to be met in order to displ
 You can use both `ngxPermissionsOnly` and `ngxPermissionsExcept` at the same time:
  
 ```html
-<ng-template [ngPpermissionsOnly]="['ADMIN']" (permissionsAuthorized)="yourCustomAuthorizedFunction()" (permissionsUnauthorized)="yourCustomAuthorizedFunction()">
+<ng-template [ngxPermissionsOnly]="['ADMIN']" (permissionsAuthorized)="yourCustomAuthorizedFunction()" (permissionsUnauthorized)="yourCustomAuthorizedFunction()">
     <div>You can see this text congrats</div>
  </ng-template>
- <ng-template [ngPpermissionsOnly]="'ADMIN'"  [ngxPermissionsExcept]="'Manager'">
+ <ng-template [ngxPermissionsOnly]="'ADMIN'"  [ngxPermissionsExcept]="'Manager'">
     <div>You can see this text congrats</div>
  </ng-template>
   <ng-template ngxPpermissionsOnly="ADMIN">
@@ -478,21 +478,21 @@ You can use both `ngxPermissionsOnly` and `ngxPermissionsExcept` at the same tim
 Or set of permissions separated by 'coma':
 
 ```html
-<ng-template [ngPpermissionsOnly]="['ADMIN', 'GUEST']">
+<ng-template [ngxPermissionsOnly]="['ADMIN', 'GUEST']">
     <div>You can see this text congrats</div>
 </ng-template>
 
  <ng-template [ngxPermissionsExcept]="['ADMIN', 'JOHNY']">
    <div>All will see it except admin and Johny</div>
  </ng-template>
-  <ng-template [ngxPermissionsExcept]="['ADMIN', 'JOHNY']" [ngPpermissionsOnly]="['MANAGER']">
+  <ng-template [ngxPermissionsExcept]="['ADMIN', 'JOHNY']" [ngxPermissionsOnly]="['MANAGER']">
     <div>All will see it except admin and Johny</div>
   </ng-template>
 ```
 
 Or just simply by *
 ```html
-<div *ngPpermissionsOnly="['ADMIN', 'GUEST']">
+<div *ngxPermissionsOnly="['ADMIN', 'GUEST']">
     <div>You can see this text congrats</div>
 </div>
 
@@ -502,7 +502,7 @@ Or just simply by *
 ```
  > Note: You cant use `*` style with other * style directives like `*ngIf`. You should wrap them. And YES i don't like it either.
   ```html
-   <div *ngPpermissionsOnly="['ADMIN', 'GUEST']">
+   <div *ngxPermissionsOnly="['ADMIN', 'GUEST']">
     <div *ngIf="true">
       You can see this text congrats
     </div>
