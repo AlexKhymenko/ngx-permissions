@@ -11,7 +11,7 @@ import  'rxjs/add/operator/mergeMap'
 import  'rxjs/add/operator/do'
 import  'rxjs/add/operator/map'
 
-type RedirectToNavigationParameters = {
+type NgxRedirectToNavigationParameters = {
     navigationCommands: any[] | Function,
     navigationExtras?: NavigationExtras | Function
 }
@@ -132,21 +132,21 @@ export class NgxPermissionsGuard implements CanActivate {
 
 
 
-    private redirectToAnotherRoute(redirectTo: string | any[] | RedirectToNavigationParameters | Function, route : ActivatedRouteSnapshot, state: RouterStateSnapshot, failedPermissionName?: string) {
+    private redirectToAnotherRoute(redirectTo: string | any[] | NgxRedirectToNavigationParameters | Function, route : ActivatedRouteSnapshot, state: RouterStateSnapshot, failedPermissionName?: string) {
         if(isFunction(redirectTo)) {
             redirectTo = (redirectTo as Function)(failedPermissionName, route, state);
         }
 
         if(this.isRedirectionWithParameters(redirectTo)) {
             if (this.hasNavigationExtrasAsFunction(redirectTo)) {
-                (<RedirectToNavigationParameters>redirectTo).navigationExtras = ((<RedirectToNavigationParameters>redirectTo).navigationExtras as Function)(route, state);
+                (<NgxRedirectToNavigationParameters>redirectTo).navigationExtras = ((<NgxRedirectToNavigationParameters>redirectTo).navigationExtras as Function)(route, state);
             }
 
             if (this.hasNavigationCommandsAsFunction(redirectTo)) {
-                (<RedirectToNavigationParameters>redirectTo).navigationCommands = ((<RedirectToNavigationParameters>redirectTo).navigationCommands as Function)(route, state);
+                (<NgxRedirectToNavigationParameters>redirectTo).navigationCommands = ((<NgxRedirectToNavigationParameters>redirectTo).navigationCommands as Function)(route, state);
             }
 
-            this.router.navigate(((<RedirectToNavigationParameters>redirectTo).navigationCommands as any[]), ((<RedirectToNavigationParameters> redirectTo).navigationExtras as NavigationExtras));
+            this.router.navigate(((<NgxRedirectToNavigationParameters>redirectTo).navigationCommands as any[]), ((<NgxRedirectToNavigationParameters> redirectTo).navigationExtras as NavigationExtras));
             return;
         }
 
@@ -157,17 +157,17 @@ export class NgxPermissionsGuard implements CanActivate {
         }
     }
 
-    private isRedirectionWithParameters(object: any | RedirectToNavigationParameters): boolean {
+    private isRedirectionWithParameters(object: any | NgxRedirectToNavigationParameters): boolean {
         return isPlainObject(object) && (!!object.navigationCommands || !!object.navigationExtras);
     }
 
 
     private hasNavigationExtrasAsFunction(redirectTo: any): boolean {
-        return !!(<RedirectToNavigationParameters> redirectTo).navigationExtras && isFunction((<RedirectToNavigationParameters> redirectTo).navigationExtras)
+        return !!(<NgxRedirectToNavigationParameters> redirectTo).navigationExtras && isFunction((<NgxRedirectToNavigationParameters> redirectTo).navigationExtras)
     }
 
     private hasNavigationCommandsAsFunction(redirectTo: any): boolean {
-        return !!(<RedirectToNavigationParameters> redirectTo).navigationCommands && isFunction((<RedirectToNavigationParameters> redirectTo).navigationCommands);
+        return !!(<NgxRedirectToNavigationParameters> redirectTo).navigationCommands && isFunction((<NgxRedirectToNavigationParameters> redirectTo).navigationCommands);
     }
 
     private onlyRedirectCheck(permissions: any, route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {

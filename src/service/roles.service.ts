@@ -16,17 +16,17 @@ import { NgxRolesStore } from '../store/roles.store';
 //TODO: Change on Injection token when angular removes opaque token
 export const USE_ROLES_STORE = new OpaqueToken('USE_ROLES_STORE');
 
-export type RolesObject = {[name: string] : NgxRole}
+export type NgxRolesObject = {[name: string] : NgxRole}
 
 @Injectable()
 export class NgxRolesService {
-    private rolesSource: BehaviorSubject<RolesObject>;
+    private rolesSource: BehaviorSubject<NgxRolesObject>;
 
-    public roles$: Observable<RolesObject>;
+    public roles$: Observable<NgxRolesObject>;
 
     constructor(@Inject(USE_ROLES_STORE) private isolate: boolean = false,
                 private rolesStore: NgxRolesStore) {
-        this.rolesSource = this.isolate ? new BehaviorSubject<RolesObject>({}) : this.rolesStore.rolesSource;
+        this.rolesSource = this.isolate ? new BehaviorSubject<NgxRolesObject>({}) : this.rolesStore.rolesSource;
         this.roles$ = this.rolesSource.asObservable();
     }
 
@@ -112,7 +112,7 @@ export class NgxRolesService {
         }
     }
 
-    private hasRolePermission(roles: RolesObject, roleName: string | string[]): Promise<boolean> {
+    private hasRolePermission(roles: NgxRolesObject, roleName: string | string[]): Promise<boolean> {
         return Promise.resolve(Object.keys(roles).some((key) => {
             if (Array.isArray(roles[key].validationFunction)) {
                 if (this.isString(roleName)) {

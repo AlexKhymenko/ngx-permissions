@@ -13,7 +13,7 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
 
 
-export type PermissionsObject = {[name: string] : NgxPermission}
+export type NgxPermissionsObject = {[name: string] : NgxPermission}
 
 export const USE_PERMISSIONS_STORE = new OpaqueToken('USE_PERMISSIONS_STORE');
 
@@ -26,7 +26,7 @@ export class NgxPermissionsService {
 
     constructor(@Inject(USE_PERMISSIONS_STORE) private isolate: boolean = false,
                 private permissionsStore: NgxPermissionsStore) {
-        this.permissionsSource = this.isolate ? new BehaviorSubject<PermissionsObject>({}) : this.permissionsStore.permissionsSource;
+        this.permissionsSource = this.isolate ? new BehaviorSubject<NgxPermissionsObject>({}) : this.permissionsStore.permissionsSource;
         this.permissions$ = this.permissionsSource.asObservable();
     }
 
