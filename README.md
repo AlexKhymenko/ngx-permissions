@@ -1,6 +1,6 @@
 # ngx-permissions
 
-Permission based access control for your angular applications(AOT, lazy modules compatible)
+Permission and roles based access control for your angular(angular2, angular4+) applications(AOT, lazy modules compatible)
 
 ## Table of contents
 
@@ -12,6 +12,8 @@ Permission based access control for your angular applications(AOT, lazy modules 
 - [Usage with Routes](#usage-with-routes)
 - [Development](#development)
 - [License](#license)
+
+Migration from version 0.1 to 1.0 [CHANGELOG](CHANGELOG.md)
 
 ## Installation
 
@@ -562,12 +564,12 @@ You can use `except` and `only` at the same time;
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home/home.component';
-import { PermissionsGuard } from 'ngx-permissions';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 
 const appRoutes: Routes = [
   { path: 'home',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'ADMIN'
@@ -587,7 +589,7 @@ export class AppRoutingModule {}
 
 ```
 
-In given case when user is trying to access `home` state `PermissionsGuard` service is called checking if `isAuthorized` permission is valid: 
+In given case when user is trying to access `home` state `NgxPermissionsGuard` service is called checking if `isAuthorized` permission is valid: 
   - if permission definition is not found it stops transition
  
 
@@ -599,12 +601,12 @@ Often several permissions/roles are sufficient to allow/deny user to access the 
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home/home.component';
-import { PermissionsGuard } from 'ngx-permissions';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 
 const appRoutes: Routes = [
   { path: 'home',
     component: HomeComponent,
-    canActivate: [PermissionsGuard],
+    canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: ['ADMIN', 'MODERATOR'],
