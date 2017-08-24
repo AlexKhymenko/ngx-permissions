@@ -550,9 +550,9 @@ Property `except`:
   - when used as `String` contains single permission or role
   - when used as `Array` contains set of permissions and/or roles
 
-[//]: <> (> :fire: **Important**   
-          > If you combine both `only` and `except` properties you have to make sure they are not excluding each other, because denied roles/permissions would not allow access the state for users even if allowed ones would pass them.   
-)
+> :fire: **Important**   
+> If you combine both `only` and `except` properties you have to make sure they are not excluding each other, because denied roles/permissions would not allow access the state for users even if allowed ones would pass them.   
+
  
 #### Single permission/role 
 
@@ -861,11 +861,10 @@ To present usage `redirectTo` as `Object` with values as `Function` in a state d
        permissions: {
               only: ['canReadAgenda','canEditAgenda'],
               redirectTo: {
-                canReadAgenda: function(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot){
-                    
+                canReadAgenda: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {
                   return 'dashboard';
                 },
-                canEditAgenda: function(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot){
+                canEditAgenda: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {
                   return {
                       navigationCommands: ['/dashboard'],
                       navigationExtras: {
@@ -888,7 +887,19 @@ To present usage `redirectTo` as `Object` with values as `Function` in a state d
     ]
   })
 ```
+> :fire: **Important**   
+> Above code is not AOT compatible to make it AOT compatible extract it to function
 
+```typescript
+export function canReadAgenda(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {                                                 
+    return 'dashboard';
+},
+
+redirectTo: {
+    canReadAgenda: canReadAgenda
+ 
+}
+```
 
 ### Dynamic redirection rules
 
@@ -924,6 +935,22 @@ const appRoutes: Routes = [
     ]
   })
 ```
+
+> :fire: **Important**   
+> Above code is not AOT compatible to make it AOT compatible extract it to function
+
+```typescript
+export function redirectToFunc(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {
+     if(activateRouteSnapshot.params['id'] === 42){
+       return 'login';
+     } else {
+       return 'dashboard'
+     }
+   }
+
+redirectTo: redirectToFunc
+```
+
 
 ----------------------------
 
