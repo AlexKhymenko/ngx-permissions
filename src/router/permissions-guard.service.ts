@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, NavigationExtras, Router, RouterSt
 import { PermissionsService } from '../permissions.service';
 import { PermissionsRouterData } from '../model/permissions-router-data.model';
 import { RolesService } from "../roles.service";
-import { isFunction, isPlainObject } from '../utils/utils';
+import { isFunction, isPlainObject, isString } from '../utils/utils';
 import { Observable } from 'rxjs/Observable';
 import  'rxjs/add/observable/forkJoin'
 import  'rxjs/add/observable/from'
@@ -31,6 +31,13 @@ export class PermissionsGuard implements CanActivate {
 
         if (isFunction(permissions.only)) {
             permissions.only = (purePermissions.only as Function)(route, state);
+        }
+
+        if (isString(permissions.except)) {
+            permissions.except = [<string>permissions.except]
+        }
+        if (isString(permissions.only)) {
+            permissions.only = [<string>permissions.only]
         }
 
         if (!!permissions.except) {

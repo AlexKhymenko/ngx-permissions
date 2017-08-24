@@ -14,3 +14,7 @@ export function isPlainObject(value: any): boolean {
         return prototype === null || prototype === Object.prototype;
     }
 }
+
+export function isString(value: any): boolean{
+    return typeof value === 'string';
+}
