@@ -889,6 +889,7 @@ To present usage `redirectTo` as `Object` with values as `Function` in a state d
 ```
 > :fire: **Important**   
 > Above code is not AOT compatible to make it AOT compatible extract it to function
+> `navigationCommands` and `navigationExtras` reserved words. Matching parameter to router.navigate function
 
 ```typescript
 export function canReadAgenda(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {                                                 
