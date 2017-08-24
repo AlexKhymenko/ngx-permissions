@@ -519,6 +519,8 @@ Usage with Routes
   3. [Dynamic access](#dynamic-access)
 3. [Property redirectTo](#property-redirectto)
   1. [Single rule redirection](#single-redirection-rule)
+  2. [Multiple rule redirection](#multiple-redirection-rules)  
+  3. [Dynamic redirection rules](#dynamic-redirection-rules)  
 4. [Common use cases](#common-use-cases)
   1. [Two guards when first make request for authorisation and gets permissions second checks for permissions](#two-guards-when-first-make-request-for-authorisation-and-gets-permissions-second-checks-for-permissions)
 
@@ -905,7 +907,6 @@ const appRoutes: Routes = [
              only: ['canReadAgenda','canEditAgenda'],
              redirectTo: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {
                if(activateRouteSnapshot.params['id'] === 42){
-            
                  return 'login';
                } else {
                  return 'somethere elece'
