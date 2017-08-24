@@ -61,9 +61,9 @@ export class PermissionsGuard implements CanActivate {
                     }, () => true, false).mergeMap((isAllFalse) => {
                             if (!!failedPermission) {
                                 if (!!permissions.redirectTo && permissions.redirectTo[<any>failedPermission]) {
-                                    this.redirectToAnotherRoute((<any>permissions.redirectTo)[failedPermission], route, state);
+                                    this.redirectToAnotherRoute((<any>permissions.redirectTo)[failedPermission], route, state, failedPermission);
                                 } else {
-                                    this.redirectToAnotherRoute((<any>permissions.redirectTo)['default'], route, state);
+                                    this.redirectToAnotherRoute((<any>permissions.redirectTo)['default'], route, state, failedPermission);
                                 }
                             }
                             if (!isAllFalse && permissions.only) {
@@ -95,7 +95,6 @@ export class PermissionsGuard implements CanActivate {
         }
 
         if (permissions.only) {
-
             if (!!permissions.only && isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo)) {
                 return this.onlyRedirectCheck(permissions, route, state)
             }
@@ -129,9 +128,9 @@ export class PermissionsGuard implements CanActivate {
 
 
 
-    private redirectToAnotherRoute(redirectTo: string | any[] | RedirectToNavigationParameters | Function, route : ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    private redirectToAnotherRoute(redirectTo: string | any[] | RedirectToNavigationParameters | Function, route : ActivatedRouteSnapshot, state: RouterStateSnapshot, failedPermissionName?: string) {
         if(isFunction(redirectTo)) {
-            redirectTo = (redirectTo as Function)(route, state);
+            redirectTo = (redirectTo as Function)(failedPermissionName, route, state);
         }
 
         if(this.isRedirectionWithParameters(redirectTo)) {
@@ -186,9 +185,9 @@ export class PermissionsGuard implements CanActivate {
             }, () => true, false).mergeMap((isAllFalse: boolean): Observable<boolean> => {
                 if (!!failedPermission) {
                     if (!!permissions.redirectTo && permissions.redirectTo[<any>failedPermission]) {
-                        this.redirectToAnotherRoute((<any>permissions.redirectTo)[failedPermission], route, state);
+                        this.redirectToAnotherRoute((<any>permissions.redirectTo)[failedPermission], route, state, failedPermission);
                     } else {
-                        this.redirectToAnotherRoute((<any>permissions.redirectTo)['default'], route, state);
+                        this.redirectToAnotherRoute((<any>permissions.redirectTo)['default'], route, state, failedPermission);
                     }
                 }
                 return Observable.of(!isAllFalse);
