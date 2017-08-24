@@ -4,7 +4,6 @@ Permission and roles based access control for your angular(angular 2, angular 4+
 
 
 ## Documentation and examples
-----------------------------
 
 To see better structured documentation go to [wiki](https://github.com/AlexKhymenko/ngx-permissions/wiki).
 
