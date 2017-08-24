@@ -13,7 +13,7 @@ Permission and roles based access control for your angular(angular2, angular4+) 
 - [Development](#development)
 - [License](#license)
 
-Migration from version 0.1 to 1.0 [CHANGELOG](CHANGELOG.md)
+### Migration from version 0.1 to 1.0 [CHANGELOG](CHANGELOG.md)
 
 ## Installation
 
