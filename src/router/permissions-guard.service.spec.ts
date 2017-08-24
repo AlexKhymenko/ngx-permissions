@@ -704,6 +704,31 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
         })
     }));
 
+    it ('should redirect to 123 when redirect to multiple and used as function', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: [ 'canReadAgenda', 'canEditAgenda' , "canRun"],
+                redirectTo: {
+                    canReadAgenda: 'agendaList',
+                    canEditAgenda: () => {
+                        return {
+                            navigationCommands: ['123'],
+                            navigationExtras: {
+                                skipLocationChange: true
+                            }
+                        }
+                    },
+                    default: 'login'
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
+        })
+    }));
+
     it ('redirect to default when only fails but there is no redirection rule', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
 

@@ -692,6 +692,8 @@ Property redirectTo
 
 Property redirectTo:
   - when used as `String` defines single redirection rule
+  - when used as `Objects` defines single/multiple redirection rules
+  - when used as `Function` defines dynamic redirection rule(s)
 
 ### Single redirection rule
 
@@ -725,6 +727,201 @@ const appRoutes: Routes = [
   ]
 })
 export class AppRoutingModule {}
+```
+
+In order to pass additional properties like params use pass `redirectTo` as object. 
+`navigationCommands` and `navigationExtras` are reserved words it corresponds to parameters passed to router.navigate function
+`navigate(commands: any[], extras: NavigationExtras): Promise<boolean>`
+
+```typescript
+
+const appRoutes: Routes = [
+  { path: 'home',
+    component: HomeComponent,
+    canActivate: [PermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ADMIN', 'MODERATOR'],
+        redirectTo: {
+            navigationCommands: ['123'],
+            navigationExtras: {
+                skipLocationChange: true
+            }
+        }               
+    }
+  },
+];
+@NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+````
+## Multiple redirection rules
+
+In some situation you want to redirect user based on denied permission/role to create redirection strategies. In order to do that you have to create redirection `Object` that contain keys representing rejected permissions or roles and values implementing redirection rules.
+ 
+Redirection rules are represented by following values:
+
+| Value type    | Return                     | Usage                                         | 
+| :------------ | :------------------------- | :-------------------------------------------- |
+| `String`      | [`String`]                 | Simple state transitions                      |
+| `Object`      | [`Object`]                 | Redirection with custom parameters or options | 
+| `Function`    | [`String`\|`Object`]       | Dynamic properties-based redirection          | 
+
+
+> :bulb: **Note**   
+> Use _default_ property that will handle fallback redirect for not defined permissions. 
+
+The simplest example of multiple redirection rules are redirection based on pairs role/permission and state. When user is not granted to access the state will be redirected to `agendaList` if missing `canReadAgenda` permission or to `dashboard` when missing `canEditAgenda`. Property `default` is reserved for cases when you want handle specific cases leaving default redirection. 
+
+
+
+```typescript
+  const appRoutes: Routes = [
+    { path: 'home',
+      component: HomeComponent,
+      canActivate: [PermissionsGuard],
+      data: {
+       permissions: {
+               only: ['canReadAgenda','canEditAgenda'],
+               redirectTo: {
+                 canReadAgenda: 'agendaList',
+                 canEditAgenda: 'dashboard',
+                 default: 'login'
+               }
+        }
+      }
+    },
+  ];
+  @NgModule({
+    imports: [
+      RouterModule.forRoot(appRoutes)
+    ],
+    exports: [
+      RouterModule
+    ]
+  })
+```
+
+If you need more control over redirection parameters `Object` as a value can be used to customise target url `navigationCommands` and transition `navigationExtras`.
+> :bulb: **Note**  `navigationCommands` and `navigationExtras` are reserved words it corresponds to parameters passed to router.navigate function
+`navigate(commands: any[], extras: NavigationExtras): Promise<boolean>`
+
+```typescript 
+
+  const appRoutes: Routes = [
+    { path: 'home',
+      component: HomeComponent,
+      canActivate: [PermissionsGuard],
+      data: {
+         permissions: {
+               only: ['canEditAgenda'],
+               redirectTo: 
+                 canEditAgenda: {
+                   navigationCommands: 'dashboard',
+                   navigationExtras: {
+                       skipLocationChange: true
+                   }
+                 
+                 },
+                 default: 'login'
+             }
+          }
+      }
+    },
+  ];
+  @NgModule({
+    imports: [
+      RouterModule.forRoot(appRoutes)
+    ],
+    exports: [
+      RouterModule
+    ]
+  })  
+```
+
+To present usage `redirectTo` as `Object` with values as `Function` in a state definition `agenda` presented below redirection rules are interpreted as:
+- when user does not have `canReadAgenda` invoked function returns string representing the state name to which unauthorized user will be redirected
+- when user does not have `canEditAgenda` invoked function returns object with custom options and params that will be passed along to transited `dashboard` url
+
+
+```typescript
+
+ const appRoutes: Routes = [
+    { path: 'home',
+      component: HomeComponent,
+      canActivate: [PermissionsGuard],
+      data: {
+       permissions: {
+              only: ['canReadAgenda','canEditAgenda'],
+              redirectTo: {
+                canReadAgenda: function(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot){
+                    
+                  return 'dashboard';
+                },
+                canEditAgenda: function(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot){
+                  return {
+                      navigationCommands: ['/dashboard'],
+                      navigationExtras: {
+                          skipLocationChange: true
+                      }
+                  }
+                },
+                default: 'login'
+            }
+        }
+      }
+    },
+  ];
+  @NgModule({
+    imports: [
+      RouterModule.forRoot(appRoutes)
+    ],
+    exports: [
+      RouterModule
+    ]
+  })
+```
+
+
+### Dynamic redirection rules
+
+Similarly to examples showing defining dynamic access to state redirection can also be defined based on any parameters of `ActivatedRouteSnapshot` and `RouterStateSnapshot`;
+
+> :bulb: **Note**   
+> Remember to always return from function state name or object. Otherwise errors will thrown from either angular-permission or ui-router library.
+
+```typescript 
+const appRoutes: Routes = [
+    { path: 'home/:isEditable',
+      component: HomeComponent,
+      canActivate: [PermissionsGuard],
+      data: {
+      permissions: {
+             only: ['canReadAgenda','canEditAgenda'],
+             redirectTo: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeSnapshot: RouterStateSnapshot) => {
+               if(activateRouteSnapshot.params['id'] === 42){
+            
+                 return 'login';
+               } else {
+                 return 'somethere elece'
+               }
+             }
+      }
+    },
+  ];
+  @NgModule({
+    imports: [
+      RouterModule.forRoot(appRoutes)
+    ],
+    exports: [
+      RouterModule
+    ]
+  })
 ```
 
 ----------------------------
