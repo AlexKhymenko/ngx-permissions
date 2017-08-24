@@ -1,12 +1,13 @@
 ### Breaking changes from 0.1 to 1.0 
 
-Prevent name collision in Your application
+Prevent name collision in Your application.
 Add Prefix ngx to everything
 
 ### Templates
 
-remove `permissions` directive cause it was not usable will not break anything Angular will ignore it
-The reasoning if you want to use permissions as input in another directive it will show error can't find template so there will bo no collisions
+Remove `permissions` directive cause it was not usable. Will not break anything Angular will just ignore it. 
+
+The reasoning if you want to use `[permissions]` as input in another component it will show error `can't find template error`.
 
 from 
 ```html
@@ -30,12 +31,16 @@ to
 
 ### Services
 
-Add Ngx Prefix to service name
+Add `Ngx` Prefix to service name
+
 PermissionsService > NgxPermissionsService
+
 RolesService > NgxRolesService
+
 PermissionsGuard > NgxPermissionsGuard
 
 
 ### Directive
-Add Ngx Prefix to directive name
+Add `Ngx` Prefix to directive name
+
 PermissionsDirective > NgxPermissionsDirective
