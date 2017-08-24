@@ -8,19 +8,19 @@
 <button routerLink="/lazy/only-should">SHOULD go to isolate except should page testing only</button>
 <button routerLink="/lazy/only-should-not">SHOULD NOT go to only-should-not except should page testing only</button>
 
-<ng-template permissions [permissionsOnly]="['ADMIN']">
+<ng-template  [ngxPermissionsOnly]="['ADMIN']">
   <div> LAZY I will see it only admin</div>
 </ng-template>
 
-<ng-template permissions [permissionsOnly]="['GUEST']">
+<ng-template  [ngxPermissionsOnly]="['GUEST']">
   <div style="color: red">LAZY I SHOULD not see it only guest</div>
 </ng-template>
 
-<ng-template permissions [permissionsExcept]="['ADMINNNN']">
+<ng-template  [ngxPermissionsExcept]="['ADMINNNN']">
   <div>LAZY I will see it except adminnnnnnn</div>
 </ng-template>
 
-<ng-template permissions [permissionsExcept]="['ADMIN']">
+<ng-template  [ngxPermissionsExcept]="['ADMIN']">
   <div style="color: red">LAZY I Should not see it except admin</div>
 </ng-template>
 
