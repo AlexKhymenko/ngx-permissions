@@ -895,7 +895,7 @@ To present usage `redirectTo` as `Object` with values as `Function` in a state d
 Similarly to examples showing defining dynamic access to state redirection can also be defined based on any parameters of `ActivatedRouteSnapshot` and `RouterStateSnapshot`;
 
 > :bulb: **Note**   
-> Remember to always return from function state name or object. Otherwise errors will thrown from either angular-permission or ui-router library.
+> Remember to always return from function state name or object.
 
 ```typescript 
 const appRoutes: Routes = [
@@ -909,7 +909,7 @@ const appRoutes: Routes = [
                if(activateRouteSnapshot.params['id'] === 42){
                  return 'login';
                } else {
-                 return 'somethere elece'
+                 return 'dashboard'
                }
              }
       }
