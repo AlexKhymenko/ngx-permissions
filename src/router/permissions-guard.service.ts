@@ -41,7 +41,7 @@ export class PermissionsGuard implements CanActivate {
         }
 
         if (!!permissions.except) {
-            if (!!permissions.redirectTo && isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo)) {
+            if (!!permissions.redirectTo && ((isFunction(permissions.redirectTo)) || (isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo)))) {
                 if (Array.isArray(permissions.except)) {
                     let failedPermission = '';
                     return Observable.from(permissions.except)
@@ -63,7 +63,11 @@ export class PermissionsGuard implements CanActivate {
                                 if (!!permissions.redirectTo && permissions.redirectTo[<any>failedPermission]) {
                                     this.redirectToAnotherRoute((<any>permissions.redirectTo)[failedPermission], route, state, failedPermission);
                                 } else {
-                                    this.redirectToAnotherRoute((<any>permissions.redirectTo)['default'], route, state, failedPermission);
+                                    if (isFunction(permissions.redirectTo)) {
+                                        this.redirectToAnotherRoute((<any>permissions.redirectTo), route, state, failedPermission);
+                                    } else {
+                                        this.redirectToAnotherRoute((<any>permissions.redirectTo)['default'], route, state, failedPermission);
+                                    }
                                 }
                             }
                             if (!isAllFalse && permissions.only) {
@@ -95,7 +99,7 @@ export class PermissionsGuard implements CanActivate {
         }
 
         if (permissions.only) {
-            if (!!permissions.only && isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo)) {
+            if (!!permissions.only && (isFunction(permissions.redirectTo) || isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo))) {
                 return this.onlyRedirectCheck(permissions, route, state)
             }
             return this.checkOnlyPermissions(permissions, route, state);
@@ -187,7 +191,11 @@ export class PermissionsGuard implements CanActivate {
                     if (!!permissions.redirectTo && permissions.redirectTo[<any>failedPermission]) {
                         this.redirectToAnotherRoute((<any>permissions.redirectTo)[failedPermission], route, state, failedPermission);
                     } else {
-                        this.redirectToAnotherRoute((<any>permissions.redirectTo)['default'], route, state, failedPermission);
+                        if (isFunction(permissions.redirectTo)) {
+                            this.redirectToAnotherRoute((<any>permissions.redirectTo), route, state, failedPermission);
+                        } else {
+                            this.redirectToAnotherRoute((<any>permissions.redirectTo)['default'], route, state, failedPermission);
+                        }
                     }
                 }
                 return Observable.of(!isAllFalse);
