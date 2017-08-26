@@ -15,24 +15,21 @@ import { Observable } from 'rxjs/Observable';
 })
 export class NgxPermissionsDirective implements OnInit, OnDestroy {
 
-    @Input() ngxPermissionsOnly: any;
+    @Input() ngxPermissionsOnly: string | string[];
+    @Input() ngxPermissionsOnlyThen: TemplateRef<any>;
+    @Input() ngxPermissionsOnlyElse: TemplateRef<any>;
 
-    @Input() ngxPermissionsExcept: any;
+    @Input() ngxPermissionsExcept: string | string[];
+    @Input() ngxPermissionsExceptElse: TemplateRef<any>;
+    @Input() ngxPermissionsExceptThen: TemplateRef<any>;
+
+    @Input() ngxPermissionsThen: TemplateRef<any>;
+    @Input() ngxPermissionsElse: TemplateRef<any>;
 
     @Output() permissionsAuthorized = new EventEmitter();
     @Output() permissionsUnauthorized = new EventEmitter();
 
-    @Input() ngxPermissionsOnlyThen: any;
-    @Input() ngxPermissionsOnlyElse: any;
-
-    @Input() ngxPermissionsExceptElse: any;
-    @Input() ngxPermissionsExceptThen: any;
-
-    @Input() ngxPermissionsThen: any;
-    @Input() ngxPermissionsElse: any;
-
     private initPermissionSubscription: Subscription;
-
     //skip first run cause merge will fire twice
     private firstMergeUnusedRun = 1;
 
@@ -51,7 +48,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         }
     }
 
-    private validateExceptOnlyPermissions() {
+    private validateExceptOnlyPermissions(): Subscription {
         return Observable.merge(this.permissionsService.permissions$, this.rolesService.roles$)
             .skip(this.firstMergeUnusedRun)
             .subscribe(() => {
@@ -61,7 +58,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
             }
 
             if (!!this.ngxPermissionsOnly) {
-                this.checkIfPermissionsOnly();
+                this.validateOnlyPermissions();
             }
         });
     }
@@ -70,6 +67,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsExcept), this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept)])
             .then(([permissionsPr, roles]) => {
                 if (permissionsPr || roles) {
+
                     this.permissionsUnauthorized.emit();
                     this.viewContainer.clear();
                     if (!!this.ngxPermissionsExceptElse || this.ngxPermissionsElse) {
@@ -85,16 +83,13 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
                         if (!!this.ngxPermissionsExceptThen || this.ngxPermissionsThen) {
                             this.viewContainer.createEmbeddedView(this.ngxPermissionsExceptThen || this.ngxPermissionsThen);
                             return;
-
                         }
                         this.viewContainer.createEmbeddedView(this.templateRef);
                     }
-
-
                 }
             }).catch(() => {
             if (!!this.ngxPermissionsOnly) {
-                this.checkIfPermissionsOnly();
+                this.validateOnlyPermissions();
                 return;
             }
 
@@ -107,32 +102,35 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         });
     }
 
-    private checkIfPermissionsOnly() {
-        return Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsOnly), this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly)])
+    private validateOnlyPermissions() {
+         Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsOnly), this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly)])
             .then(([permissionPr,  roles]) => {
                 if (permissionPr || roles) {
-                    this.permissionsAuthorized.emit();
-                    this.viewContainer.clear();
-
-                    if (this.ngxPermissionsOnlyThen || this.ngxPermissionsThen) {
-                        this.viewContainer.createEmbeddedView(this.ngxPermissionsOnlyThen || this.ngxPermissionsThen);
-                        return;
-                    }
-                    this.viewContainer.createEmbeddedView(this.templateRef);
+                   this.handleAuthorisedPermission(this.ngxPermissionsOnlyThen || this.ngxPermissionsThen || this.templateRef)
                 } else {
-                    this.permissionsUnauthorized.emit();
-                    this.viewContainer.clear();
-                    if (!!this.ngxPermissionsOnlyElse || this.ngxPermissionsElse) {
-                        this.viewContainer.createEmbeddedView(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
-                    }
+                    this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
                 }
             }).catch(() => {
-                this.permissionsUnauthorized.emit();
-                this.viewContainer.clear();
-                if (!!this.ngxPermissionsOnlyElse || this.ngxPermissionsElse) {
-                    this.viewContainer.createEmbeddedView(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
-                }
+                this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
         })
+    }
+
+
+    private handleUnauthorisedPermission(template: TemplateRef<any>) {
+        this.permissionsUnauthorized.emit();
+        this.viewContainer.clear();
+        this.showTemplateBlockInView(template);
+    }
+
+    private handleAuthorisedPermission(template: TemplateRef<any>) {
+        this.permissionsAuthorized.emit();
+        this.viewContainer.clear();
+        this.showTemplateBlockInView(template);
+    }
+
+    private showTemplateBlockInView(template: TemplateRef<any>) {
+        if (!template) return;
+        this.viewContainer.createEmbeddedView(template);
     }
 }
 
