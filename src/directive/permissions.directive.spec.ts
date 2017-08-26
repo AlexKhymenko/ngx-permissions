@@ -1613,6 +1613,386 @@ describe('Permission  directive angular testing  different only and accept toget
     }));
 });
 
+
+describe('ngxPermissionsOnly Directive testing else block', () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <div *ngxPermissionsOnly="['FAILED_BLOCK']; else elseBlock">main</div>
+            <ng-template #elseBlock>
+                <div>elseBlock</div>
+            </ng-template>
+            <ng-template #thenBlock>
+                <div>thenBlock</div>
+            </ng-template>
+           
+        `
+
+    })
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissions;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+
+    });
+
+
+    it('Should fail and show else block', fakeAsync(() => {
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`elseBlock`);
+    }));
+
+    it('Should add element remove element and show then block', fakeAsync(() => {
+
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toEqual(null);
+
+        rolesService.addRole('FAILED_BLOCK', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual('main');
+
+        rolesService.removeRole('FAILED_BLOCK');
+        detectChanges(fixture);
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`elseBlock`);
+    }));
+
+});
+
+describe('ngxPermissionsOnly Directive testing then block', () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <div *ngxPermissionsOnly="['THEN_BLOCK']; else elseBlock; then thenBlock">main</div>
+            <ng-template #elseBlock>
+                <div>elseBlock</div>
+            </ng-template>
+            <ng-template #thenBlock>
+                <div>thenBlock</div>
+            </ng-template>
+           
+        `
+
+    })
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissions;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+
+    });
+
+
+    it('Should fail and show then block', fakeAsync(() => {
+        rolesService.addRole('THEN_BLOCK', () => {
+            return true;
+        });
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`thenBlock`);
+    }));
+});
+
+
+
+describe('ngxPermissionsExcept Directive testing else block', () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <div *ngxPermissionsExcept="['MAIN_BLOCK']; else elseBlock">main</div>
+            <ng-template #elseBlock>
+                <div>elseBlock</div>
+            </ng-template>
+            <ng-template #thenBlock>
+                thenBlock
+            </ng-template>
+           
+        `
+
+    })
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissionsService;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
+
+    });
+
+
+    it('Should fail when adding role and show then block', fakeAsync(() => {
+
+        rolesService.addRole('MAIN_BLOCK', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`elseBlock`);
+    }));
+
+    it('Should fail when adding permissions and show then block', fakeAsync(() => {
+        detectChanges(fixture);
+        let content = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content).toBeTruthy();
+        expect(content.innerHTML).toEqual(`main`);
+
+        permissionsService.addPermission('MAIN_BLOCK', () => {
+            return true;
+        });
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`elseBlock`);
+    }));
+});
+
+describe('ngxPermissionsExcept Directive testing then block', () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <div *ngxPermissionsExcept="['THEN_BLOCK']; else elseBlock; then thenBlock">main</div>
+            <ng-template #elseBlock>
+                <div>elseBlock</div>
+            </ng-template>
+            <ng-template #thenBlock>
+                <div>thenBlock</div>
+            </ng-template>
+           
+        `
+
+    })
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissions;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+
+    });
+
+
+    it('Should fail and show then block', fakeAsync(() => {
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`thenBlock`);
+    }));
+});
+
+describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing then block', () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <ng-template [ngxPermissionsExcept]="'FAIL_BLOCK'" [ngxPermissionsOnly]="'ONLY_BLOCK'" [ngxPermissionsElse]="elseBlock">
+              
+            </ng-template>
+            <ng-template #elseBlock>
+                <div>elseBlock</div>
+            </ng-template>
+            <ng-template #thenBlock>
+                <div>thenBlock</div>
+            </ng-template>
+        `
+
+    })
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissionsService;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
+
+    });
+
+
+    it('Except Should fail and show then block', fakeAsync(() => {
+        permissionsService.addPermission('FAIL_BLOCK');
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`elseBlock`);
+    }));
+
+    it('Only Should fail and show then block', fakeAsync(() => {
+        rolesService.addRole('SOME_BLOCK', () => {
+            return true;
+        });
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`elseBlock`);
+    }));
+});
+
+describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing else block', () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <ng-template [ngxPermissionsExcept]="'FAIL_BLOCK'" [ngxPermissionsOnly]="'ONLY_BLOCK'" [ngxPermissionsElse]="elseBlock">
+              
+            </ng-template>
+            <ng-template #elseBlock>
+                <div>elseBlock</div>
+            </ng-template>
+            <ng-template #thenBlock>
+                <div>thenBlock</div>
+            </ng-template>
+        `
+
+    })
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissionsService;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
+
+    });
+
+
+    it('Except Should fail and show then block', fakeAsync(() => {
+        permissionsService.addPermission('FAIL_BLOCK');
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`elseBlock`);
+    }));
+
+    it('Only Should fail and show then block', fakeAsync(() => {
+        rolesService.addRole('SOME_BLOCK', () => {
+            return true;
+        });
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`elseBlock`);
+    }));
+});
+
+describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing then block success', () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <ng-template [ngxPermissionsExcept]="'FAIL_BLOCK'" [ngxPermissionsOnly]="'ONLY_BLOCK'" [ngxPermissionsElse]="elseBlock" [ngxPermissionsThen]="thenBlock">
+              
+            </ng-template>
+            <ng-template #elseBlock>
+                <div>elseBlock</div>
+            </ng-template>
+            <ng-template #thenBlock>
+                <div>thenBlock</div>
+            </ng-template>
+        `
+
+    })
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissionsService;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
+
+    });
+
+
+    it('Except and only should success and show then block', fakeAsync(() => {
+        permissionsService.addPermission('ONLY_BLOCK');
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`thenBlock`);
+    }));
+
+    it('Except and only should success with role and show then block', fakeAsync(() => {
+        rolesService.addRole('ONLY_BLOCK', () => {
+            return true;
+        });
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`thenBlock`);
+    }));
+});
+
+
 function detectChanges(fixture) {
     tick();
     fixture.detectChanges();

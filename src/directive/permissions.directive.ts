@@ -21,6 +21,15 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     @Output() permissionsAuthorized = new EventEmitter();
     @Output() permissionsUnauthorized = new EventEmitter();
 
+    @Input() ngxPermissionsOnlyThen: any;
+    @Input() ngxPermissionsOnlyElse: any;
+
+    @Input() ngxPermissionsExceptElse: any;
+    @Input() ngxPermissionsExceptThen: any;
+
+    @Input() ngxPermissionsThen: any;
+    @Input() ngxPermissionsElse: any;
+
     private initPermissionSubscription: Subscription;
 
     private firstRun = false;
@@ -44,12 +53,21 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
                         if (permissionsPr || roles) {
                             this.permissionsUnauthorized.emit();
                             this.viewContainer.clear();
+                            if (!!this.ngxPermissionsExceptElse || this.ngxPermissionsElse) {
+                                this.viewContainer.createEmbeddedView(this.ngxPermissionsExceptElse || this.ngxPermissionsElse);
+                            }
                         } else {
                             if (!!this.ngxPermissionsOnly) {
                                 throw false;
                             } else {
                                 this.permissionsAuthorized.emit();
                                 this.viewContainer.clear();
+
+                                if (!!this.ngxPermissionsExceptThen || this.ngxPermissionsThen) {
+                                    this.viewContainer.createEmbeddedView(this.ngxPermissionsExceptThen || this.ngxPermissionsThen);
+                                    return;
+
+                                }
                                 this.viewContainer.createEmbeddedView(this.templateRef);
                             }
 
@@ -62,6 +80,10 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
                         }
 
                         this.viewContainer.clear();
+                         if (!!this.ngxPermissionsExceptElse || this.ngxPermissionsElse) {
+                             this.viewContainer.createEmbeddedView(this.ngxPermissionsExceptElse || this.ngxPermissionsElse);
+                             return;
+                         }
                         this.viewContainer.createEmbeddedView(this.templateRef);
                 });
                 return;
@@ -86,14 +108,27 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
                 if (permissionPr || roles) {
                     this.permissionsAuthorized.emit();
                     this.viewContainer.clear();
+
+                    if (this.ngxPermissionsOnlyThen || this.ngxPermissionsThen) {
+                        this.viewContainer.createEmbeddedView(this.ngxPermissionsOnlyThen || this.ngxPermissionsThen);
+                        return;
+                    }
                     this.viewContainer.createEmbeddedView(this.templateRef);
+
+
                 } else {
                     this.permissionsUnauthorized.emit();
                     this.viewContainer.clear();
+                    if (!!this.ngxPermissionsOnlyElse || this.ngxPermissionsElse) {
+                        this.viewContainer.createEmbeddedView(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
+                    }
                 }
             }).catch(() => {
-            this.permissionsUnauthorized.emit();
-            this.viewContainer.clear();
+                this.permissionsUnauthorized.emit();
+                this.viewContainer.clear();
+                if (!!this.ngxPermissionsOnlyElse || this.ngxPermissionsElse) {
+                    this.viewContainer.createEmbeddedView(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
+                }
         })
     }
 }

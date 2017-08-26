@@ -60,3 +60,20 @@
 <ng-template permissions [ngxPermissionsExcept]="['ADMIN']">
   <div>I Should not see it except admin</div>
 </ng-template>
+
+
+<div *ngxPermissionsOnly="['ADMIN']; else a; then a2">
+  <div>Testing templatest</div>
+</div>
+
+<div *ngxPermissionsExcept="['ADMIN']; else a; then a2">
+  <div>Testing templatest234234</div>
+</div>
+
+
+<ng-template #a>
+  else block
+</ng-template>
+<ng-template #a2>
+  then block
+</ng-template>
