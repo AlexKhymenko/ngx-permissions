@@ -53,7 +53,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
             .skip(this.firstMergeUnusedRun)
             .subscribe(() => {
             if (!!this.ngxPermissionsExcept) {
-                this.validateExceptPermissions();
+                this.validateExceptAndOnlyPermissions();
                 return;
             }
 
@@ -63,7 +63,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         });
     }
 
-    private validateExceptPermissions() {
+    private validateExceptAndOnlyPermissions() {
         Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsExcept), this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept)])
             .then(([hasPermission, hasRole]) => {
                 if (hasPermission || hasRole) {
