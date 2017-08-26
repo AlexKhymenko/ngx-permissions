@@ -452,6 +452,9 @@ Permission directive
 ----------------------------
   
 Permission module exposes directive `ngxPermissionsOnly` and `ngxPermissionsExcept` that can show/hide elements of your application based on set of permissions.
+ > :fire: **Important**   
+ >  Else, then syntax is supported.Not if you use `then` block don't put anything in main block it will be not visible only else block will be used.
+ 
 
 Permission directive accepts several attributes:
 
@@ -536,10 +539,15 @@ Or just simply by *
      <ng-template #thenBlock>
          <div>thenBlock</div>
      </ng-template>
+     
+ <div *ngxPermissionsExcept="['THEN_BLOCK']; else elseBlock; then thenBlock"></div>
+       <ng-template #elseBlock>
+           <div>elseBlock</div>
+       </ng-template>
+       <ng-template #thenBlock>
+           <div>thenBlock</div>
+       </ng-template>
 
- <div *ngxPermissionsExcept="['ADMIN', 'JOHNY']">
-   <div>All will see it except admin and Johny</div>
- </div>
 ```
  > Note: You cant use `*` style with other * style directives like `*ngIf`. You should wrap them. And YES i don't like it either.
   ```html
@@ -548,16 +556,10 @@ Or just simply by *
       You can see this text congrats
     </div>
    </div>
-    <div *ngxPermissionsExcept="['THEN_BLOCK']; else elseBlock; then thenBlock"></div>
-          <ng-template #elseBlock>
-              <div>elseBlock</div>
-          </ng-template>
-          <ng-template #thenBlock>
-              <div>thenBlock</div>
-          </ng-template>
+
    ```
-   > > :fire: **Important** 
-   >  Using with except and only together should use `ngxPermissionsElse` or `ngxPermissionsThen`
+   >  :fire: **Important**   
+   >  Using with except and only `together` should use `ngxPermissionsElse` or `ngxPermissionsThen`
    ```html
        <ng-template [ngxPermissionsExcept]="'FAIL_BLOCK'" 
        [ngxPermissionsOnly]="'ONLY_BLOCK'"
