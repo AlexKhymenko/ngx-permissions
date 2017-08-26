@@ -6,7 +6,7 @@ Permission and roles based access control for your angular(angular 2, angular 4+
 ## Documentation and examples
 
 To see better structured documentation go to [wiki](https://github.com/AlexKhymenko/ngx-permissions/wiki).  
-In one month the whole functionality will be available only on wiki page.
+In one month the detailed functionality description will be available only on wiki page.
 
 ## Table of contents
 
@@ -455,7 +455,7 @@ Permission directive
 Permission module exposes directive `ngxPermissionsOnly` and `ngxPermissionsExcept` that can show/hide elements of your application based on set of permissions.
  > :fire: **Important**   
  >  Else, then syntax is supported.   
- Note if you use `then` block don't put anything in main block it will be not visible only `then` block will be used.
+ Note if you use `then` block don't put anything in main block it will be not visible, only `then` block will be used.
  
 
 Permission directive accepts several attributes:
