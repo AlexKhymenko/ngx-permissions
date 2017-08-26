@@ -1,3 +1,47 @@
+## 1.1
+
+###Features
+Adding then else block functionality
+
+
+Adding then else block functionality with ngxPermissionsExcept directive
+```html
+  <div *ngxPermissionsExcept="['THEN_BLOCK']; else elseBlock; then thenBlock">main</div>
+  <ng-template #elseBlock>
+      <div>elseBlock</div>
+  </ng-template>
+  <ng-template #thenBlock>
+      <div>thenBlock</div>
+  </ng-template>
+```
+
+Adding then else block functionality with ngxPermissionsOnly directive
+```html
+  <div *ngxPermissionsOnly="['THEN_BLOCK']; else elseBlock; then thenBlock">main</div>
+  <ng-template #elseBlock>
+      <div>elseBlock</div>
+  </ng-template>
+  <ng-template #thenBlock>
+      <div>thenBlock</div>
+  </ng-template>
+```
+
+Using with except and only together should use `ngxPermissionsElse` and `ngxPermissionsThen`
+```html
+    <ng-template [ngxPermissionsExcept]="'FAIL_BLOCK'" 
+    [ngxPermissionsOnly]="'ONLY_BLOCK'"
+    [ngxPermissionsElse]="elseBlock"
+    [ngxPermissionsThen]="thenBlock">
+    </ng-template>
+    <ng-template #elseBlock>
+        <div>elseBlock</div>
+    </ng-template>
+    <ng-template #thenBlock>
+        <div>thenBlock</div>
+    </ng-template>
+```
+
+
 ### Breaking changes from 0.1 to 1.0 
 
 Prevent name collision in Your application.

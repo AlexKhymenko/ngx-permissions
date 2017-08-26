@@ -495,6 +495,32 @@ Or set of permissions separated by 'coma':
   <ng-template [ngxPermissionsExcept]="['ADMIN', 'JOHNY']" [ngxPermissionsOnly]="['MANAGER']">
     <div>All will see it except admin and Johny</div>
   </ng-template>
+  
+  <ng-template [ngxPermissionsExcept]="['MANAGER']" 
+  [ngxPermissionExceptThen]="thenBlock" 
+  [ngxPermissionExceptElse]="elseBlock">
+    </ng-template>
+   <ng-template #elseBlock>
+       <div>elseBlock</div>
+   </ng-template>
+   <ng-template #thenBlock>
+       <div>thenBlock</div>
+   </ng-template>
+   
+   <ng-template
+     [ngxPermissionsOnly]="['MANAGER']" 
+     [ngxPermissionOnlyThen]="thenBlock" 
+     [ngxPermissionOnlyElse]="elseBlock">
+       </ng-template>
+      <ng-template #elseBlock>
+          <div>elseBlock</div>
+      </ng-template>
+      <ng-template #thenBlock>
+          <div>thenBlock</div>
+      </ng-template>
+    
+    
+ 
 ```
 
 Or just simply by *
@@ -502,6 +528,14 @@ Or just simply by *
 <div *ngxPermissionsOnly="['ADMIN', 'GUEST']">
     <div>You can see this text congrats</div>
 </div>
+
+ <div *ngxPermissionsOnly="['THEN_BLOCK']; else elseBlock; then thenBlock">main</div>
+     <ng-template #elseBlock>
+         <div>elseBlock</div>
+     </ng-template>
+     <ng-template #thenBlock>
+         <div>thenBlock</div>
+     </ng-template>
 
  <div *ngxPermissionsExcept="['ADMIN', 'JOHNY']">
    <div>All will see it except admin and Johny</div>
@@ -514,7 +548,31 @@ Or just simply by *
       You can see this text congrats
     </div>
    </div>
+    <div *ngxPermissionsExcept="['THEN_BLOCK']; else elseBlock; then thenBlock"></div>
+          <ng-template #elseBlock>
+              <div>elseBlock</div>
+          </ng-template>
+          <ng-template #thenBlock>
+              <div>thenBlock</div>
+          </ng-template>
    ```
+   > > :fire: **Important** 
+   >  Using with except and only together should use `ngxPermissionsElse` or `ngxPermissionsThen`
+   ```html
+       <ng-template [ngxPermissionsExcept]="'FAIL_BLOCK'" 
+       [ngxPermissionsOnly]="'ONLY_BLOCK'"
+       [ngxPermissionsElse]="elseBlock"
+       [ngxPermissionsThen]="thenBlock">
+                 
+       </ng-template>
+       <ng-template #elseBlock>
+           <div>elseBlock</div>
+       </ng-template>
+       <ng-template #thenBlock>
+           <div>thenBlock</div>
+       </ng-template>
+   ```
+
 
 Usage with Routes
 ----------------------------
