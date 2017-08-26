@@ -18,3 +18,7 @@ export function isPlainObject(value: any): boolean {
 export function isString(value: any): boolean{
     return typeof value === 'string';
 }
+
+export function isPromise(promise: any) {
+    return Object.prototype.toString.call(promise) === "[object Promise]"
+}

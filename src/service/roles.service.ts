@@ -11,6 +11,7 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
 import { Inject, Injectable, OpaqueToken } from '@angular/core';
 import { NgxRolesStore } from '../store/roles.store';
+import { isFunction, isPromise, isString } from '../utils/utils';
 
 
 //TODO: Change on Injection token when angular removes opaque token
@@ -79,7 +80,7 @@ export class NgxRolesService {
         if (Array.isArray(roleName)) {
             let promises:any[] = [];
             roleName.forEach((key) => {
-                if (!!this.rolesSource.value[key] && !!this.rolesSource.value[key].validationFunction && this.isFunction(this.rolesSource.value[key].validationFunction) && !this.isPromise(this.rolesSource.value[key].validationFunction)) {
+                if (!!this.rolesSource.value[key] && !!this.rolesSource.value[key].validationFunction && isFunction(this.rolesSource.value[key].validationFunction) && !isPromise(this.rolesSource.value[key].validationFunction)) {
                     return promises.push(Observable.from(Promise.resolve((<Function>this.rolesSource.value[key].validationFunction)())).catch(() => {
                         return Observable.of(false);
                     }) );
@@ -98,7 +99,7 @@ export class NgxRolesService {
             //     return roleName.includes(key)
             // }));
         } else {
-            if (!!this.rolesSource.value[roleName] && !!this.rolesSource.value[roleName].validationFunction && this.isFunction(this.rolesSource.value[roleName].validationFunction)) {
+            if (!!this.rolesSource.value[roleName] && !!this.rolesSource.value[roleName].validationFunction && isFunction(this.rolesSource.value[roleName].validationFunction)) {
                 return Promise.resolve(((<Function>this.rolesSource.value[roleName].validationFunction)())).then((data) => {
                     if (data !== false) {
                         return true;
@@ -115,7 +116,7 @@ export class NgxRolesService {
     private hasRolePermission(roles: NgxRolesObject, roleName: string | string[]): Promise<boolean> {
         return Promise.resolve(Object.keys(roles).some((key) => {
             if (Array.isArray(roles[key].validationFunction)) {
-                if (this.isString(roleName)) {
+                if (isString(roleName)) {
                     return (<string[]>roles[key].validationFunction).includes(<string>roleName);
                 }
 
@@ -127,24 +128,11 @@ export class NgxRolesService {
             }
 
             //Should not validate if role declaration is function if will check in previous method
-            if (this.isFunction(roles[key].validationFunction)) {
+            if (isFunction(roles[key].validationFunction)) {
                 return false;
             }
 
             return true;
         }));
-    }
-
-    private isString(variable: any) {
-        return typeof variable === 'string' || variable instanceof String
-    }
-
-    private isFunction(functionToCheck: any) {
-        let getType = {};
-        return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-    }
-
-    private isPromise(promise: any) {
-        return Object.prototype.toString.call(promise) === "[object Promise]"
     }
 }

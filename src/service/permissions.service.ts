@@ -11,6 +11,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeAll';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
+import { isFunction } from '../utils/utils';
 
 
 export type NgxPermissionsObject = {[name: string] : NgxPermission}
@@ -41,7 +42,7 @@ export class NgxPermissionsService {
         if (Array.isArray(permission)) {
             let promises:any[] = [];
             permission.forEach((key) => {
-                if (!!this.permissionsSource.value[key] && !!this.permissionsSource.value[key].validationFunction && this.isFunction(this.permissionsSource.value[key].validationFunction)) {
+                if (!!this.permissionsSource.value[key] && !!this.permissionsSource.value[key].validationFunction && isFunction(this.permissionsSource.value[key].validationFunction)) {
                     let imutableValue = {...this.permissionsSource.value};
                     return promises.push(Observable.from(Promise.resolve((<Function>this.permissionsSource.value[key].validationFunction)(key, imutableValue))).catch(() => {
                         return Observable.of(false);
@@ -57,7 +58,7 @@ export class NgxPermissionsService {
                 return data;
             });
         }
-        if (!!this.permissionsSource.value[permission] && !!this.permissionsSource.value[permission].validationFunction && this.isFunction(this.permissionsSource.value[permission].validationFunction)) {
+        if (!!this.permissionsSource.value[permission] && !!this.permissionsSource.value[permission].validationFunction && isFunction(this.permissionsSource.value[permission].validationFunction)) {
             let imutableValue = {...this.permissionsSource.value};
 
             return Promise.resolve(((<Function>this.permissionsSource.value[permission].validationFunction)(permission, imutableValue))).then((data) => {
@@ -106,7 +107,7 @@ export class NgxPermissionsService {
     }
 
     private addPermissionToBehaviorSubject(name: string, validationFunction?: Function) {
-        if (!!validationFunction && this.isFunction(validationFunction)) {
+        if (!!validationFunction && isFunction(validationFunction)) {
             const roles = {
                 ...this.permissionsSource.value,
                 [name]: {name, validationFunction}
@@ -117,15 +118,7 @@ export class NgxPermissionsService {
                 ...this.permissionsSource.value,
                 [name]: {name}
             };
-
             this.permissionsSource.next(roles)
         }
-
-
-    }
-
-    private isFunction(functionToCheck: any) {
-        let getType = {};
-        return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
     }
 }
