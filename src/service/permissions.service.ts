@@ -11,7 +11,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeAll';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
-import { isFunction } from '../utils/utils';
+import { isFunction, isString } from '../utils/utils';
 
 
 export type NgxPermissionsObject = {[name: string] : NgxPermission}
@@ -36,41 +36,16 @@ export class NgxPermissionsService {
     }
 
     public hasPermission(permission: string | string[]): Promise<boolean> {
-        if (!permission) {
-            return Promise.resolve(true)
-        }
+        if (!permission) Promise.resolve(true);
+
         if (Array.isArray(permission)) {
-            let promises:any[] = [];
-            permission.forEach((key) => {
-                if (!!this.permissionsSource.value[key] && !!this.permissionsSource.value[key].validationFunction && isFunction(this.permissionsSource.value[key].validationFunction)) {
-                    let imutableValue = {...this.permissionsSource.value};
-                    return promises.push(Observable.from(Promise.resolve((<Function>this.permissionsSource.value[key].validationFunction)(key, imutableValue))).catch(() => {
-                        return Observable.of(false);
-                    }) );
-                } else {
-                    promises.push(Observable.of(!!this.permissionsSource.value[key]));
-                }
-
-            });
-            return Observable.merge(promises).mergeAll().first((data: any) => {
-                return data !== false;
-            }, () => true, false).toPromise().then((data: any) => {
-                return data;
-            });
+            return this.hasArrayPermission(permission);
+        } else {
+            if (isString(permission)) {
+                permission = [permission]
+            }
+            return this.hasArrayPermission(permission);
         }
-        if (!!this.permissionsSource.value[permission] && !!this.permissionsSource.value[permission].validationFunction && isFunction(this.permissionsSource.value[permission].validationFunction)) {
-            let imutableValue = {...this.permissionsSource.value};
-
-            return Promise.resolve(((<Function>this.permissionsSource.value[permission].validationFunction)(permission, imutableValue))).then((data) => {
-                if (data !== false) {
-                    return true;
-                } else {
-                    return data;
-                }
-            });
-        }
-
-        return Promise.resolve(!!this.permissionsSource.value[permission]);
     }
 
     public loadPermissions(permissions: string[], validationFunction?: Function) {
@@ -84,10 +59,8 @@ export class NgxPermissionsService {
             permission.forEach((p) => {
                 this.addPermissionToBehaviorSubject(p, validationFunction);
             })
-
         } else {
             this.addPermissionToBehaviorSubject(permission, validationFunction);
-
         }
     }
     public removePermission(permissionName: string) {
@@ -120,5 +93,34 @@ export class NgxPermissionsService {
             };
             this.permissionsSource.next(roles)
         }
+    }
+
+    private hasArrayPermission(permissions: string[]) {
+        let promises:any[] = [];
+        permissions.forEach((key) => {
+            if (this.hasPermissionValidationFunction(key)) {
+                let immutableValue = {...this.permissionsSource.value};
+                return promises.push(Observable.from(Promise.resolve((<Function>this.permissionsSource.value[key].validationFunction)(key, immutableValue))).catch(() => {
+                    return Observable.of(false);
+                }) );
+            } else {
+                //check for name of the permission if there is no validation function
+                promises.push(Observable.of(!!this.permissionsSource.value[key]));
+            }
+
+        });
+        return Observable.merge(promises)
+            .mergeAll()
+            .first((data: any) => {
+                return data !== false;
+            }, () => true, false)
+            .toPromise()
+            .then((data: any) => {
+                return data;
+            });
+    }
+
+    private hasPermissionValidationFunction(key: string) {
+        return !!this.permissionsSource.value[key] && !!this.permissionsSource.value[key].validationFunction && isFunction(this.permissionsSource.value[key].validationFunction);
     }
 }

@@ -15,7 +15,7 @@ export function isPlainObject(value: any): boolean {
     }
 }
 
-export function isString(value: any): boolean{
+export function isString(value: any): value is string {
     return typeof value === 'string';
 }
 
