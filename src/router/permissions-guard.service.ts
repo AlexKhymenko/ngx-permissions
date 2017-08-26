@@ -34,10 +34,10 @@ export class NgxPermissionsGuard implements CanActivate {
         }
 
         if (isString(permissions.except)) {
-            permissions.except = [<string>permissions.except]
+            permissions.except = [permissions.except]
         }
         if (isString(permissions.only)) {
-            permissions.only = [<string>permissions.only]
+            permissions.only = [permissions.only]
         }
 
         if (!!permissions.except) {

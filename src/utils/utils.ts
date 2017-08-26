@@ -1,9 +1,9 @@
 
 
 
-export function isFunction(functionToCheck: any) {
+export function isFunction(functionToCheck: any): functionToCheck is Function {
     let getType = {};
-    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+    return !!functionToCheck && functionToCheck instanceof Function && getType.toString.call(functionToCheck) === '[object Function]';
 }
 
 export function isPlainObject(value: any): boolean {
