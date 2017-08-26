@@ -65,40 +65,22 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
 
     private validateExceptPermissions() {
         Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsExcept), this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept)])
-            .then(([permissionsPr, roles]) => {
-                if (permissionsPr || roles) {
-
-                    this.permissionsUnauthorized.emit();
-                    this.viewContainer.clear();
-                    if (!!this.ngxPermissionsExceptElse || this.ngxPermissionsElse) {
-                        this.viewContainer.createEmbeddedView(this.ngxPermissionsExceptElse || this.ngxPermissionsElse);
-                    }
+            .then(([hasPermission, hasRole]) => {
+                if (hasPermission || hasRole) {
+                    this.handleUnauthorisedPermission(this.ngxPermissionsExceptElse || this.ngxPermissionsElse)
                 } else {
-                    if (!!this.ngxPermissionsOnly) {
+                    if (!!this.ngxPermissionsOnly)  {
                         throw false;
                     } else {
-                        this.permissionsAuthorized.emit();
-                        this.viewContainer.clear();
-
-                        if (!!this.ngxPermissionsExceptThen || this.ngxPermissionsThen) {
-                            this.viewContainer.createEmbeddedView(this.ngxPermissionsExceptThen || this.ngxPermissionsThen);
-                            return;
-                        }
-                        this.viewContainer.createEmbeddedView(this.templateRef);
+                        this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef );
                     }
                 }
             }).catch(() => {
             if (!!this.ngxPermissionsOnly) {
                 this.validateOnlyPermissions();
-                return;
+            } else {
+                this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef )
             }
-
-            this.viewContainer.clear();
-            if (!!this.ngxPermissionsExceptElse || this.ngxPermissionsElse) {
-                this.viewContainer.createEmbeddedView(this.ngxPermissionsExceptElse || this.ngxPermissionsElse);
-                return;
-            }
-            this.viewContainer.createEmbeddedView(this.templateRef);
         });
     }
 
