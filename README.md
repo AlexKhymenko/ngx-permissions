@@ -454,7 +454,8 @@ Permission directive
   
 Permission module exposes directive `ngxPermissionsOnly` and `ngxPermissionsExcept` that can show/hide elements of your application based on set of permissions.
  > :fire: **Important**   
- >  Else, then syntax is supported.Not if you use `then` block don't put anything in main block it will be not visible only else block will be used.
+ >  Else, then syntax is supported.   
+ Note if you use `then` block don't put anything in main block it will be not visible only `then` block will be used.
  
 
 Permission directive accepts several attributes:
