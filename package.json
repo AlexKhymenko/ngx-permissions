@@ -10,7 +10,7 @@
     "docs:watch": "npm run docs:build -- -s -w",
     "lint": "tslint --type-check --project tsconfig.json src/**/*.ts",
     "test": "tsc && karma start karma.conf.js",
-    "rep:publish ": "npm publish dist"
+    "rep:publish": "npm publish dist"
   },
   "repository": {
     "type": "git",
