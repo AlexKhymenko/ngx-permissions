@@ -37,7 +37,6 @@ export class NgxPermissionsService {
 
     public hasPermission(permission: string | string[]): Promise<boolean> {
         if (!permission) Promise.resolve(true);
-
         if (Array.isArray(permission)) {
             return this.hasArrayPermission(permission);
         } else {

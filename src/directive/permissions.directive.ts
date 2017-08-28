@@ -52,15 +52,17 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         return Observable.merge(this.permissionsService.permissions$, this.rolesService.roles$)
             .skip(this.firstMergeUnusedRun)
             .subscribe(() => {
-            if (!!this.ngxPermissionsExcept) {
-                this.validateExceptAndOnlyPermissions();
-                return;
-            }
+                if (!!this.ngxPermissionsExcept) {
+                    this.validateExceptAndOnlyPermissions();
+                    return;
+                }
 
-            if (!!this.ngxPermissionsOnly) {
-                this.validateOnlyPermissions();
-            }
-        });
+                if (!!this.ngxPermissionsOnly) {
+                    this.validateOnlyPermissions();
+                }
+
+                this.handleAuthorisedPermission(this.getAllPossibleTemplates());
+            });
     }
 
     private validateExceptAndOnlyPermissions() {
@@ -113,6 +115,16 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     private showTemplateBlockInView(template: TemplateRef<any>) {
         if (!template) return;
         this.viewContainer.createEmbeddedView(template);
+    }
+
+    private getAllPossibleTemplates() {
+        return this.ngxPermissionsOnlyThen
+            || this.ngxPermissionsOnlyElse
+            || this.ngxPermissionsExceptElse
+            || this.ngxPermissionsExceptThen
+            || this.ngxPermissionsThen
+            || this.ngxPermissionsElse
+            || this.templateRef
     }
 }
 
