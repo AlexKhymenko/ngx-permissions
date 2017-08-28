@@ -119,11 +119,8 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
 
     private getAllPossibleTemplates() {
         return this.ngxPermissionsOnlyThen
-            || this.ngxPermissionsOnlyElse
-            || this.ngxPermissionsExceptElse
             || this.ngxPermissionsExceptThen
             || this.ngxPermissionsThen
-            || this.ngxPermissionsElse
             || this.templateRef
     }
 }
