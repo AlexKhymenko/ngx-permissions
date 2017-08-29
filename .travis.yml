@@ -3,7 +3,7 @@ sudo: false
 node_js:
 - '6.11.2'
 
-script: npm run test:single`
+script: npm run test:single
 
 addons:
   firefox: latest
