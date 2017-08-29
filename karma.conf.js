@@ -39,7 +39,22 @@ module.exports = function (config) {
             },
             compilerOptions: {
                 lib: ['ES2015', 'DOM']
-            }
+            },
+            reports:
+                {
+                    "cobertura": {
+                        "directory": "coverage",
+                        "filename": "coverage.xml",
+                        "subdirectory": "cobertura"
+                    },
+                    "html": "coverage",
+                    "text-summary": "",
+                    "lcovonly": {
+                        "directory": "coverage",
+                        "filename": "lcov.info",
+                        "subdirectory": "lcovonly"
+                    }
+                }
         },
         customLaunchers: {
             Chrome_with_debugging: {

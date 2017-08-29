@@ -1,0 +1,12 @@
+"use strict";
+exports.__esModule = true;
+require("reflect-metadata");
+require("zone.js/dist/zone.js");
+require("zone.js/dist/proxy.js");
+require("zone.js/dist/sync-test.js");
+require("zone.js/dist/jasmine-patch.js");
+require("zone.js/dist/async-test.js");
+require("zone.js/dist/fake-async-test.js");
+var testing_1 = require("@angular/core/testing");
+var testing_2 = require("@angular/platform-browser-dynamic/testing");
+testing_1.TestBed.initTestEnvironment(testing_2.BrowserDynamicTestingModule, testing_2.platformBrowserDynamicTesting());
