@@ -31,7 +31,7 @@ $ npm install ngx-permissions --save
 
 ## Consuming library
 
-Once you have published your library to npm, you can import your library in any Angular application by running:
+You can import library in any Angular application by running:
 
 ```bash
 $ npm install ngx-permissions  --save
