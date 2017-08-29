@@ -17,9 +17,9 @@ before_script:
 notifications:
   email: false
 
-cache:
-  directories:
-    - node_modules
+#cache:
+#  directories:
+#    - node_modules
 
 after_success:
 - npm run codecov
