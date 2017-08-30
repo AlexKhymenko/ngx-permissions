@@ -36,7 +36,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     constructor(private permissionsService: NgxPermissionsService,
                 private rolesService: NgxRolesService,
                 private viewContainer: ViewContainerRef,
-                private templateRef: TemplateRef<EvryIfPermissionContext>) {}
+                private templateRef: TemplateRef<any>) {}
 
     ngOnInit(): void {
         this.initPermissionSubscription = this.validateExceptOnlyPermissions();
@@ -123,9 +123,4 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
             || this.ngxPermissionsThen
             || this.templateRef
     }
-}
-
-export class EvryIfPermissionContext {
-    public $implicit: any = null;
-    public permissions: any = null;
 }

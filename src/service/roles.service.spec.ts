@@ -116,6 +116,39 @@ describe('Roles Service', () => {
         });
 
     }));
+
+    it('should return role when requested with has role', fakeAsync(() => {
+        localService.addRole('role', () => true);
+        let role = localService.getRole('role');
+        expect(role.name).toBe('role');
+        expect((role.validationFunction as Function)()).toEqual(true);
+    }));
+
+    it ('should return true when checking with empty permisssion(not specified)', fakeAsync(() => {
+        localService.hasOnlyRoles('').then((data) => {
+            expect(data).toEqual(true);
+        });
+    }))
+
+    it ('should return false when permission array is empty', fakeAsync(() => {
+        localService.hasOnlyRoles('Empty').then((data) => {
+            expect(data).toEqual(false);
+        });
+    }));
+
+    it('should return false when permission is not specified in the list', fakeAsync(() => {
+        localService.addRole('test', ['One']);
+        localService.hasOnlyRoles('nice').then((data) => {
+            expect(data).toBe(false);
+        });
+    }));
+
+    xit('maybe add functionality when function returns array', fakeAsync(() => {
+        localService.addRole('test', () => {return ['nice']});
+        localService.hasOnlyRoles('nice').then((data) => {
+            expect(data).toBe(true);
+        });
+    }));
 });
 
 describe('Roles Service model', () => {

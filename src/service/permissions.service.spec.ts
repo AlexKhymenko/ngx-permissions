@@ -197,6 +197,12 @@ describe('Permissions Service', () => {
             expect(data).toEqual(true);
         });
     }));
+
+    it('should return true when called with empty parameters', fakeAsync(() => {
+        localService.hasPermission('').then((data) => {
+            expect(data).toEqual(true);
+        });
+    }))
 });
 
 

@@ -67,7 +67,7 @@ export class NgxRolesService {
 
 
     public hasOnlyRoles(names: string | string[]): Promise<boolean> {
-        if (!names) Promise.resolve(true);
+        if (!names) { return Promise.resolve(true)}
 
         return Promise.all([this.hasRoleKey(names), this.hasRolePermission(this.rolesSource.value, names)])
             .then(([hasRoles, hasPermissions]: [boolean, boolean]) => {
@@ -126,12 +126,7 @@ export class NgxRolesService {
                 }
             }
 
-            //Should not validate if role declaration is function if will check in previous method
-            if (isFunction(roles[key].validationFunction)) {
-                return false;
-            }
-
-            return true;
+            return false;
         }));
     }
 }
