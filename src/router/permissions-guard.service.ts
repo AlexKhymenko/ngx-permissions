@@ -33,14 +33,14 @@ export class NgxPermissionsGuard implements CanActivate {
             permissions.only = (purePermissions.only as Function)(route, state);
         }
 
-        if (isString(permissions.except)) {
+        if (!!permissions.except && isString(permissions.except)) {
             permissions.except = [permissions.except]
         }
-        if (isString(permissions.only)) {
+        if (!!permissions.only && isString(permissions.only)) {
             permissions.only = [permissions.only]
         }
 
-        if (!!permissions.except) {
+        if (!!permissions.except && permissions.except.length > 0) {
             if (!!permissions.redirectTo && ((isFunction(permissions.redirectTo)) || (isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo)))) {
                 if (Array.isArray(permissions.except)) {
                     let failedPermission = '';
@@ -92,7 +92,7 @@ export class NgxPermissionsGuard implements CanActivate {
                 })
         }
 
-        if (permissions.only) {
+        if (permissions.only && permissions.only.length > 0) {
             if (!!permissions.only && (isFunction(permissions.redirectTo) || isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo))) {
                 return this.onlyRedirectCheck(permissions, route, state)
             }

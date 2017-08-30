@@ -145,7 +145,7 @@ describe('Roles Service', () => {
 
     xit('maybe add functionality when function returns array', fakeAsync(() => {
         localService.addRole('test', () => {return ['nice']});
-        localService.hasOnlyRoles('nice').then((data) => {
+        localService.hasOnlyRoles(['nice']).then((data) => {
             expect(data).toBe(true);
         });
     }));

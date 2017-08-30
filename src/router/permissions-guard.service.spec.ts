@@ -64,6 +64,41 @@ describe('Permissions guard only', () => {
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404'])
         })
     }));
+
+    it ('should return false when only doesnt match and navigate to array 404', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: 'DOESNT MATCH',
+                redirectTo: ['./404']
+            }
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404'])
+        })
+    }));
+
+    it ('should return true when neither only not except specified', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: '',
+                except: '',
+                redirectTo: ['./404']
+            }
+        }};
+        expect(permissionGuard.canActivate(route, {} as RouterStateSnapshot)).toBe(true);
+    }));
+
+    it ('should return true when neither only not except specified as array', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: [],
+                except: [],
+                redirectTo: ['./404']
+            }
+        }};
+        expect(permissionGuard.canActivate(route, {} as RouterStateSnapshot)).toBe(true);
+    }))
 });
 
 describe('Permissions guard Except', () => {
