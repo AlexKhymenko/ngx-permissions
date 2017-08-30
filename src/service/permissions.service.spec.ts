@@ -3,6 +3,7 @@
 import { NgxPermissionsService } from './permissions.service';
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 import { NgxPermissionsModule } from '../index';
+import { NgxPermission } from '../model/permission.model';
 
 enum PermissionsNamesEnum {
     ADMIN = <any>'ADMIN',
@@ -196,4 +197,14 @@ describe('Permissions Service', () => {
             expect(data).toEqual(true);
         });
     }));
+});
+
+
+
+describe('Permissions Service model', () => {
+    it('should create role mode', () => {
+        let permission = new NgxPermission('permission', () => true);
+        expect(permission.name).toBe('permission');
+        expect((permission.validationFunction as Function)()).toBe(true);
+    })
 });

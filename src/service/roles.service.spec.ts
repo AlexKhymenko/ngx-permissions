@@ -2,6 +2,7 @@ import { NgxRolesService } from './roles.service';
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 import { NgxRolesStore } from '../store/roles.store';
 import { NgxPermissionsModule } from '../index';
+import { NgxRole } from '../model/role.model';
 
 enum RoleNamesEnum {
     ADMIN = <any>'ADMIN',
@@ -115,4 +116,12 @@ describe('Roles Service', () => {
         });
 
     }));
+});
+
+describe('Roles Service model', () => {
+   it('should create role mode', () => {
+       let roleModel = new NgxRole('role', () => true);
+       expect(roleModel.name).toBe('role');
+       expect((roleModel.validationFunction as Function)()).toBe(true);
+   })
 });
