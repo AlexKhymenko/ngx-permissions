@@ -1,3 +1,7 @@
+## 1.2
+
+###Small Bug Fixes
+
 ## 1.1
 
 ### Features

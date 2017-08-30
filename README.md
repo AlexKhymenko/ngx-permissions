@@ -3,6 +3,12 @@
 Permission and roles based access control for your angular(angular 2, angular 4+) applications(AOT, lazy modules compatible)
 
 
+##
+
+[![Build Status](https://travis-ci.org/AlexKhymenko/ngx-permissions.svg?branch=master)](https://travis-ci.org/AlexKhymenko/ngx-permissions)
+[![codecov](https://codecov.io/gh/AlexKhymenko/ngx-permissions/branch/master/graph/badge.svg)](https://codecov.io/gh/AlexKhymenko/ngx-permissions)
+[![npm version](https://badge.fury.io/js/ngx-permissions.svg)](https://badge.fury.io/js/ngx-permissions)
+
 ## Documentation and examples
 
 To see better structured documentation go to [wiki-page](https://github.com/AlexKhymenko/ngx-permissions/wiki).  
