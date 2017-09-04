@@ -1,3 +1,8 @@
+## 2.0
+Add support for angular 5. 
+
+Version 2 for angular 4/5. Version 1 for angular 2/4
+
 ## 1.2
 
 ###Small Bug Fixes

@@ -14,7 +14,6 @@ import { NgxRolesStore } from '../store/roles.store';
 import { isFunction, isPromise, isString } from '../utils/utils';
 
 
-//TODO: Change on Injection token when angular removes opaque token
 export const USE_ROLES_STORE = new InjectionToken('USE_ROLES_STORE');
 
 export type NgxRolesObject = {[name: string] : NgxRole}
