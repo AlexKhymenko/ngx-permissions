@@ -9,13 +9,13 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeAll';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
-import { Inject, Injectable, OpaqueToken } from '@angular/core';
+import { Inject, Injectable, InjectionToken, OpaqueToken } from '@angular/core';
 import { NgxRolesStore } from '../store/roles.store';
 import { isFunction, isPromise, isString } from '../utils/utils';
 
 
 //TODO: Change on Injection token when angular removes opaque token
-export const USE_ROLES_STORE = new OpaqueToken('USE_ROLES_STORE');
+export const USE_ROLES_STORE = new InjectionToken('USE_ROLES_STORE');
 
 export type NgxRolesObject = {[name: string] : NgxRole}
 

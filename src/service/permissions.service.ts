@@ -1,4 +1,4 @@
-import { Inject, Injectable, OpaqueToken } from '@angular/core';
+import { Inject, Injectable, InjectionToken, OpaqueToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { NgxPermissionsStore } from '../store/permissions.store';
@@ -16,7 +16,7 @@ import { isFunction, isString } from '../utils/utils';
 
 export type NgxPermissionsObject = {[name: string] : NgxPermission}
 
-export const USE_PERMISSIONS_STORE = new OpaqueToken('USE_PERMISSIONS_STORE');
+export const USE_PERMISSIONS_STORE = new InjectionToken('USE_PERMISSIONS_STORE');
 
 
 @Injectable()
