@@ -26,7 +26,7 @@ In `one month` the detailed functionality description will be available only on 
 - [License](#license)
 
 ### Migration from version 0.1 to 1.0 [CHANGELOG](CHANGELOG.md)
-### Version 2 for angular 4/5 Version 1 for angular 2/4
+### Version 2 for angular 4/5. Version 1 for angular 2/4
 
 ## Installation
 
