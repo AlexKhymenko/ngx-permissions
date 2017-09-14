@@ -28,6 +28,9 @@ In `one month` the detailed functionality description will be available only on 
 ### Migration from version 0.1 to 1.0 [CHANGELOG](CHANGELOG.md)
 ### Version 2 for angular 4/5. Version 1 for angular 2/4
 
+## Demo
+You can test library in [Plunker](https://plnkr.co/edit/n6Wa6hXg0JzI6e050wBt?p=preview)
+
 ## Installation
 
 To install this library, run:
