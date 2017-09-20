@@ -92,7 +92,16 @@ const appRoutes: Routes = [
       }
     }
   },
-  { path: 'lazy', loadChildren: 'app/lazy-module/lazy-module.module#LazyModule' },
+  {
+    path: 'lazy',
+    data: {
+      permissions: {
+        except: 'ADDDMIN',
+      }
+    },
+    canLoad: [NgxPermissionsGuard],
+    loadChildren: 'app/lazy-module/lazy-module.module#LazyModule'
+  },
   { path: 'lazy-isolate', loadChildren: 'app/lazy-isolate/lazy-isolate.module#LazyIsolateModule' },
   { path: 'lazy-roles-isolate', loadChildren: 'app/lazy-role-isolate/lazy-role-isolate.module#LazyRoleIsolateModule' },
   { path: 'lazy-roles-async-isolate', loadChildren: 'app/lazy-roles-async-isolate/lazy-roles-async-isolate.module#LazyRolesAsyncIsolateModule' },
