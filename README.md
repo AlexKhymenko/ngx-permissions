@@ -601,8 +601,12 @@ Usage with Routes
 3. [Property redirectTo](#property-redirectto)
   1. [Single rule redirection](#single-redirection-rule)
   2. [Multiple rule redirection](#multiple-redirection-rules)  
-  3. [Dynamic redirection rules](#dynamic-redirection-rules)  
-4. [Common use cases](#common-use-cases)
+  3. [Dynamic redirection rules](#dynamic-redirection-rules)
+4. [Implemented Guards](#implemented-guards)   
+  1. [Can Activate Guard](#can-activate-guard) 
+  2. [Can Load Guard](#can-load-guard)
+  3. [Can Activate Child Guard]($can-activate-child-guard)
+5. [Common use cases](#common-use-cases)
   1. [Two guards when first make request for authorisation and gets permissions second checks for permissions](#two-guards-when-first-make-request-for-authorisation-and-gets-permissions-second-checks-for-permissions)
 
 Introduction
@@ -1032,8 +1036,105 @@ export function redirectToFunc(rejectedPermissionName: string, activateRouteSnap
 
 redirectTo: redirectToFunc
 ```
+----------------------------
+
+## Implemented Guards
+
+### Can Activate Guard
+NgxPermissionsGuard implements CanActivate interface for examples you can see above
+
+### Can Load Guard
+
+NgxPermissionsGuard implements CanLoad Interface. Functionality is the same as with canActivate 
+
+```typescript
+const appRoutes: Routes = [
+
+  {
+    path: 'lazy',
+    data: {
+      permissions: {
+        except: 'ADDDMIN',
+      }
+    },
+    canLoad: [NgxPermissionsGuard],
+    loadChildren: 'app/lazy-module/lazy-module.module#LazyModule'
+  },
+ 
+
+];
+@NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ],
+  providers: [
+    // CanDeactivateGuard
+  ]
+})
+export class AppRoutingModule {}
 
 
+ 
+```
+
+> :fire: **Warning**   
+> * The only difference if you use as a function the parameter is **only 1** and its type of  **Route**
+
+```typescript
+
+{
+    path: 'lazy',
+    data: {
+      permissions: {
+         only: (route: Route) => {
+                  //logic here
+                   return ['MANAGER', "UTILS"]
+                  }
+      }
+    },
+    canLoad: [NgxPermissionsGuard],
+    loadChildren: 'app/lazy-module/lazy-module.module#LazyModule'
+  },
+```
+
+### Can Activate Child Guard
+
+NgxPermissionsGuard implements CanLoad Interface. Functionality is the same as with canActivate 
+
+> :fire: **Warning**   
+> * Need to remember that rules and data you should specify on **Child Components** not on parent component
+
+```typescript
+const appRoutes: Routes = [
+  { path: '',
+    component: IsolateComponent,
+    canActivateChild: [NgxPermissionsGuard],
+    children: [
+      {
+        path: 'except-should',
+        component: AnotherComponent,
+        data: {
+          permissions: {
+            except: 'ADMIN'
+          }
+        }
+      },
+      {
+        path: 'only-should',
+        component: ComeComponent,
+        data: {
+          permissions: {
+            only: 'GUEST'
+          }
+        }
+      },
+    ]
+  },
+];
+```
 ----------------------------
 
 
