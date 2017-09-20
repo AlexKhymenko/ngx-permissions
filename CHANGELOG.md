@@ -1,3 +1,7 @@
+## 2.1.0
+Implement canLoad interface
+Implement canActivateChild interface
+
 ## 2.0
 Add support for angular 5. 
 
