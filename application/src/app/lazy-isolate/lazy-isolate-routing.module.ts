@@ -6,47 +6,47 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 const appRoutes: Routes = [
   { path: '',
     component: IsolateComponent,
-  },
-  {
-    path: 'except-should',
-    component: IsolateComponent,
-    canActivate: [NgxPermissionsGuard],
-    data: {
-      permissions: {
-        except: 'ADDDMIN'
+    canActivateChild: [NgxPermissionsGuard],
+    children: [
+      {
+        path: 'except-should',
+        component: IsolateComponent,
+        data: {
+          permissions: {
+            except: 'ADDDMIN'
+          }
+        }
+      },
+      {
+        path: 'only-should',
+        component: IsolateComponent,
+        data: {
+          permissions: {
+            only: 'GUEST'
+          }
+        }
+      },
+      {
+        path: 'except-should-not',
+        component: IsolateComponent,
+        data: {
+          permissions: {
+            except: 'GUEST'
+          }
+        }
+      },
+      {
+        path: 'only-should-not',
+        component: IsolateComponent,
+        data: {
+          permissions: {
+            only: 'ADMIN'
+          }
+        }
       }
-    }
+    ]
   },
-  {
-    path: 'only-should',
-    component: IsolateComponent,
-    canActivate: [NgxPermissionsGuard],
-    data: {
-      permissions: {
-        only: 'GUEST'
-      }
-    }
-  },
-  {
-    path: 'except-should-not',
-    component: IsolateComponent,
-    canActivate: [NgxPermissionsGuard],
-    data: {
-      permissions: {
-        except: 'GUEST'
-      }
-    }
-  },
-  {
-    path: 'only-should-not',
-    component: IsolateComponent,
-    canActivate: [NgxPermissionsGuard],
-    data: {
-      permissions: {
-        only: 'ADMIN'
-      }
-    }
-  }
+
 ];
 @NgModule({
   imports: [

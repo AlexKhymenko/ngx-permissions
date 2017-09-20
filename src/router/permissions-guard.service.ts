@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-    ActivatedRouteSnapshot, CanActivate, CanLoad, NavigationExtras, Route, Router,
+    ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanLoad, NavigationExtras, Route, Router,
     RouterStateSnapshot
 } from '@angular/router';
 import { NgxPermissionsService } from '../service/permissions.service';
@@ -19,7 +19,7 @@ type NgxRedirectToNavigationParameters = {
     navigationExtras?: NavigationExtras | Function
 }
 @Injectable()
-export class NgxPermissionsGuard implements CanActivate, CanLoad {
+export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChild {
 
 
     constructor(private permissionsService: NgxPermissionsService, private  rolesService: NgxRolesService, private router: Router) {}
@@ -28,9 +28,14 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad {
         return this.hasPermissions(route, state);
     }
 
+    canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        return this.hasPermissions(childRoute, state)
+    }
+
     canLoad(route: Route): boolean | Observable<boolean> | Promise<boolean> {
         return this.hasPermissions(route)
     }
+
 
     private checkOnlyPermissions(purePermissions: any, route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
         let permissions: NgxPermissionsRouterData = {
