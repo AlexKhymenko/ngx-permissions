@@ -109,6 +109,36 @@ describe("module", () => {
         }))
     );
 
+    it("should work when loaded using just Module", fakeAsync(inject(
+        [Router, Location, NgModuleFactoryLoader],
+        (router: Router, location: Location, loader: SpyNgModuleFactoryLoader) => {
+            let LoadedModule = getLazyLoadedModule(NgxPermissionsModule);
+            loader.stubbedModules = {expected: LoadedModule};
+
+            const fixture = createRoot(router, RootCmp),
+                injector = getTestBed(),
+                permissionsService: NgxPermissionsService = injector.get(NgxPermissionsService);
+
+            permissionsService.hasPermission('ADMIN').then((data) => {
+                expect(data).toBe(false)
+            });
+
+            router.resetConfig([{path: 'lazy', loadChildren: 'expected'}]);
+
+            router.navigateByUrl('/lazy/loaded/child');
+            advance(fixture);
+
+            expect(location.path()).toEqual('/lazy/loaded/child');
+
+            // since the root module imports the NgxPermissionsModule with forRoot and the lazy loaded module with forChild
+            // the permissionsService service is shared between both modules
+            // the constructor of the ChildLazyLoadedComponent overwrote the "ADMIN" key of the root NgxPermissionsService
+            permissionsService.hasPermission('ADMIN').then((data) => {
+                expect(data).toBe(true)
+            });
+        }))
+    );
+
     it("should create 2 instances of the service when lazy loaded using forRoot", fakeAsync(inject(
         [Router, Location, NgModuleFactoryLoader],
         (router: Router, location: Location, loader: SpyNgModuleFactoryLoader) => {

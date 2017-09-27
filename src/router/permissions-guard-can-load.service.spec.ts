@@ -283,6 +283,92 @@ describe('Permissions guard Except and only together', () => {
     }));
 });
 
+describe('Permissions guard Except and only together with isolation in root', () => {
+
+    let permissionGuard: NgxPermissionsGuard;
+    let fakeRouter;
+    let route;
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [NgxPermissionsModule.forRoot({permissionsIsolate: true, rolesIsolate: true})]
+        });
+    });
+    beforeEach(inject([NgxPermissionsService, NgxRolesService], (service: NgxPermissionsService, rolesService: NgxRolesService) => {
+        fakeRouter = <any>{navigate: () => {}};
+        spyOn(fakeRouter, 'navigate')
+
+        service.addPermission('MANAGER');
+        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
+    }));
+
+    it('should create an instance', () => {
+        expect(permissionGuard).toBeTruthy();
+    });
+
+    it ('sholud return false when except matches and it should not check only and redirect to 404', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: 'MANAGER',
+                only: 'AWESOME',
+                redirectTo: './404'
+            }
+        }};
+        permissionGuard.canLoad(route).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404']);
+        })
+    }));
+
+    it ('should return false when except matches at least one array', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: ["MANAGER", 'Something else'],
+                only: 'AWESOME'
+            }
+        }};
+        permissionGuard.canLoad(route).then((data) => {
+            expect(data).toEqual(false);
+        })
+    }));
+
+    it ('sholud return true when except doesn"t match but only matcher', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: 'DOESNT MATCH',
+                only: "MANAGER"
+            }
+        }};
+        permissionGuard.canLoad(route).then((data) => {
+            expect(data).toEqual(true);
+        })
+    }));
+
+    it ('sholud return true when any in array doesn"t match but only matches', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: ['DOESNT MATCH', "AWESOME"],
+                only: ['MANAGER', 'AWESOME']
+            }
+        }};
+        permissionGuard.canLoad(route).then((data) => {
+            expect(data).toEqual(true);
+        })
+    }));
+    it ('sholud return false when except in array doesn"t match and only also doesn"t matches', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: ['DOESNT MATCH', "AWESOME"],
+                only: ['gg', 'AWESOME'],
+                redirectTo: './404'
+            }
+        }};
+        permissionGuard.canLoad(route).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404']);
+        })
+    }));
+});
+
 
 describe('Permissions guard use only dynamically', () => {
 
