@@ -40,9 +40,7 @@ export class NgxPermissionsService {
         if (Array.isArray(permission)) {
             return this.hasArrayPermission(permission);
         } else {
-            if (isString(permission)) {
-                permission = [permission]
-            }
+            permission = [permission];
             return this.hasArrayPermission(permission);
         }
     }

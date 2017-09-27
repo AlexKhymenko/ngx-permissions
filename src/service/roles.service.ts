@@ -116,9 +116,7 @@ export class NgxRolesService {
             if (Array.isArray(roles[key].validationFunction)) {
                 if (isString(roleName)) {
                     return (<string[]>roles[key].validationFunction).includes(<string>roleName);
-                }
-
-                if (Array.isArray(roleName)) {
+                } else {
                     return (<string[]>roles[key].validationFunction).some((v: any) => {
                         return roleName.includes(v);
                     });
