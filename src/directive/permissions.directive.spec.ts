@@ -2190,6 +2190,110 @@ describe("Ngx Permissions Except and only Directive when no permission specified
     }));
 });
 
+describe("Ngx Permissions Except and only Directive when no permission specified as array should return true", () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <ng-template [ngxPermissionsExcept]="[]" [ngxPermissionsOnly]="[]">
+                <div>123</div>
+            </ng-template>
+        `
+    })
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissionsService;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
+    });
+
+
+    it('Except and only should success and show then block', fakeAsync(() => {
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`123`);
+    }));
+});
+
+describe("Ngx Permissions only Directive when no permission specified as array should return true", () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <ng-template [ngxPermissionsOnly]="[]">
+                <div>123</div>
+            </ng-template>
+        `
+    })
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissionsService;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
+    });
+
+
+    it('Except and only should success and show then block', fakeAsync(() => {
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`123`);
+    }));
+});
+
+describe("Ngx Permissions except Directive when no permission specified as array should return true", () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <ng-template [ngxPermissionsExcept]="[]">
+                <div>123</div>
+            </ng-template>
+        `
+    })
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissionsService;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
+    });
+
+
+    it('Except and only should success and show then block', fakeAsync(() => {
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toBeTruthy();
+        expect(content2.innerHTML).toEqual(`123`);
+    }));
+});
 
 
 function detectChanges(fixture) {

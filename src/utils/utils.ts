@@ -22,3 +22,10 @@ export function isString(value: any): value is string {
 export function isPromise(promise: any) {
     return Object.prototype.toString.call(promise) === "[object Promise]"
 }
+
+export function notEmptyValue(value: any): boolean {
+    if (Array.isArray(value)) {
+        return value.length > 0;
+    }
+    return !!value;
+}

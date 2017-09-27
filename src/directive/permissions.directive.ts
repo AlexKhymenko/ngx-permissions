@@ -9,6 +9,7 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/skip';
 import { Observable } from 'rxjs/Observable';
+import { notEmptyValue } from '../utils/utils';
 
 @Directive({
     selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
@@ -52,12 +53,12 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         return Observable.merge(this.permissionsService.permissions$, this.rolesService.roles$)
             .skip(this.firstMergeUnusedRun)
             .subscribe(() => {
-                if (!!this.ngxPermissionsExcept) {
+                if (notEmptyValue(this.ngxPermissionsExcept)) {
                     this.validateExceptAndOnlyPermissions();
                     return;
                 }
 
-                if (!!this.ngxPermissionsOnly) {
+                if (notEmptyValue(this.ngxPermissionsOnly)) {
                     this.validateOnlyPermissions();
                 }
 

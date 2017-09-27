@@ -41,6 +41,26 @@ describe('Permissions guard only', () => {
         })
     }));
 
+    it ('sholud return true when only is empty array', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: []
+            }
+        }};
+        expect( permissionGuard.canActivate(route, {} as RouterStateSnapshot)).toEqual(true);
+
+    }));
+
+    it ('sholud return true when except is empty array', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: []
+            }
+        }};
+        expect( permissionGuard.canActivate(route, {} as RouterStateSnapshot)).toEqual(true);
+
+    }));
+
     it ('sholud return false when only doesnt match', fakeAsync(() => {
         route = { data: {
             permissions: {
