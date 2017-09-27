@@ -143,6 +143,13 @@ describe('Roles Service', () => {
         });
     }));
 
+    it('should return true when passing empty array', fakeAsync(() => {
+        localService.addRole('test', ['One']);
+        localService.hasOnlyRoles([]).then((data) => {
+            expect(data).toBe(true);
+        });
+    }));
+
     xit('maybe add functionality when function returns array', fakeAsync(() => {
         localService.addRole('test', () => {return ['nice']});
         localService.hasOnlyRoles(['nice']).then((data) => {

@@ -66,7 +66,7 @@ export class NgxRolesService {
 
 
     public hasOnlyRoles(names: string | string[]): Promise<boolean> {
-        if (!names || names.length === 0) { return Promise.resolve(true)}
+        if (!names || (Array.isArray(names) && names.length === 0)) { return Promise.resolve(true)}
 
         return Promise.all([this.hasRoleKey(names), this.hasRolePermission(this.rolesSource.value, names)])
             .then(([hasRoles, hasPermissions]: [boolean, boolean]) => {

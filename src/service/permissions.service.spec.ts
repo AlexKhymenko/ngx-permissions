@@ -203,6 +203,12 @@ describe('Permissions Service', () => {
             expect(data).toEqual(true);
         });
     }))
+
+    it('should return true when called with empty array', fakeAsync(() => {
+        localService.hasPermission([]).then((data) => {
+            expect(data).toEqual(true);
+        });
+    }))
 });
 
 
