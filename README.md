@@ -490,7 +490,7 @@ You can use both `ngxPermissionsOnly` and `ngxPermissionsExcept` at the same tim
  <ng-template [ngxPermissionsOnly]="'ADMIN'"  [ngxPermissionsExcept]="'Manager'">
     <div>You can see this text congrats</div>
  </ng-template>
-  <ng-template ngxPpermissionsOnly="ADMIN">
+  <ng-template ngxPermissionsOnly="ADMIN">
     <div>You can see this text congrats</div>
  </ng-template>
  
