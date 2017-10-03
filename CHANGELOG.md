@@ -1,3 +1,6 @@
+## 2.1.1
+BugFix When passing empty array. it should show the component.
+
 ## 2.1.0
 Implement canLoad interface
 Implement canActivateChild interface
