@@ -16,7 +16,7 @@ export function isPlainObject(value: any): boolean {
 }
 
 export function isString(value: any): value is string {
-    return typeof value === 'string';
+    return !!value && typeof value === 'string';
 }
 
 export function isPromise(promise: any) {
