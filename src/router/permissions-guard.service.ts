@@ -38,10 +38,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
 
     private hasPermissions(route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
         const purePermissions = !!route && route.data ? route.data['permissions'] as NgxPermissionsRouterData : {};
-        let permissions: NgxPermissionsRouterData = {
-            ...purePermissions
-        };
-        permissions = this.transformPermission(permissions, route, state);
+        let permissions: NgxPermissionsRouterData = this.transformPermission(purePermissions, route, state);
 
         if (this.isParameterAvailable(permissions.except)) {
             return this.passingExceptPermissionsValidation(permissions, route, state);
@@ -49,7 +46,6 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
 
         if (this.isParameterAvailable(permissions.only)) {
             return this.passingOnlyPermissionsValidation(permissions, route, state);
-
         }
 
         return true;
@@ -77,8 +73,6 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
                 }
             })
     }
-
-
 
     private redirectToAnotherRoute(redirectTo: string | any[] | NgxRedirectToNavigationParameters | Function, route : ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot, failedPermissionName?: string) {
         if(isFunction(redirectTo)) {
@@ -160,7 +154,10 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
        return !!permissions.redirectTo && permissions.redirectTo[<any>failedPermission]
     }
 
-    private transformPermission(permissions: NgxPermissionsRouterData, route: any, state: any): any {
+    private transformPermission(purePermissions: NgxPermissionsRouterData, route: any, state: any): any {
+        let permissions = {
+            ...purePermissions
+        };
         if (isFunction(permissions.except)) {
             permissions.except = (permissions.except as Function)(route, state);
         }
