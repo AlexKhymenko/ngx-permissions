@@ -55,24 +55,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
         return !!(permission) && permission.length > 0
     }
 
-    private checkOnlyPermissions(purePermissions: any, route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
-        let permissions: NgxPermissionsRouterData = {
-            ...purePermissions
-        };
-        return Promise.all([this.permissionsService.hasPermission(<string | string[]>permissions.only), this.rolesService.hasOnlyRoles(<string | string[]>permissions.only)])
-            .then(([permissionsPr, roles]) => {
-                if (permissionsPr || roles)  {
-                    return true;
-                } else {
-                    if (permissions.redirectTo) {
-                        this.redirectToAnotherRoute(permissions.redirectTo, route, state);
-                        return false;
-                    } else {
-                        return false;
-                    }
-                }
-            })
-    }
+
 
     private redirectToAnotherRoute(redirectTo: string | any[] | NgxRedirectToNavigationParameters | Function, route : ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot, failedPermissionName?: string) {
         if(isFunction(redirectTo)) {
@@ -158,6 +141,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
         let permissions = {
             ...purePermissions
         };
+
         if (isFunction(permissions.except)) {
             permissions.except = (permissions.except as Function)(route, state);
         }
@@ -177,9 +161,8 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
 
     private passingExceptPermissionsValidation(permissions: NgxPermissionsRouterData, route: any, state: any) {
         if (!!permissions.redirectTo && ((isFunction(permissions.redirectTo)) || (isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo)))) {
-            if (Array.isArray(permissions.except)) {
                 let failedPermission = '';
-                return Observable.from(permissions.except)
+                return Observable.from(permissions.except as any[])
                     .mergeMap((data) => {
                         return Observable.forkJoin([this.permissionsService.hasPermission(<string | string[]>data), this.rolesService.hasOnlyRoles(<string | string[]>data)])
                             .do((hasPerm) => {
@@ -204,7 +187,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
                         }
                         return Observable.of(!isAllFalse);
                     }).toPromise()
-            }
+
         }
 
         return Promise.all([this.permissionsService.hasPermission(<string | string[]>permissions.except), this.rolesService.hasOnlyRoles(<string | string[]>permissions.except)])
@@ -221,6 +204,25 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
                         return this.checkOnlyPermissions(permissions, route, state);
                     }
                     return true;
+                }
+            })
+    }
+
+    private checkOnlyPermissions(purePermissions: any, route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
+        let permissions: NgxPermissionsRouterData = {
+            ...purePermissions
+        };
+        return Promise.all([this.permissionsService.hasPermission(<string | string[]>permissions.only), this.rolesService.hasOnlyRoles(<string | string[]>permissions.only)])
+            .then(([permissionsPr, roles]) => {
+                if (permissionsPr || roles)  {
+                    return true;
+                } else {
+                    if (permissions.redirectTo) {
+                        this.redirectToAnotherRoute(permissions.redirectTo, route, state);
+                        return false;
+                    } else {
+                        return false;
+                    }
                 }
             })
     }
