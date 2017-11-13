@@ -1355,6 +1355,7 @@ describe('Role guard test redirectTo as function', () => {
     let route;
     let testRouter;
     let fakeService;
+    let roleService;
     beforeEach(() => {
         TestBed.configureTestingModule({
 
@@ -1367,6 +1368,7 @@ describe('Role guard test redirectTo as function', () => {
         service.addPermission('canReadAgenda');
         service.addPermission('AWESOME');
         rolesService.addRole('ADMIN', ['AWESOME', 'canReadAgenda']);
+        roleService = rolesService;
         fakeService = service;
         // fakeRouter = router;
         spyOn(fakeRouter, 'navigate');
@@ -1400,6 +1402,8 @@ describe('Role guard test redirectTo as function', () => {
         })
     }));
 
+
+
     it ('it should dynamically redirect to failed route redirectoTo as fucntion', fakeAsync(() => {
         route = { data: {
             permissions: {
@@ -1413,6 +1417,41 @@ describe('Role guard test redirectTo as function', () => {
         permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['canRun']);
+        })
+    }));
+
+    it ('it should dynamically redirect to failed role route redirectoTo as fucntion', fakeAsync(() => {
+        roleService.addRole('RUN', ['BLABLA', 'BLABLA']);
+
+        route = { data: {
+            permissions: {
+                only: ["RUN"],
+                redirectTo: (failedPermission, route, state) => {
+                    return failedPermission;
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            // expect(fakeRouter.navigate).toHaveBeenCalledWith(['canRun']);
+        })
+    }));
+
+    it ('it should dynamically pass if one satisfies', fakeAsync(() => {
+        roleService.addRole('RUN', ['BLABLA', 'BLABLA']);
+
+        route = { data: {
+            permissions: {
+                only: ["RUN", "AWESOME"],
+                redirectTo: (failedPermission, route, state) => {
+                    return failedPermission;
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(true);
         })
     }));
 
