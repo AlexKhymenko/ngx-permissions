@@ -80,40 +80,23 @@ export class NgxRolesService {
     }
 
     private hasRoleKey(roleName: string[]): Promise<boolean> {
-        if (Array.isArray(roleName)) {
-            let promises:any[] = [];
-            roleName.forEach((key) => {
-                if (!!this.rolesSource.value[key] && !!this.rolesSource.value[key].validationFunction && isFunction(this.rolesSource.value[key].validationFunction) && !isPromise(this.rolesSource.value[key].validationFunction)) {
-                    return promises.push(Observable.from(Promise.resolve((<Function>this.rolesSource.value[key].validationFunction)())).catch(() => {
-                        return Observable.of(false);
-                    }) );
-                }
-
-                promises.push(Observable.of(false));
-            });
-
-            return Observable.merge(promises).mergeAll().first((data: any) => {
-                return data !== false;
-            }, () => true, false).toPromise().then((data: any) => {
-                return data;
-            });
-
-            // return Promise.resolve(Object.keys(this.rolesSource.value).some((key) => {
-            //     return roleName.includes(key)
-            // }));
-        } else {
-            if (!!this.rolesSource.value[roleName] && !!this.rolesSource.value[roleName].validationFunction && isFunction(this.rolesSource.value[roleName].validationFunction)) {
-                return Promise.resolve(((<Function>this.rolesSource.value[roleName].validationFunction)())).then((data) => {
-                    if (data !== false) {
-                        return true;
-                    } else {
-                        return data;
-                    }
-                });
+        let promises:any[] = [];
+        roleName.forEach((key) => {
+            if (!!this.rolesSource.value[key] && !!this.rolesSource.value[key].validationFunction && isFunction(this.rolesSource.value[key].validationFunction) && !isPromise(this.rolesSource.value[key].validationFunction)) {
+                return promises.push(Observable.from(Promise.resolve((<Function>this.rolesSource.value[key].validationFunction)())).catch(() => {
+                    return Observable.of(false);
+                }) );
             }
 
-            return Promise.resolve(!!this.rolesSource.value[roleName])
-        }
+            promises.push(Observable.of(false));
+        });
+
+        return Observable.merge(promises).mergeAll().first((data: any) => {
+            return data !== false;
+        }, () => true, false).toPromise().then((data: any) => {
+            return data;
+        });
+
     }
 
     private hasRolePermission(roles: NgxRolesObject, roleNames: string[]): Promise<boolean> {

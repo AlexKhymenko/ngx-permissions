@@ -1309,7 +1309,7 @@ describe('Permissions guard test redirectTo as function', () => {
     }));
 
     it ('it should allow to pass when at least except and only parameters passes the check', fakeAsync(() => {
-        function loginRedirect(activateRouteSnapshot: ActivatedRouteSnapshot,
+        function loginRedirect(permissonName, activateRouteSnapshot: ActivatedRouteSnapshot,
                                routerStateSnapshot: RouterStateSnapshot) {
             localStorage.setItem('redirectUrl', routerStateSnapshot.url);
             return 'login';
@@ -1317,6 +1317,129 @@ describe('Permissions guard test redirectTo as function', () => {
         route = { data: {
             permissions: {
                 except: ['Dont exist'],
+                only: [ "CAN_SWIM", "TROLOLO"],
+                redirectTo: loginRedirect
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
+        })
+    }));
+
+
+    it ('it should allow to pass when at least except parameters passes the check', fakeAsync(() => {
+        function loginRedirect(activateRouteSnapshot: ActivatedRouteSnapshot,
+                               routerStateSnapshot: RouterStateSnapshot) {
+            return 'login';
+        }
+        route = { data: {
+            permissions: {
+                except: ['Dont exist', 'Me also doesnt exist'],
+                redirectTo: loginRedirect
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(true);
+        })
+    }));
+});
+
+
+describe('Role guard test redirectTo as function', () => {
+
+    let permissionGuard: NgxPermissionsGuard;
+    let fakeRouter;
+    let route;
+    let testRouter;
+    let fakeService;
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+
+            imports: [NgxPermissionsModule.forRoot()]
+        });
+    });
+    beforeEach(inject([NgxPermissionsService, NgxRolesService], (service: NgxPermissionsService, rolesService: NgxRolesService) => {
+        fakeRouter = <any>{navigate: () => {}};
+
+        service.addPermission('canReadAgenda');
+        service.addPermission('AWESOME');
+        rolesService.addRole('ADMIN', ['AWESOME', 'canReadAgenda']);
+        fakeService = service;
+        // fakeRouter = router;
+        spyOn(fakeRouter, 'navigate');
+        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
+    }));
+
+    it('should create an instance', () => {
+        expect(permissionGuard).toBeTruthy();
+    });
+
+    xit ('Should redirect to failed permission', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: ['ADMIN'],
+                redirectTo: {
+                    AWESOME: 'agendaList',
+                    SOMETHING: 'dashboard',
+                    canRun: 'run',
+                    default: 'login'
+                }
+                // redirectTo: (failedPermission, route, state) => {
+                //     console.log(failedPermission);
+                //     return failedPermission;
+                // }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['canReadAgenda']);
+        })
+    }));
+
+    it ('it should dynamically redirect to failed route redirectoTo as fucntion', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                only: [ "canRun"],
+                redirectTo: (failedPermission, route, state) => {
+                    return failedPermission;
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['canRun']);
+        })
+    }));
+
+    it ('it should dynamically redirect to failed route redirectoTo as fucntion when except pass only fails', fakeAsync(() => {
+        route = { data: {
+            permissions: {
+                except: 'nice',
+                only: [ "canRun"],
+                redirectTo: (failedPermission, route, state) => {
+                    return failedPermission;
+                }
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['canRun']);
+        })
+    }));
+
+    it ('it should allow to pass when at least one of parameters allow passing and redirectToIsFunction', fakeAsync(() => {
+        function loginRedirect(activateRouteSnapshot: ActivatedRouteSnapshot,
+                               routerStateSnapshot: RouterStateSnapshot) {
+            return 'login';
+        }
+        route = { data: {
+            permissions: {
                 only: [ "canReadAgenda", "CAN_SWIM"],
                 redirectTo: loginRedirect
             },
@@ -1324,6 +1447,26 @@ describe('Permissions guard test redirectTo as function', () => {
         }};
         permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
             expect(data).toEqual(true);
+        })
+    }));
+
+    it ('it should allow to pass when at least except and only parameters passes the check', fakeAsync(() => {
+        function loginRedirect(permissonName, activateRouteSnapshot: ActivatedRouteSnapshot,
+                               routerStateSnapshot: RouterStateSnapshot) {
+            localStorage.setItem('redirectUrl', routerStateSnapshot.url);
+            return 'login';
+        }
+        route = { data: {
+            permissions: {
+                except: ['Dont exist'],
+                only: [ "CAN_SWIM", "TROLOLO"],
+                redirectTo: loginRedirect
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
         })
     }));
 
