@@ -3,6 +3,7 @@ import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 import { NgxRolesStore } from '../store/roles.store';
 import { NgxPermissionsModule } from '../index';
 import { NgxRole } from '../model/role.model';
+import { NgxPermissionsService } from './permissions.service';
 
 enum RoleNamesEnum {
     ADMIN = <any>'ADMIN',
@@ -11,14 +12,17 @@ enum RoleNamesEnum {
 
 describe('Roles Service', () => {
     let localService: NgxRolesService;
+    let permissionsService: NgxPermissionsService;
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [NgxPermissionsModule.forRoot()]
         });
     });
 
-    beforeEach(inject([NgxRolesService], (service: NgxRolesService) => {
+    beforeEach(inject([NgxRolesService, NgxPermissionsService], (service: NgxRolesService, ps: NgxPermissionsService) => {
         localService = service;
+        permissionsService = ps;
     }));
 
     it('should create an instance', () => {
@@ -32,7 +36,7 @@ describe('Roles Service', () => {
         expect(localService.getRoles()).toEqual(
             {ADMIN: {name: 'ADMIN', validationFunction: ['edit', 'remove']}}
             )
-    })
+    });
 
     it ('should remove role from role object', () => {
         expect(localService.getRoles()[RoleNamesEnum.ADMIN]).toBeFalsy();
@@ -74,6 +78,11 @@ describe('Roles Service', () => {
 
         expect(Object.keys(localService.getRoles()).length).toEqual(2);
         localService.hasOnlyRoles('ADMIN').then((data) => {
+            expect(data).toEqual(false);
+        });
+
+        permissionsService.addPermission('Nice');
+        localService.hasOnlyRoles('ADMIN').then((data) => {
             expect(data).toEqual(true);
         });
 
@@ -91,6 +100,7 @@ describe('Roles Service', () => {
 
     it ('return true when role permission name is present in Roles object', fakeAsync(() => {
         expect(Object.keys(localService.getRoles()).length).toEqual(0);
+        permissionsService.addPermission(['Nice', 'Awesome']);
         localService.addRoles({
             ADMIN: ['Nice'],
             GUEST: ["Awesome"]
@@ -99,13 +109,13 @@ describe('Roles Service', () => {
 
 
         expect(Object.keys(localService.getRoles()).length).toEqual(2);
-        localService.hasOnlyRoles('Nice').then((data) => {
+        localService.hasOnlyRoles('ADMIN').then((data) => {
             expect(data).toEqual(true);
         });
-        localService.hasOnlyRoles(['Nice']).then((data) => {
+        localService.hasOnlyRoles(['ADMIN']).then((data) => {
             expect(data).toEqual(true);
         });
-        localService.hasOnlyRoles(['Nice', 'IRRISISTABLE']).then((data) => {
+        localService.hasOnlyRoles(['ADMIN', 'IRRISISTABLE']).then((data) => {
             expect(data).toEqual(true);
         });
         localService.hasOnlyRoles('SHOULDNOTHAVEROLE').then((data) => {
@@ -128,7 +138,7 @@ describe('Roles Service', () => {
         localService.hasOnlyRoles('').then((data) => {
             expect(data).toEqual(true);
         });
-    }))
+    }));
 
     it ('should return false when permission array is empty', fakeAsync(() => {
         localService.hasOnlyRoles('Empty').then((data) => {
@@ -136,9 +146,16 @@ describe('Roles Service', () => {
         });
     }));
 
-    it('should return false when permission is not specified in the list', fakeAsync(() => {
+    it('should return false when role is not specified in the list', fakeAsync(() => {
         localService.addRole('test', ['One']);
         localService.hasOnlyRoles('nice').then((data) => {
+            expect(data).toBe(false);
+        });
+    }));
+
+    it('should return false when role deosnt have permissions', fakeAsync(() => {
+        localService.addRole('test', ['One']);
+        localService.hasOnlyRoles('test').then((data) => {
             expect(data).toBe(false);
         });
     }));
@@ -148,6 +165,23 @@ describe('Roles Service', () => {
         localService.hasOnlyRoles([]).then((data) => {
             expect(data).toBe(true);
         });
+    }));
+
+    it('should check role permissions with "and" operator', fakeAsync(() => {
+        permissionsService.addPermission(['one', 'two']);
+        localService.addRole('test', ['one', 'two']);
+        localService.hasOnlyRoles('test').then((data) => {
+            expect(data).toBe(true);
+        })
+    }));
+
+
+    it('should not show role with one role', fakeAsync(() => {
+        permissionsService.addPermission(['one']);
+        localService.addRole('test', ['one', 'two']);
+        localService.hasOnlyRoles('test').then((data) => {
+            expect(data).toBe(false);
+        })
     }));
 
     xit('maybe add functionality when function returns array', fakeAsync(() => {

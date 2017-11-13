@@ -226,9 +226,13 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
     }
 
     private passingOnlyPermissionsValidation(permissions: NgxPermissionsRouterData, route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
-        if (!!permissions.only && (isFunction(permissions.redirectTo) || isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo))) {
+        if ((isFunction(permissions.redirectTo) || isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo))) {
             return this.onlyRedirectCheck(permissions, route, state)
         }
         return this.checkOnlyPermissions(permissions, route, state);
+    }
+
+    private hasRedirectToAsFunctionOrObject(redirectTo: any) {
+        return isFunction(redirectTo) || isPlainObject(redirectTo) &&  !this.isRedirectionWithParameters(redirectTo)
     }
 }

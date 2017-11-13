@@ -29,3 +29,10 @@ export function notEmptyValue(value: any): boolean {
     }
     return !!value;
 }
+
+export function transformStringToArray(value: any): string[] {
+    if (isString(value)) {
+        return [value]
+    }
+    return value;
+}

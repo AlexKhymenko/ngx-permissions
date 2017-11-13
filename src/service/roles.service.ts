@@ -9,9 +9,11 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeAll';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/every';
 import { Inject, Injectable, InjectionToken, OpaqueToken } from '@angular/core';
 import { NgxRolesStore } from '../store/roles.store';
-import { isFunction, isPromise, isString } from '../utils/utils';
+import { isFunction, isPromise, isString, transformStringToArray } from '../utils/utils';
+import { NgxPermissionsService } from './permissions.service';
 
 
 export const USE_ROLES_STORE = new InjectionToken('USE_ROLES_STORE');
@@ -25,7 +27,8 @@ export class NgxRolesService {
     public roles$: Observable<NgxRolesObject>;
 
     constructor(@Inject(USE_ROLES_STORE) private isolate: boolean = false,
-                private rolesStore: NgxRolesStore) {
+                private rolesStore: NgxRolesStore,
+                private permissionsService: NgxPermissionsService) {
         this.rolesSource = this.isolate ? new BehaviorSubject<NgxRolesObject>({}) : this.rolesStore.rolesSource;
         this.roles$ = this.rolesSource.asObservable();
     }
@@ -68,13 +71,15 @@ export class NgxRolesService {
     public hasOnlyRoles(names: string | string[]): Promise<boolean> {
         if (!names || (Array.isArray(names) && names.length === 0)) { return Promise.resolve(true)}
 
+        names = transformStringToArray(names);
+
         return Promise.all([this.hasRoleKey(names), this.hasRolePermission(this.rolesSource.value, names)])
             .then(([hasRoles, hasPermissions]: [boolean, boolean]) => {
             return hasRoles || hasPermissions;
         });
     }
 
-    private hasRoleKey(roleName: string | string[]): Promise<boolean> {
+    private hasRoleKey(roleName: string[]): Promise<boolean> {
         if (Array.isArray(roleName)) {
             let promises:any[] = [];
             roleName.forEach((key) => {
@@ -84,7 +89,7 @@ export class NgxRolesService {
                     }) );
                 }
 
-                promises.push(Observable.of(!!this.rolesSource.value[key]));
+                promises.push(Observable.of(false));
             });
 
             return Observable.merge(promises).mergeAll().first((data: any) => {
@@ -111,19 +116,23 @@ export class NgxRolesService {
         }
     }
 
-    private hasRolePermission(roles: NgxRolesObject, roleName: string | string[]): Promise<boolean> {
-        return Promise.resolve(Object.keys(roles).some((key) => {
-            if (Array.isArray(roles[key].validationFunction)) {
-                if (isString(roleName)) {
-                    return (<string[]>roles[key].validationFunction).includes(<string>roleName);
-                } else {
-                    return (<string[]>roles[key].validationFunction).some((v: any) => {
-                        return roleName.includes(v);
-                    });
+    private hasRolePermission(roles: NgxRolesObject, roleNames: string[]): Promise<boolean> {
+        return Observable.from(roleNames)
+            .mergeMap((key) => {
+                if (roles[key] && Array.isArray(roles[key].validationFunction)) {
+                    return Observable.from(<string[]>roles[key].validationFunction)
+                        .mergeMap((role) => {
+                            return this.permissionsService.hasPermission(role);
+                        })
+                        .every((hasPermissions) => {
+                            return hasPermissions === true;
+                        });
                 }
-            }
-
-            return false;
-        }));
+                return Observable.of(false);
+            })
+            .first((hasPermission) => {
+                return hasPermission === true;
+            }, () => true, false)
+            .toPromise()
     }
 }

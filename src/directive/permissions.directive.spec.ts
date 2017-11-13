@@ -179,6 +179,8 @@ describe('Permission directive angular roles only', () => {
     let permissions;
     let fixture;
     let comp;
+    let awesomePermissions = "AWESOME";
+    let permissionsService;
     beforeEach(() => {
         TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
 
@@ -186,12 +188,16 @@ describe('Permission directive angular roles only', () => {
         comp = fixture.componentInstance;
 
         rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
+
 
     });
 
 
     it('Should show the component when key of role is the same', fakeAsync(() => {
-        rolesService.addRole('ADMIN', ['Awsesome']);
+
+        rolesService.addRole('ADMIN', [awesomePermissions]);
+        permissionsService.addPermission(awesomePermissions);
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
@@ -199,7 +205,8 @@ describe('Permission directive angular roles only', () => {
         expect(content.innerHTML).toEqual('123');
     }));
     it ('should show the component when permissions array is the same ', fakeAsync(() => {
-        rolesService.addRole('GG', ['ADMIN']);
+        rolesService.addRole('ADMIN', [awesomePermissions]);
+        permissionsService.addPermission(awesomePermissions);
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
@@ -208,7 +215,8 @@ describe('Permission directive angular roles only', () => {
     }));
 
     it ('should hide the component when user deletes all roles', fakeAsync(() => {
-        rolesService.addRole('ADMIN', ['Awsesome']);
+        permissionsService.addPermission(awesomePermissions);
+        rolesService.addRole('ADMIN', [awesomePermissions]);
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
@@ -223,7 +231,8 @@ describe('Permission directive angular roles only', () => {
     }));
 
     it ('should hide the component when user deletes one role', fakeAsync(() => {
-        rolesService.addRole('ADMIN', ['Awsesome']);
+        permissionsService.addPermission(awesomePermissions);
+        rolesService.addRole('ADMIN', [awesomePermissions]);
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
@@ -231,6 +240,15 @@ describe('Permission directive angular roles only', () => {
         expect(content.innerHTML).toEqual('123');
 
         rolesService.removeRole("ADMIN");
+        detectChanges(fixture);
+
+        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        expect(content2).toEqual(null);
+    }));
+
+    it ('should hide the when there is no two permissions', fakeAsync(() => {
+        permissionsService.addPermission(awesomePermissions);
+        rolesService.addRole('ADMIN', [awesomePermissions, 'noSUch permissions']);
         detectChanges(fixture);
 
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
@@ -248,6 +266,8 @@ describe('Permission directive angular roles only array', () => {
     let permissions;
     let fixture;
     let comp;
+    let permissionsService;
+    let awesomePermission = "AWESOME";
     beforeEach(() => {
         TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
 
@@ -255,20 +275,23 @@ describe('Permission directive angular roles only array', () => {
         comp = fixture.componentInstance;
 
         rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService =  fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
 
     it('Should show the component when key of role is the same', fakeAsync(() => {
-        rolesService.addRole('ADMIN', ['Awsesome']);
+        permissionsService.addPermission(awesomePermission);
+        rolesService.addRole('ADMIN', [awesomePermission]);
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
     }));
-    it ('should show the component when permissions array is the same ', fakeAsync(() => {
-        rolesService.addRole('GG', ['ADMIN']);
+    it ('should show the component when there is permission ', fakeAsync(() => {
+        permissionsService.addPermission(awesomePermission);
+        rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
@@ -277,7 +300,8 @@ describe('Permission directive angular roles only array', () => {
     }));
 
     it ('should hide the component when user deletes all roles', fakeAsync(() => {
-        rolesService.addRole('GG', ['ADMIN']);
+        permissionsService.addPermission(awesomePermission);
+        rolesService.addRole('ADMIN', [awesomePermission]);
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
@@ -292,7 +316,8 @@ describe('Permission directive angular roles only array', () => {
     }));
 
     it ('should hide the component when user deletes one roles', fakeAsync(() => {
-        rolesService.addRole('GG', ['ADMIN']);
+        permissionsService.addPermission(awesomePermission);
+        rolesService.addRole('ADMIN', [awesomePermission]);
         detectChanges(fixture);
 
 
@@ -300,7 +325,7 @@ describe('Permission directive angular roles only array', () => {
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
 
-        rolesService.removeRole("GG");
+        rolesService.removeRole("ADMIN");
         detectChanges(fixture);
 
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
@@ -319,6 +344,7 @@ describe('Permission directive angular roles except', () => {
     let permissions;
     let fixture;
     let comp;
+    let permissionsService;
     beforeEach(() => {
         TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
 
@@ -326,19 +352,22 @@ describe('Permission directive angular roles except', () => {
         comp = fixture.componentInstance;
 
         rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
 
     it('Should hide the component when key of role is the same', fakeAsync(() => {
-        rolesService.addRole('ADMIN', ['Awsesome']);
+        permissionsService.addPermission('AWESOME');
+        rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
     }));
     it ('should show the component when permissions array is the same ', fakeAsync(() => {
-        rolesService.addRole('GG', ['ADMIN']);
+        permissionsService.addPermission('AWESOME');
+        rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
@@ -347,7 +376,8 @@ describe('Permission directive angular roles except', () => {
     }));
 
     it ('should show the component when user deletes all roles', fakeAsync(() => {
-        rolesService.addRole('ADMIN', ['Awsesome']);
+        permissionsService.addPermission('AWESOME');
+        rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
 
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
@@ -362,7 +392,8 @@ describe('Permission directive angular roles except', () => {
     }));
 
     it ('should show the component when user deletes one role', fakeAsync(() => {
-        rolesService.addRole('ADMIN', ['Awsesome']);
+        permissionsService.addPermission('AWESOME');
+        rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
 
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
@@ -389,6 +420,7 @@ describe('Permission directive angular roles except array', () => {
     let permissions;
     let fixture;
     let comp;
+    let permissionsService;
     beforeEach(() => {
         TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
 
@@ -396,35 +428,40 @@ describe('Permission directive angular roles except array', () => {
         comp = fixture.componentInstance;
 
         rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
 
-    it('Should show the component when key of role is the same', fakeAsync(() => {
-        rolesService.addRole('ADMIN', ['Awsesome']);
+    it('Should not show the component when user have permissions', fakeAsync(() => {
+        permissionsService.addPermission('Awesome');
+        rolesService.addRole('ADMIN', ['Awesome']);
+
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
 
     }));
-    it ('should show the component when permissions array is the same ', fakeAsync(() => {
-        rolesService.addRole('GG', ['ADMIN']);
+    it ('should show when there is no such permission', fakeAsync(() => {
+        rolesService.addRole('ADMIN', ['Awesome']);
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
-        expect(content).toEqual(null);
+        expect(content.innerHTML).toEqual('123');
 
     }));
 
     it ('should show the component when user deletes all roles', fakeAsync(() => {
-        rolesService.addRole('GG', ['ADMIN']);
+        permissionsService.addPermission('AWESOME');
+        rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
 
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toEqual(null);
 
         rolesService.flushRoles();
+        permissionsService.flushPermissions();
         detectChanges(fixture);
 
         let content = fixture.debugElement.nativeElement.querySelector('div');
@@ -434,13 +471,14 @@ describe('Permission directive angular roles except array', () => {
     }));
 
     it ('should show the component when user deletes one roles', fakeAsync(() => {
-        rolesService.addRole('GG', ['ADMIN']);
+        permissionsService.addPermission('SOMETHING');
+        rolesService.addRole('ADMIN', ['SOMETHING']);
         detectChanges(fixture);
 
         let content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toEqual(null);
 
-        rolesService.removeRole("GG");
+        rolesService.removeRole("ADMIN");
         detectChanges(fixture);
 
 
@@ -462,6 +500,7 @@ describe('Permission directive angular testing different selectors *permmisionsO
     let permissions;
     let fixture;
     let comp;
+    let permissionsService;
     beforeEach(() => {
         TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
 
@@ -469,6 +508,7 @@ describe('Permission directive angular testing different selectors *permmisionsO
         comp = fixture.componentInstance;
 
         rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
@@ -476,8 +516,8 @@ describe('Permission directive angular testing different selectors *permmisionsO
     it('Should show the component when key of role is the same', fakeAsync(() => {
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
-
-        rolesService.addRole('ADMIN', ['Awsesome']);
+        permissionsService.addPermission('AWESOME');
+        rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
 
 
@@ -635,6 +675,7 @@ describe('Permission directive angular testing different async functions in role
     let permissions;
     let fixture;
     let comp;
+    let permissionsService;
     beforeEach(() => {
         TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
 
@@ -642,6 +683,7 @@ describe('Permission directive angular testing different async functions in role
         comp = fixture.componentInstance;
 
         rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
@@ -792,14 +834,14 @@ describe('Permission directive angular testing different async functions in role
     }));
 
 
-    it('Should not show the component when all promises fails', fakeAsync(() => {
+    it('Should show the component when 1 passes second fails', fakeAsync(() => {
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
         rolesService.addRole('ADMIN', () => {
             return Promise.reject();
         });
-
-        rolesService.addRole('GUEST', ['awesome']);
+        permissionsService.addPermission('AWESOME');
+        rolesService.addRole('GUEST', ['AWESOME']);
 
 
         detectChanges(fixture);
@@ -819,8 +861,8 @@ describe('Permission directive angular testing different async functions in role
         rolesService.addRole('ADMIN', () => {
             return Promise.reject();
         });
-
-        rolesService.addRole('awesome', ['GUEST']);
+        permissionsService.addPermission('AWESOME');
+        rolesService.addRole('GUEST', ['AWESOME']);
 
 
         detectChanges(fixture);
@@ -2294,8 +2336,6 @@ describe("Ngx Permissions except Directive when no permission specified as array
         expect(content2.innerHTML).toEqual(`123`);
     }));
 });
-
-
 function detectChanges(fixture) {
     tick();
     fixture.detectChanges();
