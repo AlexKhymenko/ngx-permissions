@@ -93,11 +93,13 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
                         return data === true;
                     })
                 }, () => true, false).mergeMap((isAllFalse) => {
+                    console.log('except 1');
                     if (!!failedPermission) {
                         this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
                         return Observable.of(false);
                     }
                     if (!isAllFalse && permissions.only) {
+                        console.log('except 2');
                         return this.onlyRedirectCheck(permissions, route, state);
                     }
                     return Observable.of(!isAllFalse);
@@ -175,15 +177,18 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
                 }
             })})
             .first((data: any[]) => {
-                return data.every((data) => {
-                    return data === false;
+                console.log('123',data);
+                return data.some((data) => {
+                    return data === true;
                 })
             }, () => true, false)
-            .mergeMap((isAllFalse: boolean): Observable<boolean> => {
-                if (!!failedPermission) {
+            .mergeMap((pass: boolean): Observable<boolean> => {
+                if (pass) {
+                    return Observable.of(true)
+                } else {
                     this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
+                    return Observable.of(false);
                 }
-                return Observable.of(!isAllFalse);
             }).toPromise()
     }
 
@@ -224,6 +229,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
 
     private passingOnlyPermissionsValidation(permissions: NgxPermissionsRouterData, route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
         if ((isFunction(permissions.redirectTo) || isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo))) {
+            console.log('only 1');
             return this.onlyRedirectCheck(permissions, route, state)
         }
         return this.checkOnlyPermissions(permissions, route, state);

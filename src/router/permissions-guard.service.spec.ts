@@ -717,8 +717,8 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             path: 'crisis-center/44'
         }};
         permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
-            expect(data).toEqual(false);
-            expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
+            expect(data).toEqual(true);
+            // expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
         })
     }));
 
@@ -737,15 +737,15 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             path: 'crisis-center/44'
         }};
         permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
-            expect(data).toEqual(false);
-            expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
+            expect(data).toEqual(true);
+            // expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
         })
     }));
 
     it ('redirect to dashboard when canEdit agenda fails with objectProperty only', fakeAsync(() => {
         route = { data: {
             permissions: {
-                only: [ 'canReadAgenda', 'canEditAgenda' , "canRun"],
+                only: [ 'canEditAgenda' , "canRun"],
                 redirectTo: {
                     canReadAgenda: 'agendaList',
                     canEditAgenda: {
@@ -761,7 +761,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
         }};
         permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
             expect(data).toEqual(false);
-            expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
         })
     }));
 
@@ -785,8 +785,8 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             path: 'crisis-center/44'
         }};
         permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
-            expect(data).toEqual(false);
-            expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
+            expect(data).toEqual(true);
+            // expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
         })
     }));
 
@@ -805,8 +805,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             path: 'crisis-center/44'
         }};
         permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
-            expect(data).toEqual(false);
-            expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
+            expect(data).toEqual(true);
         })
     }));
 
@@ -1289,6 +1288,60 @@ describe('Permissions guard test redirectTo as function', () => {
         permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['canRun']);
+        })
+    }));
+
+    it ('it should allow to pass when at least one of parameters allow passing and redirectToIsFunction', fakeAsync(() => {
+        function loginRedirect(activateRouteSnapshot: ActivatedRouteSnapshot,
+                               routerStateSnapshot: RouterStateSnapshot) {
+            return 'login';
+        }
+        route = { data: {
+            permissions: {
+                only: [ "canReadAgenda", "CAN_SWIM"],
+                redirectTo: loginRedirect
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(true);
+        })
+    }));
+
+    it ('it should allow to pass when at least except and only parameters passes the check', fakeAsync(() => {
+        function loginRedirect(activateRouteSnapshot: ActivatedRouteSnapshot,
+                               routerStateSnapshot: RouterStateSnapshot) {
+            localStorage.setItem('redirectUrl', routerStateSnapshot.url);
+            return 'login';
+        }
+        route = { data: {
+            permissions: {
+                except: ['Dont exist'],
+                only: [ "canReadAgenda", "CAN_SWIM"],
+                redirectTo: loginRedirect
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(true);
+        })
+    }));
+
+
+    it ('it should allow to pass when at least except parameters passes the check', fakeAsync(() => {
+        function loginRedirect(activateRouteSnapshot: ActivatedRouteSnapshot,
+                               routerStateSnapshot: RouterStateSnapshot) {
+            return 'login';
+        }
+        route = { data: {
+            permissions: {
+                except: ['Dont exist', 'Me also doesnt exist'],
+                redirectTo: loginRedirect
+            },
+            path: 'crisis-center/44'
+        }};
+        permissionGuard.canActivate(route, {} as RouterStateSnapshot).then((data) => {
+            expect(data).toEqual(true);
         })
     }));
 });
