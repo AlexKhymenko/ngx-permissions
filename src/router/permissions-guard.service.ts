@@ -6,7 +6,7 @@ import {
 import { NgxPermissionsService } from '../service/permissions.service';
 import { NgxPermissionsRouterData } from '../model/permissions-router-data.model';
 import { NgxRolesService } from "../service/roles.service";
-import { isFunction, isPlainObject, isString } from '../utils/utils';
+import { isFunction, isPlainObject, isString, transformStringToArray } from '../utils/utils';
 import { Observable } from 'rxjs/Observable';
 import  'rxjs/add/observable/forkJoin'
 import  'rxjs/add/observable/from'
@@ -64,12 +64,9 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
             permissions.only = (permissions.only as Function)(route, state);
         }
 
-        if (isString(permissions.except)) {
-            permissions.except = [permissions.except]
-        }
-        if (isString(permissions.only)) {
-            permissions.only = [permissions.only]
-        }
+        permissions.except = transformStringToArray(permissions.except);
+        permissions.only =  transformStringToArray(permissions.only);
+
         return permissions;
     }
 
