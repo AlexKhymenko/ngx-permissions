@@ -1,3 +1,7 @@
+##3.0.0
+Fix correct role implementation.
+When passing function to redirectTo it will use or operator.
+
 ## 2.1.1
 BugFix When passing empty array. it should show the component.
 
