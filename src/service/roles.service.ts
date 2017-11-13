@@ -10,7 +10,7 @@ import 'rxjs/add/operator/mergeAll';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/every';
-import { Inject, Injectable, InjectionToken, OpaqueToken } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { NgxRolesStore } from '../store/roles.store';
 import { isFunction, isPromise, isString, transformStringToArray } from '../utils/utils';
 import { NgxPermissionsService } from './permissions.service';

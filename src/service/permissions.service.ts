@@ -1,4 +1,4 @@
-import { Inject, Injectable, InjectionToken, OpaqueToken } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { NgxPermissionsStore } from '../store/permissions.store';
@@ -11,7 +11,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeAll';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
-import { isFunction, isString } from '../utils/utils';
+import { isFunction } from '../utils/utils';
 
 
 export type NgxPermissionsObject = {[name: string] : NgxPermission}
