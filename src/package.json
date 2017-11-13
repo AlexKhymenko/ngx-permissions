@@ -54,9 +54,9 @@
   "jsnext:main": "ngx-permissions.js",
   "typings": "ngx-permissions.d.ts",
   "peerDependencies": {
-    "@angular/core": "^4.0.0",
-    "@angular/router": "^4.0.0",
-    "rxjs": "^5.1.0",
+    "@angular/core": ">=4.0.0 || >5.0.0",
+    "@angular/router": ">=4.0.0 || >5.0.0",
+    "rxjs": "^5.5.0",
     "zone.js": "^0.8.4"
   }
 }
