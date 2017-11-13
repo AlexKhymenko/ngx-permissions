@@ -777,8 +777,8 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             path: 'crisis-center/44'
         }};
         permissionGuard.canLoad(route).then((data) => {
-            expect(data).toEqual(true);
-            // expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
         })
     }));
 
@@ -797,8 +797,8 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             path: 'crisis-center/44'
         }};
         permissionGuard.canLoad(route).then((data) => {
-            expect(data).toEqual(true);
-            // expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
         })
     }));
 
@@ -820,8 +820,8 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             path: 'crisis-center/44'
         }};
         permissionGuard.canLoad(route).then((data) => {
-            expect(data).toEqual(true);
-            // expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
         })
     }));
 
@@ -845,8 +845,8 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             path: 'crisis-center/44'
         }};
         permissionGuard.canLoad(route).then((data) => {
-            expect(data).toEqual(true);
-            // expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
         })
     }));
 
@@ -865,8 +865,8 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             path: 'crisis-center/44'
         }};
         permissionGuard.canLoad(route).then((data) => {
-            expect(data).toEqual(true);
-            // expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
+            expect(data).toEqual(false);
+            expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
         })
     }));
 

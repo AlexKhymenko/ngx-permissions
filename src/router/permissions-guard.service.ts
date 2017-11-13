@@ -175,16 +175,28 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
                 }
             })})
             .first((data: any[]) => {
-                return data.some((data) => {
-                    return data === true;
+                if (isFunction(permissions.redirectTo)) {
+                    return data.some((data) => {
+                        return data === true;
+                    })
+                }
+                return data.every((data) => {
+                    return data === false;
                 })
             }, () => true, false)
             .mergeMap((pass: boolean): Observable<boolean> => {
-                if (pass) {
-                    return Observable.of(true)
+                if (isFunction(permissions.redirectTo)) {
+                    if (pass) {
+                        return Observable.of(true)
+                    } else {
+                        this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
+                        return Observable.of(false);
+                    }
                 } else {
-                    this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
-                    return Observable.of(false);
+                    if (!!failedPermission) {
+                        this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
+                    }
+                    return Observable.of(!pass);
                 }
             }).toPromise()
     }

@@ -12,7 +12,7 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/every';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { NgxRolesStore } from '../store/roles.store';
-import { isFunction, isPromise, isString, transformStringToArray } from '../utils/utils';
+import { isFunction, isPromise, transformStringToArray } from '../utils/utils';
 import { NgxPermissionsService } from './permissions.service';
 
 
@@ -104,8 +104,8 @@ export class NgxRolesService {
             .mergeMap((key) => {
                 if (roles[key] && Array.isArray(roles[key].validationFunction)) {
                     return Observable.from(<string[]>roles[key].validationFunction)
-                        .mergeMap((role) => {
-                            return this.permissionsService.hasPermission(role);
+                        .mergeMap((permission) => {
+                            return this.permissionsService.hasPermission(permission);
                         })
                         .every((hasPermissions) => {
                             return hasPermissions === true;
