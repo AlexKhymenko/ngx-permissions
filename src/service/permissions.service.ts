@@ -22,8 +22,8 @@ export const USE_PERMISSIONS_STORE = new InjectionToken('USE_PERMISSIONS_STORE')
 @Injectable()
 export class NgxPermissionsService {
 
-    private permissionsSource: any;
-    public permissions$: Observable<any>;
+    private permissionsSource: BehaviorSubject<NgxPermissionsObject>;
+    public permissions$: Observable<NgxPermissionsObject>;
 
     constructor(@Inject(USE_PERMISSIONS_STORE) private isolate: boolean = false,
                 private permissionsStore: NgxPermissionsStore) {
@@ -76,7 +76,7 @@ export class NgxPermissionsService {
         return this.permissionsSource.value[name];
     }
 
-    public getPermissions() {
+    public getPermissions(): NgxPermissionsObject {
         return this.permissionsSource.value;
     }
 
