@@ -72,7 +72,7 @@ export class NgxPermissionsService {
         this.permissionsSource.next(permissions);
     }
 
-    public getPermission(name: string) {
+    public getPermission(name: string): NgxPermission {
         return this.permissionsSource.value[name];
     }
 

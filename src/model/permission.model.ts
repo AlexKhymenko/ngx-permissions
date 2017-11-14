@@ -1,6 +1,6 @@
 export class NgxPermission {
     name: string;
-    validationFunction: Function;
+    validationFunction?: Function;
 
     constructor(name: string, validationFunction: Function) {
         this.name = name;
