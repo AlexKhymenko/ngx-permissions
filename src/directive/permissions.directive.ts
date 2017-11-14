@@ -65,7 +65,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
             });
     }
 
-    private validateExceptAndOnlyPermissions() {
+    private validateExceptAndOnlyPermissions(): void {
         Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsExcept), this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept)])
             .then(([hasPermission, hasRole]) => {
                 if (hasPermission || hasRole) {
@@ -78,15 +78,15 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
                     }
                 }
             }).catch(() => {
-            if (!!this.ngxPermissionsOnly) {
-                this.validateOnlyPermissions();
-            } else {
-                this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef )
-            }
+                if (!!this.ngxPermissionsOnly) {
+                    this.validateOnlyPermissions();
+                } else {
+                    this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef )
+                }
         });
     }
 
-    private validateOnlyPermissions() {
+    private validateOnlyPermissions(): void {
          Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsOnly), this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly)])
             .then(([permissionPr,  roles]) => {
                 if (permissionPr || roles) {
