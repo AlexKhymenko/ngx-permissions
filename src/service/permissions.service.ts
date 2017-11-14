@@ -11,7 +11,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeAll';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
-import { isFunction } from '../utils/utils';
+import { isFunction, transformStringToArray } from '../utils/utils';
 
 
 export type NgxPermissionsObject = {[name: string] : NgxPermission}
@@ -37,12 +37,8 @@ export class NgxPermissionsService {
 
     public hasPermission(permission: string | string[]): Promise<boolean> {
         if (!permission || (Array.isArray(permission) && permission.length === 0)) {return Promise.resolve(true)};
-        if (Array.isArray(permission)) {
-            return this.hasArrayPermission(permission);
-        } else {
-            permission = [permission];
-            return this.hasArrayPermission(permission);
-        }
+        permission = transformStringToArray(permission);
+        return this.hasArrayPermission(permission);
     }
 
     public loadPermissions(permissions: string[], validationFunction?: Function) {
