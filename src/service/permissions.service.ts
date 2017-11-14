@@ -31,7 +31,10 @@ export class NgxPermissionsService {
         this.permissions$ = this.permissionsSource.asObservable();
     }
 
-    public flushPermissions() {
+    /**
+     * Remove all permissions from permissions source
+     */
+    public flushPermissions(): void {
         this.permissionsSource.next({});
     }
 
@@ -41,13 +44,13 @@ export class NgxPermissionsService {
         return this.hasArrayPermission(permission);
     }
 
-    public loadPermissions(permissions: string[], validationFunction?: Function) {
+    public loadPermissions(permissions: string[], validationFunction?: Function): void {
         permissions.forEach((p) => {
             this.addPermissionToBehaviorSubject(p, validationFunction);
         })
     }
 
-    public addPermission(permission: string | string[], validationFunction?: Function) {
+    public addPermission(permission: string | string[], validationFunction?: Function): void {
         if (Array.isArray(permission)) {
             permission.forEach((p) => {
                 this.addPermissionToBehaviorSubject(p, validationFunction);
@@ -56,7 +59,12 @@ export class NgxPermissionsService {
             this.addPermissionToBehaviorSubject(permission, validationFunction);
         }
     }
-    public removePermission(permissionName: string) {
+
+    /**
+     * @param {string} permissionName
+     * Removes permission from permissionsObject;
+     */
+    public removePermission(permissionName: string): void {
         let permissions = {
             ...this.permissionsSource.value
         };
@@ -72,7 +80,7 @@ export class NgxPermissionsService {
         return this.permissionsSource.value;
     }
 
-    private addPermissionToBehaviorSubject(name: string, validationFunction?: Function) {
+    private addPermissionToBehaviorSubject(name: string, validationFunction?: Function): void  {
         if (!!validationFunction && isFunction(validationFunction)) {
             const roles = {
                 ...this.permissionsSource.value,
@@ -88,7 +96,7 @@ export class NgxPermissionsService {
         }
     }
 
-    private hasArrayPermission(permissions: string[]) {
+    private hasArrayPermission(permissions: string[]): Promise<boolean> {
         let promises:any[] = [];
         permissions.forEach((key) => {
             if (this.hasPermissionValidationFunction(key)) {
@@ -113,7 +121,7 @@ export class NgxPermissionsService {
             });
     }
 
-    private hasPermissionValidationFunction(key: string) {
+    private hasPermissionValidationFunction(key: string): boolean {
         return !!this.permissionsSource.value[key] && !!this.permissionsSource.value[key].validationFunction && isFunction(this.permissionsSource.value[key].validationFunction);
     }
 }
