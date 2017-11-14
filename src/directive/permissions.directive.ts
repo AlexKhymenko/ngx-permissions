@@ -58,6 +58,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
 
                 if (notEmptyValue(this.ngxPermissionsOnly)) {
                     this.validateOnlyPermissions();
+                    return;
                 }
 
                 this.handleAuthorisedPermission(this.getAuthorisedTemplates());
@@ -99,24 +100,23 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     }
 
 
-    private handleUnauthorisedPermission(template: TemplateRef<any>) {
+    private handleUnauthorisedPermission(template: TemplateRef<any>): void {
         this.permissionsUnauthorized.emit();
-        this.viewContainer.clear();
         this.showTemplateBlockInView(template);
     }
 
-    private handleAuthorisedPermission(template: TemplateRef<any>) {
+    private handleAuthorisedPermission(template: TemplateRef<any>): void {
         this.permissionsAuthorized.emit();
-        this.viewContainer.clear();
         this.showTemplateBlockInView(template);
     }
 
-    private showTemplateBlockInView(template: TemplateRef<any>) {
+    private showTemplateBlockInView(template: TemplateRef<any>): void {
+        this.viewContainer.clear();
         if (!template) return;
         this.viewContainer.createEmbeddedView(template);
     }
 
-    private getAuthorisedTemplates() {
+    private getAuthorisedTemplates(): TemplateRef<any> {
         return this.ngxPermissionsOnlyThen
             || this.ngxPermissionsExceptThen
             || this.ngxPermissionsThen
