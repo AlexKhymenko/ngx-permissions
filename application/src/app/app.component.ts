@@ -24,4 +24,7 @@ export class AppComponent implements OnInit {
     console.log('authorizes')
   }
 
+  public addPermission() {
+    this.permissionsService.addPermission('CHECK_LOAD');
+  }
 }

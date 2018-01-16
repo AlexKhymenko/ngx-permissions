@@ -40,6 +40,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
                 private templateRef: TemplateRef<any>) {}
 
     ngOnInit(): void {
+        this.viewContainer.clear();
         this.initPermissionSubscription = this.validateExceptOnlyPermissions();
     }
 

@@ -16,6 +16,12 @@
 <a routerLink="/lazy-roles-isolate">Lazy ROLES ISOLATE</a>
 <a routerLink="/lazy-roles-async-isolate">Lazy ROLES ASYNC ISOLATE</a>
 
+
+<button (click)="addPermission()">Add load</button>
+<ng-template [ngxPermissionsOnly]="['CHECK_LOAD']">
+  <app-initial-load></app-initial-load>
+</ng-template>
+
 <router-outlet></router-outlet>
 
 <div style="background-color: green">

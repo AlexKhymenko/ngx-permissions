@@ -5,10 +5,12 @@ import { AppComponent } from './app.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
+import { InitialLoadComponent } from './initial-load/initial-load.component';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    InitialLoadComponent
   ],
   imports: [
     BrowserModule,
