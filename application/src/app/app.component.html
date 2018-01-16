@@ -18,9 +18,9 @@
 
 
 <button (click)="addPermission()">Add load</button>
-<div *ngxPermissionsOnly="['CHECK_LOAD']">
-  <app-initial-load></app-initial-load>
+<div >
 </div>
+<app-initial-load *ngxPermissionsOnly="['CHECK_LOAD']"></app-initial-load>
 
 <router-outlet></router-outlet>
 
