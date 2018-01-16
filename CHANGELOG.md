@@ -1,4 +1,8 @@
-##3.0.0
+## 3.1.0
+Improve typescript support
+Don't show template on initial load.
+
+## 3.0.0
 Fix correct role implementation.
 When passing function to redirectTo it will use or operator.
 
