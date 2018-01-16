@@ -45,7 +45,9 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.initPermissionSubscription.unsubscribe();
+        if (this.initPermissionSubscription) {
+            this.initPermissionSubscription.unsubscribe();
+        }
     }
 
     private validateExceptOnlyPermissions(): Subscription {
