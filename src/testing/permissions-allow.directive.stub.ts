@@ -27,7 +27,9 @@ export class NgxPermissionsAllowStubDirective {
 
     ngOnInit(): void {
         this.viewContainer.clear();
-        this.viewContainer.createEmbeddedView(this.getAuthorizedTemplate());
+        if (this.getAuthorizedTemplate()) {
+            this.viewContainer.createEmbeddedView(this.getAuthorizedTemplate());
+        }
         this.permissionsUnauthorized.emit();
     }
 
