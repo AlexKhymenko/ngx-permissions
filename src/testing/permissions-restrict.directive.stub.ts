@@ -26,11 +26,11 @@ export class NgxPermissionsRestrictStubDirective {
 
     ngOnInit(): void {
         this.viewContainer.clear();
-        this.viewContainer.createEmbeddedView(this.getAuthorizedTemplate());
+        this.viewContainer.createEmbeddedView(this.getUnAuthorizedTemplate());
     }
 
 
-    private getAuthorizedTemplate() {
+    private getUnAuthorizedTemplate() {
         return this.ngxPermissionsOnlyElse ||
             this.ngxPermissionsExceptElse ||
             this.ngxPermissionsElse
