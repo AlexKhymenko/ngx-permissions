@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LazyComponentComponent } from './lazy-component.component';
 
-describe('LazyComponentComponent', () => {
+xdescribe('LazyComponentComponent', () => {
   let component: LazyComponentComponent;
   let fixture: ComponentFixture<LazyComponentComponent>;
 

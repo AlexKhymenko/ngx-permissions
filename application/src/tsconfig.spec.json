@@ -5,6 +5,7 @@
     "baseUrl": "./",
     "module": "commonjs",
     "target": "es5",
+    "strict": false,
     "types": [
       "jasmine",
       "node"
@@ -14,7 +15,11 @@
     "test.ts"
   ],
   "include": [
+    "polyfills.ts",
+    "**/*",
     "**/*.spec.ts",
+    "./**/*.spec.ts",
+    "./**/*.d.ts",
     "**/*.d.ts"
   ]
 }

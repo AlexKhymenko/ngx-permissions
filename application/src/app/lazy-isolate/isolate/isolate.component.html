@@ -9,21 +9,21 @@
 
 <div style="background-color: green">
   Should see something
-  <ng-template permissions [ngxPermissionsOnly]="['GUEST']">
+  <ng-template [ngxPermissionsOnly]="['GUEST']">
     <div> LAZY I will see it only GUEST</div>
   </ng-template>
 </div>
 
 
-<ng-template permissions [ngxPermissionsOnly]="['ADMIN']">
+<ng-template [ngxPermissionsOnly]="['ADMIN']">
   <div style="color: red">LAZY I SHOULD not see it only guest</div>
 </ng-template>
 
-<ng-template permissions [ngxPermissionsExcept]="['GUESTTTT']">
+<ng-template [ngxPermissionsExcept]="['GUESTTTT']">
   <div>LAZY I will see it except guestttt</div>
 </ng-template>
 
-<ng-template permissions [ngxPermissionsExcept]="['GUEST']">
+<ng-template [ngxPermissionsExcept]="['GUEST']">
   <div style="color: red">LAZY I Should not see it except admin</div>
 </ng-template>
 

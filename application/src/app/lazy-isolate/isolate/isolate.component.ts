@@ -9,11 +9,9 @@ import { NgxRolesService } from 'ngx-permissions';
 })
 export class IsolateComponent implements OnInit {
 
-  constructor(private permissionsService: NgxPermissionsService,
-              private roleService: NgxRolesService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.permissionsService.addPermission('GUEST')
   }
 
 }

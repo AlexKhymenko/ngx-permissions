@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LazyRoleIsolateTestComponent } from './lazy-role-isolate-test.component';
 
-describe('LazyRoleIsolateTestComponent', () => {
+xdescribe('LazyRoleIsolateTestComponent', () => {
   let component: LazyRoleIsolateTestComponent;
   let fixture: ComponentFixture<LazyRoleIsolateTestComponent>;
 

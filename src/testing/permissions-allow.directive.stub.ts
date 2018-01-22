@@ -1,8 +1,7 @@
 import { Directive, EventEmitter, Input, Output, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
-    selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]',
-
+    selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
 })
 export class NgxPermissionsAllowStubDirective {
 
