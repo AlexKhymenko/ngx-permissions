@@ -526,8 +526,8 @@ Or set of permissions separated by 'coma':
    
    <ng-template
      [ngxPermissionsOnly]="['MANAGER']" 
-     [ngxPermissionOnlyThen]="thenBlock" 
-     [ngxPermissionOnlyElse]="elseBlock">
+     [ngxPermissionsOnlyThen]="thenBlock" 
+     [ngxPermissionsOnlyElse]="elseBlock">
        </ng-template>
       <ng-template #elseBlock>
           <div>elseBlock</div>
