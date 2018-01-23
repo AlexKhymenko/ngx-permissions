@@ -1,6 +1,4 @@
-import { NgxPermissionsTestingModule } from 'ngx-permissions';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-
+import {NgxPermissionsAllowStubDirective} from 'ngx-permissions'
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IsolateComponent } from './isolate.component';
@@ -11,11 +9,10 @@ describe('IsolateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [  IsolateComponent ],
-      imports: [NgxPermissionsTestingModule]
+      declarations: [  IsolateComponent, NgxPermissionsAllowStubDirective ],
+      imports: []
     })
-    // .overrideDirective(NgxPermissionsDirective, NgxPermissionsAllowStubDirective)
-    // .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
