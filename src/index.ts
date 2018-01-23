@@ -5,6 +5,8 @@ import { NgxPermissionsGuard } from './router/permissions-guard.service';
 import { NgxRolesService, USE_ROLES_STORE } from './service/roles.service';
 import { NgxPermissionsStore } from './store/permissions.store';
 import { NgxRolesStore } from './store/roles.store';
+import { NgxPermissionsAllowStubDirective } from './testing/permissions-allow.directive.stub';
+import { NgxPermissionsRestrictStubDirective } from './testing/permissions-restrict.directive.stub';
 
 export * from './store/roles.store'
 export * from './store/permissions.store'
@@ -64,3 +66,30 @@ export class NgxPermissionsModule {
         };
     }
 }
+
+@NgModule({
+    imports: [
+    ],
+    declarations: [
+        NgxPermissionsAllowStubDirective
+    ],
+    exports: [
+        NgxPermissionsAllowStubDirective
+    ]
+})
+export class NgxPermissionsAllowStubModule {}
+
+
+@NgModule({
+    imports: [
+    ],
+    declarations: [
+        NgxPermissionsRestrictStubDirective
+    ],
+    exports: [
+        NgxPermissionsRestrictStubDirective
+    ]
+})
+export class NgxPermissionsRestrictStubModule {}
+
+
