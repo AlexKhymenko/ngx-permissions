@@ -1,3 +1,6 @@
+## 3.2.0
+Add NgxPermissionsAllowStubDirective, NgxPermissionsRestrictStubDirective for testing
+
 ## 3.1.0
 Improve typescript support
 Don't show template on initial load.
