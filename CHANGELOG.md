@@ -1,3 +1,6 @@
+## 3.2.2
+Fix bug with not resetting permissions on loadPermissions
+
 ## 3.2.0
 Add NgxPermissionsAllowStubDirective, NgxPermissionsRestrictStubDirective for testing
 
