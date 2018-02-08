@@ -45,6 +45,7 @@ export class NgxPermissionsService {
     }
 
     public loadPermissions(permissions: string[], validationFunction?: Function): void {
+        this.flushPermissions();
         permissions.forEach((p) => {
             this.addPermissionToBehaviorSubject(p, validationFunction);
         })
