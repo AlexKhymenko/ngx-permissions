@@ -19,6 +19,10 @@ export function isString(value: any): value is string {
     return !!value && typeof value === 'string';
 }
 
+export function isBoolean(value: any): value is boolean {
+    return typeof value === 'boolean';
+}
+
 export function isPromise(promise: any) {
     return Object.prototype.toString.call(promise) === "[object Promise]"
 }

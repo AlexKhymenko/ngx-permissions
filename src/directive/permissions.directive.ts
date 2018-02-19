@@ -9,7 +9,7 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/skip';
 import { Observable } from 'rxjs/Observable';
-import { notEmptyValue } from '../utils/utils';
+import { notEmptyValue, isBoolean } from '../utils/utils';
 
 @Directive({
     selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
@@ -33,11 +33,15 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     private initPermissionSubscription: Subscription;
     //skip first run cause merge will fire twice
     private firstMergeUnusedRun = 1;
+    private currentAuthorizedState: boolean;
 
-    constructor(private permissionsService: NgxPermissionsService,
-                private rolesService: NgxRolesService,
-                private viewContainer: ViewContainerRef,
-                private templateRef: TemplateRef<any>) {}
+    constructor(
+        private permissionsService: NgxPermissionsService,
+        private rolesService: NgxRolesService,
+        private viewContainer: ViewContainerRef,
+        private templateRef: TemplateRef<any>
+    ) {
+    }
 
     ngOnInit(): void {
         this.viewContainer.clear();
@@ -52,70 +56,77 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
 
     private validateExceptOnlyPermissions(): Subscription {
         return Observable.merge(this.permissionsService.permissions$, this.rolesService.roles$)
-            .skip(this.firstMergeUnusedRun)
-            .subscribe(() => {
-                if (notEmptyValue(this.ngxPermissionsExcept)) {
-                    this.validateExceptAndOnlyPermissions();
-                    return;
-                }
+                         .skip(this.firstMergeUnusedRun)
+                         .subscribe(() => {
+                             if (notEmptyValue(this.ngxPermissionsExcept)) {
+                                 this.validateExceptAndOnlyPermissions();
+                                 return;
+                             }
 
-                if (notEmptyValue(this.ngxPermissionsOnly)) {
-                    this.validateOnlyPermissions();
-                    return;
-                }
+                             if (notEmptyValue(this.ngxPermissionsOnly)) {
+                                 this.validateOnlyPermissions();
+                                 return;
+                             }
 
-                this.handleAuthorisedPermission(this.getAuthorisedTemplates());
-            });
+                             this.handleAuthorisedPermission(this.getAuthorisedTemplates());
+                         });
     }
 
     private validateExceptAndOnlyPermissions(): void {
-        Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsExcept), this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept)])
-            .then(([hasPermission, hasRole]) => {
-                if (hasPermission || hasRole) {
-                    this.handleUnauthorisedPermission(this.ngxPermissionsExceptElse || this.ngxPermissionsElse)
-                } else {
-                    if (!!this.ngxPermissionsOnly)  {
-                        throw false;
-                    } else {
-                        this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef );
-                    }
-                }
-            }).catch(() => {
-                if (!!this.ngxPermissionsOnly) {
-                    this.validateOnlyPermissions();
-                } else {
-                    this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef )
-                }
+        Promise.all([ this.permissionsService.hasPermission(this.ngxPermissionsExcept), this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept) ])
+               .then(([ hasPermission, hasRole ]) => {
+                   if (hasPermission || hasRole) {
+                       this.handleUnauthorisedPermission(this.ngxPermissionsExceptElse || this.ngxPermissionsElse);
+                   } else {
+                       if (!!this.ngxPermissionsOnly) {
+                           throw false;
+                       } else {
+                           this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef);
+                       }
+                   }
+               }).catch(() => {
+            if (!!this.ngxPermissionsOnly) {
+                this.validateOnlyPermissions();
+            } else {
+                this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef);
+            }
         });
     }
 
     private validateOnlyPermissions(): void {
-         Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsOnly), this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly)])
-            .then(([permissionPr,  roles]) => {
-                if (permissionPr || roles) {
-                   this.handleAuthorisedPermission(this.ngxPermissionsOnlyThen || this.ngxPermissionsThen || this.templateRef)
-                } else {
-                    this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
-                }
-            }).catch(() => {
-                this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
-        })
+        Promise.all([ this.permissionsService.hasPermission(this.ngxPermissionsOnly), this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly) ])
+               .then(([ permissionPr, roles ]) => {
+                   if (permissionPr || roles) {
+                       this.handleAuthorisedPermission(this.ngxPermissionsOnlyThen || this.ngxPermissionsThen || this.templateRef);
+                   } else {
+                       this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
+                   }
+               }).catch(() => {
+            this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
+        });
     }
 
-
     private handleUnauthorisedPermission(template: TemplateRef<any>): void {
-        this.permissionsUnauthorized.emit();
-        this.showTemplateBlockInView(template);
+        if (!isBoolean(this.currentAuthorizedState) || this.currentAuthorizedState) {
+            this.currentAuthorizedState = false;
+            this.permissionsUnauthorized.emit();
+            this.showTemplateBlockInView(template);
+        }
     }
 
     private handleAuthorisedPermission(template: TemplateRef<any>): void {
-        this.permissionsAuthorized.emit();
-        this.showTemplateBlockInView(template);
+        if (!isBoolean(this.currentAuthorizedState) || !this.currentAuthorizedState) {
+            this.currentAuthorizedState = true;
+            this.permissionsAuthorized.emit();
+            this.showTemplateBlockInView(template);
+        }
     }
 
     private showTemplateBlockInView(template: TemplateRef<any>): void {
         this.viewContainer.clear();
-        if (!template) return;
+        if (!template) {
+            return;
+        }
         this.viewContainer.createEmbeddedView(template);
     }
 
