@@ -1,3 +1,6 @@
+## 3.2.3
+Optimise directive when working with lot of data(prevent re rendering);
+
 ## 3.2.2
 Fix bug with not resetting permissions on loadPermissions
 
