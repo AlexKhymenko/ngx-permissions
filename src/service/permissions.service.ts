@@ -25,8 +25,10 @@ export class NgxPermissionsService {
     private permissionsSource: BehaviorSubject<NgxPermissionsObject>;
     public permissions$: Observable<NgxPermissionsObject>;
 
-    constructor(@Inject(USE_PERMISSIONS_STORE) private isolate: boolean = false,
-                private permissionsStore: NgxPermissionsStore) {
+    constructor(
+        @Inject(USE_PERMISSIONS_STORE) private isolate: boolean = false,
+        private permissionsStore: NgxPermissionsStore
+    ) {
         this.permissionsSource = this.isolate ? new BehaviorSubject<NgxPermissionsObject>({}) : this.permissionsStore.permissionsSource;
         this.permissions$ = this.permissionsSource.asObservable();
     }
@@ -39,25 +41,33 @@ export class NgxPermissionsService {
     }
 
     public hasPermission(permission: string | string[]): Promise<boolean> {
-        if (!permission || (Array.isArray(permission) && permission.length === 0)) {return Promise.resolve(true)};
+        if (!permission || (Array.isArray(permission) && permission.length === 0)) {
+            return Promise.resolve(true);
+        }
+
         permission = transformStringToArray(permission);
         return this.hasArrayPermission(permission);
     }
 
     public loadPermissions(permissions: string[], validationFunction?: Function): void {
-        this.flushPermissions();
-        permissions.forEach((p) => {
-            this.addPermissionToBehaviorSubject(p, validationFunction);
-        })
+        const newPermissions = permissions.reduce((source, p) =>
+                this.reducePermission(source, p, validationFunction)
+            , {});
+
+        this.permissionsSource.next(newPermissions);
     }
 
     public addPermission(permission: string | string[], validationFunction?: Function): void {
         if (Array.isArray(permission)) {
-            permission.forEach((p) => {
-                this.addPermissionToBehaviorSubject(p, validationFunction);
-            })
+            const permissions = permission.reduce((source, p) =>
+                    this.reducePermission(source, p, validationFunction)
+                , this.permissionsSource.value);
+
+            this.permissionsSource.next(permissions);
         } else {
-            this.addPermissionToBehaviorSubject(permission, validationFunction);
+            const permissions = this.reducePermission(this.permissionsSource.value, permission, validationFunction);
+
+            this.permissionsSource.next(permissions);
         }
     }
 
@@ -66,63 +76,68 @@ export class NgxPermissionsService {
      * Removes permission from permissionsObject;
      */
     public removePermission(permissionName: string): void {
-        let permissions = {
+        const permissions = {
             ...this.permissionsSource.value
         };
-        delete permissions[permissionName];
+        delete permissions[ permissionName ];
         this.permissionsSource.next(permissions);
     }
 
     public getPermission(name: string): NgxPermission {
-        return this.permissionsSource.value[name];
+        return this.permissionsSource.value[ name ];
     }
 
     public getPermissions(): NgxPermissionsObject {
         return this.permissionsSource.value;
     }
 
-    private addPermissionToBehaviorSubject(name: string, validationFunction?: Function): void  {
+    private reducePermission(
+        source: NgxPermissionsObject,
+        name: string,
+        validationFunction?: Function
+    ): NgxPermissionsObject {
         if (!!validationFunction && isFunction(validationFunction)) {
-            const roles = {
-                ...this.permissionsSource.value,
-                [name]: {name, validationFunction}
+            return {
+                ...source,
+                [ name ]: { name, validationFunction }
             };
-            this.permissionsSource.next(roles)
         } else {
-            const roles = {
-                ...this.permissionsSource.value,
-                [name]: {name}
+            return {
+                ...source,
+                [ name ]: { name }
             };
-            this.permissionsSource.next(roles)
         }
     }
 
     private hasArrayPermission(permissions: string[]): Promise<boolean> {
-        let promises:any[] = [];
+        const promises: any[] = [];
         permissions.forEach((key) => {
             if (this.hasPermissionValidationFunction(key)) {
-                let immutableValue = {...this.permissionsSource.value};
-                return promises.push(Observable.from(Promise.resolve((<Function>this.permissionsSource.value[key].validationFunction)(key, immutableValue))).catch(() => {
+                const immutableValue = { ...this.permissionsSource.value };
+                return promises.push(Observable.from(Promise.resolve((<Function>this.permissionsSource.value[ key ].validationFunction)(
+                    key,
+                    immutableValue
+                ))).catch(() => {
                     return Observable.of(false);
-                }) );
+                }));
             } else {
                 //check for name of the permission if there is no validation function
-                promises.push(Observable.of(!!this.permissionsSource.value[key]));
+                promises.push(Observable.of(!!this.permissionsSource.value[ key ]));
             }
 
         });
         return Observable.merge(promises)
-            .mergeAll()
-            .first((data: any) => {
-                return data !== false;
-            }, () => true, false)
-            .toPromise()
-            .then((data: any) => {
-                return data;
-            });
+                         .mergeAll()
+                         .first((data: any) => {
+                             return data !== false;
+                         }, () => true, false)
+                         .toPromise()
+                         .then((data: any) => {
+                             return data;
+                         });
     }
 
     private hasPermissionValidationFunction(key: string): boolean {
-        return !!this.permissionsSource.value[key] && !!this.permissionsSource.value[key].validationFunction && isFunction(this.permissionsSource.value[key].validationFunction);
+        return !!this.permissionsSource.value[ key ] && !!this.permissionsSource.value[ key ].validationFunction && isFunction(this.permissionsSource.value[ key ].validationFunction);
     }
 }
