@@ -5,8 +5,7 @@ import {
 import { NgxPermissionsService } from "../service/permissions.service";
 import { Subscription } from "rxjs/Subscription";
 import { NgxRolesService } from '../service/roles.service';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/combineLatest';
+import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/skip';
 import { Observable } from 'rxjs/Observable';
 import { notEmptyValue, isBoolean } from '../utils/utils';
@@ -55,7 +54,8 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     }
 
     private validateExceptOnlyPermissions(): Subscription {
-        return Observable.merge(this.permissionsService.permissions$, this.rolesService.roles$)
+        return this.permissionsService.permissions$
+                         .merge(this.rolesService.roles$)
                          .skip(this.firstMergeUnusedRun)
                          .subscribe(() => {
                              if (notEmptyValue(this.ngxPermissionsExcept)) {
