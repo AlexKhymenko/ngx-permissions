@@ -1,3 +1,7 @@
+## 4.0.0
+BREAKING CHANGE 
+MINIMAL rxjs dependency is 5.5 
+
 ## 3.2.3
 Optimise directive when working with lot of data(prevent re rendering);
 

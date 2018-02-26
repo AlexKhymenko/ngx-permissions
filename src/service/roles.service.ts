@@ -7,9 +7,10 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeAll';
-import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/every';
+import { merge } from 'rxjs/observable/merge';
+
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { NgxRolesStore } from '../store/roles.store';
 import { isFunction, isPromise, transformStringToArray } from '../utils/utils';
@@ -91,7 +92,7 @@ export class NgxRolesService {
             promises.push(Observable.of(false));
         });
 
-        return Observable.merge(promises).mergeAll().first((data: any) => {
+        return merge(promises).mergeAll().first((data: any) => {
             return data !== false;
         }, () => true, false).toPromise().then((data: any) => {
             return data;

@@ -28,7 +28,7 @@ You can test library in [Plunker](https://plnkr.co/edit/n6Wa6hXg0JzI6e050wBt?p=p
 - [Development](#development)
 - [License](#license)
 
-### Migration from version 0.1 to 1.0 [CHANGELOG](CHANGELOG.md)
+### With version 4 minimal rxjs dependency 5.5
 ### Version 2 for angular 4/5. Version 1 for angular 2/4
 
 
