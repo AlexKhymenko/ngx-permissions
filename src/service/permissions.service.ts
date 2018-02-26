@@ -11,6 +11,9 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeAll';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
+
+import { merge } from 'rxjs/observable/merge';
+
 import { isFunction, transformStringToArray } from '../utils/utils';
 
 
@@ -126,7 +129,7 @@ export class NgxPermissionsService {
             }
 
         });
-        return Observable.merge(promises)
+        return merge(promises)
                          .mergeAll()
                          .first((data: any) => {
                              return data !== false;
