@@ -2,7 +2,9 @@ import { Inject, Injectable, InjectionToken, TemplateRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { NgxPermissionsConfigurationStore } from '../store/configuration.store';
-import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategies.enum';
+import {
+    NgxPermissionsPredefinedStrategies,
+} from '../enums/predefined-strategies.enum';
 
 
 export type StrategyFunction  = (templateRef?: TemplateRef<any>) => void;
@@ -35,7 +37,7 @@ export class NgxPermissionsConfigurationService {
     }
 
 
-    public setDefaultOnAuthorizedStrategy(name: string | NgxPermissionsPredefinedStrategies) {
+    public setDefaultOnAuthorizedStrategy(name: string |  'remove' | 'show') {
         if (this.strategiesSource.value[name] || this.predefinedStrategy(name)) {
             this.onAuthorisedDefaultStrategy = name;
         } else {
@@ -43,7 +45,7 @@ export class NgxPermissionsConfigurationService {
         }
     }
 
-    public setDefaultOnUnauthorizedStrategy(name:  string | NgxPermissionsPredefinedStrategies) {
+    public setDefaultOnUnauthorizedStrategy(name:  string |  'remove' | 'show') {
         if (this.strategiesSource.value[name] ||  this.predefinedStrategy(name)) {
             this.onUnAuthorisedDefaultStrategy = name;
         } else {
@@ -65,6 +67,6 @@ export class NgxPermissionsConfigurationService {
     }
 
     private predefinedStrategy(strategy: string): boolean {
-        return strategy === NgxPermissionsPredefinedStrategies.SHOW || strategy === NgxPermissionsPredefinedStrategies.REMOVE
+        return strategy === NgxPermissionsPredefinedStrategies.SHOW || strategy == NgxPermissionsPredefinedStrategies.REMOVE
     }
 }

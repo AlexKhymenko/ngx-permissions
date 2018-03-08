@@ -1,4 +1,4 @@
-export enum NgxPermissionsPredefinedStrategies {
-    REMOVE = <any>'remove',
-    SHOW = <any>'show'
+export const NgxPermissionsPredefinedStrategies = {
+    REMOVE: 'remove',
+    SHOW: 'show'
 }

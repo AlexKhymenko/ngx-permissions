@@ -28,6 +28,8 @@ export * from './model/role.model'
 export * from './testing/permissions-allow.directive.stub'
 export * from './testing/permissions-restrict.directive.stub'
 
+export * from './enums/predefined-strategies.enum'
+
 export interface NgxPermissionsModuleConfig {
     // isolate the service instance, only works for lazy loaded modules or components with the "providers" property
     rolesIsolate?: boolean;

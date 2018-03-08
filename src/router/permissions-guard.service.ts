@@ -164,7 +164,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
     private onlyRedirectCheck(permissions: any, route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot): Promise<boolean> {
         let failedPermission = '';
         return Observable.from(permissions.only)
-            .mergeMap((data: string) => {
+            .mergeMap((data: any) => {
                 return Observable.forkJoin([this.permissionsService.hasPermission(<string | string[]>data), this.rolesService.hasOnlyRoles(<string | string[]>data)])
             .do((hasPerm) => {
                 const failed = hasPerm.every((data) => {
