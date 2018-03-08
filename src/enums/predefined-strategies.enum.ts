@@ -1,4 +1,4 @@
 export enum NgxPermissionsPredefinedStrategies {
-    REMOVE = 'remove',
-    SHOW = 'show'
+    REMOVE = <any>'remove',
+    SHOW = <any>'show'
 }
