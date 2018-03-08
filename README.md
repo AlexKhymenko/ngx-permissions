@@ -19,6 +19,8 @@ You can test library in [Plunker](https://plnkr.co/edit/n6Wa6hXg0JzI6e050wBt?p=p
 
 ## Table of contents
 
+Some functionality is missing visit [wiki-page](https://github.com/AlexKhymenko/ngx-permissions/wiki)
+
 - [Installation](#installation)
 - [Consuming library](#consuming-library)
 - [Managing Permissions](#managing-permissions)
