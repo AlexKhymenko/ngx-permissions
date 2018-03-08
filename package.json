@@ -90,7 +90,7 @@
     "karma-typescript": "3.0.5",
     "karma-typescript-angular2-transform": "1.0.1",
     "mocha": "3.3.0",
-    "node-sass": "4.5.2",
+    "node-sass": "4.7.2",
     "node-sass-tilde-importer": "1.0.0",
     "node-watch": "0.5.2",
     "protractor": "5.1.0",

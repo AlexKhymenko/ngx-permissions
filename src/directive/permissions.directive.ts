@@ -1,5 +1,11 @@
 import {
-    Directive, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef,
+    Directive,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    TemplateRef,
     ViewContainerRef
 } from "@angular/core";
 import { NgxPermissionsService } from "../service/permissions.service";
@@ -7,8 +13,9 @@ import { Subscription } from "rxjs/Subscription";
 import { NgxRolesService } from '../service/roles.service';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/skip';
-import { Observable } from 'rxjs/Observable';
-import { notEmptyValue, isBoolean } from '../utils/utils';
+import { isBoolean, isFunction, isString, notEmptyValue } from '../utils/utils';
+import { NgxPermissionsConfigurationService, StrategyFunction } from '../service/configuration.service';
+import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategies.enum';
 
 @Directive({
     selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
@@ -26,6 +33,15 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     @Input() ngxPermissionsThen: TemplateRef<any>;
     @Input() ngxPermissionsElse: TemplateRef<any>;
 
+    @Input() ngxPermissionsOnlyAuthorisedStrategy: string | StrategyFunction;
+    @Input() ngxPermissionsOnlyUnauthorisedStrategy: string | StrategyFunction;
+
+    @Input() ngxPermissionsExceptUnauthorisedStrategy: string | StrategyFunction;
+    @Input() ngxPermissionsExceptAuthorisedStrategy: string | StrategyFunction;
+
+    @Input() ngxPermissionsUnauthorisedStrategy: string | StrategyFunction;
+    @Input() ngxPermissionsAuthorisedStrategy: string | StrategyFunction;
+
     @Output() permissionsAuthorized = new EventEmitter();
     @Output() permissionsUnauthorized = new EventEmitter();
 
@@ -36,11 +52,13 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
 
     constructor(
         private permissionsService: NgxPermissionsService,
+        private configurationService: NgxPermissionsConfigurationService,
         private rolesService: NgxRolesService,
         private viewContainer: ViewContainerRef,
         private templateRef: TemplateRef<any>
     ) {
     }
+
 
     ngOnInit(): void {
         this.viewContainer.clear();
@@ -107,10 +125,48 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     }
 
     private handleUnauthorisedPermission(template: TemplateRef<any>): void {
+
         if (!isBoolean(this.currentAuthorizedState) || this.currentAuthorizedState) {
             this.currentAuthorizedState = false;
             this.permissionsUnauthorized.emit();
-            this.showTemplateBlockInView(template);
+
+            if (this.unauthorisedStrategyDefined()) {
+                if (isString(this.unauthorisedStrategyDefined())) {
+                    if (this.unauthorisedStrategyDefined() === NgxPermissionsPredefinedStrategies.SHOW) {
+                        this.showTemplateBlockInView(this.templateRef);
+                        return;
+                    }
+
+                    if (this.unauthorisedStrategyDefined() === NgxPermissionsPredefinedStrategies.REMOVE) {
+                        this.viewContainer.clear();
+                        return;
+                    }
+                    const strategy = this.configurationService.getStrategy(<string>this.unauthorisedStrategyDefined());
+                    this.showTemplateBlockInView(this.templateRef);
+                    strategy(this.templateRef);
+                } else if (isFunction(this.ngxPermissionsOnlyUnauthorisedStrategy)) {
+                    this.ngxPermissionsOnlyUnauthorisedStrategy(this.templateRef)
+                }
+                return;
+            }
+
+            if (this.configurationService.onUnAuthorisedDefaultStrategy && this.noElseBlockDefined()) {
+                if (this.configurationService.onUnAuthorisedDefaultStrategy === NgxPermissionsPredefinedStrategies.SHOW) {
+                    this.showTemplateBlockInView(this.templateRef);
+                    return;
+                }
+
+                if (this.configurationService.onUnAuthorisedDefaultStrategy === NgxPermissionsPredefinedStrategies.REMOVE) {
+                    this.viewContainer.clear();
+                    return;
+                }
+                const strategy = this.configurationService.getStrategy(this.configurationService.onUnAuthorisedDefaultStrategy);
+                this.showTemplateBlockInView(this.templateRef);
+                strategy(this.templateRef);
+            } else {
+                this.showTemplateBlockInView(template);
+            }
+
         }
     }
 
@@ -118,7 +174,44 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         if (!isBoolean(this.currentAuthorizedState) || !this.currentAuthorizedState) {
             this.currentAuthorizedState = true;
             this.permissionsAuthorized.emit();
-            this.showTemplateBlockInView(template);
+
+            if (this.onlyAuthorisedStrategyDefined()) {
+                if (isString(this.onlyAuthorisedStrategyDefined())) {
+                    if (this.onlyAuthorisedStrategyDefined() === NgxPermissionsPredefinedStrategies.SHOW) {
+                        this.showTemplateBlockInView(this.templateRef);
+                        return;
+                    }
+
+                    if (this.onlyAuthorisedStrategyDefined() === NgxPermissionsPredefinedStrategies.REMOVE) {
+
+                        this.viewContainer.clear();
+                        return;
+                    }
+                    const strategy = this.configurationService.getStrategy(<string>this.onlyAuthorisedStrategyDefined());
+                    this.showTemplateBlockInView(this.templateRef);
+                    strategy(this.templateRef);
+                } else if (isFunction(this.ngxPermissionsOnlyAuthorisedStrategy)) {
+                    this.ngxPermissionsOnlyAuthorisedStrategy(this.templateRef)
+                }
+                return;
+            }
+
+            if (this.configurationService.onAuthorisedDefaultStrategy && this.noThenBlockDefined()) {
+                if (this.configurationService.onAuthorisedDefaultStrategy === NgxPermissionsPredefinedStrategies.SHOW) {
+                    this.showTemplateBlockInView(this.templateRef);
+                    return;
+                }
+
+                if (this.configurationService.onAuthorisedDefaultStrategy === NgxPermissionsPredefinedStrategies.REMOVE) {
+                    this.viewContainer.clear();
+                    return;
+                }
+                const strategy = this.configurationService.getStrategy(this.configurationService.onAuthorisedDefaultStrategy);
+                this.showTemplateBlockInView(this.templateRef);
+                strategy(this.templateRef);
+            } else {
+                this.showTemplateBlockInView(template);
+            }
         }
     }
 
@@ -127,6 +220,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         if (!template) {
             return;
         }
+
         this.viewContainer.createEmbeddedView(template);
     }
 
@@ -135,5 +229,25 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
             || this.ngxPermissionsExceptThen
             || this.ngxPermissionsThen
             || this.templateRef
+    }
+
+    private noElseBlockDefined(): boolean {
+        return !this.ngxPermissionsExceptElse || !this.ngxPermissionsElse;
+    }
+
+    private noThenBlockDefined() {
+        return !this.ngxPermissionsExceptThen || !this.ngxPermissionsThen;
+    }
+
+    private onlyAuthorisedStrategyDefined() {
+        return this.ngxPermissionsOnlyAuthorisedStrategy ||
+            this.ngxPermissionsExceptAuthorisedStrategy ||
+            this.ngxPermissionsAuthorisedStrategy
+    }
+
+    private unauthorisedStrategyDefined() {
+        return this.ngxPermissionsOnlyUnauthorisedStrategy ||
+            this.ngxPermissionsExceptUnauthorisedStrategy ||
+            this.ngxPermissionsUnauthorisedStrategy
     }
 }
