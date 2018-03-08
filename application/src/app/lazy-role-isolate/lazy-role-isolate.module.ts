@@ -11,7 +11,8 @@ import { LazyRoleIsolateTestComponent } from './lazy-role-isolate-test/lazy-role
     LazyIsolateRolesRoutingModule,
     NgxPermissionsModule.forChild({
       permissionsIsolate: true,
-      rolesIsolate: true
+      rolesIsolate: true,
+      configurationIsolate: true
     })
   ],
   declarations: [

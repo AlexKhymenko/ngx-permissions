@@ -31,4 +31,8 @@
 </ng-template>
 
 
+<button *ngxPermissionsOnly="'NEVER EXIST'"> SHOULD BE DISABLES</button>
+<button *ngxPermissionsOnly="'ADMIN'"> SHOULD  NOt BE DISABLES</button>
+
+
 <div> ENd on lazy ISOLATE Module</div>

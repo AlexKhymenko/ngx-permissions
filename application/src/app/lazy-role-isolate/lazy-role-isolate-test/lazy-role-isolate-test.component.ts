@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgxRolesService } from 'ngx-permissions';
+import { Component, OnInit, Renderer2, TemplateRef } from '@angular/core';
+import { NgxRolesService, NgxPermissionsConfigurationService, NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-lazy-role-isolate-test',
@@ -8,9 +8,18 @@ import { NgxRolesService } from 'ngx-permissions';
 })
 export class LazyRoleIsolateTestComponent implements OnInit {
 
-  constructor(private rolesService: NgxRolesService) { }
+  constructor(private rolesService: NgxRolesService,
+              private permissionsService: NgxPermissionsService,
+              private renderer: Renderer2,
+              private configService: NgxPermissionsConfigurationService) { }
 
   ngOnInit() {
+    this.configService.addPermissionStrategy('lol', (tf: TemplateRef<any>) => {
+      this.renderer.setAttribute(tf.elementRef.nativeElement.nextSibling, 'disabled', 'true');
+    });
+
+    this.configService.setDefaultOnUnauthorizedStrategy('lol');
+    this.permissionsService.addPermission('ADMIN')
     this.rolesService.addRole('ADMIN', ['NICE']);
   }
 
