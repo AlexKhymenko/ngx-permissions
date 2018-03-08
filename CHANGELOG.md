@@ -1,3 +1,6 @@
+## 4.1.0
+Add Unauthorised strategies
+
 ## 4.0.0
 BREAKING CHANGE 
 MINIMAL rxjs dependency is 5.5 
