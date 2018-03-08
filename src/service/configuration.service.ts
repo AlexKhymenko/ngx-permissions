@@ -64,7 +64,7 @@ export class NgxPermissionsConfigurationService {
         return this.strategiesSource.value;
     }
 
-    public predefinedStrategy(strategy: string): boolean {
+    private predefinedStrategy(strategy: string): boolean {
         return strategy === NgxPermissionsPredefinedStrategies.SHOW || strategy === NgxPermissionsPredefinedStrategies.REMOVE
     }
 }
