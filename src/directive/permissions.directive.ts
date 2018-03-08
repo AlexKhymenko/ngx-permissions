@@ -144,8 +144,9 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
                     const strategy = this.configurationService.getStrategy(<string>this.unauthorisedStrategyDefined());
                     this.showTemplateBlockInView(this.templateRef);
                     strategy(this.templateRef);
-                } else if (isFunction(this.ngxPermissionsOnlyUnauthorisedStrategy)) {
-                    this.ngxPermissionsOnlyUnauthorisedStrategy(this.templateRef)
+                } else if (isFunction(this.unauthorisedStrategyDefined())) {
+                    this.showTemplateBlockInView(this.templateRef);
+                    (this.unauthorisedStrategyDefined() as Function)(this.templateRef)
                 }
                 return;
             }
@@ -190,8 +191,9 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
                     const strategy = this.configurationService.getStrategy(<string>this.onlyAuthorisedStrategyDefined());
                     this.showTemplateBlockInView(this.templateRef);
                     strategy(this.templateRef);
-                } else if (isFunction(this.ngxPermissionsOnlyAuthorisedStrategy)) {
-                    this.ngxPermissionsOnlyAuthorisedStrategy(this.templateRef)
+                } else if (isFunction(this.onlyAuthorisedStrategyDefined())) {
+                    this.showTemplateBlockInView(this.templateRef);
+                    (this.onlyAuthorisedStrategyDefined() as Function)(this.templateRef)
                 }
                 return;
             }
