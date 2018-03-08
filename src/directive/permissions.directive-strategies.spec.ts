@@ -74,7 +74,7 @@ describe('Permission directive angular only configuration', () => {
 
     it('Should disable component when default unauthorized method is defined', fakeAsync(() => {
         configurationService.addPermissionStrategy(disable, disableFunction);
-        configurationService.setDefaultOnUnauthorizedMethod(disable);
+        configurationService.setDefaultOnUnauthorizedStrategy(disable);
         permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
@@ -85,7 +85,7 @@ describe('Permission directive angular only configuration', () => {
     }));
 
     it ('Should show the component when predefined default unauthorized show strategy is selected', fakeAsync(() => {
-        configurationService.setDefaultOnUnauthorizedMethod(NgxPermissionsPredefinedStrategies.SHOW);
+        configurationService.setDefaultOnUnauthorizedStrategy(NgxPermissionsPredefinedStrategies.SHOW);
         permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
@@ -95,7 +95,7 @@ describe('Permission directive angular only configuration', () => {
     }));
 
     it ('Should remove the component when predefined default unauthorized remove strategy is selected', fakeAsync(() => {
-        configurationService.setDefaultOnUnauthorizedMethod(NgxPermissionsPredefinedStrategies.REMOVE);
+        configurationService.setDefaultOnUnauthorizedStrategy(NgxPermissionsPredefinedStrategies.REMOVE);
         permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 

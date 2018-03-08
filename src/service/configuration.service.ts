@@ -43,7 +43,7 @@ export class NgxPermissionsConfigurationService {
         }
     }
 
-    public setDefaultOnUnauthorizedMethod(name:  string | NgxPermissionsPredefinedStrategies) {
+    public setDefaultOnUnauthorizedStrategy(name:  string | NgxPermissionsPredefinedStrategies) {
         if (this.strategiesSource.value[name] ||  this.predefinedStrategy(name)) {
             this.onUnAuthorisedDefaultStrategy = name;
         } else {

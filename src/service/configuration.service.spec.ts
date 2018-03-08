@@ -41,12 +41,12 @@ describe('Configuration Service', () => {
 
 
     it ('should throw an error when strategy is not defined but user tries to set it as default on unauthorised method', () => {
-        expect(function () { localService.setDefaultOnUnauthorizedMethod('FUNCTION')}).toThrow();
+        expect(function () { localService.setDefaultOnUnauthorizedStrategy('FUNCTION')}).toThrow();
     });
 
     it ('should set default unauthorised method with string', () => {
         localService.addPermissionStrategy('FUNCTION', () => {});
-        localService.setDefaultOnUnauthorizedMethod('FUNCTION');
+        localService.setDefaultOnUnauthorizedStrategy('FUNCTION');
         expect(localService.onUnAuthorisedDefaultStrategy).toBeTruthy();
         expect(localService.onUnAuthorisedDefaultStrategy).toEqual('FUNCTION');
     });
