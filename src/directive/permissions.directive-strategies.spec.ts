@@ -484,6 +484,68 @@ describe('test predefined strategies', () => {
 });
 
 
+describe('test predefined strategies normal behavior', () => {
+    @Component({selector: 'test-comp',
+        template: `<button  *ngxPermissionsOnly="'ADMIN';  unauthorisedStrategy: 'disable'; authorisedStrategy: 'enable'"><div>123</div></button>`})
+    class TestComp {
+        data: any;
+        public disabled(templateRef: TemplateRef<any>) {
+            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true)
+        }
+    }
+
+    let permissionService;
+    let permissions;
+    let fixture;
+    let comp;
+    let configurationService: NgxPermissionsConfigurationService;
+    const disable = 'disable';
+    let renderer: Renderer2;
+    let correctTemplate = '<div>123</div>'
+    let disableFunction = (tF: TemplateRef<any>) => {
+        renderer.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
+    };
+    let enableFunction = (tF: TemplateRef<any>) => {
+        renderer.removeAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled');
+    };
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers:[Renderer2]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        permissionService = fixture.debugElement.injector.get(NgxPermissionsService);
+        configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
+        renderer = fixture.debugElement.injector.get(Renderer2);
+
+    });
+
+
+    it ('Should show the component when predefined strategy is present', fakeAsync(() => {
+        configurationService.addPermissionStrategy(disable, disableFunction);
+        configurationService.addPermissionStrategy('enable', enableFunction);
+
+        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        detectChanges(fixture);
+
+        let content = fixture.debugElement.nativeElement.querySelector('button');
+        expect(content).toBeTruthy();
+        expect(content.disabled).toBe(true);
+
+        permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
+
+        detectChanges(fixture);
+        let content2 = fixture.debugElement.nativeElement.querySelector('button');
+
+
+        expect(content2).toBeTruthy();
+        expect(content2.disabled).toBeFalsy();
+    }));
+
+});
+
+
+
 function detectChanges(fixture) {
     tick();
     fixture.detectChanges();
