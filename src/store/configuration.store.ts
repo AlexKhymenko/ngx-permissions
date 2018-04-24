@@ -1,7 +1,6 @@
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable} from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Strategy, StrategyFunction } from '../service/configuration.service';
+import { Strategy } from '../service/configuration.service';
 
 @Injectable()
 export class NgxPermissionsConfigurationStore {
@@ -13,4 +12,5 @@ export class NgxPermissionsConfigurationStore {
     public onUnAuthorisedDefaultStrategy: string | undefined;
 
     constructor() {}
+
 }

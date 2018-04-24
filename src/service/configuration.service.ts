@@ -1,27 +1,22 @@
 import { Inject, Injectable, InjectionToken, TemplateRef } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategies.enum';
 import { NgxPermissionsConfigurationStore } from '../store/configuration.store';
-import {
-    NgxPermissionsPredefinedStrategies,
-} from '../enums/predefined-strategies.enum';
 
-
-export type StrategyFunction  = (templateRef?: TemplateRef<any>) => void;
+export type StrategyFunction = (templateRef?: TemplateRef<any>) => void;
 
 export type Strategy = {
-    [key: string]: StrategyFunction
-}
+    [ key: string ]: StrategyFunction
+};
 
 export const USE_CONFIGURATION_STORE = new InjectionToken('USE_CONFIGURATION_STORE');
-
 
 @Injectable()
 export class NgxPermissionsConfigurationService {
 
     private strategiesSource: BehaviorSubject<Strategy>;
     public strategies$: Observable<Strategy>;
-    public onAuthorisedDefaultStrategy:  string | undefined;
+    public onAuthorisedDefaultStrategy: string | undefined;
     public onUnAuthorisedDefaultStrategy: string | undefined;
 
     constructor(
@@ -36,30 +31,28 @@ export class NgxPermissionsConfigurationService {
 
     }
 
-
-    public setDefaultOnAuthorizedStrategy(name: string |  'remove' | 'show') {
-        if (this.strategiesSource.value[name] || this.predefinedStrategy(name)) {
+    public setDefaultOnAuthorizedStrategy(name: string | 'remove' | 'show') {
+        if (this.strategiesSource.value[ name ] || this.predefinedStrategy(name)) {
             this.onAuthorisedDefaultStrategy = name;
         } else {
-            throw new Error(`No ${name} strategy is found please define one`)
+            throw new Error(`No ${name} strategy is found please define one`);
         }
     }
 
-    public setDefaultOnUnauthorizedStrategy(name:  string |  'remove' | 'show') {
-        if (this.strategiesSource.value[name] ||  this.predefinedStrategy(name)) {
+    public setDefaultOnUnauthorizedStrategy(name: string | 'remove' | 'show') {
+        if (this.strategiesSource.value[ name ] || this.predefinedStrategy(name)) {
             this.onUnAuthorisedDefaultStrategy = name;
         } else {
-            throw new Error(`No ' ${name} ' strategy is found please define one`)
+            throw new Error(`No ' ${name} ' strategy is found please define one`);
         }
     }
 
-
     public addPermissionStrategy(key: string, func: StrategyFunction): void {
-        this.strategiesSource.value[key] = func;
+        this.strategiesSource.value[ key ] = func;
     }
 
     public getStrategy(key: string) {
-        return this.strategiesSource.value[key];
+        return this.strategiesSource.value[ key ];
     }
 
     public getAllStrategies() {
@@ -67,6 +60,7 @@ export class NgxPermissionsConfigurationService {
     }
 
     private predefinedStrategy(strategy: string): boolean {
-        return strategy === NgxPermissionsPredefinedStrategies.SHOW || strategy == NgxPermissionsPredefinedStrategies.REMOVE
+        return strategy === NgxPermissionsPredefinedStrategies.SHOW || strategy === NgxPermissionsPredefinedStrategies.REMOVE;
     }
+
 }

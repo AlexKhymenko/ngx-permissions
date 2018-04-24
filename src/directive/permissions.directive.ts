@@ -1,21 +1,13 @@
-import {
-    Directive,
-    EventEmitter,
-    Input,
-    OnDestroy,
-    OnInit,
-    Output,
-    TemplateRef,
-    ViewContainerRef
-} from "@angular/core";
-import { NgxPermissionsService } from "../service/permissions.service";
-import { Subscription } from "rxjs/Subscription";
-import { NgxRolesService } from '../service/roles.service';
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/operator/skip';
-import { isBoolean, isFunction, isString, notEmptyValue } from '../utils/utils';
-import { NgxPermissionsConfigurationService, StrategyFunction } from '../service/configuration.service';
+import { Directive, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+
+import { merge, Subscription } from 'rxjs';
+import { skip } from 'rxjs/operators';
+
 import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategies.enum';
+import { NgxPermissionsConfigurationService, StrategyFunction } from '../service/configuration.service';
+import { NgxPermissionsService } from '../service/permissions.service';
+import { NgxRolesService } from '../service/roles.service';
+import { isBoolean, isFunction, isString, notEmptyValue } from '../utils/utils';
 
 @Directive({
     selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
@@ -46,7 +38,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     @Output() permissionsUnauthorized = new EventEmitter();
 
     private initPermissionSubscription: Subscription;
-    //skip first run cause merge will fire twice
+    // skip first run cause merge will fire twice
     private firstMergeUnusedRun = 1;
     private currentAuthorizedState: boolean;
 
@@ -58,7 +50,6 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         private templateRef: TemplateRef<any>
     ) {
     }
-
 
     ngOnInit(): void {
         this.viewContainer.clear();
@@ -72,22 +63,19 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     }
 
     private validateExceptOnlyPermissions(): Subscription {
-        return this.permissionsService.permissions$
-                         .merge(this.rolesService.roles$)
-                         .skip(this.firstMergeUnusedRun)
-                         .subscribe(() => {
-                             if (notEmptyValue(this.ngxPermissionsExcept)) {
-                                 this.validateExceptAndOnlyPermissions();
-                                 return;
-                             }
+        return merge(this.permissionsService.permissions$, this.rolesService.roles$)
+            .pipe(skip(this.firstMergeUnusedRun))
+            .subscribe(() => {
+                if (notEmptyValue(this.ngxPermissionsExcept)) {
+                    return this.validateExceptAndOnlyPermissions();
+                }
 
-                             if (notEmptyValue(this.ngxPermissionsOnly)) {
-                                 this.validateOnlyPermissions();
-                                 return;
-                             }
+                if (notEmptyValue(this.ngxPermissionsOnly)) {
+                    return this.validateOnlyPermissions();
+                }
 
-                             this.handleAuthorisedPermission(this.getAuthorisedTemplates());
-                         });
+                this.handleAuthorisedPermission(this.getAuthorisedTemplates());
+            });
     }
 
     private validateExceptAndOnlyPermissions(): void {
@@ -135,7 +123,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
                     this.applyStrategy(this.unauthorisedStrategyDefined());
                 } else if (isFunction(this.unauthorisedStrategyDefined())) {
                     this.showTemplateBlockInView(this.templateRef);
-                    (this.unauthorisedStrategyDefined() as Function)(this.templateRef)
+                    (this.unauthorisedStrategyDefined() as Function)(this.templateRef);
                 }
                 return;
             }
@@ -159,7 +147,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
                     this.applyStrategy(this.onlyAuthorisedStrategyDefined());
                 } else if (isFunction(this.onlyAuthorisedStrategyDefined())) {
                     this.showTemplateBlockInView(this.templateRef);
-                    (this.onlyAuthorisedStrategyDefined() as Function)(this.templateRef)
+                    (this.onlyAuthorisedStrategyDefined() as Function)(this.templateRef);
                 }
                 return;
             }
@@ -185,7 +173,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         return this.ngxPermissionsOnlyThen
             || this.ngxPermissionsExceptThen
             || this.ngxPermissionsThen
-            || this.templateRef
+            || this.templateRef;
     }
 
     private noElseBlockDefined(): boolean {
@@ -199,13 +187,13 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     private onlyAuthorisedStrategyDefined() {
         return this.ngxPermissionsOnlyAuthorisedStrategy ||
             this.ngxPermissionsExceptAuthorisedStrategy ||
-            this.ngxPermissionsAuthorisedStrategy
+            this.ngxPermissionsAuthorisedStrategy;
     }
 
     private unauthorisedStrategyDefined() {
         return this.ngxPermissionsOnlyUnauthorisedStrategy ||
             this.ngxPermissionsExceptUnauthorisedStrategy ||
-            this.ngxPermissionsUnauthorisedStrategy
+            this.ngxPermissionsUnauthorisedStrategy;
     }
 
     private applyStrategy(str: any) {
@@ -222,4 +210,5 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         this.showTemplateBlockInView(this.templateRef);
         strategy(this.templateRef);
     }
+
 }

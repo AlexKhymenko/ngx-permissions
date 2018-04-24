@@ -6,4 +6,5 @@ export class NgxPermission {
         this.name = name;
         this.validationFunction = validationFunction;
     }
+
 }
