@@ -1,7 +1,6 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 
-import { BehaviorSubject, forkJoin, from, merge, Observable, of } from 'rxjs';
-import { ObservableInput } from 'rxjs/index';
+import { BehaviorSubject, from, Observable, ObservableInput, of } from 'rxjs';
 import { catchError, every, first, map, mergeAll, mergeMap, switchMap } from 'rxjs/operators';
 
 import { NgxRole } from '../model/role.model';
@@ -15,6 +14,7 @@ export type NgxRolesObject = { [ name: string ]: NgxRole };
 
 @Injectable()
 export class NgxRolesService {
+
     private rolesSource: BehaviorSubject<NgxRolesObject>;
 
     public roles$: Observable<NgxRolesObject>;

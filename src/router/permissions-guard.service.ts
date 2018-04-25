@@ -90,7 +90,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
                         }
                     }));
                 }),
-                first((data: any) => data.some((data) => data === true), false),
+                first((data: any) => data.some((data: boolean) => data === true), false),
                 mergeMap((isAllFalse) => {
                     if (!!failedPermission) {
                         this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
@@ -200,10 +200,10 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
             first(
                 (data: any) => {
                     if (isFunction(permissions.redirectTo)) {
-                        return data.some((data) => data === true);
+                        return data.some((data: boolean) => data === true);
                     }
 
-                    return data.every((data) => data === false);
+                    return data.every((data: boolean) => data === false);
                 },
                 false
             ),

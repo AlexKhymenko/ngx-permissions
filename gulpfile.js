@@ -49,16 +49,15 @@ gulp.task('inline-resources', function () {
  *    compiled modules to the /build folder.
  */
 gulp.task('ngc', function () {
-  return ngc({
-    project: `${tmpFolder}/tsconfig.es5.json`
-  })
-    .then((exitCode) => {
-      if (exitCode === 1) {
-        // This error is caught in the 'compile' task by the runSequence method callback
-        // so that when ngc fails to compile, the whole compile process stops running
-        throw new Error('ngc compilation failed');
-      }
-    });
+  const exitCode = ngc([ '--project', `${tmpFolder}/tsconfig.es5.json` ]);
+
+  if (exitCode === 1) {
+    // This error is caught in the 'compile' task by the runSequence method callback
+    // so that when ngc fails to compile, the whole compile process stops running
+    return Promise.reject('ngc compilation failed');
+  }
+
+  return Promise.resolve(exitCode);
 });
 
 /**
@@ -84,12 +83,21 @@ gulp.task('rollup:fesm', function () {
       // See https://github.com/rollup/rollup/wiki/JavaScript-API#external
       external: [
         '@angular/core',
-        '@angular/common'
+        '@angular/common',
+        '@angular/router',
+        'rxjs',
+        'rxjs/operators'
       ],
 
       // Format of generated bundle
       // See https://github.com/rollup/rollup/wiki/JavaScript-API#format
-      format: 'es'
+      format: 'es',
+      onwarn: function (warning) {
+        // Suppress this error message... there are hundreds of them. Angular team says to ignore it.
+        // https://github.com/rollup/rollup/wiki/Troubleshooting#this-is-undefined
+        if (warning.code === 'THIS_IS_UNDEFINED') return;
+        console.error(warning.message);
+      }
     }))
     .pipe(gulp.dest(distFolder));
 });
@@ -117,7 +125,10 @@ gulp.task('rollup:umd', function () {
       // See https://github.com/rollup/rollup/wiki/JavaScript-API#external
       external: [
         '@angular/core',
-        '@angular/common'
+        '@angular/common',
+        '@angular/router',
+        'rxjs',
+        'rxjs/operators'
       ],
 
       // Format of generated bundle
@@ -135,9 +146,18 @@ gulp.task('rollup:umd', function () {
 
       // See https://github.com/rollup/rollup/wiki/JavaScript-API#globals
       globals: {
-        typescript: 'ts'
+        typescript: 'ts',
+        '@angular/core': '_angular_core',
+        '@angular/router': '_angular_router',
+        'rxjs': 'rxjs',
+        'rxjs/operators': 'rxjs_operators'
+      },
+      onwarn: function (warning) {
+          // Suppress this error message... there are hundreds of them. Angular team says to ignore it.
+          // https://github.com/rollup/rollup/wiki/Troubleshooting#this-is-undefined
+          if (warning.code === 'THIS_IS_UNDEFINED') return;
+          console.error(warning.message);
       }
-
     }))
     .pipe(rename('ngx-permissions.umd.js'))
     .pipe(gulp.dest(distFolder));
