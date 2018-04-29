@@ -6,6 +6,7 @@
     "baseUrl": ".",
     "stripInternal": true,
     "strict": true,
+    "strictPropertyInitialization": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",

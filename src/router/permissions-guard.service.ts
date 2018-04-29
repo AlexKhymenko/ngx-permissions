@@ -1,43 +1,41 @@
 import { Injectable } from '@angular/core';
 import {
-    ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanLoad, NavigationExtras, Route, Router,
-    RouterStateSnapshot
+    ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanLoad, NavigationExtras, Route, Router, RouterStateSnapshot
 } from '@angular/router';
-import { NgxPermissionsService } from '../service/permissions.service';
-import { NgxPermissionsRouterData } from '../model/permissions-router-data.model';
-import { NgxRolesService } from "../service/roles.service";
-import { isFunction, isPlainObject, isString, transformStringToArray } from '../utils/utils';
-import { Observable } from 'rxjs/Observable';
-import  'rxjs/add/observable/forkJoin'
-import  'rxjs/add/observable/from'
-import  'rxjs/add/operator/mergeMap'
-import  'rxjs/add/operator/do'
-import  'rxjs/add/operator/map'
 
-type NgxRedirectToNavigationParameters = {
-    navigationCommands: any[] | Function,
-    navigationExtras?: NavigationExtras | Function
+import { forkJoin, from, Observable, of } from 'rxjs';
+import { first, mergeMap, tap } from 'rxjs/operators';
+
+import { NgxPermissionsRouterData } from '../model/permissions-router-data.model';
+import { NgxPermissionsService } from '../service/permissions.service';
+import { NgxRolesService } from '../service/roles.service';
+import { isFunction, isPlainObject, transformStringToArray } from '../utils/utils';
+
+interface NgxRedirectToNavigationParameters {
+    navigationCommands: any[] | Function;
+    navigationExtras?: NavigationExtras | Function;
 }
+
 @Injectable()
 export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChild {
 
-
-    constructor(private permissionsService: NgxPermissionsService, private  rolesService: NgxRolesService, private router: Router) {}
+    constructor(private permissionsService: NgxPermissionsService, private  rolesService: NgxRolesService, private router: Router) {
+    }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
         return this.hasPermissions(route, state);
     }
 
     canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        return this.hasPermissions(childRoute, state)
+        return this.hasPermissions(childRoute, state);
     }
 
     canLoad(route: Route): boolean | Observable<boolean> | Promise<boolean> {
-        return this.hasPermissions(route)
+        return this.hasPermissions(route);
     }
 
     private hasPermissions(route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
-        const purePermissions = !!route && route.data ? route.data['permissions'] as NgxPermissionsRouterData : {};
+        const purePermissions = !!route && route.data ? route.data[ 'permissions' ] as NgxPermissionsRouterData : {};
         let permissions: NgxPermissionsRouterData = this.transformPermission(purePermissions, route, state);
 
         if (this.isParameterAvailable(permissions.except)) {
@@ -65,86 +63,105 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
         }
 
         permissions.except = transformStringToArray(permissions.except);
-        permissions.only =  transformStringToArray(permissions.only);
+        permissions.only = transformStringToArray(permissions.only);
 
         return permissions;
     }
 
     private isParameterAvailable(permission: any) {
-        return !!(permission) && permission.length > 0
+        return !!(permission) && permission.length > 0;
     }
 
     private passingExceptPermissionsValidation(permissions: NgxPermissionsRouterData, route: any, state: any) {
-        if (!!permissions.redirectTo && ((isFunction(permissions.redirectTo)) || (isPlainObject(permissions.redirectTo) &&  !this.isRedirectionWithParameters(permissions.redirectTo)))) {
+        if (!!permissions.redirectTo && ((isFunction(permissions.redirectTo)) || (isPlainObject(permissions.redirectTo) && !this.isRedirectionWithParameters(
+            permissions.redirectTo)))) {
             let failedPermission = '';
-            return Observable.from(permissions.except as any[])
-                .mergeMap((data) => {
-                    return Observable.forkJoin([this.permissionsService.hasPermission(<string | string[]>data), this.rolesService.hasOnlyRoles(<string | string[]>data)])
-                        .do((hasPerm) => {
-                            const dontHavePermissions = hasPerm.every((data) => {
-                                return data === false;
-                            });
-                            if (!dontHavePermissions) {
-                                failedPermission = data;
-                            }
-                        })
-                }).first((data: any[]) => {
-                    return data.some((data) => {
-                        return data === true;
-                    })
-                }, () => true, false).mergeMap((isAllFalse) => {
+
+            return from(permissions.except as any[]).pipe(
+                mergeMap((data) => {
+                    return forkJoin([
+                        this.permissionsService.hasPermission(<string | string[]>data),
+                        this.rolesService.hasOnlyRoles(<string | string[]>data)
+                    ]).pipe(tap((hasPermissions: boolean[]) => {
+                        const dontHavePermissions = hasPermissions.every((data) => data === false);
+
+                        if (!dontHavePermissions) {
+                            failedPermission = data;
+                        }
+                    }));
+                }),
+                first((data: any) => data.some((data: boolean) => data === true), false),
+                mergeMap((isAllFalse) => {
                     if (!!failedPermission) {
                         this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
-                        return Observable.of(false);
+
+                        return of(false);
                     }
+
                     if (!isAllFalse && permissions.only) {
                         return this.onlyRedirectCheck(permissions, route, state);
                     }
-                    return Observable.of(!isAllFalse);
-                }).toPromise()
 
+                    return of(!isAllFalse);
+                })
+            ).toPromise();
         }
 
-        return Promise.all([this.permissionsService.hasPermission(<string | string[]>permissions.except), this.rolesService.hasOnlyRoles(<string | string[]>permissions.except)])
-            .then(([permissionsPr, roles]) => {
-                if (permissionsPr || roles)  {
-                    if  (permissions.redirectTo) {
-                        this.redirectToAnotherRoute(permissions.redirectTo, route, state);
-                        return false;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    if (permissions.only) {
-                        return this.checkOnlyPermissions(permissions, route, state);
-                    }
-                    return true;
-                }
-            })
+        return Promise.all([ this.permissionsService.hasPermission(<string | string[]>permissions.except), this.rolesService.hasOnlyRoles(<string | string[]>permissions.except) ])
+                      .then(([ permissionsPr, roles ]) => {
+                          if (permissionsPr || roles) {
+                              if (permissions.redirectTo) {
+                                  this.redirectToAnotherRoute(permissions.redirectTo, route, state);
+                                  return false;
+                              } else {
+                                  return false;
+                              }
+                          } else {
+                              if (permissions.only) {
+                                  return this.checkOnlyPermissions(permissions, route, state);
+                              }
+                              return true;
+                          }
+                      });
     }
 
-    private redirectToAnotherRoute(redirectTo: string | any[] | NgxRedirectToNavigationParameters | Function, route : ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot, failedPermissionName?: string) {
-        if(isFunction(redirectTo)) {
+    private redirectToAnotherRoute(
+        redirectTo: string | any[] | NgxRedirectToNavigationParameters | Function,
+        route: ActivatedRouteSnapshot | Route,
+        state?: RouterStateSnapshot,
+        failedPermissionName?: string
+    ) {
+        if (isFunction(redirectTo)) {
             redirectTo = (redirectTo as Function)(failedPermissionName, route, state);
         }
 
-        if(this.isRedirectionWithParameters(redirectTo)) {
+        if (this.isRedirectionWithParameters(redirectTo)) {
             if (this.hasNavigationExtrasAsFunction(redirectTo)) {
-                (<NgxRedirectToNavigationParameters>redirectTo).navigationExtras = ((<NgxRedirectToNavigationParameters>redirectTo).navigationExtras as Function)(route, state);
+                (<NgxRedirectToNavigationParameters>redirectTo).navigationExtras = ((<NgxRedirectToNavigationParameters>redirectTo).navigationExtras as Function)(
+                    route,
+                    state
+                );
             }
 
             if (this.hasNavigationCommandsAsFunction(redirectTo)) {
-                (<NgxRedirectToNavigationParameters>redirectTo).navigationCommands = ((<NgxRedirectToNavigationParameters>redirectTo).navigationCommands as Function)(route, state);
+                (<NgxRedirectToNavigationParameters>redirectTo).navigationCommands = ((<NgxRedirectToNavigationParameters>redirectTo).navigationCommands as Function)(
+                    route,
+                    state
+                );
             }
 
-            this.router.navigate(((<NgxRedirectToNavigationParameters>redirectTo).navigationCommands as any[]), ((<NgxRedirectToNavigationParameters> redirectTo).navigationExtras as NavigationExtras));
+            this.router.navigate(
+                ((<NgxRedirectToNavigationParameters>redirectTo).navigationCommands as any[]),
+                ((<NgxRedirectToNavigationParameters> redirectTo).navigationExtras as NavigationExtras)
+            );
+
             return;
         }
 
         if (Array.isArray(redirectTo)) {
             this.router.navigate(redirectTo);
         } else {
-            this.router.navigate([redirectTo]);
+            this.router.navigate([ redirectTo ]);
         }
     }
 
@@ -152,88 +169,101 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
         return isPlainObject(object) && (!!object.navigationCommands || !!object.navigationExtras);
     }
 
-
     private hasNavigationExtrasAsFunction(redirectTo: any): boolean {
-        return !!(<NgxRedirectToNavigationParameters> redirectTo).navigationExtras && isFunction((<NgxRedirectToNavigationParameters> redirectTo).navigationExtras)
+        return !!(<NgxRedirectToNavigationParameters> redirectTo).navigationExtras &&
+            isFunction((<NgxRedirectToNavigationParameters> redirectTo).navigationExtras);
     }
 
     private hasNavigationCommandsAsFunction(redirectTo: any): boolean {
-        return !!(<NgxRedirectToNavigationParameters> redirectTo).navigationCommands && isFunction((<NgxRedirectToNavigationParameters> redirectTo).navigationCommands);
+        return !!(<NgxRedirectToNavigationParameters> redirectTo).navigationCommands &&
+            isFunction((<NgxRedirectToNavigationParameters> redirectTo).navigationCommands);
     }
 
     private onlyRedirectCheck(permissions: any, route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot): Promise<boolean> {
         let failedPermission = '';
-        return Observable.from(permissions.only)
-            .mergeMap((data: any) => {
-                return Observable.forkJoin([this.permissionsService.hasPermission(<string | string[]>data), this.rolesService.hasOnlyRoles(<string | string[]>data)])
-            .do((hasPerm) => {
-                const failed = hasPerm.every((data) => {
-                    return data === false;
-                });
-                if (failed) {
-                    failedPermission = data;
-                }
-            })})
-            .first((data: any[]) => {
-                if (isFunction(permissions.redirectTo)) {
-                    return data.some((data) => {
-                        return data === true;
+
+        return from(permissions.only).pipe(
+            mergeMap((data: any) => {
+                return forkJoin([
+                    this.permissionsService.hasPermission(<string | string[]>data),
+                    this.rolesService.hasOnlyRoles(<string | string[]>data)
+                ]).pipe(
+                    tap((hasPermission: boolean[]) => {
+                        const failed = hasPermission.every((data) => data === false);
+
+                        if (failed) {
+                            failedPermission = data;
+                        }
                     })
-                }
-                return data.every((data) => {
-                    return data === false;
-                })
-            }, () => true, false)
-            .mergeMap((pass: boolean): Observable<boolean> => {
+                );
+            }),
+            first(
+                (data: any) => {
+                    if (isFunction(permissions.redirectTo)) {
+                        return data.some((data: boolean) => data === true);
+                    }
+
+                    return data.every((data: boolean) => data === false);
+                },
+                false
+            ),
+            mergeMap((pass: boolean): Observable<boolean> => {
                 if (isFunction(permissions.redirectTo)) {
                     if (pass) {
-                        return Observable.of(true)
+                        return of(true);
                     } else {
                         this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
-                        return Observable.of(false);
+                        return of(false);
                     }
                 } else {
                     if (!!failedPermission) {
                         this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
                     }
-                    return Observable.of(!pass);
+                    return of(!pass);
                 }
-            }).toPromise()
+            })
+        ).toPromise();
     }
 
-    private handleRedirectOfFailedPermission(permissions: any, failedPermission: string, route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
+    private handleRedirectOfFailedPermission(
+        permissions: any,
+        failedPermission: string,
+        route: ActivatedRouteSnapshot | Route,
+        state?: RouterStateSnapshot
+    ) {
         if (this.isFailedPermissionPropertyOfRedirectTo(permissions, failedPermission)) {
-            this.redirectToAnotherRoute((<any>permissions.redirectTo)[failedPermission], route, state, failedPermission);
+            this.redirectToAnotherRoute((<any>permissions.redirectTo)[ failedPermission ], route, state, failedPermission);
         } else {
             if (isFunction(permissions.redirectTo)) {
                 this.redirectToAnotherRoute((<any>permissions.redirectTo), route, state, failedPermission);
             } else {
-                this.redirectToAnotherRoute((<any>permissions.redirectTo)['default'], route, state, failedPermission);
+                this.redirectToAnotherRoute((<any>permissions.redirectTo)[ 'default' ], route, state, failedPermission);
             }
         }
     }
 
     private isFailedPermissionPropertyOfRedirectTo(permissions: any, failedPermission: string) {
-       return !!permissions.redirectTo && permissions.redirectTo[<any>failedPermission]
+        return !!permissions.redirectTo && permissions.redirectTo[ <any>failedPermission ];
     }
 
     private checkOnlyPermissions(purePermissions: any, route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
         let permissions: NgxPermissionsRouterData = {
             ...purePermissions
         };
-        return Promise.all([this.permissionsService.hasPermission(<string | string[]>permissions.only), this.rolesService.hasOnlyRoles(<string | string[]>permissions.only)])
-            .then(([permissionsPr, roles]) => {
-                if (permissionsPr || roles)  {
-                    return true;
-                } else {
-                    if (permissions.redirectTo) {
-                        this.redirectToAnotherRoute(permissions.redirectTo, route, state);
-                        return false;
-                    } else {
-                        return false;
-                    }
-                }
-            })
+
+        return Promise.all([ this.permissionsService.hasPermission(<string | string[]>permissions.only), this.rolesService.hasOnlyRoles(<string | string[]>permissions.only) ])
+                      .then(([ permissionsPr, roles ]) => {
+                          if (permissionsPr || roles) {
+                              return true;
+                          } else {
+                              if (permissions.redirectTo) {
+                                  this.redirectToAnotherRoute(permissions.redirectTo, route, state);
+                                  return false;
+                              } else {
+                                  return false;
+                              }
+                          }
+                      });
     }
 
     private passingOnlyPermissionsValidation(permissions: NgxPermissionsRouterData, route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
@@ -243,7 +273,4 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
         return this.checkOnlyPermissions(permissions, route, state);
     }
 
-    private hasRedirectToAsFunctionOrObject(redirectTo: any) {
-        return isFunction(redirectTo) || isPlainObject(redirectTo) &&  !this.isRedirectionWithParameters(redirectTo)
-    }
 }

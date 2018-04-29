@@ -1,26 +1,16 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { NgxPermissionsStore } from '../store/permissions.store';
+
+import { BehaviorSubject, from, Observable, ObservableInput, of } from 'rxjs';
+import { catchError, first, map, mergeAll, switchMap, tap } from 'rxjs/operators';
+
 import { NgxPermission } from '../model/permission.model';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/mergeAll';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/from';
+import { NgxPermissionsStore } from '../store/permissions.store';
 
-import { merge } from 'rxjs/observable/merge';
+import { isBoolean, isFunction, transformStringToArray } from '../utils/utils';
 
-import { isFunction, transformStringToArray } from '../utils/utils';
-
-
-export type NgxPermissionsObject = {[name: string] : NgxPermission}
+export type NgxPermissionsObject = { [ name: string ]: NgxPermission };
 
 export const USE_PERMISSIONS_STORE = new InjectionToken('USE_PERMISSIONS_STORE');
-
 
 @Injectable()
 export class NgxPermissionsService {
@@ -32,7 +22,7 @@ export class NgxPermissionsService {
         @Inject(USE_PERMISSIONS_STORE) private isolate: boolean = false,
         private permissionsStore: NgxPermissionsStore
     ) {
-        this.permissionsSource = this.isolate ? new BehaviorSubject<NgxPermissionsObject>({}) : this.permissionsStore.permissionsSource;
+        this.permissionsSource = isolate ? new BehaviorSubject<NgxPermissionsObject>({}) : permissionsStore.permissionsSource;
         this.permissions$ = this.permissionsSource.asObservable();
     }
 
@@ -74,10 +64,6 @@ export class NgxPermissionsService {
         }
     }
 
-    /**
-     * @param {string} permissionName
-     * Removes permission from permissionsObject;
-     */
     public removePermission(permissionName: string): void {
         const permissions = {
             ...this.permissionsSource.value
@@ -113,34 +99,34 @@ export class NgxPermissionsService {
     }
 
     private hasArrayPermission(permissions: string[]): Promise<boolean> {
-        const promises: any[] = [];
-        permissions.forEach((key) => {
+        const promises: Observable<boolean>[] = permissions.map((key) => {
             if (this.hasPermissionValidationFunction(key)) {
                 const immutableValue = { ...this.permissionsSource.value };
-                return promises.push(Observable.from(Promise.resolve((<Function>this.permissionsSource.value[ key ].validationFunction)(
-                    key,
-                    immutableValue
-                ))).catch(() => {
-                    return Observable.of(false);
-                }));
-            } else {
-                //check for name of the permission if there is no validation function
-                promises.push(Observable.of(!!this.permissionsSource.value[ key ]));
+                const validationFunction: Function = <Function>this.permissionsSource.value[ key ].validationFunction;
+
+                return of(null).pipe(
+                    map(() => validationFunction(key, immutableValue)),
+                    switchMap((promise: Promise<boolean> | boolean): ObservableInput<boolean> => isBoolean(promise) ?
+                        of(promise as boolean) : promise as Promise<boolean>),
+                    catchError(() => of(false))
+                );
             }
 
+            // check for name of the permission if there is no validation function
+            return of(!!this.permissionsSource.value[ key ]);
         });
-        return merge(promises)
-                         .mergeAll()
-                         .first((data: any) => {
-                             return data !== false;
-                         }, () => true, false)
-                         .toPromise()
-                         .then((data: any) => {
-                             return data;
-                         });
+
+        return from(promises).pipe(
+            mergeAll(),
+            first((data) => data !== false, false),
+            map((data) => data === false ? false : true)
+        ).toPromise().then((data: any) => data);
     }
 
     private hasPermissionValidationFunction(key: string): boolean {
-        return !!this.permissionsSource.value[ key ] && !!this.permissionsSource.value[ key ].validationFunction && isFunction(this.permissionsSource.value[ key ].validationFunction);
+        return !!this.permissionsSource.value[ key ] &&
+            !!this.permissionsSource.value[ key ].validationFunction &&
+            isFunction(this.permissionsSource.value[ key ].validationFunction);
     }
+
 }

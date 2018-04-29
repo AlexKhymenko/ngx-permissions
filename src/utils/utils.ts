@@ -1,6 +1,3 @@
-
-
-
 export function isFunction(functionToCheck: any): functionToCheck is Function {
     let getType = {};
     return !!functionToCheck && functionToCheck instanceof Function && getType.toString.call(functionToCheck) === '[object Function]';
@@ -24,7 +21,7 @@ export function isBoolean(value: any): value is boolean {
 }
 
 export function isPromise(promise: any) {
-    return Object.prototype.toString.call(promise) === "[object Promise]"
+    return Object.prototype.toString.call(promise) === '[object Promise]';
 }
 
 export function notEmptyValue(value: any): boolean {
@@ -36,7 +33,7 @@ export function notEmptyValue(value: any): boolean {
 
 export function transformStringToArray(value: any): string[] {
     if (isString(value)) {
-        return [value]
+        return [value];
     }
     return value;
 }

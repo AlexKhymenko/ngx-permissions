@@ -1,9 +1,9 @@
-import { Directive, EventEmitter, Input, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, EventEmitter, Input, OnInit, Output, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
     selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
 })
-export class NgxPermissionsRestrictStubDirective {
+export class NgxPermissionsRestrictStubDirective implements OnInit {
 
     @Input() ngxPermissionsOnly: string | string[];
     @Input() ngxPermissionsOnlyThen: TemplateRef<any>;
@@ -35,6 +35,7 @@ export class NgxPermissionsRestrictStubDirective {
     private getUnAuthorizedTemplate() {
         return this.ngxPermissionsOnlyElse ||
             this.ngxPermissionsExceptElse ||
-            this.ngxPermissionsElse
+            this.ngxPermissionsElse;
     }
+
 }
