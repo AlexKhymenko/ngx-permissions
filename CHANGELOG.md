@@ -1,3 +1,7 @@
+## 5.0.0-rc.0
+Breaking change 
+minimal rxjs dependency is 6.0
+
 ## 4.1.0
 Add Unauthorised strategies
 
