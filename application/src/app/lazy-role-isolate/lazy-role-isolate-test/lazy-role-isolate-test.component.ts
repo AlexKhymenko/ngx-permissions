@@ -14,7 +14,7 @@ export class LazyRoleIsolateTestComponent implements OnInit {
               private configService: NgxPermissionsConfigurationService) { }
 
   ngOnInit() {
-    this.configService.addPermissionStrategy('lol', (tf: TemplateRef<any>) => {
+    this.configService.addPermissionStrategy('lol', (tf: any) => {
       this.renderer.setAttribute(tf.elementRef.nativeElement.nextSibling, 'disabled', 'true');
     });
 

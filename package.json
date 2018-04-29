@@ -97,7 +97,6 @@
     "rollup": "0.41.6",
     "run-sequence": "1.2.2",
     "rxjs": "6.0.0",
-    "rxjs-compat": "6.0.0",
     "ts-node": "2.0.0",
     "tslint": "4.5.0",
     "typescript": "2.7.2",
