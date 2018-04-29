@@ -28,8 +28,7 @@ const appRoutes: Routes = [
     canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
-        except: 'ADMIN',
-        redirectTo: '/except-should'
+        except: 'ADMIN'
       }
     }
   },

@@ -1,12 +1,12 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 
-import { BehaviorSubject, from, Observable, ObservableInput, of } from 'rxjs';
-import { catchError, first, map, mergeAll, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, from, merge, Observable, of } from 'rxjs';
+import { catchError, first, map, mergeAll } from 'rxjs/operators';
 
 import { NgxPermission } from '../model/permission.model';
 import { NgxPermissionsStore } from '../store/permissions.store';
 
-import { isBoolean, isFunction, transformStringToArray } from '../utils/utils';
+import { isFunction, transformStringToArray } from '../utils/utils';
 
 export type NgxPermissionsObject = { [ name: string ]: NgxPermission };
 
@@ -99,28 +99,29 @@ export class NgxPermissionsService {
     }
 
     private hasArrayPermission(permissions: string[]): Promise<boolean> {
-        const promises: Observable<boolean>[] = permissions.map((key) => {
+        const promises: any[] = [];
+        permissions.forEach((key) => {
             if (this.hasPermissionValidationFunction(key)) {
                 const immutableValue = { ...this.permissionsSource.value };
-                const validationFunction: Function = <Function>this.permissionsSource.value[ key ].validationFunction;
-
-                return of(null).pipe(
-                    map(() => validationFunction(key, immutableValue)),
-                    switchMap((promise: Promise<boolean> | boolean): ObservableInput<boolean> => isBoolean(promise) ?
-                        of(promise as boolean) : promise as Promise<boolean>),
-                    catchError(() => of(false))
-                );
+                return promises.push(from(Promise.resolve((<Function>this.permissionsSource.value[ key ].validationFunction)(
+                    key,
+                    immutableValue
+                ))).pipe(catchError(() => {
+                    return of(false);
+                })));
+            } else {
+                //check for name of the permission if there is no validation function
+                promises.push(of(!!this.permissionsSource.value[ key ]));
             }
 
-            // check for name of the permission if there is no validation function
-            return of(!!this.permissionsSource.value[ key ]);
         });
+        return merge(promises)
+            .pipe(
+                    mergeAll(),
+                    first((data) => data !== false, false),
+                    map((data) => data !== false)
+                ).toPromise().then((data: any) => data);
 
-        return from(promises).pipe(
-            mergeAll(),
-            first((data) => data !== false, false),
-            map((data) => data === false ? false : true)
-        ).toPromise().then((data: any) => data);
     }
 
     private hasPermissionValidationFunction(key: string): boolean {
