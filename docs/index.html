@@ -1,0 +1,1600 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>ngx-permissions</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	    <link rel="stylesheet" href="./styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="./" class="navbar-brand">ngx-permissions</a>
+            <button type="button" class="btn btn-default btn-menu fa fa-bars" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <div id="book-search-input" role="search">
+                <input type="text" placeholder="Type to search">
+            </div>
+            <nav>
+            
+                <ul class="list">
+            
+                    <li class="title">
+                        <a href="./index.html">ngx-permissions</a>
+                    </li>
+            
+                    <li class="divider"></li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="./index.html"><span class="fa fa-home"></span>Getting started</a>
+                        <ul class="links">
+                                <li class="link">
+                                    <a href="./index.html"  class="active" ><span class="fa fa-file-text-o"></span>README</a>
+                                </li>
+                                <li class="link">
+                                    <a  href="./overview.html" 
+                                        
+                                         href="./overview.html" 
+                                        
+                                        >
+                                        <span class="fa fa-th"></span>Overview
+                                    </a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="./modules.html" >
+                            <div class="menu-toggler linked" data-toggle="collapse"
+                                    data-target="#xs-modules-links"
+                            >
+                                <span class="fa fa-archive"></span>
+                                <span class="link-name">Modules</span>
+                                <span class="fa fa-angle-up"></span>
+                            </div>
+                        </a>
+                        <ul class="links collapse in"
+                                id="xs-modules-links"
+                            >
+                                <li class="link">
+                                    <a href="./modules/AppModule.html" >AppModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./modules/LazyIsolateModule.html" >LazyIsolateModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./modules/LazyIsolateRoutingModule.html" >LazyIsolateRoutingModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./modules/LazyModule.html" >LazyModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./modules/LazyRoleIsolateModule.html" >LazyRoleIsolateModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./modules/LazyRolesAsyncIsolateModule.html" >LazyRolesAsyncIsolateModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./modules/NgxPermissionsAllowStubModule.html" >NgxPermissionsAllowStubModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./modules/NgxPermissionsModule.html" >NgxPermissionsModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./modules/NgxPermissionsRestrictStubModule.html" >NgxPermissionsRestrictStubModule</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-components-links"
+                            >
+                            <span class="fa fa-cogs"></span>
+                            <span>Components</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-components-links"
+                            >
+                                <li class="link">
+                                    <a href="./components/AppComponent.html" >AppComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./components/HomeComponent.html" >HomeComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./components/InitialLoadComponent.html" >InitialLoadComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./components/IsolateComponent.html" >IsolateComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./components/LazyComponentComponent.html" >LazyComponentComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./components/LazyRoleIsolateTestComponent.html" >LazyRoleIsolateTestComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./components/LazyRolesAsyncTestComponent.html" >LazyRolesAsyncTestComponent</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-directives-links"
+                            >
+                            <span class="fa fa-code"></span>
+                            <span>Directives</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-directives-links"
+                            >
+                                <li class="link">
+                                    <a href="./directives/NgxPermissionsAllowStubDirective.html" >NgxPermissionsAllowStubDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./directives/NgxPermissionsDirective.html" >NgxPermissionsDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./directives/NgxPermissionsRestrictStubDirective.html" >NgxPermissionsRestrictStubDirective</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-classes-links"
+                            >
+                            <span class="fa fa-file-code-o"></span>
+                            <span>Classes</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-classes-links"
+                            >
+                                <li class="link">
+                                    <a href="./classes/AppPage.html" >AppPage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./classes/NgxPermission.html" >NgxPermission</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./classes/NgxRole.html" >NgxRole</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./classes/NgxRolesStore.html" >NgxRolesStore</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-injectables-links"
+                            >
+                            <span class="fa fa-long-arrow-down"></span>
+                            <span>Injectables</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-injectables-links"
+                            >
+                                <li class="link">
+                                    <a href="./injectables/AsyncTestService.html" >AsyncTestService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/NgxPermissionsConfigurationService.html" >NgxPermissionsConfigurationService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/NgxPermissionsConfigurationStore.html" >NgxPermissionsConfigurationStore</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/NgxPermissionsGuard.html" >NgxPermissionsGuard</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/NgxPermissionsService.html" >NgxPermissionsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/NgxPermissionsStore.html" >NgxPermissionsStore</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/NgxRolesService.html" >NgxRolesService</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-interfaces-links"
+                            >
+                            <span class="fa fa-info"></span>
+                            <span>Interfaces</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-interfaces-links"
+                            >
+                                <li class="link">
+                                    <a href="./interfaces/NgxPermissionsModuleConfig.html" >NgxPermissionsModuleConfig</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./interfaces/NgxPermissionsRouterData.html" >NgxPermissionsRouterData</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./interfaces/NgxRedirectToNavigationParameters.html" >NgxRedirectToNavigationParameters</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="./miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="./coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                    </li>
+            
+            
+                </ul>
+            
+            </nav>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <nav>
+                   
+                       <ul class="list">
+                   
+                           <li class="title">
+                               <a href="./index.html">ngx-permissions</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                   
+                               <div id="book-search-input" role="search">
+                                   <input type="text" placeholder="Type to search">
+                               </div>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="./index.html"><span class="fa fa-home"></span>Getting started</a>
+                               <ul class="links">
+                                       <li class="link">
+                                           <a href="./index.html"  class="active" ><span class="fa fa-file-text-o"></span>README</a>
+                                       </li>
+                                       <li class="link">
+                                           <a  href="./overview.html" 
+                                               
+                                                href="./overview.html" 
+                                               
+                                               >
+                                               <span class="fa fa-th"></span>Overview
+                                           </a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="./modules.html" >
+                                   <div class="menu-toggler linked" data-toggle="collapse"
+                                           data-target="#modules-links"
+                                   >
+                                       <span class="fa fa-archive"></span>
+                                       <span class="link-name">Modules</span>
+                                       <span class="fa fa-angle-up"></span>
+                                   </div>
+                               </a>
+                               <ul class="links collapse in"
+                                       id="modules-links"
+                   >
+                                       <li class="link">
+                                           <a href="./modules/AppModule.html" >AppModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./modules/LazyIsolateModule.html" >LazyIsolateModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./modules/LazyIsolateRoutingModule.html" >LazyIsolateRoutingModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./modules/LazyModule.html" >LazyModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./modules/LazyRoleIsolateModule.html" >LazyRoleIsolateModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./modules/LazyRolesAsyncIsolateModule.html" >LazyRolesAsyncIsolateModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./modules/NgxPermissionsAllowStubModule.html" >NgxPermissionsAllowStubModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./modules/NgxPermissionsModule.html" >NgxPermissionsModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./modules/NgxPermissionsRestrictStubModule.html" >NgxPermissionsRestrictStubModule</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#components-links"
+                   >
+                                   <span class="fa fa-cogs"></span>
+                                   <span>Components</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="components-links"
+                   >
+                                       <li class="link">
+                                           <a href="./components/AppComponent.html" >AppComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./components/HomeComponent.html" >HomeComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./components/InitialLoadComponent.html" >InitialLoadComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./components/IsolateComponent.html" >IsolateComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./components/LazyComponentComponent.html" >LazyComponentComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./components/LazyRoleIsolateTestComponent.html" >LazyRoleIsolateTestComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./components/LazyRolesAsyncTestComponent.html" >LazyRolesAsyncTestComponent</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#directives-links"
+                   >
+                                   <span class="fa fa-code"></span>
+                                   <span>Directives</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="directives-links"
+                   >
+                                       <li class="link">
+                                           <a href="./directives/NgxPermissionsAllowStubDirective.html" >NgxPermissionsAllowStubDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./directives/NgxPermissionsDirective.html" >NgxPermissionsDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./directives/NgxPermissionsRestrictStubDirective.html" >NgxPermissionsRestrictStubDirective</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#classes-links"
+                   >
+                                   <span class="fa fa-file-code-o"></span>
+                                   <span>Classes</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="classes-links"
+                   >
+                                       <li class="link">
+                                           <a href="./classes/AppPage.html" >AppPage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./classes/NgxPermission.html" >NgxPermission</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./classes/NgxRole.html" >NgxRole</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./classes/NgxRolesStore.html" >NgxRolesStore</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#injectables-links"
+                   >
+                                   <span class="fa fa-long-arrow-down"></span>
+                                   <span>Injectables</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="injectables-links"
+                   >
+                                       <li class="link">
+                                           <a href="./injectables/AsyncTestService.html" >AsyncTestService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/NgxPermissionsConfigurationService.html" >NgxPermissionsConfigurationService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/NgxPermissionsConfigurationStore.html" >NgxPermissionsConfigurationStore</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/NgxPermissionsGuard.html" >NgxPermissionsGuard</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/NgxPermissionsService.html" >NgxPermissionsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/NgxPermissionsStore.html" >NgxPermissionsStore</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/NgxRolesService.html" >NgxRolesService</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#interfaces-links"
+                   >
+                                   <span class="fa fa-info"></span>
+                                   <span>Interfaces</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="interfaces-links"
+                   >
+                                       <li class="link">
+                                           <a href="./interfaces/NgxPermissionsModuleConfig.html" >NgxPermissionsModuleConfig</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./interfaces/NgxPermissionsRouterData.html" >NgxPermissionsRouterData</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./interfaces/NgxRedirectToNavigationParameters.html" >NgxRedirectToNavigationParameters</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="./miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="./coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                           </li>
+                   
+                   
+                       </ul>
+                   
+                   </nav>
+               </div>
+               <div class="content readme">
+                   <div class="content-data">
+<h1 id="ngx-permissions">ngx-permissions</h1>
+<p>Permission and roles based access control for your angular(angular 2,4,5,6+) applications(AOT, lazy modules compatible)</p>
+<p>##</p>
+<p><a href="https://travis-ci.org/AlexKhymenko/ngx-permissions"><img src="https://travis-ci.org/AlexKhymenko/ngx-permissions.svg?branch=master" alt="Build Status" class="img-responsive"></a>
+<a href="https://codecov.io/gh/AlexKhymenko/ngx-permissions"><img src="https://codecov.io/gh/AlexKhymenko/ngx-permissions/branch/master/graph/badge.svg" alt="codecov" class="img-responsive"></a>
+<a href="https://badge.fury.io/js/ngx-permissions"><img src="https://badge.fury.io/js/ngx-permissions.svg" alt="npm version" class="img-responsive"></a></p>
+<h2 id="documentation-and-examples">Documentation and examples</h2>
+<p>To see better structured documentation go to <a href="https://github.com/AlexKhymenko/ngx-permissions/wiki">wiki-page</a>.<br>In <code>one month</code> the detailed functionality description will be available only on wiki page.</p>
+<h2 id="demo">Demo</h2>
+<p>You can test library in <a href="https://plnkr.co/edit/n6Wa6hXg0JzI6e050wBt?p=preview">Plunker</a></p>
+<h2 id="table-of-contents">Table of contents</h2>
+<p>Some functionality is missing visit <a href="https://github.com/AlexKhymenko/ngx-permissions/wiki">wiki-page</a></p>
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#consuming-library">Consuming library</a></li>
+<li><a href="#managing-permissions">Managing Permissions</a></li>
+<li><a href="#managing-roles">Managing Roles</a></li>
+<li><a href="#controlling-access-in-views">Controlling access in views</a></li>
+<li><a href="#usage-with-routes">Usage with Routes</a></li>
+<li><a href="#development">Development</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+<h3 id="with-version-5-minimal-rxjs-dependency-6-0">With version 5 minimal rxjs dependency 6.0</h3>
+<h3 id="with-version-4-minimal-rxjs-dependency-5-5">With version 4 minimal rxjs dependency 5.5</h3>
+<h3 id="version-2-for-angular-4-5-version-1-for-angular-2-4">Version 2 for angular 4/5. Version 1 for angular 2/4</h3>
+<h2 id="installation">Installation</h2>
+<p>To install this library, run:</p>
+<pre class="line-numbers"><code class="language-bash">$ npm install ngx-permissions --save</code></pre><h2 id="consuming-library">Consuming library</h2>
+<p>You can import library in any Angular application by running:</p>
+<pre class="line-numbers"><code class="language-bash">$ npm install ngx-permissions  --save</code></pre><p>and then from your Angular <code>AppModule</code>:</p>
+<pre class="line-numbers"><code class="language-typescript">import { BrowserModule } from &#39;&#64;angular/platform-browser&#39;;
+import { NgModule } from &#39;&#64;angular/core&#39;;
+
+import { AppComponent } from &#39;./app.component&#39;;
+
+// Import your library
+import { NgxPermissionsModule } from &#39;ngx-permissions&#39;;
+
+&#64;NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+
+    // Specify your library as an import
+     NgxPermissionsModule.forRoot()
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }</code></pre><p>SharedModule</p>
+<p>If you use a SharedModule that you import in multiple other feature modules, you can export the NgxPermissionsModule to make sure you don&#39;t have to import it in every module.</p>
+<pre class="line-numbers"><code class="language-typescript">&#64;NgModule({
+    exports: [
+        CommonModule,
+        NgxPermissionsModule
+    ]
+})
+export class SharedModule { }</code></pre><blockquote>
+<p>Note: Never call a forRoot static method in the SharedModule. You might end up with different instances of the service in your injector tree. But you can use forChild if necessary.</p>
+</blockquote>
+<h5 id="lazy-loaded-modules">Lazy loaded modules</h5>
+<p>When you lazy load a module, you should use the <code>forChild</code> static method to import the <code>NgxPermissionsModule</code>.</p>
+<p>Since lazy loaded modules use a different injector from the rest of your application, you can configure them separately.
+You can also isolate the service by using <code>permissionsIsolate: true</code> or <code>rolesIsolate: true</code>. In which case the service is a completely isolated instance.
+Otherwise, by default, it will share its data with other instances of the service.</p>
+<pre class="line-numbers"><code class="language-typescript">&#64;NgModule({
+    imports: [
+        NgxPermissionsModule.forChild()
+    ]
+})
+export class LazyLoadedModule { }</code></pre><pre class="line-numbers"><code class="language-typescript">&#64;NgModule({
+    imports: [
+        NgxPermissionsModule.forChild({
+        permissionsIsolate: true, 
+        rolesIsolate: true})
+    ]
+})
+export class LazyIsolatedLoadedModule { }</code></pre><p>Once your library is imported, you can use its components, directives and pipes in your Angular application:</p>
+<p>Import service to the main application and load permissions</p>
+<pre class="line-numbers"><code class="language-typescript">import { Component, OnInit } from &#39;&#64;angular/core&#39;;
+import { NgxPermissionsService } from &#39;ngx-permissions&#39;;
+import { HttpClient } from &#39;&#64;angular/common/http&#39;;
+&#64;Component({
+  selector: &#39;app-root&#39;,
+  templateUrl: &#39;./app.component.html&#39;,
+  styleUrls: [&#39;./app.component.css&#39;]
+})
+export class AppComponent implements OnInit {
+
+  title = &#39;app&#39;;
+
+   constructor(private permissionsService: NgxPermissionsService,
+               private http: HttpClient) {}
+
+  ngOnInit(): void {
+    const perm = [&quot;ADMIN&quot;, &quot;EDITOR&quot;];
+
+    this.permissionsService.loadPermissions(perm);
+
+     this.http.get(&#39;url&#39;).subscribe((permissions) =&gt; {
+       //const perm = [&quot;ADMIN&quot;, &quot;EDITOR&quot;]; example of permissions
+       this.permissionsService.loadPermissions(permissions);
+    })
+  }
+}</code></pre><p>Usage in templates </p>
+<pre class="line-numbers"><code class="language-html">&lt;div *ngxPermissionsOnly=&quot;[&#39;ADMIN&#39;, &#39;GUEST&#39;]&quot;&gt;
+    &lt;div&gt;You can see this text congrats&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;ng-template ngxPermissionsOnly=&quot;ADMIN&quot;&gt;
+  &lt;div&gt;You can see this text congrats&lt;/div&gt;
+ &lt;/ng-template&gt;
+
+ &lt;ng-template [ngxPermissionsExcept]=&quot;[&#39;JOHNY&#39;]&quot;&gt;
+   &lt;div&gt; All will see it except JOHNY&lt;/div&gt;
+ &lt;/ng-template&gt;</code></pre><h3 id="managing-permissions">Managing permissions</h3>
+<h2 id="overview">Overview</h2>
+<ol>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#defining-permissions">Defining permissions</a><ol>
+<li><a href="#individual-permissions">Individual permissions</a></li>
+<li><a href="#to-load-permissions-before-application-start-up">To load permissions before application start up</a></li>
+<li><a href="#multiple-permissions">Multiple permissions</a></li>
+</ol>
+</li>
+<li><a href="#removing-permissions">Removing permissions</a></li>
+<li><a href="#retrieving-permissions">Retrieving permissions</a></li>
+</ol>
+<h2 id="introduction">Introduction</h2>
+<p>Let&#39;s start with little explanation <strong>what</strong> permission is. Permission is the most atomic <strong>ability</strong> that a user can have 
+in your application. So you can think about permission as a smallest action that user can do inside your site. </p>
+<p>But can <code>user</code> or <code>anonymous</code> be a permission? Technically yes, but from business point of view you should treat them 
+as Roles that are more complex objects that can store more complex logic. </p>
+<blockquote>
+<p>:bulb: <strong>Note</strong><br>It&#39;s a good convention to start permission with a verb and combine them with resource or object, so permissions like <code>readDocuments</code> or <code>listSongs</code> 
+are meaningful and easy to understand for other programmes. Notice that they are named lowerCamelCase for easy differentiation form roles.</p>
+</blockquote>
+<blockquote>
+<p>:skull: <strong>Warning</strong><br>This library is intended for simplify the client side development workflow in a role based web application. <strong>DO NOT RELY ONLY ON THIS CHECKS FOR YOU APPLICATION SECURITY!</strong> Client side checks can be easily bypassed, so always implement the checks on the backend!</p>
+</blockquote>
+<h2 id="defining-permissions">Defining permissions</h2>
+<p>So, how do you tell Permission what does &#39;readDocuments&#39; or &#39;listSongs&#39; mean and how to know if the current user belongs
+to those definitions?</p>
+<p>Well, Permission allows you to set different &#39;permissions&#39; definitions along with the logic that determines if the current 
+session belongs to them. To do that library exposes special container <code>NgxPermissionsService</code> that allows you to manipulate them freely.</p>
+<h3 id="individual-permissions">Individual permissions</h3>
+<p>To add permissions individually <code>NgxPermissionsService</code> exposes method <code>addPermission</code> that generic usage is shown below or add as array: </p>
+<pre class="line-numbers"><code class="language-typescript">[...]
+ ngOnInit() {
+    this.permissionsService.addPermission(&#39;changeSomething&#39;)
+    this.permissionsService.addPermission([&#39;changeSomething&#39;, &#39;anotherAlso&#39;])
+    this.permissionsService.addPermission(&#39;changeSomething&#39;, () =&gt; {
+        return true;
+    })
+
+    this.permissionsService.addPermission(&#39;anotherPermissions&#39;, (permissionName, permissionsObject) =&gt; {
+        return !!permissionsObject[permissionName];
+    });
+    this.permissionsService.addPermission([&#39;anotherPermissions&#39;, &#39;AnotherOne&#39;], (permissionName, permissionsObject) =&gt; {
+        return !!permissionsObject[permissionName];
+    });
+
+    //Will add validation function to every permission
+     this.permissionsService.addPermission([&#39;anotherPermissions&#39;, &#39;AnotherOne&#39;], (permissionName, permissionsObject) =&gt; {
+         return !!permissionsObject[permissionName];
+     });
+
+     this.permissionsService.addPermission(&#39;permissions&#39;, (permissionName, permissionsObject) =&gt; {
+       return this.checkSession().toPromise();
+     });
+ }
+</code></pre><h3 id="to-load-permissions-before-application-start-up">To load permissions before application start up</h3>
+<p>APP_INITIALIZER is defined in angular/core. You include it in your app.module.ts like this.</p>
+<p>APP_INITIALIZER is an OpaqueToken that references the ApplicationInitStatus service. ApplicationInitStatus is a multi provider. It supports multiple dependencies and you can use it in your providers list multiple times. It is used like this.</p>
+<pre class="line-numbers"><code class="language-typescript">import { APP_INITIALIZER } from &#39;&#64;angular/core&#39;;
+
+&#64;NgModule({
+  providers: [
+    DictionaryService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (ds: DictionaryService, ps: NgxPermissionsService ) =&gt; function() {return ds.load().then((data) =&gt; {return ps.loadPermissions(data)})},
+      deps: [LoadService, NgxPermissionsService],
+      multi: true
+    }]
+})
+export class AppModule { }</code></pre><p>Validation function are injected with any angular services. There are 2 local injectables available that can be used to implement more complex validation logic.</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th style="text-align:left">Injectable Local</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>permissionName</code></td>
+<td style="text-align:left">String representing name of checked permission</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>permissionsObject</code></td>
+<td style="text-align:left">Object of store permissions storing permissions properties</td>
+</tr>
+</tbody>
+</table>
+<p>It also have to return one of values to properly represent results:</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th style="text-align:left">Validation result</th>
+<th style="text-align:left">Returned value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Valid</td>
+<td style="text-align:left">[<code>true</code>\</td>
+<td><code>Promise.resolve() but it should not resolve false</code>]</td>
+</tr>
+<tr>
+<td style="text-align:left">Invalid</td>
+<td style="text-align:left">[<code>false</code>\</td>
+<td><code>Promise.reject() or Promise.resolve(false)</code>]</td>
+</tr>
+</tbody>
+</table>
+<h3 id="multiple-permissions">Multiple permissions</h3>
+<p>To define multiple permissions  method <code>loadPermissions</code> can be used. The only 
+difference from <code>definePermission</code> is that it accepts <code>Array</code> of permission names instead of single one. </p>
+<p>Often meet example of usage is set of permissions (e.g. received from server after user login) that you will iterate over to 
+check if permission is valid.</p>
+<pre class="line-numbers"><code class="language-typescript">const permissions = [&#39;listMeeting&#39;, &#39;seeMeeting&#39;, &#39;editMeeting&#39;, &#39;deleteMeeting&#39;]
+NgxPermissionsService.loadPermissions(permissions) 
+NgxPermissionsService.loadPermissions(permissions, (permissionName, permissionStore) =&gt; {
+    return !!permissionStore[permissionName];
+}) </code></pre><p>NOTE: This method will remove older permissions and pass only new;</p>
+<h2 id="removing-permissions">Removing permissions</h2>
+<p>You can easily remove <strong>all</strong> permissions form the <code>NgxPermissionsService</code> (e.g. after user logged out or switched profile) by calling:  </p>
+<pre class="line-numbers"><code class="language-typescript">NgxPermissionsService.flushPermissions();</code></pre><p>Alternatively you can use <code>removePermission</code> to delete defined permissions manually:</p>
+<pre class="line-numbers"><code class="language-typescript">NgxPermissionsService.removePermission(&#39;user&#39;);</code></pre><h2 id="retrieving-permissions">Retrieving permissions</h2>
+<p>And to get all user permissions use method <code>getPermissions</code> or use Observable <code>permissions$</code>:</p>
+<pre class="line-numbers"><code class="language-typescript">var permissions = NgxPermissionsService.getPermissions();
+
+NgxPermissionsService.permissions$.subscribe((permissions) =&gt; {
+    console.log(permissions)
+})</code></pre><h2 id="managing-roles">Managing roles</h2>
+<h2 id="before-start">Before start</h2>
+<p>Make sure you are familiar with:</p>
+<ul>
+<li><a href="#managing-permissions">Managing permissions</a>   </li>
+</ul>
+<h2 id="overview">Overview</h2>
+<ol>
+<li><a href="#before-start">Introduction</a></li>
+<li><a href="#defining-roles">Defining roles</a><ol>
+<li><a href="#individual-roles">Individual roles</a></li>
+<li><a href="#multiple-roles">Multiple roles</a></li>
+</ol>
+</li>
+<li><a href="#removing-roles">Removing roles</a></li>
+<li><a href="#getting-all-roles">Getting all roles</a></li>
+</ol>
+<h2 id="introduction">Introduction</h2>
+<p>By definition a role is a named set of abilities (permissions) by which a specific group of users is identified. 
+So for example <code>USER</code> or <code>ANONYMOUS</code> would be roles and not permissions. We can represent our <code>USER</code> role as a group of permissions that the role should be able to perform. For example: <code>listArticles</code>, <code>editArticles</code> and other custom server/browser validated privileges.    </p>
+<blockquote>
+<p>:bulb: <strong>Note</strong><br>It&#39;s a good convention to name roles with UPPER_CASE, so roles like <code>ACCOUNTANT</code> or <code>ADMIN</code> are easier to distinguish from permissions.</p>
+</blockquote>
+<h2 id="defining-roles">Defining roles</h2>
+<h3 id="individual-roles">Individual roles</h3>
+<p>Similarly to permissions we are gonna use here <code>RolesService</code> that exposes <code>addRole</code> allowing to define custom roles used by users in your application. </p>
+<pre class="line-numbers"><code class="language-typescript">[...]
+
+NgxRolesService
+  .addRole(&#39;ROLE_NAME&#39;, [&#39;permissionNameA&#39;, &#39;permissionNameB&#39;, &#39;permissionNameC&#39;, ...])
+
+NgxRolesService.addRole(&#39;Guest&#39;, () =&gt; {
+      return this.sessionService.checkSession().toPromise();
+  }); 
+
+NgxRolesService.addRole(&#39;Guest&#39;, () =&gt; {
+      return true;
+  }); </code></pre><p>Validation function are injected with any angular services. There are 2 local injectables available that can be used to implement more complex validation logic.</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>roleName</code></td>
+<td style="text-align:left">String representing name of checked role</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>transitionProperties</code></td>
+<td style="text-align:left">Array or validation function</td>
+</tr>
+</tbody>
+</table>
+<p>It also have to return one of values to properly represent results:</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th style="text-align:left">Validation result</th>
+<th style="text-align:left">Returned value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Valid</td>
+<td style="text-align:left">[<code>true</code>\</td>
+<td><code>Promise.resolve() but it should not resolve false</code>]</td>
+</tr>
+<tr>
+<td style="text-align:left">Invalid</td>
+<td style="text-align:left">[<code>false</code>\</td>
+<td><code>Promise.reject() or Promise.resolve(false)</code>]</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Note: Right now to make request to the backend it only supports promises
+Note: If at least one of request fulfils it will show the component</p>
+</blockquote>
+<p>Usage of <code>addRole</code> is very similar to <code>addPermissions</code>:</p>
+<pre class="line-numbers"><code class="language-typescript">NgxRolesService
+  NgxPermission
+  // Library will internally validate if &#39;listEvents&#39; and &#39;editEvents&#39; permissions are valid when checking if role is valid   
+  .addRole(&#39;ADMIN&#39;, [&#39;listEvents&#39;, &#39;editEvents&#39;]);  
+
+NgxRolesService.addRole(&#39;Guest&#39;, () =&gt; {
+      return this.sessionService.checkSession().toPromise();
+  });  
+</code></pre><h3 id="multiple-roles">Multiple roles</h3>
+<p>Service <code>NgxRolesService</code> allows you define multiple roles with <code>addRoles</code> method. This method accepts <code>Object</code> containing keys as a role names and corresponding validators as values. </p>
+<pre class="line-numbers"><code class="language-typescript">NgxRolesService    
+  // Or use your own function/service to validate role
+  .addRoles({
+    &#39;USER&#39;: [&#39;canReadInvoices&#39;],
+    &#39;ADMIN&#39;: [&#39;canReadInvoices&#39;,&#39;canEditInvoices&#39;,&#39;canUploadImages&#39;],
+    &#39;GUEST&#39;: () =&gt; {
+        return this.sessionService.checkSessions().toPromise();
+    }
+  });</code></pre><blockquote>
+<p>:bulb: <strong>Note</strong>   </p>
+</blockquote>
+<h2 id="removing-roles">Removing roles</h2>
+<p>To remove <strong>all</strong> roles use <code>flushRoles</code> method:  </p>
+<pre class="line-numbers"><code class="language-typescript">NgxRolesService.flushRoles();</code></pre><p>Alternatively you can use <code>removeRole</code> to delete defined role manually:</p>
+<pre class="line-numbers"><code class="language-typescript">NgxRolesService.removeRole(&#39;USER&#39;);</code></pre><h2 id="getting-all-roles">Getting all roles</h2>
+<p>To get specific role use method <code>getRole</code>:</p>
+<pre class="line-numbers"><code class="language-javascript">let role = NgxRolesService.getRole(&#39;roleName&#39;);</code></pre><p>And to get all roles form <code>NgxRolesService</code> use method <code>getRoles</code> or use <code>Observable roles$</code>:</p>
+<pre class="line-numbers"><code class="language-typescript">let roles = NgxRolesService.getRoles();
+
+NgxRolesService.roles$.subscribe((data) =&gt; {
+    console.log(data);
+})</code></pre><h2 id="controlling-access-in-views">Controlling access in views</h2>
+<h2 id="overview">Overview</h2>
+<ol>
+<li><a href="#permission-directive">Permission directive</a><ol>
+<li><a href="#basic-usage">Basic usage</a></li>
+</ol>
+</li>
+</ol>
+<h2 id="permission-directive">Permission directive</h2>
+<p>Permission module exposes directive <code>ngxPermissionsOnly</code> and <code>ngxPermissionsExcept</code> that can show/hide elements of your application based on set of permissions.</p>
+<blockquote>
+<p>:fire: <strong>Important</strong><br> Else, then syntax is supported.<br> Note if you use <code>then</code> block don&#39;t put anything in main block it will be not visible, only <code>then</code> block will be used.</p>
+</blockquote>
+<p>Permission directive accepts several attributes:</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th style="text-align:left">Attribute</th>
+<th style="text-align:center">Value</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>ngxPermissionsOnly</code></td>
+<td style="text-align:center"><code>[String &#124; String[]]</code></td>
+<td style="text-align:left">Single or multiple permissions allowed to access content</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>ngxPermissionsExcept</code></td>
+<td style="text-align:center"><code>[String &#124; String[]]</code></td>
+<td style="text-align:left">Single or multiple permissions denied to access content</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>(permissionsAuthorized)</code></td>
+<td style="text-align:center">EventEmitter</td>
+<td style="text-align:left">EventEmitter emitted when authorized</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>(permissionsUnauthorized)</code></td>
+<td style="text-align:center">EventEmitter</td>
+<td style="text-align:left">EventEmitter emitted when unAuthorized</td>
+</tr>
+</tbody>
+</table>
+<h3 id="basic-usage">Basic usage</h3>
+<p>Directives accepts either single permission that has to be met in order to display it&#39;s content,
+You can use both <code>ngxPermissionsOnly</code> and <code>ngxPermissionsExcept</code> at the same time:</p>
+<pre class="line-numbers"><code class="language-html">&lt;ng-template [ngxPermissionsOnly]=&quot;[&#39;ADMIN&#39;]&quot; (permissionsAuthorized)=&quot;yourCustomAuthorizedFunction()&quot; (permissionsUnauthorized)=&quot;yourCustomAuthorizedFunction()&quot;&gt;
+    &lt;div&gt;You can see this text congrats&lt;/div&gt;
+ &lt;/ng-template&gt;
+ &lt;ng-template [ngxPermissionsOnly]=&quot;&#39;ADMIN&#39;&quot;  [ngxPermissionsExcept]=&quot;&#39;Manager&#39;&quot;&gt;
+    &lt;div&gt;You can see this text congrats&lt;/div&gt;
+ &lt;/ng-template&gt;
+  &lt;ng-template ngxPermissionsOnly=&quot;ADMIN&quot;&gt;
+    &lt;div&gt;You can see this text congrats&lt;/div&gt;
+ &lt;/ng-template&gt;
+
+ &lt;ng-template [ngxPermissionsExcept]=&quot;[&#39;JOHNY&#39;]&quot;&gt;
+   &lt;div&gt; All will see it except JOHNY&lt;/div&gt;
+ &lt;/ng-template&gt;</code></pre><p>Or set of permissions separated by &#39;coma&#39;:</p>
+<pre class="line-numbers"><code class="language-html">&lt;ng-template [ngxPermissionsOnly]=&quot;[&#39;ADMIN&#39;, &#39;GUEST&#39;]&quot;&gt;
+    &lt;div&gt;You can see this text congrats&lt;/div&gt;
+&lt;/ng-template&gt;
+
+ &lt;ng-template [ngxPermissionsExcept]=&quot;[&#39;ADMIN&#39;, &#39;JOHNY&#39;]&quot;&gt;
+   &lt;div&gt;All will see it except admin and Johny&lt;/div&gt;
+ &lt;/ng-template&gt;
+  &lt;ng-template [ngxPermissionsExcept]=&quot;[&#39;ADMIN&#39;, &#39;JOHNY&#39;]&quot; [ngxPermissionsOnly]=&quot;[&#39;MANAGER&#39;]&quot;&gt;
+    &lt;div&gt;All will see it except admin and Johny&lt;/div&gt;
+  &lt;/ng-template&gt;
+
+  &lt;ng-template [ngxPermissionsExcept]=&quot;[&#39;MANAGER&#39;]&quot; 
+  [ngxPermissionExceptThen]=&quot;thenBlock&quot; 
+  [ngxPermissionExceptElse]=&quot;elseBlock&quot;&gt;
+    &lt;/ng-template&gt;
+   &lt;ng-template #elseBlock&gt;
+       &lt;div&gt;elseBlock&lt;/div&gt;
+   &lt;/ng-template&gt;
+   &lt;ng-template #thenBlock&gt;
+       &lt;div&gt;thenBlock&lt;/div&gt;
+   &lt;/ng-template&gt;
+
+   &lt;ng-template
+     [ngxPermissionsOnly]=&quot;[&#39;MANAGER&#39;]&quot; 
+     [ngxPermissionsOnlyThen]=&quot;thenBlock&quot; 
+     [ngxPermissionsOnlyElse]=&quot;elseBlock&quot;&gt;
+       &lt;/ng-template&gt;
+      &lt;ng-template #elseBlock&gt;
+          &lt;div&gt;elseBlock&lt;/div&gt;
+      &lt;/ng-template&gt;
+      &lt;ng-template #thenBlock&gt;
+          &lt;div&gt;thenBlock&lt;/div&gt;
+      &lt;/ng-template&gt;
+
+
+</code></pre><p>Or just simply by *</p>
+<pre class="line-numbers"><code class="language-html">&lt;div *ngxPermissionsOnly=&quot;[&#39;ADMIN&#39;, &#39;GUEST&#39;]&quot;&gt;
+    &lt;div&gt;You can see this text congrats&lt;/div&gt;
+&lt;/div&gt;
+
+ &lt;div *ngxPermissionsOnly=&quot;[&#39;THEN_BLOCK&#39;]; else elseBlock; then thenBlock&quot;&gt;main&lt;/div&gt;
+     &lt;ng-template #elseBlock&gt;
+         &lt;div&gt;elseBlock&lt;/div&gt;
+     &lt;/ng-template&gt;
+     &lt;ng-template #thenBlock&gt;
+         &lt;div&gt;thenBlock&lt;/div&gt;
+     &lt;/ng-template&gt;
+
+ &lt;div *ngxPermissionsExcept=&quot;[&#39;THEN_BLOCK&#39;]; else elseBlock; then thenBlock&quot;&gt;&lt;/div&gt;
+       &lt;ng-template #elseBlock&gt;
+           &lt;div&gt;elseBlock&lt;/div&gt;
+       &lt;/ng-template&gt;
+       &lt;ng-template #thenBlock&gt;
+           &lt;div&gt;thenBlock&lt;/div&gt;
+       &lt;/ng-template&gt;
+</code></pre><blockquote>
+<p>Note: You cant use <code>*</code> style with other <em> style directives like `</em>ngIf<code>. You should wrap them. And YES i don&#39;t like it either.
+  ``</code>html
+   <div *ngxPermissionsOnly="['ADMIN', 'GUEST']">
+    <div *ngIf="true">
+      You can see this text congrats
+    </div>
+   </div></p>
+</blockquote>
+<pre class="line-numbers"><code class="language-none">   &gt;  :fire: **Important**   
+   &gt;  Using with except and only `together` should use `ngxPermissionsElse` or `ngxPermissionsThen`
+   ```html
+       &lt;ng-template [ngxPermissionsExcept]=&quot;&#39;FAIL_BLOCK&#39;&quot; 
+       [ngxPermissionsOnly]=&quot;&#39;ONLY_BLOCK&#39;&quot;
+       [ngxPermissionsElse]=&quot;elseBlock&quot;
+       [ngxPermissionsThen]=&quot;thenBlock&quot;&gt;
+
+       &lt;/ng-template&gt;
+       &lt;ng-template #elseBlock&gt;
+           &lt;div&gt;elseBlock&lt;/div&gt;
+       &lt;/ng-template&gt;
+       &lt;ng-template #thenBlock&gt;
+           &lt;div&gt;thenBlock&lt;/div&gt;
+       &lt;/ng-template&gt;</code></pre><h2 id="usage-with-routes">Usage with Routes</h2>
+<ol>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#property-only-and-except">Property only and except</a><ol>
+<li><a href="#single-permissionrole">Single permission/role</a></li>
+<li><a href="#multiple-permissionsroles">Multiple permissions/roles</a> </li>
+<li><a href="#dynamic-access">Dynamic access</a></li>
+</ol>
+</li>
+<li><a href="#property-redirectto">Property redirectTo</a><ol>
+<li><a href="#single-redirection-rule">Single rule redirection</a></li>
+<li><a href="#multiple-redirection-rules">Multiple rule redirection</a>  </li>
+<li><a href="#dynamic-redirection-rules">Dynamic redirection rules</a></li>
+</ol>
+</li>
+<li><a href="#implemented-guards">Implemented Guards</a>   <ol>
+<li><a href="#can-activate-guard">Can Activate Guard</a> </li>
+<li><a href="#can-load-guard">Can Load Guard</a></li>
+<li><a href="$can-activate-child-guard">Can Activate Child Guard</a></li>
+</ol>
+</li>
+<li><a href="#common-use-cases">Common use cases</a><ol>
+<li><a href="#two-guards-when-first-make-request-for-authorisation-and-gets-permissions-second-checks-for-permissions">Two guards when first make request for authorisation and gets permissions second checks for permissions</a></li>
+</ol>
+</li>
+</ol>
+<h2 id="introduction">Introduction</h2>
+<p>Now you are ready to start working with controlling access to the states of your application. In order to restrict any state ngx-permission rely on angular-route&#39;s <code>data</code> property, reserving key <code>permissions</code> allowing to define authorization configuration.</p>
+<p>Permissions object accepts following properties:</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th style="text-align:left">Property</th>
+<th style="text-align:left">Accepted value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>only</code></td>
+<td style="text-align:left">[<code>String</code>\</td>
+<td><code>Array</code>\</td>
+<td><code>Function</code>]</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>except</code></td>
+<td style="text-align:left">[<code>String</code>\</td>
+<td><code>Array</code>\</td>
+<td><code>Function</code>]</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>redirectTo</code></td>
+<td style="text-align:left">[<code>String</code>]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="property-only-and-except">Property only and except</h2>
+<p>Property <code>only</code>:</p>
+<ul>
+<li>is used to explicitly define permission or role that are allowed to access the state   </li>
+<li>when used as <code>String</code> contains single permission or role</li>
+<li>when used as <code>Array</code> contains set of permissions and/or roles</li>
+</ul>
+<p>Property <code>except</code>: </p>
+<ul>
+<li>is used to explicitly define permission or role that are denied to access the state</li>
+<li>when used as <code>String</code> contains single permission or role</li>
+<li>when used as <code>Array</code> contains set of permissions and/or roles</li>
+</ul>
+<blockquote>
+<p>:fire: <strong>Important</strong><br>If you combine both <code>only</code> and <code>except</code> properties you have to make sure they are not excluding each other, because denied roles/permissions would not allow access the state for users even if allowed ones would pass them.   </p>
+</blockquote>
+<h4 id="single-permission-role">Single permission/role</h4>
+<p>In simplest cases you allow users having single role permission to access the state. To achieve that you can pass as <code>String</code> desired role/permission to only/except property:
+You can use <code>except</code> and <code>only</code> at the same time;</p>
+<pre class="line-numbers"><code class="language-typescript">import { RouterModule, Routes } from &#39;&#64;angular/router&#39;;
+import { NgModule } from &#39;&#64;angular/core&#39;;
+import { HomeComponent } from &#39;./home/home.component&#39;;
+import { NgxPermissionsGuard } from &#39;ngx-permissions&#39;;
+
+const appRoutes: Routes = [
+  { path: &#39;home&#39;,
+    component: HomeComponent,
+    canActivate: [NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: &#39;ADMIN&#39;
+      }
+    }
+  },
+];
+&#64;NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AppRoutingModule {}
+</code></pre><p>In given case when user is trying to access <code>home</code> state <code>NgxPermissionsGuard</code> service is called checking if <code>isAuthorized</code> permission is valid: </p>
+<ul>
+<li>if permission definition is not found it stops transition</li>
+</ul>
+<h4 id="multiple-permissions-roles">Multiple permissions/roles</h4>
+<p>Often several permissions/roles are sufficient to allow/deny user to access the state. Then array value comes in handy:  </p>
+<pre class="line-numbers"><code class="language-typescript">import { RouterModule, Routes } from &#39;&#64;angular/router&#39;;
+import { NgModule } from &#39;&#64;angular/core&#39;;
+import { HomeComponent } from &#39;./home/home.component&#39;;
+import { NgxPermissionsGuard } from &#39;ngx-permissions&#39;;
+
+const appRoutes: Routes = [
+  { path: &#39;home&#39;,
+    component: HomeComponent,
+    canActivate: [NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: [&#39;ADMIN&#39;, &#39;MODERATOR&#39;],
+        except: [&#39;GUEST&#39;]
+      }
+    }
+  },
+];
+&#64;NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AppRoutingModule {}</code></pre><p>When <code>NgxPermissionsGuard</code> service will be called it would expect user to have either <code>ADMIN</code> or <code>MODERATOR</code> permissions to pass him to <code>home</code> route.</p>
+<h4 id="dynamic-access">Dynamic access</h4>
+<p>You can find states that would require to verify access dynamically - often depending on parameters.     </p>
+<p>Let&#39;s imagine situation where user want to modify the invoice. We need to check every time if he is allowed to do that on state level. We are gonna use <code>ActivatedRouteSnapshot</code> and <code>RouterStateSnapshot</code>   object to check weather he is able to do that.</p>
+<blockquote>
+<p>To make AOT compatible you should export function. 
+Below is presented code AOT Compatible</p>
+</blockquote>
+<p>AOT compatible </p>
+<pre class="line-numbers"><code class="language-typescript">export function testPermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  if (route.params[&#39;id&#39;] === 42) {
+    return [&#39;MANAGER&#39;, &quot;UTILS&quot;]
+  } else {
+    return &#39;ADMIN&#39;
+  }
+}
+const appRoutes: Routes = [
+  { path: &#39;dynamic/:id&#39;,
+      component: HomeComponent,
+      canActivate: [NgxPermissionsGuard],
+      data: {
+        permissions: {
+          only: testPermissions
+        }
+      }
+    }
+];</code></pre><blockquote>
+<p>:skull: <strong>Warning</strong><br>Below is presented code not AOT compatible</p>
+</blockquote>
+<pre class="line-numbers"><code class="language-typescript">const appRoutes: Routes = [
+  { path: &#39;dynamic/:id&#39;,
+      component: HomeComponent,
+      canActivate: [NgxPermissionsGuard],
+      data: {
+        permissions: {
+          only: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =&gt; {
+              if (route.params[&#39;id&#39;] === 42) {
+                  return [&#39;MANAGER&#39;, &quot;UTILS&quot;]
+                } else {
+                  return &#39;ADMIN&#39;
+                }
+          }
+        }
+      }
+    }
+];</code></pre><p>So whenever we try access state with param <code>id = 42</code> set to true additional check for permission <code>manager and utils</code> will be made. Otherwise only <code>ADMIN</code> will be required.</p>
+<blockquote>
+<p>:fire: <strong>Important</strong><br>Notice that function require to always return array or string of roles/permissions in order to work properly. </p>
+</blockquote>
+<h2 id="property-redirectto">Property redirectTo</h2>
+<p>Property redirectTo:</p>
+<ul>
+<li>when used as <code>String</code> defines single redirection rule</li>
+<li>when used as <code>Objects</code> defines single/multiple redirection rules</li>
+<li>when used as <code>Function</code> defines dynamic redirection rule(s)</li>
+</ul>
+<h3 id="single-redirection-rule">Single redirection rule</h3>
+<p>In case you want to redirect to some specific state when user is not authorized pass to <code>redirectTo</code> path of that route.</p>
+<pre class="line-numbers"><code class="language-typescript">import { RouterModule, Routes } from &#39;&#64;angular/router&#39;;
+import { NgModule } from &#39;&#64;angular/core&#39;;
+import { HomeComponent } from &#39;./home/home.component&#39;;
+import { NgxPermissionsGuard } from &#39;ngx-permissions&#39;;
+
+const appRoutes: Routes = [
+  { path: &#39;home&#39;,
+    component: HomeComponent,
+    canActivate: [NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: [&#39;ADMIN&#39;, &#39;MODERATOR&#39;],
+        redirectTo: &#39;/another-route&#39;
+      }
+    }
+  },
+];
+&#64;NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AppRoutingModule {}</code></pre><p>In order to pass additional properties like params use pass <code>redirectTo</code> as object. 
+<code>navigationCommands</code> and <code>navigationExtras</code> are reserved words it corresponds to parameters passed to router.navigate function
+<code>navigate(commands: any[], extras: NavigationExtras): Promise&lt;boolean&gt;</code></p>
+<pre class="line-numbers"><code class="language-typescript">
+const appRoutes: Routes = [
+  { path: &#39;home&#39;,
+    component: HomeComponent,
+    canActivate: [NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: [&#39;ADMIN&#39;, &#39;MODERATOR&#39;],
+        redirectTo: {
+            navigationCommands: [&#39;123&#39;],
+            navigationExtras: {
+                skipLocationChange: true
+            }
+        }               
+    }
+  },
+];
+&#64;NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+`</code></pre><h2 id="multiple-redirection-rules">Multiple redirection rules</h2>
+<p>In some situation you want to redirect user based on denied permission/role to create redirection strategies. In order to do that you have to create redirection <code>Object</code> that contain keys representing rejected permissions or roles and values implementing redirection rules.</p>
+<p>Redirection rules are represented by following values:</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th style="text-align:left">Value type</th>
+<th style="text-align:left">Return</th>
+<th style="text-align:left">Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>String</code></td>
+<td style="text-align:left">[<code>String</code>]</td>
+<td style="text-align:left">Simple state transitions</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>Object</code></td>
+<td style="text-align:left">[<code>Object</code>]</td>
+<td style="text-align:left">Redirection with custom parameters or options</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>Function</code></td>
+<td style="text-align:left">[<code>String</code>\</td>
+<td style="text-align:left"><code>Object</code>]</td>
+<td>Dynamic properties-based redirection</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>:bulb: <strong>Note</strong><br>Use <em>default</em> property that will handle fallback redirect for not defined permissions. </p>
+</blockquote>
+<p>The simplest example of multiple redirection rules are redirection based on pairs role/permission and state. When user is not granted to access the state will be redirected to <code>agendaList</code> if missing <code>canReadAgenda</code> permission or to <code>dashboard</code> when missing <code>canEditAgenda</code>. Property <code>default</code> is reserved for cases when you want handle specific cases leaving default redirection. </p>
+<pre class="line-numbers"><code class="language-typescript">  const appRoutes: Routes = [
+    { path: &#39;home&#39;,
+      component: HomeComponent,
+      canActivate: [NgxPermissionsGuard],
+      data: {
+       permissions: {
+               only: [&#39;canReadAgenda&#39;,&#39;canEditAgenda&#39;],
+               redirectTo: {
+                 canReadAgenda: &#39;agendaList&#39;,
+                 canEditAgenda: &#39;dashboard&#39;,
+                 default: &#39;login&#39;
+               }
+        }
+      }
+    },
+  ];
+  &#64;NgModule({
+    imports: [
+      RouterModule.forRoot(appRoutes)
+    ],
+    exports: [
+      RouterModule
+    ]
+  })</code></pre><p>If you need more control over redirection parameters <code>Object</code> as a value can be used to customise target url <code>navigationCommands</code> and transition <code>navigationExtras</code>.</p>
+<blockquote>
+<p>:bulb: <strong>Note</strong>  <code>navigationCommands</code> and <code>navigationExtras</code> are reserved words it corresponds to parameters passed to router.navigate function
+<code>navigate(commands: any[], extras: NavigationExtras): Promise&lt;boolean&gt;</code></p>
+</blockquote>
+<pre class="line-numbers"><code class="language-typescript">
+  const appRoutes: Routes = [
+    { path: &#39;home&#39;,
+      component: HomeComponent,
+      canActivate: [NgxPermissionsGuard],
+      data: {
+         permissions: {
+               only: [&#39;canEditAgenda&#39;],
+               redirectTo: 
+                 canEditAgenda: {
+                   navigationCommands: &#39;dashboard&#39;,
+                   navigationExtras: {
+                       skipLocationChange: true
+                   }
+
+                 },
+                 default: &#39;login&#39;
+             }
+          }
+      }
+    },
+  ];
+  &#64;NgModule({
+    imports: [
+      RouterModule.forRoot(appRoutes)
+    ],
+    exports: [
+      RouterModule
+    ]
+  })  </code></pre><p>To present usage <code>redirectTo</code> as <code>Object</code> with values as <code>Function</code> in a state definition <code>agenda</code> presented below redirection rules are interpreted as:</p>
+<ul>
+<li>when user does not have <code>canReadAgenda</code> invoked function returns string representing the state name to which unauthorized user will be redirected</li>
+<li>when user does not have <code>canEditAgenda</code> invoked function returns object with custom options and params that will be passed along to transited <code>dashboard</code> url</li>
+</ul>
+<pre class="line-numbers"><code class="language-typescript">
+ const appRoutes: Routes = [
+    { path: &#39;home&#39;,
+      component: HomeComponent,
+      canActivate: [NgxPermissionsGuard],
+      data: {
+       permissions: {
+              only: [&#39;canReadAgenda&#39;,&#39;canEditAgenda&#39;],
+              redirectTo: {
+                canReadAgenda: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeStateSnapshot: RouterStateSnapshot) =&gt; {
+                  return &#39;dashboard&#39;;
+                },
+                canEditAgenda: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeStateSnapshot: RouterStateSnapshot) =&gt; {
+                  return {
+                      navigationCommands: [&#39;/dashboard&#39;],
+                      navigationExtras: {
+                          skipLocationChange: true
+                      }
+                  }
+                },
+                default: &#39;login&#39;
+            }
+        }
+      }
+    },
+  ];
+  &#64;NgModule({
+    imports: [
+      RouterModule.forRoot(appRoutes)
+    ],
+    exports: [
+      RouterModule
+    ]
+  })</code></pre><blockquote>
+<p>:fire: <strong>Important</strong><br>Above code is not AOT compatible to make it AOT compatible extract it to function
+<code>navigationCommands</code> and <code>navigationExtras</code> reserved words. Matching parameter to router.navigate function</p>
+</blockquote>
+<pre class="line-numbers"><code class="language-typescript">export function canReadAgenda(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routeStateSnapshot: RouterStateSnapshot) =&gt; {                                                 
+    return &#39;dashboard&#39;;
+},
+
+redirectTo: {
+    canReadAgenda: canReadAgenda
+
+}</code></pre><h3 id="dynamic-redirection-rules">Dynamic redirection rules</h3>
+<p>Similarly to examples showing defining dynamic access to state redirection can also be defined based on any parameters of <code>ActivatedRouteSnapshot</code> and <code>RouterStateSnapshot</code>;</p>
+<blockquote>
+<p>:bulb: <strong>Note</strong><br>Remember to always return from function state name or object.</p>
+</blockquote>
+<pre class="line-numbers"><code class="language-typescript">const appRoutes: Routes = [
+    { path: &#39;home/:isEditable&#39;,
+      component: HomeComponent,
+      canActivate: [NgxPermissionsGuard],
+      data: {
+      permissions: {
+             only: [&#39;canReadAgenda&#39;,&#39;canEditAgenda&#39;],
+             redirectTo: (rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot) =&gt; {
+               if(activateRouteSnapshot.params[&#39;id&#39;] === 42){
+                 return &#39;login&#39;;
+               } else {
+                 return &#39;dashboard&#39;
+               }
+             }
+      }
+    },
+  ];
+  &#64;NgModule({
+    imports: [
+      RouterModule.forRoot(appRoutes)
+    ],
+    exports: [
+      RouterModule
+    ]
+  })</code></pre><blockquote>
+<p>:fire: <strong>Important</strong><br>Above code is not AOT compatible to make it AOT compatible extract it to function</p>
+</blockquote>
+<pre class="line-numbers"><code class="language-typescript">export function redirectToFunc(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot) =&gt; {
+     if(activateRouteSnapshot.params[&#39;id&#39;] === 42){
+       return &#39;login&#39;;
+     } else {
+       return &#39;dashboard&#39;
+     }
+   }
+
+redirectTo: redirectToFunc</code></pre><hr>
+<h2 id="implemented-guards">Implemented Guards</h2>
+<h3 id="can-activate-guard">Can Activate Guard</h3>
+<p>NgxPermissionsGuard implements CanActivate interface for examples you can see above</p>
+<h3 id="can-load-guard">Can Load Guard</h3>
+<p>NgxPermissionsGuard implements CanLoad Interface. Functionality is the same as with canActivate </p>
+<pre class="line-numbers"><code class="language-typescript">const appRoutes: Routes = [
+
+  {
+    path: &#39;lazy&#39;,
+    data: {
+      permissions: {
+        except: &#39;ADDDMIN&#39;,
+      }
+    },
+    canLoad: [NgxPermissionsGuard],
+    loadChildren: &#39;app/lazy-module/lazy-module.module#LazyModule&#39;
+  },
+
+
+];
+&#64;NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports: [
+    RouterModule
+  ],
+  providers: [
+    // CanDeactivateGuard
+  ]
+})
+export class AppRoutingModule {}
+
+
+</code></pre><blockquote>
+<p>:fire: <strong>Warning</strong>   </p>
+<ul>
+<li>The only difference if you use as a function the parameter is <strong>only 1</strong> and its type of  <strong>Route</strong></li>
+</ul>
+</blockquote>
+<pre class="line-numbers"><code class="language-typescript">
+{
+    path: &#39;lazy&#39;,
+    data: {
+      permissions: {
+         only: (route: Route) =&gt; {
+                  //logic here
+                   return [&#39;MANAGER&#39;, &quot;UTILS&quot;]
+                  }
+      }
+    },
+    canLoad: [NgxPermissionsGuard],
+    loadChildren: &#39;app/lazy-module/lazy-module.module#LazyModule&#39;
+  },</code></pre><h3 id="can-activate-child-guard">Can Activate Child Guard</h3>
+<p>NgxPermissionsGuard implements CanLoad Interface. Functionality is the same as with canActivate </p>
+<blockquote>
+<p>:fire: <strong>Warning</strong>   </p>
+<ul>
+<li>Need to remember that rules and data you should specify on <strong>Child Components</strong> not on parent component</li>
+</ul>
+</blockquote>
+<pre class="line-numbers"><code class="language-typescript">const appRoutes: Routes = [
+  { path: &#39;&#39;,
+    component: IsolateComponent,
+    canActivateChild: [NgxPermissionsGuard],
+    children: [
+      {
+        path: &#39;except-should&#39;,
+        component: AnotherComponent,
+        data: {
+          permissions: {
+            except: &#39;ADMIN&#39;
+          }
+        }
+      },
+      {
+        path: &#39;only-should&#39;,
+        component: ComeComponent,
+        data: {
+          permissions: {
+            only: &#39;GUEST&#39;
+          }
+        }
+      },
+    ]
+  },
+];</code></pre><hr>
+<h2 id="common-use-cases">Common use cases</h2>
+<h3 id="two-guards-when-first-make-request-for-authorisation-and-gets-permissions-second-checks-for-permissions">Two guards when first make request for authorisation and gets permissions second checks for permissions</h3>
+<p>This method only works with <code>angular 4.3.2</code> or higher see <a href="https://github.com/angular/angular/issues/15670">https://github.com/angular/angular/issues/15670</a></p>
+<p>There are a lot of times you have 2 guard one for authorisation when it makes request for permissions and second is permissions guard
+and you want them to work in chain. To make them work in chain You should use them next</p>
+<pre class="line-numbers"><code class="language-typescript">
+let routes = [
+  { path: &#39;&#39;, 
+    canActivate: [AuthGuard],
+    children: [
+      {path: &#39;component&#39;, 
+      component: ComponentName, 
+      canActivate: [NgxPermissionsGuard],
+      data: {
+         permissions: {
+           only: [&#39;ADMIN&#39;, &#39;MODERATOR&#39;],
+           redirectTo: &#39;another-route&#39;
+         }
+       }}
+    ]
+  }
+]</code></pre><blockquote>
+<p>Note: Make sure the permission request in chained in auth guard
+ <code>`</code>js 
+    canActivate() {
+        return authLogin().then((obj) =&gt; {
+            // or load here if you dont need second request
+            // this.permissions.service.loadPermissions(obj.permissions)</p>
+</blockquote>
+<pre class="line-numbers"><code class="language-none">        return this.authPermissions.getPermissions(&#39;url&#39;);
+    }).then((permissions) =&gt; {
+        this.permissions.service.loadPermissions(permissions)
+    )
+}</code></pre><p><code>`</code></p>
+<p>| --- |</p>
+<h2 id="development">Development</h2>
+<p>This project was generated with <a href="https://github.com/angular/angular-cli">Angular CLI</a> version 6.0.0.</p>
+<h3 id="demo-app">Demo App</h3>
+<p>Run <code>ng serve</code> for a dev server. Navigate to <code>http://localhost:4200/</code>. The app will automatically reload if you change any of the source files.</p>
+<h3 id="build">Build</h3>
+<p>Run <code>ng build</code> to build the project. The build artifacts will be stored in the <code>dist/</code> directory. Use the <code>--prod</code> flag for a production build.</p>
+<h3 id="running-unit-tests">Running unit tests</h3>
+<p>Run <code>ng test</code> to execute the unit tests via <a href="https://karma-runner.github.io">Karma</a>.</p>
+<h3 id="running-end-to-end-tests">Running end-to-end tests</h3>
+<p>Run <code>ng e2e</code> to execute the end-to-end tests via <a href="http://www.protractortest.org/">Protractor</a>.</p>
+<h2 id="thank-you">Thank You</h2>
+<p><code>Thank You for using the library and support. HAVE A GREAT DAY!</code></p>
+<h2 id="for-google">For google</h2>
+<p>angular 2 permissions, angular 4 permissions, angular permissions, angular 5 permissions ng2 permissions ng permissions
+ng-permissions ng2-permissions angular2 permissions  angular4 permissions angular 5 permissions</p>
+<h2 id="license">License</h2>
+<p>MIT © <a href="mailto:alexanderKhymenko@gmail.com">Oleksandr Khymenko</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+           </div>
+       </div>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+       <script src="./js/libs/zepto.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script>var COMPODOC_CURRENT_PAGE_DEPTH = 0;</script>
+
+       <script src="./js/search/search.js"></script>
+       <script src="./js/search/lunr.min.js"></script>
+       <script src="./js/search/search-lunr.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+       <script src="./js/search/search_index.js"></script>
+
+    </body>
+</html>
