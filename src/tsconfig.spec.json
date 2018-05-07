@@ -1,29 +1,19 @@
 {
-  "extends": "./tsconfig.es5.json",
-
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
-    "rootDir": "./src",
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
     "outDir": "../out-tsc/spec",
     "module": "commonjs",
-    "target": "es6",
-    "baseUrl": "./src",
     "types": [
-      "jest",
       "jasmine",
       "node"
-    ],
-    "lib": [
-      "es6",
-      "es7",
-      "dom"
-    ],
-    "skipLibCheck": true,
+    ]
   },
   "files": [
-    "**/*.spec.ts"
+    "test.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "**/*.spec.ts",
+    "**/*.d.ts"
   ]
 }
-

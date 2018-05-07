@@ -1,16 +1,25 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./src",
-    "experimentalDecorators": true,
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
     "moduleResolution": "node",
-    "rootDir": "./src",
-    "strict": true,
-    "lib": [
-      "es2015",
-      "dom",
-      "es7"
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
     ],
-    "skipLibCheck": true,
-    "types": []
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "paths": {
+      "ngx-permissions": [
+        "dist/ngx-permissions"
+      ]
+    }
   }
 }

@@ -1,0 +1,764 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>ngx-permissions</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	    <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">ngx-permissions</a>
+            <button type="button" class="btn btn-default btn-menu fa fa-bars" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <div id="book-search-input" role="search">
+                <input type="text" placeholder="Type to search">
+            </div>
+            <nav>
+            
+                <ul class="list">
+            
+                    <li class="title">
+                        <a href="../index.html">ngx-permissions</a>
+                    </li>
+            
+                    <li class="divider"></li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../index.html"><span class="fa fa-home"></span>Getting started</a>
+                        <ul class="links">
+                                <li class="link">
+                                    <a href="../index.html" ><span class="fa fa-file-text-o"></span>README</a>
+                                </li>
+                                <li class="link">
+                                    <a 
+                                        
+                                         href="../overview.html" 
+                                         href="../overview.html" 
+                                        >
+                                        <span class="fa fa-th"></span>Overview
+                                    </a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../modules.html" >
+                            <div class="menu-toggler linked" data-toggle="collapse"
+                                    data-target="#xs-modules-links"
+                            >
+                                <span class="fa fa-archive"></span>
+                                <span class="link-name">Modules</span>
+                                <span class="fa fa-angle-up"></span>
+                            </div>
+                        </a>
+                        <ul class="links collapse in"
+                                id="xs-modules-links"
+                            >
+                                <li class="link">
+                                    <a href="../modules/AppModule.html" >AppModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/LazyIsolateModule.html" >LazyIsolateModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/LazyIsolateRoutingModule.html" >LazyIsolateRoutingModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/LazyModule.html" >LazyModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/LazyRoleIsolateModule.html" >LazyRoleIsolateModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/LazyRolesAsyncIsolateModule.html" >LazyRolesAsyncIsolateModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/NgxPermissionsAllowStubModule.html" >NgxPermissionsAllowStubModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/NgxPermissionsModule.html" >NgxPermissionsModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/NgxPermissionsRestrictStubModule.html" >NgxPermissionsRestrictStubModule</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-components-links"
+                            >
+                            <span class="fa fa-cogs"></span>
+                            <span>Components</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-components-links"
+                            >
+                                <li class="link">
+                                    <a href="../components/AppComponent.html" >AppComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/HomeComponent.html" >HomeComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/InitialLoadComponent.html" >InitialLoadComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/IsolateComponent.html"  data-type="entity-link" class="active" >IsolateComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/LazyComponentComponent.html" >LazyComponentComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/LazyRoleIsolateTestComponent.html" >LazyRoleIsolateTestComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/LazyRolesAsyncTestComponent.html" >LazyRolesAsyncTestComponent</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-directives-links"
+                            >
+                            <span class="fa fa-code"></span>
+                            <span>Directives</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-directives-links"
+                            >
+                                <li class="link">
+                                    <a href="../directives/NgxPermissionsAllowStubDirective.html" >NgxPermissionsAllowStubDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../directives/NgxPermissionsDirective.html" >NgxPermissionsDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../directives/NgxPermissionsRestrictStubDirective.html" >NgxPermissionsRestrictStubDirective</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-classes-links"
+                            >
+                            <span class="fa fa-file-code-o"></span>
+                            <span>Classes</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-classes-links"
+                            >
+                                <li class="link">
+                                    <a href="../classes/AppPage.html" >AppPage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/NgxPermission.html" >NgxPermission</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/NgxRole.html" >NgxRole</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/NgxRolesStore.html" >NgxRolesStore</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-injectables-links"
+                            >
+                            <span class="fa fa-long-arrow-down"></span>
+                            <span>Injectables</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-injectables-links"
+                            >
+                                <li class="link">
+                                    <a href="../injectables/AsyncTestService.html" >AsyncTestService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxPermissionsConfigurationService.html" >NgxPermissionsConfigurationService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxPermissionsConfigurationStore.html" >NgxPermissionsConfigurationStore</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxPermissionsGuard.html" >NgxPermissionsGuard</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxPermissionsService.html" >NgxPermissionsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxPermissionsStore.html" >NgxPermissionsStore</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxRolesService.html" >NgxRolesService</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-interfaces-links"
+                            >
+                            <span class="fa fa-info"></span>
+                            <span>Interfaces</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-interfaces-links"
+                            >
+                                <li class="link">
+                                    <a href="../interfaces/NgxPermissionsModuleConfig.html" >NgxPermissionsModuleConfig</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/NgxPermissionsRouterData.html" >NgxPermissionsRouterData</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/NgxRedirectToNavigationParameters.html" >NgxRedirectToNavigationParameters</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                    </li>
+            
+            
+                </ul>
+            
+            </nav>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <nav>
+                   
+                       <ul class="list">
+                   
+                           <li class="title">
+                               <a href="../index.html">ngx-permissions</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                   
+                               <div id="book-search-input" role="search">
+                                   <input type="text" placeholder="Type to search">
+                               </div>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../index.html"><span class="fa fa-home"></span>Getting started</a>
+                               <ul class="links">
+                                       <li class="link">
+                                           <a href="../index.html" ><span class="fa fa-file-text-o"></span>README</a>
+                                       </li>
+                                       <li class="link">
+                                           <a 
+                                               
+                                                href="../overview.html" 
+                                                href="../overview.html" 
+                                               >
+                                               <span class="fa fa-th"></span>Overview
+                                           </a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../modules.html" >
+                                   <div class="menu-toggler linked" data-toggle="collapse"
+                                           data-target="#modules-links"
+                                   >
+                                       <span class="fa fa-archive"></span>
+                                       <span class="link-name">Modules</span>
+                                       <span class="fa fa-angle-up"></span>
+                                   </div>
+                               </a>
+                               <ul class="links collapse in"
+                                       id="modules-links"
+                   >
+                                       <li class="link">
+                                           <a href="../modules/AppModule.html" >AppModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/LazyIsolateModule.html" >LazyIsolateModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/LazyIsolateRoutingModule.html" >LazyIsolateRoutingModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/LazyModule.html" >LazyModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/LazyRoleIsolateModule.html" >LazyRoleIsolateModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/LazyRolesAsyncIsolateModule.html" >LazyRolesAsyncIsolateModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/NgxPermissionsAllowStubModule.html" >NgxPermissionsAllowStubModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/NgxPermissionsModule.html" >NgxPermissionsModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/NgxPermissionsRestrictStubModule.html" >NgxPermissionsRestrictStubModule</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#components-links"
+                   >
+                                   <span class="fa fa-cogs"></span>
+                                   <span>Components</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="components-links"
+                   >
+                                       <li class="link">
+                                           <a href="../components/AppComponent.html" >AppComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/HomeComponent.html" >HomeComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/InitialLoadComponent.html" >InitialLoadComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/IsolateComponent.html"  data-type="entity-link" class="active" >IsolateComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/LazyComponentComponent.html" >LazyComponentComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/LazyRoleIsolateTestComponent.html" >LazyRoleIsolateTestComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/LazyRolesAsyncTestComponent.html" >LazyRolesAsyncTestComponent</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#directives-links"
+                   >
+                                   <span class="fa fa-code"></span>
+                                   <span>Directives</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="directives-links"
+                   >
+                                       <li class="link">
+                                           <a href="../directives/NgxPermissionsAllowStubDirective.html" >NgxPermissionsAllowStubDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../directives/NgxPermissionsDirective.html" >NgxPermissionsDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../directives/NgxPermissionsRestrictStubDirective.html" >NgxPermissionsRestrictStubDirective</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#classes-links"
+                   >
+                                   <span class="fa fa-file-code-o"></span>
+                                   <span>Classes</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="classes-links"
+                   >
+                                       <li class="link">
+                                           <a href="../classes/AppPage.html" >AppPage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/NgxPermission.html" >NgxPermission</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/NgxRole.html" >NgxRole</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/NgxRolesStore.html" >NgxRolesStore</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#injectables-links"
+                   >
+                                   <span class="fa fa-long-arrow-down"></span>
+                                   <span>Injectables</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="injectables-links"
+                   >
+                                       <li class="link">
+                                           <a href="../injectables/AsyncTestService.html" >AsyncTestService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxPermissionsConfigurationService.html" >NgxPermissionsConfigurationService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxPermissionsConfigurationStore.html" >NgxPermissionsConfigurationStore</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxPermissionsGuard.html" >NgxPermissionsGuard</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxPermissionsService.html" >NgxPermissionsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxPermissionsStore.html" >NgxPermissionsStore</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxRolesService.html" >NgxRolesService</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#interfaces-links"
+                   >
+                                   <span class="fa fa-info"></span>
+                                   <span>Interfaces</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="interfaces-links"
+                   >
+                                       <li class="link">
+                                           <a href="../interfaces/NgxPermissionsModuleConfig.html" >NgxPermissionsModuleConfig</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/NgxPermissionsRouterData.html" >NgxPermissionsRouterData</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/NgxRedirectToNavigationParameters.html" >NgxRedirectToNavigationParameters</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                           </li>
+                   
+                   
+                       </ul>
+                   
+                   </nav>
+               </div>
+               <div class="content component">
+                   <div class="content-data">
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>IsolateComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active">
+        <a href="#infos" id="infos-tab" role="tab" data-toggle="tab" data-link="infos">Infos</a>
+    </li>
+
+    <li>
+        <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+    </li>
+
+    <li>
+        <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+    </li>
+    <li>
+        <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="infos"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/lazy-isolate/isolate/isolate.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code><a href="https://angular.io/docs/ts/latest/api/core/index/OnInit-interface.html" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-isolate</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>isolate.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./isolate.component.html</code></td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+    <section>
+        <h3 id="constructor">Constructor</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>constructor()</code>
+                        </td>
+                    </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/lazy-isolate/isolate/isolate.component.ts:10</a></div>
+                                </td>
+                            </tr>
+    
+                </tbody>
+            </table>
+    </section>
+
+    <section>
+        
+            <h3 id="methods">
+                Methods
+            </h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> ngOnInit</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>ngOnInit()</code>
+                        </td>
+                    </tr>
+    
+    
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/lazy-isolate/isolate/isolate.component.ts:14</a></div>
+                                </td>
+                            </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </section>
+
+</div>
+
+
+    <div class="tab-pane fade tab-source-code" id="source">
+        <pre class="line-numbers"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { NgxPermissionsService } from &#x27;ngx-permissions&#x27;;
+import { NgxRolesService } from &#x27;ngx-permissions&#x27;;
+
+@Component({
+  selector: &#x27;app-isolate&#x27;,
+  templateUrl: &#x27;./isolate.component.html&#x27;,
+  styleUrls: [&#x27;./isolate.component.css&#x27;]
+})
+export class IsolateComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade" id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;p&gt;
+  LAZY Isolate works!
+&lt;/p&gt;
+&lt;button routerLink&#x3D;&quot;/&quot;&gt;Back&lt;/button&gt;
+&lt;button routerLink&#x3D;&quot;/lazy-isolate/except-should&quot;&gt;SHOULD go to isolate except should page testing except&lt;/button&gt;
+&lt;button routerLink&#x3D;&quot;/lazy-isolate/except-should-not&quot;&gt;SHOULD NOT go to isolate except should page testing except&lt;/button&gt;
+&lt;button routerLink&#x3D;&quot;/lazy-isolate/only-should&quot;&gt;SHOULD go to isolate except should page testing only&lt;/button&gt;
+&lt;button routerLink&#x3D;&quot;/lazy-isolate/only-should-not&quot;&gt;SHOULD NOT go to only-should-not except should page testing only&lt;/button&gt;
+
+&lt;div style&#x3D;&quot;background-color: green&quot;&gt;
+  Should see something
+  &lt;ng-template [ngxPermissionsOnly]&#x3D;&quot;[&#x27;GUEST&#x27;]&quot;&gt;
+    &lt;div&gt; LAZY I will see it only GUEST&lt;/div&gt;
+  &lt;/ng-template&gt;
+&lt;/div&gt;
+
+
+&lt;ng-template [ngxPermissionsOnly]&#x3D;&quot;[&#x27;ADMIN&#x27;]&quot;&gt;
+  &lt;div style&#x3D;&quot;color: red&quot;&gt;LAZY I SHOULD not see it only guest&lt;/div&gt;
+&lt;/ng-template&gt;
+
+&lt;ng-template [ngxPermissionsExcept]&#x3D;&quot;[&#x27;GUESTTTT&#x27;]&quot;&gt;
+  &lt;div&gt;LAZY I will see it except guestttt&lt;/div&gt;
+&lt;/ng-template&gt;
+
+&lt;ng-template [ngxPermissionsExcept]&#x3D;&quot;[&#x27;GUEST&#x27;]&quot;&gt;
+  &lt;div style&#x3D;&quot;color: red&quot;&gt;LAZY I Should not see it except admin&lt;/div&gt;
+&lt;/ng-template&gt;
+
+
+&lt;div&gt; ENd on lazy ISOLATE Module&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade" id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><p>  LAZY Isolate works!</p><button routerLink="/">Back</button><button routerLink="/lazy-isolate/except-should">SHOULD go to isolate except should page testing except</button><button routerLink="/lazy-isolate/except-should-not">SHOULD NOT go to isolate except should page testing except</button><button routerLink="/lazy-isolate/only-should">SHOULD go to isolate except should page testing only</button><button routerLink="/lazy-isolate/only-should-not">SHOULD NOT go to only-should-not except should page testing only</button><div style="background-color: green">  Should see something  <ng-template [ngxPermissionsOnly]="[\'GUEST\']">    <div> LAZY I will see it only GUEST</div>  </ng-template></div><ng-template [ngxPermissionsOnly]="[\'ADMIN\']">  <div style="color: red">LAZY I SHOULD not see it only guest</div></ng-template><ng-template [ngxPermissionsExcept]="[\'GUESTTTT\']">  <div>LAZY I will see it except guestttt</div></ng-template><ng-template [ngxPermissionsExcept]="[\'GUEST\']">  <div style="color: red">LAZY I Should not see it except admin</div></ng-template><div> ENd on lazy ISOLATE Module</div></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'InitialLoadComponent', 'selector': 'app-initial-load'},{'name': 'IsolateComponent', 'selector': 'app-isolate'},{'name': 'LazyComponentComponent', 'selector': 'app-lazy-component'},{'name': 'LazyRoleIsolateTestComponent', 'selector': 'app-lazy-role-isolate-test'},{'name': 'LazyRolesAsyncTestComponent', 'selector': 'app-lazy-roles-async-test'}];
+    var DIRECTIVES = [{'name': 'NgxPermissionsAllowStubDirective', 'selector': '[ngxPermissionsOnly],[ngxPermissionsExcept]'},{'name': 'NgxPermissionsDirective', 'selector': '[ngxPermissionsOnly],[ngxPermissionsExcept]'},{'name': 'NgxPermissionsRestrictStubDirective', 'selector': '[ngxPermissionsOnly],[ngxPermissionsExcept]'}];
+    var ACTUAL_COMPONENT = {'name': 'IsolateComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+           </div>
+       </div>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script>var COMPODOC_CURRENT_PAGE_DEPTH = 1;</script>
+
+       <script src="../js/search/search.js"></script>
+       <script src="../js/search/lunr.min.js"></script>
+       <script src="../js/search/search-lunr.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/search/search_index.js"></script>
+
+    </body>
+</html>

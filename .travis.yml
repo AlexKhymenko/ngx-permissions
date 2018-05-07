@@ -1,7 +1,7 @@
 language: node_js
 sudo: true
 node_js:
-- '6.11.2'
+- '8.11.1'
 
 script: npm run test:single
 

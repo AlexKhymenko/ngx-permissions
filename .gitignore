@@ -1,11 +1,39 @@
-# Node
-node_modules/*
-npm-debug.log
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# TypeScript
-src/*.js
-src/*.map
-src/*.d.ts
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+Desktop.ini
 
 # JetBrains
 .idea
@@ -14,21 +42,8 @@ src/*.d.ts
 .idea/*
 *.iml
 
-# VS Code
-.vscode/*
-
-# Windows
-Thumbs.db
-Desktop.ini
-
-# Mac
-.DS_Store
-**/.DS_Store
-
 # Ngc generated files
 **/*.ngfactory.ts
 
-# Build files
-dist/*
 # Tests
 coverage/*

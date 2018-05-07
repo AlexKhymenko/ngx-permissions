@@ -1,0 +1,1094 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>ngx-permissions</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	    <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">ngx-permissions</a>
+            <button type="button" class="btn btn-default btn-menu fa fa-bars" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <div id="book-search-input" role="search">
+                <input type="text" placeholder="Type to search">
+            </div>
+            <nav>
+            
+                <ul class="list">
+            
+                    <li class="title">
+                        <a href="../index.html">ngx-permissions</a>
+                    </li>
+            
+                    <li class="divider"></li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../index.html"><span class="fa fa-home"></span>Getting started</a>
+                        <ul class="links">
+                                <li class="link">
+                                    <a href="../index.html" ><span class="fa fa-file-text-o"></span>README</a>
+                                </li>
+                                <li class="link">
+                                    <a 
+                                        
+                                         href="../overview.html" 
+                                         href="../overview.html" 
+                                        >
+                                        <span class="fa fa-th"></span>Overview
+                                    </a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../modules.html" >
+                            <div class="menu-toggler linked" data-toggle="collapse"
+                                    data-target="#xs-modules-links"
+                            >
+                                <span class="fa fa-archive"></span>
+                                <span class="link-name">Modules</span>
+                                <span class="fa fa-angle-up"></span>
+                            </div>
+                        </a>
+                        <ul class="links collapse in"
+                                id="xs-modules-links"
+                            >
+                                <li class="link">
+                                    <a href="../modules/AppModule.html" >AppModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/LazyIsolateModule.html" >LazyIsolateModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/LazyIsolateRoutingModule.html" >LazyIsolateRoutingModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/LazyModule.html" >LazyModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/LazyRoleIsolateModule.html" >LazyRoleIsolateModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/LazyRolesAsyncIsolateModule.html" >LazyRolesAsyncIsolateModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/NgxPermissionsAllowStubModule.html" >NgxPermissionsAllowStubModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/NgxPermissionsModule.html" >NgxPermissionsModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/NgxPermissionsRestrictStubModule.html" >NgxPermissionsRestrictStubModule</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-components-links"
+                            >
+                            <span class="fa fa-cogs"></span>
+                            <span>Components</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-components-links"
+                            >
+                                <li class="link">
+                                    <a href="../components/AppComponent.html" >AppComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/HomeComponent.html" >HomeComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/InitialLoadComponent.html" >InitialLoadComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/IsolateComponent.html" >IsolateComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/LazyComponentComponent.html" >LazyComponentComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/LazyRoleIsolateTestComponent.html" >LazyRoleIsolateTestComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/LazyRolesAsyncTestComponent.html" >LazyRolesAsyncTestComponent</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-directives-links"
+                            >
+                            <span class="fa fa-code"></span>
+                            <span>Directives</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-directives-links"
+                            >
+                                <li class="link">
+                                    <a href="../directives/NgxPermissionsAllowStubDirective.html" >NgxPermissionsAllowStubDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../directives/NgxPermissionsDirective.html" >NgxPermissionsDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../directives/NgxPermissionsRestrictStubDirective.html" >NgxPermissionsRestrictStubDirective</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-classes-links"
+                            >
+                            <span class="fa fa-file-code-o"></span>
+                            <span>Classes</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-classes-links"
+                            >
+                                <li class="link">
+                                    <a href="../classes/AppPage.html" >AppPage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/NgxPermission.html" >NgxPermission</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/NgxRole.html" >NgxRole</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/NgxRolesStore.html" >NgxRolesStore</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-injectables-links"
+                            >
+                            <span class="fa fa-long-arrow-down"></span>
+                            <span>Injectables</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-injectables-links"
+                            >
+                                <li class="link">
+                                    <a href="../injectables/AsyncTestService.html" >AsyncTestService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxPermissionsConfigurationService.html" >NgxPermissionsConfigurationService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxPermissionsConfigurationStore.html" >NgxPermissionsConfigurationStore</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxPermissionsGuard.html" >NgxPermissionsGuard</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxPermissionsService.html"  data-type="entity-link" class="active" >NgxPermissionsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxPermissionsStore.html" >NgxPermissionsStore</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NgxRolesService.html" >NgxRolesService</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-interfaces-links"
+                            >
+                            <span class="fa fa-info"></span>
+                            <span>Interfaces</span>
+                            <span class="fa fa-angle-up"></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-interfaces-links"
+                            >
+                                <li class="link">
+                                    <a href="../interfaces/NgxPermissionsModuleConfig.html" >NgxPermissionsModuleConfig</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/NgxPermissionsRouterData.html" >NgxPermissionsRouterData</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/NgxRedirectToNavigationParameters.html" >NgxRedirectToNavigationParameters</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                    </li>
+            
+            
+                </ul>
+            
+            </nav>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <nav>
+                   
+                       <ul class="list">
+                   
+                           <li class="title">
+                               <a href="../index.html">ngx-permissions</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                   
+                               <div id="book-search-input" role="search">
+                                   <input type="text" placeholder="Type to search">
+                               </div>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../index.html"><span class="fa fa-home"></span>Getting started</a>
+                               <ul class="links">
+                                       <li class="link">
+                                           <a href="../index.html" ><span class="fa fa-file-text-o"></span>README</a>
+                                       </li>
+                                       <li class="link">
+                                           <a 
+                                               
+                                                href="../overview.html" 
+                                                href="../overview.html" 
+                                               >
+                                               <span class="fa fa-th"></span>Overview
+                                           </a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../modules.html" >
+                                   <div class="menu-toggler linked" data-toggle="collapse"
+                                           data-target="#modules-links"
+                                   >
+                                       <span class="fa fa-archive"></span>
+                                       <span class="link-name">Modules</span>
+                                       <span class="fa fa-angle-up"></span>
+                                   </div>
+                               </a>
+                               <ul class="links collapse in"
+                                       id="modules-links"
+                   >
+                                       <li class="link">
+                                           <a href="../modules/AppModule.html" >AppModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/LazyIsolateModule.html" >LazyIsolateModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/LazyIsolateRoutingModule.html" >LazyIsolateRoutingModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/LazyModule.html" >LazyModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/LazyRoleIsolateModule.html" >LazyRoleIsolateModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/LazyRolesAsyncIsolateModule.html" >LazyRolesAsyncIsolateModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/NgxPermissionsAllowStubModule.html" >NgxPermissionsAllowStubModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/NgxPermissionsModule.html" >NgxPermissionsModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/NgxPermissionsRestrictStubModule.html" >NgxPermissionsRestrictStubModule</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#components-links"
+                   >
+                                   <span class="fa fa-cogs"></span>
+                                   <span>Components</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="components-links"
+                   >
+                                       <li class="link">
+                                           <a href="../components/AppComponent.html" >AppComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/HomeComponent.html" >HomeComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/InitialLoadComponent.html" >InitialLoadComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/IsolateComponent.html" >IsolateComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/LazyComponentComponent.html" >LazyComponentComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/LazyRoleIsolateTestComponent.html" >LazyRoleIsolateTestComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/LazyRolesAsyncTestComponent.html" >LazyRolesAsyncTestComponent</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#directives-links"
+                   >
+                                   <span class="fa fa-code"></span>
+                                   <span>Directives</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="directives-links"
+                   >
+                                       <li class="link">
+                                           <a href="../directives/NgxPermissionsAllowStubDirective.html" >NgxPermissionsAllowStubDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../directives/NgxPermissionsDirective.html" >NgxPermissionsDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../directives/NgxPermissionsRestrictStubDirective.html" >NgxPermissionsRestrictStubDirective</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#classes-links"
+                   >
+                                   <span class="fa fa-file-code-o"></span>
+                                   <span>Classes</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="classes-links"
+                   >
+                                       <li class="link">
+                                           <a href="../classes/AppPage.html" >AppPage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/NgxPermission.html" >NgxPermission</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/NgxRole.html" >NgxRole</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/NgxRolesStore.html" >NgxRolesStore</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#injectables-links"
+                   >
+                                   <span class="fa fa-long-arrow-down"></span>
+                                   <span>Injectables</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="injectables-links"
+                   >
+                                       <li class="link">
+                                           <a href="../injectables/AsyncTestService.html" >AsyncTestService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxPermissionsConfigurationService.html" >NgxPermissionsConfigurationService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxPermissionsConfigurationStore.html" >NgxPermissionsConfigurationStore</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxPermissionsGuard.html" >NgxPermissionsGuard</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxPermissionsService.html"  data-type="entity-link" class="active" >NgxPermissionsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxPermissionsStore.html" >NgxPermissionsStore</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NgxRolesService.html" >NgxRolesService</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#interfaces-links"
+                   >
+                                   <span class="fa fa-info"></span>
+                                   <span>Interfaces</span>
+                                   <span class="fa fa-angle-up"></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="interfaces-links"
+                   >
+                                       <li class="link">
+                                           <a href="../interfaces/NgxPermissionsModuleConfig.html" >NgxPermissionsModuleConfig</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/NgxPermissionsRouterData.html" >NgxPermissionsRouterData</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/NgxRedirectToNavigationParameters.html" >NgxRedirectToNavigationParameters</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                           </li>
+                   
+                   
+                       </ul>
+                   
+                   </nav>
+               </div>
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>NgxPermissionsService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active">
+        <a href="#infos" id="infos-tab" role="tab" data-toggle="tab">Infos</a>
+    </li>
+    <li>
+        <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="infos">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>projects/ngx-permissions/src/lib/service/permissions.service.ts</code>
+        </p>
+
+
+            <section>
+                <h3 id="constructor">Constructor</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <code>constructor(isolate: boolean, permissionsStore: any)</code>
+                                </td>
+                            </tr>
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:19</a></div>
+                                        </td>
+                                    </tr>
+            
+                        </tbody>
+                    </table>
+            </section>
+
+            <section>
+                
+                    <h3 id="methods">
+                        Methods
+                    </h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> flushPermissions</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play "></span>
+                                    <code>flushPermissions()</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:32</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Remove all permissions from permissions source</p>
+            </div>
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code>void</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> hasPermission</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play "></span>
+                                    <code>hasPermission(permission: string | {})</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:36</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code>any</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> loadPermissions</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play "></span>
+                                    <code>loadPermissions(permissions: {}, validationFunction: any)</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:45</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code>void</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> addPermission</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play "></span>
+                                    <code>addPermission(permission: string | {}, validationFunction: any)</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:53</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code>void</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> removePermission</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play "></span>
+                                    <code>removePermission(permissionName: string)</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:67</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code>void</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> getPermission</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play "></span>
+                                    <code>getPermission(name: string)</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:75</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code>any</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> getPermissions</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play "></span>
+                                    <code>getPermissions()</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:79</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code><a href="../classes/NgxPermission.html" target="_self" >NgxPermissionsObject</a></code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> reducePermission</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock"></span>
+                                    <code>reducePermission(source: <a href="../classes/NgxPermission.html">NgxPermissionsObject</a>, name: string, validationFunction: any)</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:83</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code><a href="../classes/NgxPermission.html" target="_self" >NgxPermissionsObject</a></code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> hasArrayPermission</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock"></span>
+                                    <code>hasArrayPermission(permissions: {})</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="101" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:101</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code>any</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> hasPermissionValidationFunction</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock"></span>
+                                    <code>hasPermissionValidationFunction(key: string)</code>
+                                </td>
+                            </tr>
+            
+            
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="126" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:126</a></div>
+                                        </td>
+                                    </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            
+                                        <div class="io-description">
+                                            <b>Returns : </b>    <code>boolean</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+
+            <section>
+                
+                    <h3 id="inputs">
+                        Properties
+                    </h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> permissions$</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <span class="modifier-icon fa fa-"></span><code>permissions$:     <code>any</code>
+            </bcode>
+                                </td>
+                            </tr>
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:19</a></div>
+                                        </td>
+                                    </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> permissionsSource</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <span class="modifier-icon fa fa-lock"></span><code>permissionsSource:     <code>any</code>
+            </bcode>
+                                </td>
+                            </tr>
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">projects/ngx-permissions/src/lib/service/permissions.service.ts:18</a></div>
+                                        </td>
+                                    </tr>
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+    <div class="tab-pane fade tab-source-code" id="source">
+        <pre class="line-numbers"><code class="language-typescript">import { Inject, Injectable, InjectionToken } from &#x27;@angular/core&#x27;;
+
+import { BehaviorSubject, from, Observable, ObservableInput, of } from &#x27;rxjs&#x27;;
+import { catchError, first, map, mergeAll, switchMap, tap } from &#x27;rxjs/operators&#x27;;
+
+import { NgxPermission } from &#x27;../model/permission.model&#x27;;
+import { NgxPermissionsStore } from &#x27;../store/permissions.store&#x27;;
+
+import { isBoolean, isFunction, transformStringToArray } from &#x27;../utils/utils&#x27;;
+
+export type NgxPermissionsObject &#x3D; { [ name: string ]: NgxPermission };
+
+export const USE_PERMISSIONS_STORE &#x3D; new InjectionToken(&#x27;USE_PERMISSIONS_STORE&#x27;);
+
+@Injectable()
+export class NgxPermissionsService {
+
+    private permissionsSource: BehaviorSubject&lt;NgxPermissionsObject&gt;;
+    public permissions$: Observable&lt;NgxPermissionsObject&gt;;
+
+    constructor(
+        @Inject(USE_PERMISSIONS_STORE) private isolate: boolean &#x3D; false,
+        private permissionsStore: NgxPermissionsStore
+    ) {
+        this.permissionsSource &#x3D; isolate ? new BehaviorSubject&lt;NgxPermissionsObject&gt;({}) : permissionsStore.permissionsSource;
+        this.permissions$ &#x3D; this.permissionsSource.asObservable();
+    }
+
+    /**
+     * Remove all permissions from permissions source
+     */
+    public flushPermissions(): void {
+        this.permissionsSource.next({});
+    }
+
+    public hasPermission(permission: string | string[]): Promise&lt;boolean&gt; {
+        if (!permission || (Array.isArray(permission) &amp;&amp; permission.length &#x3D;&#x3D;&#x3D; 0)) {
+            return Promise.resolve(true);
+        }
+
+        permission &#x3D; transformStringToArray(permission);
+        return this.hasArrayPermission(permission);
+    }
+
+    public loadPermissions(permissions: string[], validationFunction?: Function): void {
+        const newPermissions &#x3D; permissions.reduce((source, p) &#x3D;&gt;
+                this.reducePermission(source, p, validationFunction)
+            , {});
+
+        this.permissionsSource.next(newPermissions);
+    }
+
+    public addPermission(permission: string | string[], validationFunction?: Function): void {
+        if (Array.isArray(permission)) {
+            const permissions &#x3D; permission.reduce((source, p) &#x3D;&gt;
+                    this.reducePermission(source, p, validationFunction)
+                , this.permissionsSource.value);
+
+            this.permissionsSource.next(permissions);
+        } else {
+            const permissions &#x3D; this.reducePermission(this.permissionsSource.value, permission, validationFunction);
+
+            this.permissionsSource.next(permissions);
+        }
+    }
+
+    public removePermission(permissionName: string): void {
+        const permissions &#x3D; {
+            ...this.permissionsSource.value
+        };
+        delete permissions[ permissionName ];
+        this.permissionsSource.next(permissions);
+    }
+
+    public getPermission(name: string): NgxPermission {
+        return this.permissionsSource.value[ name ];
+    }
+
+    public getPermissions(): NgxPermissionsObject {
+        return this.permissionsSource.value;
+    }
+
+    private reducePermission(
+        source: NgxPermissionsObject,
+        name: string,
+        validationFunction?: Function
+    ): NgxPermissionsObject {
+        if (!!validationFunction &amp;&amp; isFunction(validationFunction)) {
+            return {
+                ...source,
+                [ name ]: { name, validationFunction }
+            };
+        } else {
+            return {
+                ...source,
+                [ name ]: { name }
+            };
+        }
+    }
+
+    private hasArrayPermission(permissions: string[]): Promise&lt;boolean&gt; {
+        const promises: Observable&lt;boolean&gt;[] &#x3D; permissions.map((key) &#x3D;&gt; {
+            if (this.hasPermissionValidationFunction(key)) {
+                const immutableValue &#x3D; { ...this.permissionsSource.value };
+                const validationFunction: Function &#x3D; &lt;Function&gt;this.permissionsSource.value[ key ].validationFunction;
+
+                return of(null).pipe(
+                    map(() &#x3D;&gt; validationFunction(key, immutableValue)),
+                    switchMap((promise: Promise&lt;boolean&gt; | boolean): ObservableInput&lt;boolean&gt; &#x3D;&gt; isBoolean(promise) ?
+                        of(promise as boolean) : promise as Promise&lt;boolean&gt;),
+                    catchError(() &#x3D;&gt; of(false))
+                );
+            }
+
+            // check for name of the permission if there is no validation function
+            return of(!!this.permissionsSource.value[ key ]);
+        });
+
+        return from(promises).pipe(
+            mergeAll(),
+            first((data) &#x3D;&gt; data !&#x3D;&#x3D; false, false),
+            map((data) &#x3D;&gt; data &#x3D;&#x3D;&#x3D; false ? false : true)
+        ).toPromise().then((data: any) &#x3D;&gt; data);
+    }
+
+    private hasPermissionValidationFunction(key: string): boolean {
+        return !!this.permissionsSource.value[ key ] &amp;&amp;
+            !!this.permissionsSource.value[ key ].validationFunction &amp;&amp;
+            isFunction(this.permissionsSource.value[ key ].validationFunction);
+    }
+
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+           </div>
+       </div>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script>var COMPODOC_CURRENT_PAGE_DEPTH = 1;</script>
+
+       <script src="../js/search/search.js"></script>
+       <script src="../js/search/lunr.min.js"></script>
+       <script src="../js/search/search-lunr.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/search/search_index.js"></script>
+
+    </body>
+</html>
