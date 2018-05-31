@@ -1140,6 +1140,54 @@ const appRoutes: Routes = [
 ```
 ----------------------------
 
+### Unit Testing of Component ( ByPassing Directive )
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { NgxPermissionsService } from 'ngx-permissions';
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit {
+
+  title = 'app';
+
+   constructor(private permissionsService: NgxPermissionsService) {}
+
+  ngOnInit(): void {
+    const perm = ["ADMIN", "EDITOR"];
+    this.permissionsService.loadPermissions(perm);
+  }
+}
+```
+```html
+<div *ngxPermissionOnly=["ADMIN"]>
+  <p class="pull-right">Hey! You can see me.<p>
+</div>
+```
+
+```typescript
+import { NgxPermissionsAllowStubModule } from 'ngx-permissions';
+describe('AppComponent', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        NgxPermissionsAllowStubModule,
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    });
+    fixture = TestBed.createComponent(AppComponent);
+
+  });
+
+  it('can find the p element and bypass the directive', () => {
+    const element = fixture.nativeElement;
+    expect(element.getElementsByClassName('pull-right').length).toBe(1);
+  });
+})
+```
 
 ## Common use cases
 
