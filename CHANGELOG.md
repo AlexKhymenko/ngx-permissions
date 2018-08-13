@@ -1,3 +1,15 @@
+## 6.0.1
+Revert system to previous building due to bugs in cli
+## 6.0.0
+Fixed bug with onpush change detection
+ 
+change building system to ng cli
+
+
+
+## 5.0.0
+same as 5.0.0-rc.0
+
 ## 5.0.0-rc.0
 Breaking change 
 minimal rxjs dependency is 6.0
