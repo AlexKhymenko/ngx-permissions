@@ -140,9 +140,7 @@
           "options": {
             "main": "projects/ngx-permissions/src/test.ts",
             "tsConfig": "projects/ngx-permissions/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-permissions/karma.conf.js",
-            "codeCoverage": true
-
+            "karmaConfig": "projects/ngx-permissions/karma.conf.js"
           },
           "configurations": {
             "development": {
