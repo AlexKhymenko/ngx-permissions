@@ -13,10 +13,10 @@
     "docs:build": "compodoc -p tsconfig.json -n ngx-permissions -d docs --hideGenerator",
     "docs:serve": "npm run docs:build -- -s",
     "docs:watch": "npm run docs:build -- -s -w",
-    "rep:publish": "npm run build && npm publish dist",
+    "rep:publish": "npm run build && npm publish dist/ngx-permissions",
     "codecov": "cat coverage/lcovonly/lcov.info | codecov"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/common": ">=6.0.0 || <7.0.0",
     "@angular/core": ">=6.0.0 || <7.0.0",

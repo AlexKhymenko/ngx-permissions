@@ -105,7 +105,7 @@ const appRoutes: Routes = [
       }
     },
     canLoad: [NgxPermissionsGuard],
-    loadChildren: 'app/lazy-module/lazy-module.module#LazyModule'
+    loadChildren: './lazy-module/lazy-module.module#LazyModule'
   },
   { path: 'lazy-isolate', loadChildren: './lazy-isolate/lazy-isolate.module#LazyIsolateModule' },
   { path: 'lazy-roles-isolate', loadChildren: './lazy-role-isolate/lazy-role-isolate.module#LazyRoleIsolateModule' },
