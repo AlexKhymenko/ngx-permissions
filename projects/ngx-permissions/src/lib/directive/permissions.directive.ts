@@ -1,4 +1,14 @@
-import { Directive, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Directive,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewContainerRef
+} from '@angular/core';
 import { Subscription, merge } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategies.enum';
@@ -45,6 +55,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         private configurationService: NgxPermissionsConfigurationService,
         private rolesService: NgxRolesService,
         private viewContainer: ViewContainerRef,
+        private changeDetector: ChangeDetectorRef,
         private templateRef: TemplateRef<any>
     ) {
     }
@@ -165,6 +176,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         }
 
         this.viewContainer.createEmbeddedView(template);
+        this.changeDetector.markForCheck();
     }
 
     private getAuthorisedTemplates(): TemplateRef<any> {
