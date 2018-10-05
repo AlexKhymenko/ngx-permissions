@@ -31,20 +31,12 @@ export class NgxPermissionsConfigurationService {
 
     }
 
-    public setDefaultOnAuthorizedStrategy(name: string | 'remove' | 'show') {
-        if (this.strategiesSource.value[ name ] || this.predefinedStrategy(name)) {
-            this.onAuthorisedDefaultStrategy = name;
-        } else {
-            throw new Error(`No ${name} strategy is found please define one`);
-        }
+    public setDefaultOnAuthorizedStrategy(name: string | 'remove' | 'show'): void {
+        this.onAuthorisedDefaultStrategy = this.getDefinedStrategy(name);
     }
 
-    public setDefaultOnUnauthorizedStrategy(name: string | 'remove' | 'show') {
-        if (this.strategiesSource.value[ name ] || this.predefinedStrategy(name)) {
-            this.onUnAuthorisedDefaultStrategy = name;
-        } else {
-            throw new Error(`No ' ${name} ' strategy is found please define one`);
-        }
+    public setDefaultOnUnauthorizedStrategy(name: string | 'remove' | 'show'): void {
+        this.onUnAuthorisedDefaultStrategy = this.getDefinedStrategy(name);
     }
 
     public addPermissionStrategy(key: string, func: StrategyFunction): void {
@@ -59,8 +51,16 @@ export class NgxPermissionsConfigurationService {
         return this.strategiesSource.value;
     }
 
-    private predefinedStrategy(strategy: string): boolean {
+    private isPredefinedStrategy(strategy: string): boolean {
         return strategy === NgxPermissionsPredefinedStrategies.SHOW || strategy === NgxPermissionsPredefinedStrategies.REMOVE;
+    }
+
+    private getDefinedStrategy(name: string | 'remove' | 'show') {
+        if (this.strategiesSource.value[ name ] || this.isPredefinedStrategy(name)) {
+            return name;
+        } else {
+            throw new Error(`No ' ${name} ' strategy is found please define one`);
+        }
     }
 
 }
