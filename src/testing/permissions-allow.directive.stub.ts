@@ -1,4 +1,5 @@
 import { Directive, EventEmitter, Input, OnInit, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { StrategyFunction } from '../service/configuration.service';
 
 @Directive({
     selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
@@ -15,6 +16,15 @@ export class NgxPermissionsAllowStubDirective implements OnInit {
 
     @Input() ngxPermissionsThen: TemplateRef<any>;
     @Input() ngxPermissionsElse: TemplateRef<any>;
+
+    @Input() ngxPermissionsOnlyAuthorisedStrategy: string | StrategyFunction;
+    @Input() ngxPermissionsOnlyUnauthorisedStrategy: string | StrategyFunction;
+
+    @Input() ngxPermissionsExceptUnauthorisedStrategy: string | StrategyFunction;
+    @Input() ngxPermissionsExceptAuthorisedStrategy: string | StrategyFunction;
+
+    @Input() ngxPermissionsUnauthorisedStrategy: string | StrategyFunction;
+    @Input() ngxPermissionsAuthorisedStrategy: string | StrategyFunction;
 
     @Output() permissionsAuthorized = new EventEmitter();
     @Output() permissionsUnauthorized = new EventEmitter();

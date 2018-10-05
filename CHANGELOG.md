@@ -1,3 +1,6 @@
+## 6.0.2
+Fix Unit test components when using strategies (https://github.com/AlexKhymenko/ngx-permissions/issues/82)
+
 ## 6.0.1
 Revert system to previous building due to bugs in cli
 ## 6.0.0 - BROKEN VERSION IN AOT
