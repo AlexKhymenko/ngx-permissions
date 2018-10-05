@@ -77,12 +77,11 @@ export class NgxRolesService {
 
     private hasRoleKey(roleName: string[]): Promise<boolean> {
         const promises: Observable<boolean>[] = roleName.map((key) => {
-            if (
-                !!this.rolesSource.value[key] &&
-                !!this.rolesSource.value[key].validationFunction &&
-                isFunction(this.rolesSource.value[key].validationFunction) &&
-                !isPromise(this.rolesSource.value[key].validationFunction)
-            ) {
+            const hasValidationFunction = !!this.rolesSource.value[key] &&
+                                          !!this.rolesSource.value[key].validationFunction &&
+                                          isFunction(this.rolesSource.value[key].validationFunction);
+
+            if (hasValidationFunction && !isPromise(this.rolesSource.value[key].validationFunction)) {
                 const validationFunction: Function = <Function>this.rolesSource.value[key].validationFunction;
 
                 return of(null).pipe(
@@ -99,7 +98,7 @@ export class NgxRolesService {
         return from(promises).pipe(
             mergeAll(),
             first((data: any) => data !== false, false),
-            map((data) => data === false ? false : true)
+            map((data) => data !== false)
         ).toPromise().then((data: any) => data);
     }
 
