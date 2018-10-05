@@ -6,7 +6,7 @@ import { NgxPermissionsConfigurationStore } from '../store/configuration.store';
 export type StrategyFunction = (templateRef?: TemplateRef<any>) => void;
 
 export type Strategy = {
-    [ key: string ]: StrategyFunction
+    [key: string]: StrategyFunction
 };
 
 export const USE_CONFIGURATION_STORE = new InjectionToken('USE_CONFIGURATION_STORE');
@@ -40,27 +40,27 @@ export class NgxPermissionsConfigurationService {
     }
 
     public addPermissionStrategy(key: string, func: StrategyFunction): void {
-        this.strategiesSource.value[ key ] = func;
+        this.strategiesSource.value[key] = func;
     }
 
     public getStrategy(key: string) {
-        return this.strategiesSource.value[ key ];
+        return this.strategiesSource.value[key];
     }
 
     public getAllStrategies() {
         return this.strategiesSource.value;
     }
 
-    private isPredefinedStrategy(strategy: string): boolean {
-        return strategy === NgxPermissionsPredefinedStrategies.SHOW || strategy === NgxPermissionsPredefinedStrategies.REMOVE;
-    }
-
     private getDefinedStrategy(name: string | 'remove' | 'show') {
-        if (this.strategiesSource.value[ name ] || this.isPredefinedStrategy(name)) {
+        if (this.strategiesSource.value[name] || this.isPredefinedStrategy(name)) {
             return name;
         } else {
             throw new Error(`No ' ${name} ' strategy is found please define one`);
         }
+    }
+
+    private isPredefinedStrategy(strategy: string): boolean {
+        return strategy === NgxPermissionsPredefinedStrategies.SHOW || strategy === NgxPermissionsPredefinedStrategies.REMOVE;
     }
 
 }
