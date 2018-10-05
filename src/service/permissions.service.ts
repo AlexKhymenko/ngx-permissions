@@ -1,14 +1,14 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 
 import { BehaviorSubject, from, Observable, ObservableInput, of } from 'rxjs';
-import { catchError, first, map, mergeAll, switchMap, tap } from 'rxjs/operators';
+import { catchError, first, map, mergeAll, switchMap } from 'rxjs/operators';
 
 import { NgxPermission } from '../model/permission.model';
 import { NgxPermissionsStore } from '../store/permissions.store';
 
 import { isBoolean, isFunction, transformStringToArray } from '../utils/utils';
 
-export type NgxPermissionsObject = { [ name: string ]: NgxPermission };
+export type NgxPermissionsObject = { [name: string]: NgxPermission };
 
 export const USE_PERMISSIONS_STORE = new InjectionToken('USE_PERMISSIONS_STORE');
 
@@ -68,12 +68,12 @@ export class NgxPermissionsService {
         const permissions = {
             ...this.permissionsSource.value
         };
-        delete permissions[ permissionName ];
+        delete permissions[permissionName];
         this.permissionsSource.next(permissions);
     }
 
     public getPermission(name: string): NgxPermission {
-        return this.permissionsSource.value[ name ];
+        return this.permissionsSource.value[name];
     }
 
     public getPermissions(): NgxPermissionsObject {
@@ -88,12 +88,12 @@ export class NgxPermissionsService {
         if (!!validationFunction && isFunction(validationFunction)) {
             return {
                 ...source,
-                [ name ]: { name, validationFunction }
+                [name]: {name, validationFunction}
             };
         } else {
             return {
                 ...source,
-                [ name ]: { name }
+                [name]: {name}
             };
         }
     }
@@ -101,8 +101,8 @@ export class NgxPermissionsService {
     private hasArrayPermission(permissions: string[]): Promise<boolean> {
         const promises: Observable<boolean>[] = permissions.map((key) => {
             if (this.hasPermissionValidationFunction(key)) {
-                const immutableValue = { ...this.permissionsSource.value };
-                const validationFunction: Function = <Function>this.permissionsSource.value[ key ].validationFunction;
+                const immutableValue = {...this.permissionsSource.value};
+                const validationFunction: Function = <Function>this.permissionsSource.value[key].validationFunction;
 
                 return of(null).pipe(
                     map(() => validationFunction(key, immutableValue)),
@@ -113,7 +113,7 @@ export class NgxPermissionsService {
             }
 
             // check for name of the permission if there is no validation function
-            return of(!!this.permissionsSource.value[ key ]);
+            return of(!!this.permissionsSource.value[key]);
         });
 
         return from(promises).pipe(
@@ -124,9 +124,9 @@ export class NgxPermissionsService {
     }
 
     private hasPermissionValidationFunction(key: string): boolean {
-        return !!this.permissionsSource.value[ key ] &&
-            !!this.permissionsSource.value[ key ].validationFunction &&
-            isFunction(this.permissionsSource.value[ key ].validationFunction);
+        return !!this.permissionsSource.value[key] &&
+            !!this.permissionsSource.value[key].validationFunction &&
+            isFunction(this.permissionsSource.value[key].validationFunction);
     }
 
 }

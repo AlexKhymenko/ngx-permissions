@@ -131,8 +131,8 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         this.currentAuthorizedState = false;
         this.permissionsUnauthorized.emit();
 
-        if (this.unauthorisedStrategyDefined()) {
-            this.applyStrategyAccordingToStrategyType(this.unauthorisedStrategyDefined());
+        if (this.getUnAuthorizedStrategyInput()) {
+            this.applyStrategyAccordingToStrategyType(this.getUnAuthorizedStrategyInput());
             return;
         }
 
@@ -150,8 +150,8 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         this.currentAuthorizedState = true;
         this.permissionsAuthorized.emit();
 
-        if (this.onlyAuthorisedStrategyDefined()) {
-            this.applyStrategyAccordingToStrategyType(this.onlyAuthorisedStrategyDefined());
+        if (this.getAuthorizedStrategyInput()) {
+            this.applyStrategyAccordingToStrategyType(this.getAuthorizedStrategyInput());
             return;
         }
 
@@ -200,13 +200,13 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         return !this.ngxPermissionsExceptThen || !this.ngxPermissionsThen;
     }
 
-    private onlyAuthorisedStrategyDefined() {
+    private getAuthorizedStrategyInput() {
         return this.ngxPermissionsOnlyAuthorisedStrategy ||
             this.ngxPermissionsExceptAuthorisedStrategy ||
             this.ngxPermissionsAuthorisedStrategy;
     }
 
-    private unauthorisedStrategyDefined() {
+    private getUnAuthorizedStrategyInput() {
         return this.ngxPermissionsOnlyUnauthorisedStrategy ||
             this.ngxPermissionsExceptUnauthorisedStrategy ||
             this.ngxPermissionsUnauthorisedStrategy;
