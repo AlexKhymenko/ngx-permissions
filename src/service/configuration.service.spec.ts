@@ -1,6 +1,7 @@
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 import { NgxPermissionsModule } from '../index';
-import { NgxPermissionsConfigurationService } from './configuration.service';
+import { NgxPermissionsConfigurationService, USE_CONFIGURATION_STORE } from './configuration.service';
+import { NgxPermissionsConfigurationStore } from '../store/configuration.store';
 
 const StrategiesFunction = {
     FUNCTION: () => {},
@@ -57,4 +58,35 @@ describe('Configuration Service', () => {
         expect(localService.onAuthorisedDefaultStrategy).toBeTruthy();
         expect(localService.onAuthorisedDefaultStrategy).toEqual('FUNCTION');
     });
+});
+
+
+describe('Isolated configuration service', () => {
+    let localService: NgxPermissionsConfigurationService;
+    let localStore: NgxPermissionsConfigurationStore;
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [NgxPermissionsModule.forRoot({configurationIsolate: true})]
+        })
+    });
+
+    beforeEach(inject([NgxPermissionsConfigurationService, NgxPermissionsConfigurationStore], (service: NgxPermissionsConfigurationService, store: NgxPermissionsConfigurationStore) => {
+        localService = service;
+        localStore = store;
+        localStore.onAuthorisedDefaultStrategy = 'FUNCTION';
+        localStore.onUnAuthorisedDefaultStrategy = 'FUNCTION';
+    }));
+
+
+    it('should create an instance', () => {
+        expect(localService).toBeTruthy();
+    });
+
+    it ('should set onAuthrisedDefaultStrategy to undefined', () => {
+        expect(localService.onAuthorisedDefaultStrategy).toBeFalsy();
+    });
+
+    it ('should set onUnAuthorisedDefault strategy to undefined', () => {
+        expect(localService.onAuthorisedDefaultStrategy).toBeFalsy();
+    })
 });
