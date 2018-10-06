@@ -122,12 +122,13 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
                     }
 
                     return false;
-                } else {
-                    if (permissions.only) {
-                        return this.checkOnlyPermissions(permissions, route, state);
-                    }
-                    return true;
                 }
+
+
+                if (permissions.only) {
+                    return this.checkOnlyPermissions(permissions, route, state);
+                }
+                return true;
             });
     }
 

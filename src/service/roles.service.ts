@@ -63,9 +63,9 @@ export class NgxRolesService {
     }
 
     public hasOnlyRoles(names: string | string[]): Promise<boolean> {
-        if (!names || (Array.isArray(names) && names.length === 0)) {
-            return Promise.resolve(true);
-        }
+        const isNamesEmpty = !names || (Array.isArray(names) && names.length === 0);
+
+        if (isNamesEmpty) return Promise.resolve(true);
 
         names = transformStringToArray(names);
 
