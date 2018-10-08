@@ -147,7 +147,7 @@ describe('Ngx permissions Except with default strategy and with else block then 
             configurationService.setDefaultOnUnauthorizedStrategy('show');
             permissionsService.addPermission('FAIL_BLOCK');
         })
-        it('should  show else block instead of applying strategy', fakeAsync(() => {
+        it('should  show else block instead of applying default strategy', fakeAsync(() => {
 
             detectChanges(fixture);
             let content2 = fixture.debugElement.nativeElement.querySelector('div');
@@ -202,6 +202,59 @@ describe('Simple ngxPermissionsExcept directive', () => {
             expect(comp.permissionsUnauthorized).toHaveBeenCalledTimes(0);
         }));
     })
+});
+
+describe('Ngx permissions Except with default strategy and with else block then block ', () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <div *ngxPermissionsExcept="['FAIL_BLOCK']; else elseBlock; then thenBlock">
+                FAILED
+            </div>
+            <ng-template #elseBlock>
+                <div>elseBlock</div>
+            </ng-template>
+            <ng-template #thenBlock>
+                <div>thenBlock</div>
+            </ng-template>
+        `
+
+    })
+    class TestComp {
+        data: any;
+    }
+
+    let rolesService;
+    let permissionsService;
+    let configurationService: NgxPermissionsConfigurationService;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
+        configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
+
+    });
+
+    describe('Given user doesnt have permissions', () => {
+
+        beforeEach(() => {
+            configurationService.setDefaultOnUnauthorizedStrategy('show');
+            permissionsService.addPermission('ALLOW');
+        })
+        it('should  show then block instead of applying default strategy', fakeAsync(() => {
+
+            detectChanges(fixture);
+            let content2 = fixture.debugElement.nativeElement.querySelector('div');
+            expect(content2).toBeTruthy();
+            expect(content2.innerHTML.trim()).toEqual(`thenBlock`);
+        }));
+    })
+
 });
 
 

@@ -155,7 +155,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
             return;
         }
 
-        if (this.configurationService.onAuthorisedDefaultStrategy && this.noThenBlockDefined()) {
+        if (this.configurationService.onAuthorisedDefaultStrategy && !this.thenBlockDefined()) {
             this.applyStrategy(this.configurationService.onAuthorisedDefaultStrategy);
         } else {
             this.showTemplateBlockInView(template);
@@ -196,8 +196,8 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         return !!this.ngxPermissionsExceptElse || !!this.ngxPermissionsElse;
     }
 
-    private noThenBlockDefined() {
-        return !this.ngxPermissionsExceptThen || !this.ngxPermissionsThen;
+    private thenBlockDefined() {
+        return !!this.ngxPermissionsExceptThen || !!this.ngxPermissionsThen;
     }
 
     private getAuthorizedStrategyInput() {
