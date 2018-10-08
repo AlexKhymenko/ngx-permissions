@@ -78,11 +78,13 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
             .pipe(skip(this.firstMergeUnusedRun))
             .subscribe(() => {
                 if (notEmptyValue(this.ngxPermissionsExcept)) {
-                    return this.validateExceptAndOnlyPermissions();
+                    this.validateExceptAndOnlyPermissions();
+                    return;
                 }
 
                 if (notEmptyValue(this.ngxPermissionsOnly)) {
-                    return this.validateOnlyPermissions();
+                    this.validateOnlyPermissions();
+                    return;
                 }
 
                 this.handleAuthorisedPermission(this.getAuthorisedTemplates());
@@ -90,84 +92,86 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
     }
 
     private validateExceptAndOnlyPermissions(): void {
-        Promise.all([ this.permissionsService.hasPermission(this.ngxPermissionsExcept), this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept) ])
-               .then(([ hasPermission, hasRole ]) => {
-                   if (hasPermission || hasRole) {
-                       this.handleUnauthorisedPermission(this.ngxPermissionsExceptElse || this.ngxPermissionsElse);
-                   } else {
-                       if (!!this.ngxPermissionsOnly) {
-                           throw false;
-                       } else {
-                           this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef);
-                       }
-                   }
-               }).catch(() => {
-            if (!!this.ngxPermissionsOnly) {
-                this.validateOnlyPermissions();
-            } else {
+        Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsExcept), this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept)])
+            .then(([hasPermission, hasRole]) => {
+                if (hasPermission || hasRole) {
+                    this.handleUnauthorisedPermission(this.ngxPermissionsExceptElse || this.ngxPermissionsElse);
+                    return;
+                }
+
+                if (!!this.ngxPermissionsOnly)  throw false;
+
                 this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef);
-            }
+
+            }).catch(() => {
+                if (!!this.ngxPermissionsOnly) {
+                    this.validateOnlyPermissions();
+                } else {
+                    this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef);
+                }
         });
     }
 
     private validateOnlyPermissions(): void {
-        Promise.all([ this.permissionsService.hasPermission(this.ngxPermissionsOnly), this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly) ])
-               .then(([ permissionPr, roles ]) => {
-                   if (permissionPr || roles) {
-                       this.handleAuthorisedPermission(this.ngxPermissionsOnlyThen || this.ngxPermissionsThen || this.templateRef);
-                   } else {
-                       this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
-                   }
-               }).catch(() => {
-            this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
+        Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsOnly), this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly)])
+            .then(([hasPermissions, hasRoles]) => {
+                if (hasPermissions || hasRoles) {
+                    this.handleAuthorisedPermission(this.ngxPermissionsOnlyThen || this.ngxPermissionsThen || this.templateRef);
+                } else {
+                    this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
+                }
+            }).catch(() => {
+                this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
         });
     }
 
     private handleUnauthorisedPermission(template: TemplateRef<any>): void {
+        if (isBoolean(this.currentAuthorizedState) && !this.currentAuthorizedState) return;
 
-        if (!isBoolean(this.currentAuthorizedState) || this.currentAuthorizedState) {
-            this.currentAuthorizedState = false;
-            this.permissionsUnauthorized.emit();
+        this.currentAuthorizedState = false;
+        this.permissionsUnauthorized.emit();
 
-            if (this.unauthorisedStrategyDefined()) {
-                if (isString(this.unauthorisedStrategyDefined())) {
-                    this.applyStrategy(this.unauthorisedStrategyDefined());
-                } else if (isFunction(this.unauthorisedStrategyDefined())) {
-                    this.showTemplateBlockInView(this.templateRef);
-                    (this.unauthorisedStrategyDefined() as Function)(this.templateRef);
-                }
-                return;
-            }
-
-            if (this.configurationService.onUnAuthorisedDefaultStrategy && this.noElseBlockDefined()) {
-                this.applyStrategy(this.configurationService.onUnAuthorisedDefaultStrategy);
-            } else {
-                this.showTemplateBlockInView(template);
-            }
-
+        if (this.getUnAuthorizedStrategyInput()) {
+            this.applyStrategyAccordingToStrategyType(this.getUnAuthorizedStrategyInput());
+            return;
         }
+
+        if (this.configurationService.onUnAuthorisedDefaultStrategy && !this.elseBlockDefined()) {
+            this.applyStrategy(this.configurationService.onUnAuthorisedDefaultStrategy);
+        } else {
+            this.showTemplateBlockInView(template);
+        }
+
     }
 
     private handleAuthorisedPermission(template: TemplateRef<any>): void {
-        if (!isBoolean(this.currentAuthorizedState) || !this.currentAuthorizedState) {
-            this.currentAuthorizedState = true;
-            this.permissionsAuthorized.emit();
+        if (isBoolean(this.currentAuthorizedState) && this.currentAuthorizedState) return;
 
-            if (this.onlyAuthorisedStrategyDefined()) {
-                if (isString(this.onlyAuthorisedStrategyDefined())) {
-                    this.applyStrategy(this.onlyAuthorisedStrategyDefined());
-                } else if (isFunction(this.onlyAuthorisedStrategyDefined())) {
-                    this.showTemplateBlockInView(this.templateRef);
-                    (this.onlyAuthorisedStrategyDefined() as Function)(this.templateRef);
-                }
-                return;
-            }
+        this.currentAuthorizedState = true;
+        this.permissionsAuthorized.emit();
 
-            if (this.configurationService.onAuthorisedDefaultStrategy && this.noThenBlockDefined()) {
-                this.applyStrategy(this.configurationService.onAuthorisedDefaultStrategy);
-            } else {
-                this.showTemplateBlockInView(template);
-            }
+        if (this.getAuthorizedStrategyInput()) {
+            this.applyStrategyAccordingToStrategyType(this.getAuthorizedStrategyInput());
+            return;
+        }
+
+        if (this.configurationService.onAuthorisedDefaultStrategy && !this.thenBlockDefined()) {
+            this.applyStrategy(this.configurationService.onAuthorisedDefaultStrategy);
+        } else {
+            this.showTemplateBlockInView(template);
+        }
+    }
+
+    private applyStrategyAccordingToStrategyType(strategy: string | Function): void {
+        if (isString(strategy)) {
+            this.applyStrategy(strategy);
+            return;
+        }
+
+        if (isFunction(strategy)) {
+            this.showTemplateBlockInView(this.templateRef);
+            (strategy as Function)(this.templateRef);
+            return;
         }
     }
 
@@ -188,21 +192,21 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
             || this.templateRef;
     }
 
-    private noElseBlockDefined(): boolean {
-        return !this.ngxPermissionsExceptElse || !this.ngxPermissionsElse;
+    private elseBlockDefined(): boolean {
+        return !!this.ngxPermissionsExceptElse || !!this.ngxPermissionsElse;
     }
 
-    private noThenBlockDefined() {
-        return !this.ngxPermissionsExceptThen || !this.ngxPermissionsThen;
+    private thenBlockDefined() {
+        return !!this.ngxPermissionsExceptThen || !!this.ngxPermissionsThen;
     }
 
-    private onlyAuthorisedStrategyDefined() {
+    private getAuthorizedStrategyInput() {
         return this.ngxPermissionsOnlyAuthorisedStrategy ||
             this.ngxPermissionsExceptAuthorisedStrategy ||
             this.ngxPermissionsAuthorisedStrategy;
     }
 
-    private unauthorisedStrategyDefined() {
+    private getUnAuthorizedStrategyInput() {
         return this.ngxPermissionsOnlyUnauthorisedStrategy ||
             this.ngxPermissionsExceptUnauthorisedStrategy ||
             this.ngxPermissionsUnauthorisedStrategy;

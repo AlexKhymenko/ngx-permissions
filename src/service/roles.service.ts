@@ -10,7 +10,7 @@ import { NgxPermissionsService } from './permissions.service';
 
 export const USE_ROLES_STORE = new InjectionToken('USE_ROLES_STORE');
 
-export type NgxRolesObject = { [ name: string ]: NgxRole };
+export type NgxRolesObject = { [name: string]: NgxRole };
 
 @Injectable()
 export class NgxRolesService {
@@ -31,14 +31,14 @@ export class NgxRolesService {
     public addRole(name: string, validationFunction: Function | string[]) {
         const roles = {
             ...this.rolesSource.value,
-            [ name ]: { name, validationFunction }
+            [name]: {name, validationFunction}
         };
         this.rolesSource.next(roles);
     }
 
-    public addRoles(rolesObj: { [ name: string ]: Function | string[] }) {
+    public addRoles(rolesObj: { [name: string]: Function | string[] }) {
         Object.keys(rolesObj).forEach((key, index) => {
-            this.addRole(key, rolesObj[ key ]);
+            this.addRole(key, rolesObj[key]);
         });
     }
 
@@ -50,7 +50,7 @@ export class NgxRolesService {
         let roles = {
             ...this.rolesSource.value
         };
-        delete roles[ roleName ];
+        delete roles[roleName];
         this.rolesSource.next(roles);
     }
 
@@ -59,31 +59,30 @@ export class NgxRolesService {
     }
 
     public getRole(name: string) {
-        return this.rolesSource.value[ name ];
+        return this.rolesSource.value[name];
     }
 
     public hasOnlyRoles(names: string | string[]): Promise<boolean> {
-        if (!names || (Array.isArray(names) && names.length === 0)) {
-            return Promise.resolve(true);
-        }
+        const isNamesEmpty = !names || (Array.isArray(names) && names.length === 0);
+
+        if (isNamesEmpty) return Promise.resolve(true);
 
         names = transformStringToArray(names);
 
-        return Promise.all([ this.hasRoleKey(names), this.hasRolePermission(this.rolesSource.value, names) ])
-                      .then(([ hasRoles, hasPermissions ]: [ boolean, boolean ]) => {
-                          return hasRoles || hasPermissions;
-                      });
+        return Promise.all([this.hasRoleKey(names), this.hasRolePermission(this.rolesSource.value, names)])
+            .then(([hasRoles, hasPermissions]: [boolean, boolean]) => {
+                return hasRoles || hasPermissions;
+            });
     }
 
     private hasRoleKey(roleName: string[]): Promise<boolean> {
         const promises: Observable<boolean>[] = roleName.map((key) => {
-            if (
-                !!this.rolesSource.value[ key ] &&
-                !!this.rolesSource.value[ key ].validationFunction &&
-                isFunction(this.rolesSource.value[ key ].validationFunction) &&
-                !isPromise(this.rolesSource.value[ key ].validationFunction)
-            ) {
-                const validationFunction: Function = <Function>this.rolesSource.value[ key ].validationFunction;
+            const hasValidationFunction = !!this.rolesSource.value[key] &&
+                                          !!this.rolesSource.value[key].validationFunction &&
+                                          isFunction(this.rolesSource.value[key].validationFunction);
+
+            if (hasValidationFunction && !isPromise(this.rolesSource.value[key].validationFunction)) {
+                const validationFunction: Function = <Function>this.rolesSource.value[key].validationFunction;
 
                 return of(null).pipe(
                     map(() => validationFunction()),
@@ -99,15 +98,15 @@ export class NgxRolesService {
         return from(promises).pipe(
             mergeAll(),
             first((data: any) => data !== false, false),
-            map((data) => data === false ? false : true)
+            map((data) => data !== false)
         ).toPromise().then((data: any) => data);
     }
 
     private hasRolePermission(roles: NgxRolesObject, roleNames: string[]): Promise<boolean> {
         return from(roleNames).pipe(
             mergeMap((key) => {
-                if (roles[ key ] && Array.isArray(roles[ key ].validationFunction)) {
-                    return from(<string[]>roles[ key ].validationFunction).pipe(
+                if (roles[key] && Array.isArray(roles[key].validationFunction)) {
+                    return from(<string[]>roles[key].validationFunction).pipe(
                         mergeMap((permission) => this.permissionsService.hasPermission(permission)),
                         every((hasPermissions) => hasPermissions === true)
                     );

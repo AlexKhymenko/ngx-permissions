@@ -4,6 +4,7 @@ import { NgxPermissionsModule } from '../index';
 import { NgxPermissionsService } from '../service/permissions.service';
 import { NgxPermissionsConfigurationService } from '../service/configuration.service';
 import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategies.enum';
+import { NgxRolesService } from '../service/roles.service';
 
 enum PermissionsTestEnum {
     ADMIN = <any> 'ADMIN',
