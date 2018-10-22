@@ -8,6 +8,9 @@ import { NgxPermissionsService } from 'ngx-permissions';
 })
 export class AppComponent implements OnInit {
   title = 'app';
+  permission: string[] = ['GUEST'];
+
+
   constructor(private permissionsService: NgxPermissionsService) {
 
   }
@@ -26,5 +29,19 @@ export class AppComponent implements OnInit {
 
   public addPermission() {
     this.permissionsService.addPermission('CHECK_LOAD');
+  }
+
+  changeToAdmin() {
+    this.permission = ['ADMIN'];
+    console.log(this.permission);
+  }
+
+  changeToAnotherPermission() {
+    this.permission = ['AWESOME'];
+  }
+
+  changeToGuest() {
+    this.permission = ['GUEST'];
+    console.log(this.permission);
   }
 }

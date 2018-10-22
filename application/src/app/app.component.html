@@ -83,3 +83,22 @@
 <ng-template #a2>
   then block
 </ng-template>
+
+/////////////////////////////CHANGE SOMETHING////////////////////////////////////////
+
+<div>
+  <br>
+  <button (click)="changeToAdmin()">Change To Admin Permission</button>
+  <br>
+  <br>
+
+  <button (click)="changeToAnotherPermission()">Change To Admin Permission</button>
+
+  <button (click)="changeToGuest()">Change To Guest  Permission</button>
+  <br>
+  <br>
+  <button *ngxPermissionsOnly="permission">This should be visible to ADMIN or SUPERADMIN</button>
+
+  <button *ngxPermissionsOnly="[]">WTF</button>
+
+</div>

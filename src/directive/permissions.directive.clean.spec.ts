@@ -257,6 +257,113 @@ describe('Ngx permissions Except with default strategy and with else block then 
 
 });
 
+describe('Ngx permissions Except when passing permissions as variable should rerender the page ', () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <ng-container *ngxPermissionsExcept="permissions">
+                <div>123</div>
+            </ng-container>
+        `
+
+    })
+    class TestComp {
+        data: any;
+        permissions = "EXCEPT"
+    }
+
+    let rolesService;
+    let permissionsService;
+    let configurationService: NgxPermissionsConfigurationService;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
+        configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
+
+    });
+
+    describe('Given user doesnt have permissions', () => {
+
+        beforeEach(() => {
+            permissionsService.addPermission('EXCEPT');
+        })
+        it('should  show then block instead of applying default strategy', fakeAsync(() => {
+
+            let content3 = fixture.debugElement.nativeElement.querySelector('div');
+            expect(content3).toEqual(null);
+
+
+            comp.permissions = "ALLOW";
+            detectChanges(fixture);
+            let content2 = fixture.debugElement.nativeElement.querySelector('div');
+            expect(content2).toBeTruthy();
+            expect(content2.innerHTML.trim()).toEqual(`123`);
+
+        }));
+    })
+
+});
+
+describe('Ngx permissions Only when passing permissions as variable should rerender the page ', () => {
+    @Component({selector: 'test-comp',
+        template: `
+            <ng-container *ngxPermissionsOnly="permissions">
+                <div>123</div>
+            </ng-container>
+        `
+
+    })
+    class TestComp {
+        data: any;
+        permissions= "ALLOW"
+    }
+
+    let rolesService;
+    let permissionsService;
+    let configurationService: NgxPermissionsConfigurationService;
+    let fixture;
+    let comp;
+    beforeEach(() => {
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+
+        fixture = TestBed.createComponent(TestComp);
+        comp = fixture.componentInstance;
+
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
+        configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
+
+    });
+
+    describe('Given user does have permissions', () => {
+
+        beforeEach(() => {
+            permissionsService.addPermission('ALLOW');
+        })
+        it('show and then hide content', fakeAsync(() => {
+
+            detectChanges(fixture);
+            let content2 = fixture.debugElement.nativeElement.querySelector('div');
+            expect(content2).toBeTruthy();
+            expect(content2.innerHTML.trim()).toEqual(`123`);
+
+            comp.permissions = "DONT_ALLOW";
+            detectChanges(fixture);
+            let content3 = fixture.debugElement.nativeElement.querySelector('div');
+            expect(content3).toEqual(null);
+        }));
+    })
+
+});
+
+
+
 
 
 function detectChanges(fixture) {
