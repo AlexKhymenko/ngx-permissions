@@ -1,3 +1,6 @@
+## 6.0.4
+Fix typo in ngxPermissionsExcept add more test coverage
+
 ## 6.0.3
 Fix passing permissions as variable(https://github.com/AlexKhymenko/ngx-permissions/issues/87)
 
