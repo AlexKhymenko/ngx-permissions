@@ -1,8 +1,11 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "strictPropertyInitialization": false,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
+    // "inlineSources": true,
     "declaration": false,
     "strict": true,
     "moduleResolution": "node",
@@ -15,6 +18,9 @@
     "lib": [
       "es2016",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-permissions":["./dist/ngx-permissions"]
+    }
   }
 }

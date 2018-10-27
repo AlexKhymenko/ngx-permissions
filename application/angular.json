@@ -119,6 +119,46 @@
           }
         }
       }
+    },
+    "ngx-permissions": {
+      "root": "projects/ngx-permissions",
+      "sourceRoot": "projects/ngx-permissions/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-permissions/tsconfig.lib.json",
+            "project": "projects/ngx-permissions/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/ngx-permissions/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-permissions/src/test.ts",
+            "tsConfig": "projects/ngx-permissions/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-permissions/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-permissions/tsconfig.lib.json",
+              "projects/ngx-permissions/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {},

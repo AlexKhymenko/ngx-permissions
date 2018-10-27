@@ -9,7 +9,8 @@
     "paths": {
       "@angular/*": [
         "../node_modules/@angular/*"
-      ]
+      ],
+      "ngx-permissions":["../dist/ngx-permissions"]
     }
   },
   "exclude": [

@@ -2,16 +2,16 @@ import {
     ChangeDetectorRef,
     Directive,
     EventEmitter,
-    Input,
+    Input, OnChanges,
     OnDestroy,
     OnInit,
-    Output,
+    Output, SimpleChanges,
     TemplateRef,
     ViewContainerRef
 } from '@angular/core';
 
 import { merge, Subscription } from 'rxjs';
-import { skip } from 'rxjs/operators';
+import { skip, take } from 'rxjs/operators';
 
 import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategies.enum';
 import { NgxPermissionsConfigurationService, StrategyFunction } from '../service/configuration.service';
@@ -22,7 +22,7 @@ import { isBoolean, isFunction, isString, notEmptyValue } from '../utils/utils';
 @Directive({
     selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
 })
-export class NgxPermissionsDirective implements OnInit, OnDestroy {
+export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges  {
 
     @Input() ngxPermissionsOnly: string | string[];
     @Input() ngxPermissionsOnlyThen: TemplateRef<any>;
@@ -67,6 +67,33 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         this.initPermissionSubscription = this.validateExceptOnlyPermissions();
     }
 
+
+    ngOnChanges(changes: SimpleChanges): void {
+        const onlyChanges = changes['ngxPermissionsOnly'];
+        const exceptChanges = changes['ngxPermissionsExcept'];
+        if (onlyChanges || exceptChanges) {
+            // Due to bug when you pass empty array
+            if (onlyChanges && onlyChanges.firstChange) return;
+            if (exceptChanges && exceptChanges.firstChange) return;
+
+            merge(this.permissionsService.permissions$, this.rolesService.roles$)
+                .pipe(skip(this.firstMergeUnusedRun), take(1))
+                .subscribe(() => {
+                    if (notEmptyValue(this.ngxPermissionsExcept)) {
+                        this.validateExceptAndOnlyPermissions();
+                        return;
+                    }
+
+                    if (notEmptyValue(this.ngxPermissionsOnly)) {
+                        this.validateOnlyPermissions();
+                        return;
+                    }
+
+                    this.handleAuthorisedPermission(this.getAuthorisedTemplates());
+                });
+        }
+    }
+
     ngOnDestroy(): void {
         if (this.initPermissionSubscription) {
             this.initPermissionSubscription.unsubscribe();
@@ -86,7 +113,6 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
                     this.validateOnlyPermissions();
                     return;
                 }
-
                 this.handleAuthorisedPermission(this.getAuthorisedTemplates());
             });
     }
@@ -226,5 +252,4 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy {
         this.showTemplateBlockInView(this.templateRef);
         strategy(this.templateRef);
     }
-
 }
