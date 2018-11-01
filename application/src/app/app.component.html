@@ -20,18 +20,18 @@
 <button (click)="addPermission()">Add load</button>
 <div >
 </div>
-<app-initial-load *ngxPermissionsOnly="['CHECK_LOAD']"></app-initial-load>
+<!-- <app-initial-load *ngxPermissionsOnly="['CHECK_LOAD']"></app-initial-load>
 
-<router-outlet></router-outlet>
+<router-outlet></router-outlet> -->
 
 <div style="background-color: green">
-  I SHOULD SEE it (
-  <ng-template permissions [ngxPermissionsOnly]="['ADMIN']">
+  I SHOULD SEE it :
+  <ng-template permissions [ngxPermissionsOnly]="['TITI','ADMIN','TOTO']" [ngxPermissionsAuthorisedStrategy]="'ADMIN'" [ngxPermissionsUnauthorisedStrategy]="'ADMIN'">
     I SHOULD SEE see it only admin
   </ng-template>
 </div>
 
-
+<!-- 
 <div style="background-color: green">
   I SHOULD SEE it 2 (
   <ng-template [ngxPermissionsOnly]="['ADMIN']">
@@ -82,4 +82,4 @@
 </ng-template>
 <ng-template #a2>
   then block
-</ng-template>
+</ng-template> -->
