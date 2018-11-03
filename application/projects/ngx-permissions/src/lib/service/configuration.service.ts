@@ -4,7 +4,7 @@ import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategi
 import { NgxPermissionsConfigurationStore } from '../store/configuration.store';
 import { PermissionState } from '../directive/permissions.directive';
 
-export type StrategyFunction = (templateRef?: TemplateRef<any>, permissions?: PermissionState) => void;
+export type StrategyFunction = (templateRef: TemplateRef<any>, permissions?: PermissionState) => void;
 
 export type Strategy = {
     [key: string]: StrategyFunction
