@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick, ComponentFixture } from '@angular/core/testing';
 import { NgxPermissionsModule } from '../index';
 import { NgxRolesService } from '../service/roles.service';
 import { NgxPermissionsService } from '../service/permissions.service';
@@ -25,9 +25,9 @@ describe('Ngx permissions Except with default strategy and with else block then 
     }
 
     let rolesService;
-    let permissionsService;
+    let permissionsService:NgxPermissionsService;
     let configurationService: NgxPermissionsConfigurationService;
-    let fixture;
+    let fixture:ComponentFixture<any>;
     let comp;
     beforeEach(() => {
         TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
@@ -72,9 +72,9 @@ describe('Ngx permissions Except with default strategy without any blocks', () =
     }
 
     let rolesService;
-    let permissionsService;
+    let permissionsService:NgxPermissionsService;
     let configurationService: NgxPermissionsConfigurationService;
-    let fixture;
+    let fixture:ComponentFixture<TestComp>;
     let comp;
     beforeEach(() => {
         TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
