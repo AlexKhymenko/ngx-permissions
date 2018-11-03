@@ -11,6 +11,9 @@
       "node"
     ]
   },
+  "paths": {
+    "ngx-permissions":["dist/ngx-permissions"]
+  },
   "files": [
     "test.ts",
     "polyfills.ts"
