@@ -64,12 +64,12 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
         private changeDetector: ChangeDetectorRef,
         private templateRef: TemplateRef<any>
     ) {
+        this.permissionsState = {};
     }
 
     ngOnInit(): void {
         this.viewContainer.clear();
         this.initPermissionSubscription = this.validateExceptOnlyPermissions();
-        this.permissionsState = {};
     }
 
 
@@ -294,8 +294,11 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
      * 
      */
     private getOnlyPermissions(): Promise<boolean> {
+        // return this.permissionsService.hasPermission('ADMIN').then((haspermission: boolean) => {
+        //     return haspermission;
+        // })
         var permissionsOnly: Array<string> = transformStringToArray(this.ngxPermissionsOnly)
-        var promises: Promise<any>[] = []
+        var promises: Promise<boolean>[] = []
         this.permissionsState = {}
 
         if (isArray(permissionsOnly)) {
@@ -303,19 +306,33 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
                 this.permissionsState[value] = { hasPermission: false, hasRole: false }
 
                 // Check if has "Permission"
-                promises.push(this.permissionsService.hasPermission(value).then((hasPermission) => {
-                    this.permissionsState[value].hasPermission = hasPermission
-                    return hasPermission
-                }));
+                promises.push(
+                    this.permissionsService.hasPermission(value)
+                        .then((hasPermission) => {
+                            this.permissionsState[value].hasPermission = hasPermission
+                            return hasPermission;
+                        })
+                        .catch((error) => {
+                            return false;
+                        })
+                )
                 // Check if has "Role"
-                promises.push(this.rolesService.hasOnlyRoles(value).then((hasPermission) => {
-                    this.permissionsState[value].hasRole = hasPermission
-                    return hasPermission
-                }));
+                promises.push(
+                    this.rolesService.hasOnlyRoles(value).then((hasPermission) => {
+                        this.permissionsState[value].hasRole = hasPermission
+                        return hasPermission;
+                    }))
             })
         }
 
         // Check if at least one promise is true
+        // return Promise.all(promises).then((hasPermissions: boolean[]) => {
+        //     var hasPermission: boolean = false;
+        //     hasPermissions.forEach((value) => {
+        //         if (value == true) hasPermission = value;
+        //     });
+        //     return hasPermission;
+        // })
         return from(promises).pipe(
             mergeAll(),
             first((hasPermission: boolean) => {
