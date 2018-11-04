@@ -326,13 +326,6 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
         }
 
         // Check if at least one promise is true
-        // return Promise.all(promises).then((hasPermissions: boolean[]) => {
-        //     var hasPermission: boolean = false;
-        //     hasPermissions.forEach((value) => {
-        //         if (value == true) hasPermission = value;
-        //     });
-        //     return hasPermission;
-        // })
         return from(promises).pipe(
             mergeAll(),
             first((hasPermission: boolean) => {
