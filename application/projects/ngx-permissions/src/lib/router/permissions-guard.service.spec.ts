@@ -30,7 +30,7 @@ describe('Permissions guard only', () => {
         expect(permissionGuard).toBeTruthy();
     });
 
-    it ('sholud return true when only fullfills', fakeAsync(() => {
+    it ('should return true when only fullfills', fakeAsync(() => {
         route = { data: {
             permissions: {
                 only: 'ADMIN'
@@ -41,7 +41,7 @@ describe('Permissions guard only', () => {
         })
     }));
 
-    it ('sholud return true when only is empty array', fakeAsync(() => {
+    it ('should return true when only is empty array', fakeAsync(() => {
         route = { data: {
             permissions: {
                 only: []
@@ -51,13 +51,13 @@ describe('Permissions guard only', () => {
 
     }));
 
-    it ('sholud return true when no permissions array specified', fakeAsync(() => {
+    it ('should return true when no permissions array specified', fakeAsync(() => {
         route = {};
         expect( permissionGuard.canActivate(route, {} as RouterStateSnapshot)).toEqual(true);
 
     }));
 
-    it ('sholud return true when except is empty array', fakeAsync(() => {
+    it ('should return true when except is empty array', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: []
@@ -67,7 +67,7 @@ describe('Permissions guard only', () => {
 
     }));
 
-    it ('sholud return false when only doesnt match', fakeAsync(() => {
+    it ('should return false when only doesnt match', fakeAsync(() => {
         route = { data: {
             permissions: {
                 only: 'DOESNT MATCH'
@@ -78,7 +78,7 @@ describe('Permissions guard only', () => {
         })
     }));
 
-    it ('sholud return false when only doesnt match and navigate to 404', fakeAsync(() => {
+    it ('should return false when only doesnt match and navigate to 404', fakeAsync(() => {
         route = { data: {
             permissions: {
                 only: 'DOESNT MATCH',
@@ -149,7 +149,7 @@ describe('Permissions guard Except', () => {
         expect(permissionGuard).toBeTruthy();
     });
 
-    it ('sholud return false when except matches', fakeAsync(() => {
+    it ('should return false when except matches', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: 'MANAGER'
@@ -160,7 +160,7 @@ describe('Permissions guard Except', () => {
         })
     }));
 
-    it ('sholud return false when except matches and redirectTo 404', fakeAsync(() => {
+    it ('should return false when except matches and redirectTo 404', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: 'MANAGER',
@@ -173,7 +173,7 @@ describe('Permissions guard Except', () => {
         })
     }));
 
-    it ('sholud return false when except matches at least one array', fakeAsync(() => {
+    it ('should return false when except matches at least one array', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: ["MANAGER", 'Something else']
@@ -184,7 +184,7 @@ describe('Permissions guard Except', () => {
         })
     }));
 
-    it ('sholud return false when except matches in array and redirectTo 404', fakeAsync(() => {
+    it ('should return false when except matches in array and redirectTo 404', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: ["MANAGER", 'Something else'],
@@ -197,7 +197,7 @@ describe('Permissions guard Except', () => {
         })
     }));
 
-    it ('sholud return true when except doesn"t match', fakeAsync(() => {
+    it ('should return true when except doesn"t match', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: 'DOESNT MATCH'
@@ -208,7 +208,7 @@ describe('Permissions guard Except', () => {
         })
     }));
 
-    it ('sholud return true when any in array doesn"t match', fakeAsync(() => {
+    it ('should return true when any in array doesn"t match', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: ['DOESNT MATCH', "AWESOME"]
@@ -245,7 +245,7 @@ describe('Permissions guard Except and only together', () => {
         expect(permissionGuard).toBeTruthy();
     });
 
-    it ('sholud return false when except matches and it should not check only and redirect to 404', fakeAsync(() => {
+    it ('should return false when except matches and it should not check only and redirect to 404', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: 'MANAGER',
@@ -271,7 +271,7 @@ describe('Permissions guard Except and only together', () => {
         })
     }));
 
-    it ('sholud return true when except doesn"t match but only matcher', fakeAsync(() => {
+    it ('should return true when except doesn"t match but only matcher', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: 'DOESNT MATCH',
@@ -283,7 +283,7 @@ describe('Permissions guard Except and only together', () => {
         })
     }));
 
-    it ('sholud return true when any in array doesn"t match but only matches', fakeAsync(() => {
+    it ('should return true when any in array doesn"t match but only matches', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: ['DOESNT MATCH', "AWESOME"],
@@ -294,7 +294,7 @@ describe('Permissions guard Except and only together', () => {
             expect(data).toEqual(true);
         })
     }));
-    it ('sholud return false when except in array doesn"t match and only also doesn"t matches', fakeAsync(() => {
+    it ('should return false when except in array doesn"t match and only also doesn"t matches', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: ['DOESNT MATCH', "AWESOME"],
@@ -350,7 +350,7 @@ describe('Permissions guard use only dynamically', () => {
         expect(permissionGuard).toBeTruthy();
     });
 
-    it ('sholud return true when only matches and it should not check only', fakeAsync(() => {
+    it ('should return true when only matches and it should not check only', fakeAsync(() => {
         route = { data: {
             permissions: {
                 only: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
@@ -485,7 +485,7 @@ describe('Permissions guard test redirectTo path parameters dynamically', () => 
         expect(permissionGuard).toBeTruthy();
     });
 
-    it ('sholud redirect to parameters specified on navigation commands and navigationExtras', fakeAsync(() => {
+    it ('should redirect to parameters specified on navigation commands and navigationExtras', fakeAsync(() => {
         route = { data: {
             permissions: {
                 only: "TIED",
@@ -505,7 +505,7 @@ describe('Permissions guard test redirectTo path parameters dynamically', () => 
         })
     }));
 
-    it ('sholud redirect to parameters specified in navigation commands and navigationExtras', fakeAsync(() => {
+    it ('should redirect to parameters specified in navigation commands and navigationExtras', fakeAsync(() => {
         route = { data: {
             permissions: {
                 only: "TIED",
@@ -529,7 +529,7 @@ describe('Permissions guard test redirectTo path parameters dynamically', () => 
         })
     }));
 
-    it ('except sholud redirect to parameters specified in navigation commands and navigationExtras', fakeAsync(() => {
+    it ('except should redirect to parameters specified in navigation commands and navigationExtras', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: "MANAGER",
@@ -582,7 +582,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
         expect(permissionGuard).toBeTruthy();
     });
 
-    it ('sholud redirect dashboard can canRead Agenda fullfils can edit agenda fails', fakeAsync(() => {
+    it ('should redirect dashboard can canRead Agenda fullfils can edit agenda fails', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: [ 'canEditAgenda', 'canReadAgenda', "canRun"],
@@ -600,7 +600,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
         })
     }));
 
-    it ('sholud redirect to run when there is permission canRun and it fails', fakeAsync(() => {
+    it ('should redirect to run when there is permission canRun and it fails', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
 
         route = { data: {
@@ -621,7 +621,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
         })
     }));
 
-    it ('sholud path when nothing fails', fakeAsync(() => {
+    it ('should path when nothing fails', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
 
         route = { data: {
@@ -811,7 +811,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
 
 
 
-    it ('sholud path when nothing fails in only blaock', fakeAsync(() => {
+    it ('should path when nothing fails in only blaock', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
 
         route = { data: {
@@ -859,7 +859,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
         expect(permissionGuard).toBeTruthy();
     });
 
-    it ('sholud redirect dashboard can canRead Agenda fullfils can edit agenda fails', fakeAsync(() => {
+    it ('should redirect dashboard can canRead Agenda fullfils can edit agenda fails', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except:  'canReadAgenda',
@@ -877,7 +877,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
         })
     }));
 
-    it ('sholud redirect to run when there is permission canRun and it fails', fakeAsync(() => {
+    it ('should redirect to run when there is permission canRun and it fails', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
 
         route = { data: {
@@ -898,7 +898,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
         })
     }));
 
-    it ('sholud path when nothing fails', fakeAsync(() => {
+    it ('should path when nothing fails', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
 
         route = { data: {
@@ -981,7 +981,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
 
 
 
-    it ('sholud path when nothing fails in only blaock', fakeAsync(() => {
+    it ('should path when nothing fails in only blaock', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
         route = { data: {
             permissions: {
@@ -1029,7 +1029,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
         expect(permissionGuard).toBeTruthy();
     });
 
-    it ('sholud redirect dashboard can canRead Agenda fullfils can edit agenda fails', fakeAsync(() => {
+    it ('should redirect dashboard can canRead Agenda fullfils can edit agenda fails', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except:  'canReadAgenda',
@@ -1047,7 +1047,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
         })
     }));
 
-    it ('sholud redirect to run when there is permission canRun and it fails', fakeAsync(() => {
+    it ('should redirect to run when there is permission canRun and it fails', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
 
         route = { data: {
@@ -1068,7 +1068,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
         })
     }));
 
-    it ('sholud path when nothing fails', fakeAsync(() => {
+    it ('should path when nothing fails', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
 
         route = { data: {
@@ -1195,7 +1195,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
 
 
 
-    it ('sholud path when nothing fails in only blaock', fakeAsync(() => {
+    it ('should path when nothing fails in only blaock', fakeAsync(() => {
         fakeService.addPermission('canEditAgenda');
         route = { data: {
             permissions: {
@@ -1242,7 +1242,7 @@ describe('Permissions guard test redirectTo as function', () => {
         expect(permissionGuard).toBeTruthy();
     });
 
-    it ('sholud redirect dashboard can canRead Agenda fullfils can edit agenda fails', fakeAsync(() => {
+    it ('should redirect dashboard can canRead Agenda fullfils can edit agenda fails', fakeAsync(() => {
         route = { data: {
             permissions: {
                 except: [ 'canEditAgenda', 'canReadAgenda', "canRun"],
