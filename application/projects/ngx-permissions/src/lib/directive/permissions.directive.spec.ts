@@ -1715,7 +1715,7 @@ describe('ngxPermissionsOnly Directive testing else block', () => {
         rolesService.removeRole('FAILED_BLOCK');
         detectChanges(fixture);
 
-        let content2 = fixture.debugElement.nativeElement.querySelector('div');
+        content2 = fixture.debugElement.nativeElement.querySelector('div');
         expect(content2).toBeTruthy();
         expect(content2.innerHTML).toEqual(`elseBlock`);
     }));

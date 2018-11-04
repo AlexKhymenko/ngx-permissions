@@ -36,7 +36,7 @@ describe('Permissions guard only', () => {
                 only: 'ADMIN'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (((permissionGuard.canLoad(route) as Promise<boolean>) as Promise<boolean>) as Promise<Boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -47,7 +47,7 @@ describe('Permissions guard only', () => {
                 only: 'DOESNT MATCH'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        ((permissionGuard.canLoad(route) as Promise<boolean>) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
         })
     }));
@@ -59,7 +59,7 @@ describe('Permissions guard only', () => {
                 redirectTo: './404'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        ((permissionGuard.canLoad(route) as Promise<boolean>) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404'])
         })
@@ -72,7 +72,7 @@ describe('Permissions guard only', () => {
                 redirectTo: ['./404']
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        ((permissionGuard.canLoad(route) as Promise<boolean>) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404'])
         })
@@ -129,7 +129,7 @@ describe('Permissions guard Except', () => {
                 except: 'MANAGER'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
         })
     }));
@@ -141,7 +141,7 @@ describe('Permissions guard Except', () => {
                 redirectTo: './404'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404']);
         })
@@ -153,7 +153,7 @@ describe('Permissions guard Except', () => {
                 except: ["MANAGER", 'Something else']
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
         })
     }));
@@ -165,7 +165,7 @@ describe('Permissions guard Except', () => {
                 redirectTo: './404'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404']);
         })
@@ -177,7 +177,7 @@ describe('Permissions guard Except', () => {
                 except: 'DOESNT MATCH'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -188,7 +188,7 @@ describe('Permissions guard Except', () => {
                 except: ['DOESNT MATCH', "AWESOME"]
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -227,7 +227,7 @@ describe('Permissions guard Except and only together', () => {
                 redirectTo: './404'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404']);
         })
@@ -240,7 +240,7 @@ describe('Permissions guard Except and only together', () => {
                 only: 'AWESOME'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
         })
     }));
@@ -252,7 +252,7 @@ describe('Permissions guard Except and only together', () => {
                 only: "MANAGER"
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -264,7 +264,7 @@ describe('Permissions guard Except and only together', () => {
                 only: ['MANAGER', 'AWESOME']
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -276,7 +276,7 @@ describe('Permissions guard Except and only together', () => {
                 redirectTo: './404'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404']);
         })
@@ -313,7 +313,7 @@ describe('Permissions guard Except and only together with isolation in root', ()
                 redirectTo: './404'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404']);
         })
@@ -326,7 +326,7 @@ describe('Permissions guard Except and only together with isolation in root', ()
                 only: 'AWESOME'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
         })
     }));
@@ -338,7 +338,7 @@ describe('Permissions guard Except and only together with isolation in root', ()
                 only: "MANAGER"
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -350,7 +350,7 @@ describe('Permissions guard Except and only together with isolation in root', ()
                 only: ['MANAGER', 'AWESOME']
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -362,7 +362,7 @@ describe('Permissions guard Except and only together with isolation in root', ()
                 redirectTo: './404'
             }
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['./404']);
         })
@@ -423,7 +423,7 @@ describe('Permissions guard use only dynamically', () => {
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -441,7 +441,7 @@ describe('Permissions guard use only dynamically', () => {
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -466,7 +466,7 @@ describe('Permissions guard use only dynamically', () => {
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -492,7 +492,7 @@ describe('Permissions guard use only dynamically', () => {
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['/404']);
         })
@@ -558,7 +558,7 @@ describe('Permissions guard test redirectTo path parameters dynamically', () => 
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
 
@@ -582,7 +582,7 @@ describe('Permissions guard test redirectTo path parameters dynamically', () => 
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
 
@@ -606,7 +606,7 @@ describe('Permissions guard test redirectTo path parameters dynamically', () => 
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
 
@@ -654,7 +654,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['agendaList']);
         })
@@ -675,7 +675,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['agendaList']);
         })
@@ -696,7 +696,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -713,7 +713,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
 
@@ -735,7 +735,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
 
@@ -757,7 +757,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
 
         })
@@ -776,7 +776,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
         })
@@ -796,7 +796,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
         })
@@ -819,7 +819,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
         })
@@ -844,7 +844,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['123'], {skipLocationChange: true});
         })
@@ -864,7 +864,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
         })
@@ -887,7 +887,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -932,7 +932,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['agendaList']);
         })
@@ -953,7 +953,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['run']);
         })
@@ -974,7 +974,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -991,7 +991,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
 
@@ -1013,7 +1013,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
         })
@@ -1034,7 +1034,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
 
         })
@@ -1056,7 +1056,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -1102,7 +1102,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['agendaList']);
         })
@@ -1123,7 +1123,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['run']);
         })
@@ -1144,7 +1144,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -1161,7 +1161,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['login']);
 
@@ -1183,7 +1183,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['dashboard']);
         })
@@ -1205,7 +1205,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['canRunAgenda']);
         })
@@ -1227,7 +1227,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['canReadAgenda']);
         })
@@ -1248,7 +1248,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
 
         })
@@ -1270,7 +1270,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(true);
         })
     }));
@@ -1313,7 +1313,7 @@ describe('Permissions guard test redirectTo as function', () => {
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['canReadAgenda']);
         })
@@ -1329,7 +1329,7 @@ describe('Permissions guard test redirectTo as function', () => {
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['canRun']);
         })
@@ -1346,7 +1346,7 @@ describe('Permissions guard test redirectTo as function', () => {
             },
             path: 'crisis-center/44'
         }};
-        permissionGuard.canLoad(route).then((data) => {
+        (permissionGuard.canLoad(route) as Promise<boolean>).then((data) => {
             expect(data).toEqual(false);
             expect(fakeRouter.navigate).toHaveBeenCalledWith(['canRun']);
         })
