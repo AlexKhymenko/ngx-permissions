@@ -20,6 +20,7 @@ import { NgxRolesService } from '../service/roles.service';
 import { isBoolean, isFunction, isString, notEmptyValue, transformStringToArray } from '../utils/utils';
 import { isArray } from 'util';
 
+// Struct. to keep directive track of permissions states
 export type PermissionState = { [permission: string]: { hasPermission: boolean, hasRole: boolean } }
 
 @Directive({
@@ -123,7 +124,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
     }
 
     private validateExceptAndOnlyPermissions(): void {
-        this.getOnlyExceptPermissions()
+        this.getPermissions(this.ngxPermissionsExcept)
             .then((hasPermission: boolean) => {
                 if (hasPermission) {
                     this.handleUnauthorisedPermission(this.ngxPermissionsExceptElse || this.ngxPermissionsElse);
@@ -139,30 +140,11 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
                     this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef);
                 }
             });
-
-        // Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsExcept), this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept)])
-        //     .then(([hasPermission, hasRole]) => {
-        //         if (hasPermission || hasRole) {
-        //             this.handleUnauthorisedPermission(this.ngxPermissionsExceptElse || this.ngxPermissionsElse);
-        //             return;
-        //         }
-
-        //         if (!!this.ngxPermissionsOnly) throw false;
-
-        //         this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef);
-
-        //     }).catch(() => {
-        //         if (!!this.ngxPermissionsOnly) {
-        //             this.validateOnlyPermissions();
-        //         } else {
-        //             this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef);
-        //         }
-        //     });
     }
 
     private validateOnlyPermissions(): void {
         // Validate permissions & store permission state
-        this.getOnlyPermissions()
+        this.getPermissions(this.ngxPermissionsOnly)
             .then((hasPermission: boolean) => {
                 if (hasPermission) {
                     this.handleAuthorisedPermission(this.ngxPermissionsOnlyThen || this.ngxPermissionsThen || this.templateRef);
@@ -173,18 +155,6 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
             .catch(() => {
                 this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
             });
-
-
-        // Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsOnly), this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly)])
-        //     .then(([hasPermissions, hasRoles]) => {
-        //         if (hasPermissions || hasRoles) {
-        //             this.handleAuthorisedPermission(this.ngxPermissionsOnlyThen || this.ngxPermissionsThen || this.templateRef);
-        //         } else {
-        //             this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
-        //         }
-        //     }).catch(() => {
-        //         this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
-        //     });
     }
 
     private handleUnauthorisedPermission(template: TemplateRef<any>): void {
@@ -291,18 +261,24 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
     }
 
     /**
+     * Check permission service against parameter "neddedPermissions"
+     * then update this class property "permissionsState"
      * 
+     * @param neddedPermissions Sets the permissions/roles to check (i.e ngxPermissionsOnly)
      */
-    private getOnlyPermissions(): Promise<boolean> {
-        // return this.permissionsService.hasPermission('ADMIN').then((haspermission: boolean) => {
-        //     return haspermission;
-        // })
-        var permissionsOnly: Array<string> = transformStringToArray(this.ngxPermissionsOnly)
+    private getPermissions(neddedPermissions: string | string[]): Promise<boolean> {
+
+        // Ensure we work with array
+        var requestedPermissions: Array<string> = transformStringToArray(neddedPermissions)
+
+        // Array of promises that request permission and roles service with "permission"
         var promises: Promise<boolean>[] = []
+
+        // Reset "permissions state" directive class property
         this.permissionsState = {}
 
-        if (isArray(permissionsOnly)) {
-            permissionsOnly.forEach((value) => {
+        if (isArray(requestedPermissions)) {
+            requestedPermissions.forEach((value) => {
                 this.permissionsState[value] = { hasPermission: false, hasRole: false }
 
                 // Check if has "Permission"
@@ -312,59 +288,25 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
                             this.permissionsState[value].hasPermission = hasPermission
                             return hasPermission;
                         })
-                        .catch((error) => {
-                            return false;
-                        })
+                        .catch(() => false)
                 )
                 // Check if has "Role"
                 promises.push(
-                    this.rolesService.hasOnlyRoles(value).then((hasPermission) => {
-                        this.permissionsState[value].hasRole = hasPermission
-                        return hasPermission;
-                    }))
+                    this.rolesService.hasOnlyRoles(value)
+                        .then((hasPermission) => {
+                            this.permissionsState[value].hasRole = hasPermission
+                            return hasPermission;
+                        })
+                        .catch(() => false)
+                )
             })
         }
 
-        // Check if at least one promise is true
-        return from(promises).pipe(
-            mergeAll(),
-            first((hasPermission: boolean) => {
-                return hasPermission === true;
-            }, false),
-            map((hasPermission) => {
-                return hasPermission;
-            })
-        ).toPromise().then((hasPermission: boolean) => {
-            return hasPermission
-        });
-    }
-
-    /**
-     * 
-     */
-    private getOnlyExceptPermissions(): Promise<boolean> {
-        var permissionsExcept: Array<string> = transformStringToArray(this.ngxPermissionsExcept);
-        var promises: Promise<any>[] = [];
-        this.permissionsState = {};
-
-        if (isArray(permissionsExcept)) {
-            permissionsExcept.forEach((value) => {
-                this.permissionsState[value] = { hasPermission: false, hasRole: false }
-                // Has "permission" ?
-                promises.push(this.permissionsService.hasPermission(value).then((hasPermission: boolean) => {
-                    this.permissionsState[value].hasPermission = hasPermission
-                    return hasPermission;
-                }))
-
-                // Has "Role" ?
-                promises.push(this.rolesService.hasOnlyRoles(value).then((hasPermission: boolean) => {
-                    this.permissionsState[value].hasRole = hasPermission
-                    return hasPermission;
-                }))
-            })
-        }
-
-        // Check if at least one promise is true
+        /** 
+         * Return result :
+         * true : At least one of neededPermission exists in permission or role service (@see this.permissionsState to get a full detail on wich permission is true/false)
+         * false : none of neededPermission exists in  permission or role service
+        */
         return from(promises).pipe(
             mergeAll(),
             first((hasPermission: boolean) => {
