@@ -1,6 +1,6 @@
 {
   "name": "application",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -10,7 +10,8 @@
     "test:single": "cd application && ng test ngx-permissions --preserve-symlinks --watch=false --codeCoverage=true",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prod": "ng serve --aot --prod"
+    "prod": "ng serve --aot --prod",
+    "coverage":"cat ./application/projects/ngx-permissions/coverage/lcovonly/lcov.info | codecov"
   },
   "private": true,
   "dependencies": {
