@@ -1,14 +1,241 @@
 import { NgxPermissionsDirective } from './permissions.directive';
-import { Component } from '@angular/core';
+import { Component, Output } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxPermissionsModule } from '../index';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, async, TestBed, tick, ComponentFixture } from '@angular/core/testing';
 import { NgxPermissionsService } from '../service/permissions.service';
 import { NgxRolesService } from '../service/roles.service';
 
 enum PermissionsTestEnum {
-    ADMIN = <any> 'ADMIN',
-    GUEST = <any> 'GUEST'
+    ADMIN = <any>'ADMIN',
+    GUEST = <any>'GUEST'
 }
+// #PR89 add spec
+describe('PR#89 Permission states : unauthorised tests', () => {
+    let permissionService;
+    let rolesService: NgxRolesService;
+    let fixture: ComponentFixture<TestComp>;
+    let comp: TestComp;
+    let awesomePermissions = "AWESOME";
+
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template permissions [ngxPermissionsExcept]="'ADMIN'" [ngxPermissionsUnauthorisedStrategy]="unAuthorized"><div>123</div></ng-template>`
+    })
+    class TestComp {
+        public data: any;
+        public unAuthorized = (tplref, permissions) => {
+            this.data = permissions;
+        }
+    }
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], schemas: [NO_ERRORS_SCHEMA] }).compileComponents();
+    }));
+    beforeEach(() => {
+        fixture = TestBed.createComponent<TestComp>(TestComp);
+        comp = fixture.componentInstance;
+        permissionService = fixture.debugElement.injector.get(NgxPermissionsService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+    })
+
+    it('Should call unAuthorised callback', fakeAsync(() => {
+        spyOn(comp, "unAuthorized");
+        permissionService.loadPermissions([PermissionsTestEnum.ADMIN]);
+        tick();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(comp.unAuthorized).toHaveBeenCalled();
+        })
+
+    }));
+    it('Should return permissions ADMIN as true', fakeAsync(() => {
+        permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
+        tick();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            let result = comp.data;
+            expect(result).toEqual({ 'ADMIN': { hasPermission: true, hasRole: false } });
+        });
+    }));
+    it('Should not call unAuthorised callback', fakeAsync(() => {
+        spyOn(comp, "unAuthorized");
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
+        tick();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(comp.unAuthorized).not.toHaveBeenCalled()
+        });
+    }));
+    it('Should return role ADMIN as true', fakeAsync(() => {
+        rolesService.addRole('ADMIN', [awesomePermissions]);
+        permissionService.addPermission(awesomePermissions);
+        tick();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            let result = comp.data;
+            expect(result).toEqual({ 'ADMIN': { hasPermission: false, hasRole: true } });
+        });
+    }));
+
+});
+
+describe('PR#89 Permissions States : Unauthorised event emmitter tests', () => {
+    let permissionService;
+    let rolesService: NgxRolesService;
+    let fixture: ComponentFixture<TestComp>;
+    let comp: TestComp;
+    let awesomePermissions = "AWESOME";
+
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template permissions (permissionsAuthorized)="authorisedEvent" (permissionsUnauthorized)="unauthorisedEvent" [ngxPermissionsExcept]="'ADMIN'"><div>123</div></ng-template>`
+    })
+    class TestComp {
+        public unauthorised: any = undefined;
+        public authorised: any = undefined;
+        public unauthorisedEvent = (event) => {
+            this.unauthorised = event;
+        }
+        public authorisedEvent = (event) => {
+            this.authorised = event;
+        }
+    }
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], schemas: [NO_ERRORS_SCHEMA] }).compileComponents();
+    }));
+    beforeEach(() => {
+        fixture = TestBed.createComponent<TestComp>(TestComp);
+        comp = fixture.componentInstance;
+        permissionService = fixture.debugElement.injector.get(NgxPermissionsService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+    })
+    it('Should emit unauthorised event with ADMIN permissions', fakeAsync(() => {
+        permissionService.loadPermissions([PermissionsTestEnum.ADMIN]);
+        tick();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(comp.unauthorised).not.toBeUndefined;
+        })
+    }));
+    it('Should emit unauthorised event with ADMIN role', fakeAsync(() => {
+        rolesService.addRole('ADMIN', [awesomePermissions]);
+        permissionService.addPermission(awesomePermissions);
+        tick();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(comp.unauthorised).not.toBeUndefined;
+        })
+    }));
+});
+
+describe('PR#89 Permission states : Authorised callback', () => {
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template permissions [ngxPermissionsOnly]="'ADMIN'" [ngxPermissionsAuthorisedStrategy]="authorised"><div>123</div></ng-template>`
+    })
+    class TestComp {
+        public data: any;
+        public authorised = (tplref, permissions) => {
+            this.data = permissions;
+        }
+        public unauthorised = (tplref, permissions) => {
+            this.data = "UNAUTHORISED";
+        }
+    }
+    let permissionService;
+    let rolesService: NgxRolesService;
+    let fixture: ComponentFixture<TestComp>;
+    let comp: TestComp;
+    let awesomePermissions = "AWESOME";
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], schemas: [NO_ERRORS_SCHEMA] }).compileComponents();
+    }));
+    beforeEach(() => {
+        fixture = TestBed.createComponent<TestComp>(TestComp);
+        comp = fixture.componentInstance;
+        permissionService = fixture.debugElement.injector.get(NgxPermissionsService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+    });
+    it('Should call Authorised callback', fakeAsync(() => {
+        spyOn(comp, 'authorised');
+        permissionService.loadPermissions([PermissionsTestEnum.ADMIN]);
+        tick();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(comp.authorised).toHaveBeenCalled();
+        })
+    }));
+    it('Should return ADMIN permission to true', fakeAsync(() => {
+        permissionService.loadPermissions([PermissionsTestEnum.ADMIN]);
+        tick();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(comp.data).toEqual({ 'ADMIN': { hasPermission: true, hasRole: false } });
+        })
+    }));
+    it('Should return ADMIN role to true', fakeAsync(() => {
+        rolesService.addRole('ADMIN', [awesomePermissions]);
+        permissionService.addPermission(awesomePermissions);
+        tick();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(comp.data).toEqual({ 'ADMIN': { hasPermission: false, hasRole: true } });
+        })
+    }));
+});
+
+describe('PR#89 Permissions States : authorised event emmitter tests', () => {
+    let permissionService;
+    let rolesService: NgxRolesService;
+    let fixture: ComponentFixture<TestComp>;
+    let comp: TestComp;
+    let awesomePermissions = "AWESOME";
+
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template permissions (permissionsAuthorized)="authorisedEvent" (permissionsUnauthorized)="unauthorisedEvent" [ngxPermissionsOnly]="'ADMIN'"><div>123</div></ng-template>`
+    })
+    class TestComp {
+        public unauthorised: any = undefined;
+        public authorised: any = undefined;
+        public unauthorisedEvent = (event) => {
+            this.unauthorised = event;
+        }
+        public authorisedEvent = (event) => {
+            this.authorised = event;
+        }
+    }
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], schemas: [NO_ERRORS_SCHEMA] }).compileComponents();
+    }));
+    beforeEach(() => {
+        fixture = TestBed.createComponent<TestComp>(TestComp);
+        comp = fixture.componentInstance;
+        permissionService = fixture.debugElement.injector.get(NgxPermissionsService);
+        rolesService = fixture.debugElement.injector.get(NgxRolesService);
+    })
+    it('Should emit authorised event with ADMIN permissions', fakeAsync(() => {
+        permissionService.loadPermissions([PermissionsTestEnum.ADMIN]);
+        tick();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(comp.authorised).not.toBeUndefined;
+        })
+    }));
+    it('Should emit authorised event with ADMIN role', fakeAsync(() => {
+        rolesService.addRole('ADMIN', [awesomePermissions]);
+        permissionService.addPermission(awesomePermissions);
+        tick();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(comp.authorised).not.toBeUndefined;
+        })
+    }));
+});
 
 describe('NgxPermissionsDirective', () => {
     it('should create an instance', () => {
@@ -18,8 +245,10 @@ describe('NgxPermissionsDirective', () => {
 });
 
 describe('Permission directive angular except', () => {
-    @Component({selector: 'test-comp',
-        template: `<ng-template permissions [ngxPermissionsExcept]="'ADMIN'"><div>123</div></ng-template>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template permissions [ngxPermissionsExcept]="'ADMIN'"><div>123</div></ng-template>`
+    })
     class TestComp {
         data: any;
     }
@@ -29,7 +258,7 @@ describe('Permission directive angular except', () => {
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -48,6 +277,7 @@ describe('Permission directive angular except', () => {
 
     }));
 
+
     it('Should  show the component', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
@@ -57,7 +287,7 @@ describe('Permission directive angular except', () => {
 
     }));
 
-    it ('Should show the component', fakeAsync(() => {
+    it('Should show the component', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
@@ -67,7 +297,7 @@ describe('Permission directive angular except', () => {
         expect(content.innerHTML).toEqual('123');
     }));
 
-    it ('Should hide component when permission added', fakeAsync(() => {
+    it('Should hide component when permission added', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
@@ -82,7 +312,7 @@ describe('Permission directive angular except', () => {
         expect(content).toEqual(null);
     }));
 
-    it ('Should show component when permission removed', fakeAsync(() => {
+    it('Should show component when permission removed', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
@@ -97,11 +327,14 @@ describe('Permission directive angular except', () => {
         expect(content2).toBeTruthy();
         expect(content2.innerHTML).toEqual('123');
     }));
+
 });
 
 describe('Permission directive angular only', () => {
-    @Component({selector: 'test-comp',
-        template: `<ng-template permissions [ngxPermissionsOnly]="'ADMIN'"><div>123</div></ng-template>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template permissions [ngxPermissionsOnly]="'ADMIN'"><div>123</div></ng-template>`
+    })
     class TestComp {
         data: any;
     }
@@ -111,7 +344,7 @@ describe('Permission directive angular only', () => {
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -129,7 +362,7 @@ describe('Permission directive angular only', () => {
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
     }));
-    it ('Should not show the component', fakeAsync(() => {
+    it('Should not show the component', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
@@ -137,7 +370,7 @@ describe('Permission directive angular only', () => {
         expect(content).toEqual(null);
     }));
 
-    it ('Should show component when permission added', fakeAsync(() => {
+    it('Should show component when permission added', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
@@ -152,7 +385,7 @@ describe('Permission directive angular only', () => {
         expect(content2.innerHTML).toEqual('123');
     }));
 
-    it ('Should hide component when permission removed', fakeAsync(() => {
+    it('Should hide component when permission removed', fakeAsync(() => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
@@ -169,8 +402,10 @@ describe('Permission directive angular only', () => {
 });
 
 describe('Permission directive angular roles only', () => {
-    @Component({selector: 'test-comp',
-        template: `<ng-template permissions [ngxPermissionsOnly]="'ADMIN'"><div>123</div></ng-template>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template permissions [ngxPermissionsOnly]="'ADMIN'"><div>123</div></ng-template>`
+    })
     class TestComp {
         data: any;
     }
@@ -182,7 +417,7 @@ describe('Permission directive angular roles only', () => {
     let awesomePermissions = "AWESOME";
     let permissionsService;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -204,7 +439,7 @@ describe('Permission directive angular roles only', () => {
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
     }));
-    it ('should show the component when permissions array is the same ', fakeAsync(() => {
+    it('should show the component when permissions array is the same ', fakeAsync(() => {
         rolesService.addRole('ADMIN', [awesomePermissions]);
         permissionsService.addPermission(awesomePermissions);
         detectChanges(fixture);
@@ -214,7 +449,7 @@ describe('Permission directive angular roles only', () => {
         expect(content.innerHTML).toEqual('123');
     }));
 
-    it ('should hide the component when user deletes all roles', fakeAsync(() => {
+    it('should hide the component when user deletes all roles', fakeAsync(() => {
         permissionsService.addPermission(awesomePermissions);
         rolesService.addRole('ADMIN', [awesomePermissions]);
         detectChanges(fixture);
@@ -230,7 +465,7 @@ describe('Permission directive angular roles only', () => {
         expect(content2).toEqual(null);
     }));
 
-    it ('should hide the component when user deletes one role', fakeAsync(() => {
+    it('should hide the component when user deletes one role', fakeAsync(() => {
         permissionsService.addPermission(awesomePermissions);
         rolesService.addRole('ADMIN', [awesomePermissions]);
         detectChanges(fixture);
@@ -246,7 +481,7 @@ describe('Permission directive angular roles only', () => {
         expect(content2).toEqual(null);
     }));
 
-    it ('should hide the when there is no two permissions', fakeAsync(() => {
+    it('should hide the when there is no two permissions', fakeAsync(() => {
         permissionsService.addPermission(awesomePermissions);
         rolesService.addRole('ADMIN', [awesomePermissions, 'noSUch permissions']);
         detectChanges(fixture);
@@ -256,8 +491,10 @@ describe('Permission directive angular roles only', () => {
     }));
 });
 describe('Permission directive angular roles only array', () => {
-    @Component({selector: 'test-comp',
-        template: `<ng-template permissions [ngxPermissionsOnly]="['ADMIN', 'GUEST']"><div>123</div></ng-template>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template permissions [ngxPermissionsOnly]="['ADMIN', 'GUEST']"><div>123</div></ng-template>`
+    })
     class TestComp {
         data: any;
     }
@@ -269,13 +506,13 @@ describe('Permission directive angular roles only array', () => {
     let permissionsService;
     let awesomePermission = "AWESOME";
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
 
         rolesService = fixture.debugElement.injector.get(NgxRolesService);
-        permissionsService =  fixture.debugElement.injector.get(NgxPermissionsService);
+        permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
 
     });
 
@@ -289,7 +526,7 @@ describe('Permission directive angular roles only array', () => {
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual('123');
     }));
-    it ('should show the component when there is permission ', fakeAsync(() => {
+    it('should show the component when there is permission ', fakeAsync(() => {
         permissionsService.addPermission(awesomePermission);
         rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
@@ -299,7 +536,7 @@ describe('Permission directive angular roles only array', () => {
         expect(content.innerHTML).toEqual('123');
     }));
 
-    it ('should hide the component when user deletes all roles', fakeAsync(() => {
+    it('should hide the component when user deletes all roles', fakeAsync(() => {
         permissionsService.addPermission(awesomePermission);
         rolesService.addRole('ADMIN', [awesomePermission]);
         detectChanges(fixture);
@@ -315,7 +552,7 @@ describe('Permission directive angular roles only array', () => {
         expect(content2).toEqual(null);
     }));
 
-    it ('should hide the component when user deletes one roles', fakeAsync(() => {
+    it('should hide the component when user deletes one roles', fakeAsync(() => {
         permissionsService.addPermission(awesomePermission);
         rolesService.addRole('ADMIN', [awesomePermission]);
         detectChanges(fixture);
@@ -334,8 +571,10 @@ describe('Permission directive angular roles only array', () => {
 });
 
 describe('Permission directive angular roles except', () => {
-    @Component({selector: 'test-comp',
-        template: `<ng-template permissions [ngxPermissionsExcept]="'ADMIN'"><div>123</div></ng-template>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template permissions [ngxPermissionsExcept]="'ADMIN'"><div>123</div></ng-template>`
+    })
     class TestComp {
         data: any;
     }
@@ -346,7 +585,7 @@ describe('Permission directive angular roles except', () => {
     let comp;
     let permissionsService;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -365,7 +604,7 @@ describe('Permission directive angular roles except', () => {
         let content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
     }));
-    it ('should show the component when permissions array is the same ', fakeAsync(() => {
+    it('should show the component when permissions array is the same ', fakeAsync(() => {
         permissionsService.addPermission('AWESOME');
         rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
@@ -375,7 +614,7 @@ describe('Permission directive angular roles except', () => {
 
     }));
 
-    it ('should show the component when user deletes all roles', fakeAsync(() => {
+    it('should show the component when user deletes all roles', fakeAsync(() => {
         permissionsService.addPermission('AWESOME');
         rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
@@ -391,7 +630,7 @@ describe('Permission directive angular roles except', () => {
         expect(content.innerHTML).toEqual('123');
     }));
 
-    it ('should show the component when user deletes one role', fakeAsync(() => {
+    it('should show the component when user deletes one role', fakeAsync(() => {
         permissionsService.addPermission('AWESOME');
         rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
@@ -410,8 +649,10 @@ describe('Permission directive angular roles except', () => {
     }));
 });
 describe('Permission directive angular roles except array', () => {
-    @Component({selector: 'test-comp',
-        template: `<ng-template permissions [ngxPermissionsExcept]="['ADMIN', 'GUEST']"><div>123</div></ng-template>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template permissions [ngxPermissionsExcept]="['ADMIN', 'GUEST']"><div>123</div></ng-template>`
+    })
     class TestComp {
         data: any;
     }
@@ -422,7 +663,7 @@ describe('Permission directive angular roles except array', () => {
     let comp;
     let permissionsService;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -443,7 +684,7 @@ describe('Permission directive angular roles except array', () => {
         expect(content).toEqual(null);
 
     }));
-    it ('should show when there is no such permission', fakeAsync(() => {
+    it('should show when there is no such permission', fakeAsync(() => {
         rolesService.addRole('ADMIN', ['Awesome']);
         detectChanges(fixture);
 
@@ -452,7 +693,7 @@ describe('Permission directive angular roles except array', () => {
 
     }));
 
-    it ('should show the component when user deletes all roles', fakeAsync(() => {
+    it('should show the component when user deletes all roles', fakeAsync(() => {
         permissionsService.addPermission('AWESOME');
         rolesService.addRole('ADMIN', ['AWESOME']);
         detectChanges(fixture);
@@ -470,7 +711,7 @@ describe('Permission directive angular roles except array', () => {
         expect(content.innerHTML).toEqual('123');
     }));
 
-    it ('should show the component when user deletes one roles', fakeAsync(() => {
+    it('should show the component when user deletes one roles', fakeAsync(() => {
         permissionsService.addPermission('SOMETHING');
         rolesService.addRole('ADMIN', ['SOMETHING']);
         detectChanges(fixture);
@@ -490,8 +731,10 @@ describe('Permission directive angular roles except array', () => {
 });
 
 describe('Permission directive angular testing different selectors *permmisionsOnly', () => {
-    @Component({selector: 'test-comp',
-        template: `<div *ngxPermissionsOnly="['ADMIN']"><div>123</div></div>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<div *ngxPermissionsOnly="['ADMIN']"><div>123</div></div>`
+    })
     class TestComp {
         data: any;
     }
@@ -502,7 +745,7 @@ describe('Permission directive angular testing different selectors *permmisionsO
     let comp;
     let permissionsService;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -542,8 +785,10 @@ describe('Permission directive angular testing different selectors *permmisionsO
 });
 
 describe('Permission directive angular testing different selectors *permmisionsExcept', () => {
-    @Component({selector: 'test-comp',
-        template: `<div *ngxPermissionsExcept="['ADMIN']"><div>123</div></div>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<div *ngxPermissionsExcept="['ADMIN']"><div>123</div></div>`
+    })
     class TestComp {
         data: any;
     }
@@ -553,7 +798,7 @@ describe('Permission directive angular testing different selectors *permmisionsE
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -587,8 +832,10 @@ describe('Permission directive angular testing different selectors *permmisionsE
 });
 
 describe('Permission directive angular testing different async functions in roles', () => {
-    @Component({selector: 'test-comp',
-        template: `<div *ngxPermissionsOnly="'ADMIN'"><div>123</div></div>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<div *ngxPermissionsOnly="'ADMIN'"><div>123</div></div>`
+    })
     class TestComp {
         data: any;
     }
@@ -598,7 +845,7 @@ describe('Permission directive angular testing different async functions in role
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -665,8 +912,10 @@ describe('Permission directive angular testing different async functions in role
 });
 
 describe('Permission directive angular testing different async functions in roles via array', () => {
-    @Component({selector: 'test-comp',
-        template: `<div *ngxPermissionsOnly="['ADMIN','GUEST']"><div>123</div></div>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<div *ngxPermissionsOnly="['ADMIN','GUEST']"><div>123</div></div>`
+    })
     class TestComp {
         data: any;
     }
@@ -677,7 +926,7 @@ describe('Permission directive angular testing different async functions in role
     let comp;
     let permissionsService;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -877,8 +1126,10 @@ describe('Permission directive angular testing different async functions in role
 });
 
 describe('Permission directive angular testing different async functions in permissions via array', () => {
-    @Component({selector: 'test-comp',
-        template: `<div *ngxPermissionsOnly="['ADMIN','GUEST']"><div>123</div></div>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<div *ngxPermissionsOnly="['ADMIN','GUEST']"><div>123</div></div>`
+    })
     class TestComp {
         data: any;
     }
@@ -888,7 +1139,7 @@ describe('Permission directive angular testing different async functions in perm
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -1137,8 +1388,10 @@ describe('Permission directive angular testing different async functions in perm
 
 
 describe('Permission directive angular testing different async functions in permissions via string', () => {
-    @Component({selector: 'test-comp',
-        template: `<div *ngxPermissionsOnly="'ADMIN'"><div>123</div></div>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<div *ngxPermissionsOnly="'ADMIN'"><div>123</div></div>`
+    })
     class TestComp {
         data: any;
     }
@@ -1148,7 +1401,7 @@ describe('Permission directive angular testing different async functions in perm
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -1376,8 +1629,10 @@ describe('Permission directive angular testing different async functions in perm
 
 
 describe('Permission  directive angular testing  different only and accept together async functions in permissions via string', () => {
-    @Component({selector: 'test-comp',
-        template: `<ng-template ngxPermissionsOnly="ADMIN" ngxPermissionsExcept="MANAGER"><div>123</div></ng-template>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template ngxPermissionsOnly="ADMIN" ngxPermissionsExcept="MANAGER"><div>123</div></ng-template>`
+    })
     class TestComp {
         data: any;
     }
@@ -1387,7 +1642,7 @@ describe('Permission  directive angular testing  different only and accept toget
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -1471,8 +1726,10 @@ describe('Permission  directive angular testing  different only and accept toget
 
 
 describe('Permission  directive angular testing  different only and accept together async functions in permissions via array', () => {
-    @Component({selector: 'test-comp',
-        template: `<ng-template [ngxPermissionsOnly]="['ADMIN', 'GUEST']" [ngxPermissionsExcept]="['MANAGER']"><div>123</div></ng-template>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template [ngxPermissionsOnly]="['ADMIN', 'GUEST']" [ngxPermissionsExcept]="['MANAGER']"><div>123</div></ng-template>`
+    })
     class TestComp {
         data: any;
     }
@@ -1482,7 +1739,7 @@ describe('Permission  directive angular testing  different only and accept toget
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -1565,8 +1822,10 @@ describe('Permission  directive angular testing  different only and accept toget
 });
 
 describe('Permission  directive angular testing  different only and accept together async functions in roles via array', () => {
-    @Component({selector: 'test-comp',
-        template: `<ng-template [ngxPermissionsOnly]="['ADMIN', 'GUEST']" [ngxPermissionsExcept]="['MANAGER']"><div>123</div></ng-template>`})
+    @Component({
+        selector: 'test-comp',
+        template: `<ng-template [ngxPermissionsOnly]="['ADMIN', 'GUEST']" [ngxPermissionsExcept]="['MANAGER']"><div>123</div></ng-template>`
+    })
     class TestComp {
         data: any;
     }
@@ -1576,7 +1835,7 @@ describe('Permission  directive angular testing  different only and accept toget
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -1657,7 +1916,8 @@ describe('Permission  directive angular testing  different only and accept toget
 
 
 describe('ngxPermissionsOnly Directive testing else block', () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <div *ngxPermissionsOnly="['FAILED_BLOCK']; else elseBlock">main</div>
             <ng-template #elseBlock>
@@ -1679,7 +1939,7 @@ describe('ngxPermissionsOnly Directive testing else block', () => {
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -1723,7 +1983,8 @@ describe('ngxPermissionsOnly Directive testing else block', () => {
 });
 
 describe('ngxPermissionsOnly Directive testing then block', () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <div *ngxPermissionsOnly="['THEN_BLOCK']; else elseBlock; then thenBlock">main</div>
             <ng-template #elseBlock>
@@ -1745,7 +2006,7 @@ describe('ngxPermissionsOnly Directive testing then block', () => {
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -1769,7 +2030,8 @@ describe('ngxPermissionsOnly Directive testing then block', () => {
 
 
 describe('ngxPermissionsExcept Directive testing else block', () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <div *ngxPermissionsExcept="['MAIN_BLOCK']; else elseBlock">main</div>
             <ng-template #elseBlock>
@@ -1791,7 +2053,7 @@ describe('ngxPermissionsExcept Directive testing else block', () => {
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -1832,7 +2094,8 @@ describe('ngxPermissionsExcept Directive testing else block', () => {
 });
 
 describe('ngxPermissionsExcept Directive testing then block', () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <div *ngxPermissionsExcept="['THEN_BLOCK']; else elseBlock; then thenBlock">main</div>
             <ng-template #elseBlock>
@@ -1854,7 +2117,7 @@ describe('ngxPermissionsExcept Directive testing then block', () => {
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -1873,7 +2136,8 @@ describe('ngxPermissionsExcept Directive testing then block', () => {
 });
 
 describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing then block', () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <ng-template [ngxPermissionsExcept]="'FAIL_BLOCK'" [ngxPermissionsOnly]="'ONLY_BLOCK'" [ngxPermissionsElse]="elseBlock">
               
@@ -1896,7 +2160,7 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing then bl
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -1927,7 +2191,8 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing then bl
 });
 
 describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing else block', () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <ng-template [ngxPermissionsExcept]="'FAIL_BLOCK'" [ngxPermissionsOnly]="'ONLY_BLOCK'" [ngxPermissionsElse]="elseBlock">
               
@@ -1950,7 +2215,7 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing else bl
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -1981,7 +2246,8 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing else bl
 });
 
 describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing then block success', () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <ng-template [ngxPermissionsExcept]="'FAIL_BLOCK'" [ngxPermissionsOnly]="'ONLY_BLOCK'" [ngxPermissionsElse]="elseBlock" [ngxPermissionsThen]="thenBlock">
               
@@ -2004,7 +2270,7 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing then bl
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -2035,7 +2301,8 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing then bl
 });
 
 describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing else block', () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <ng-template [ngxPermissionsExcept]="'FAIL_BLOCK'" [ngxPermissionsOnly]="'ONLY_BLOCK'" [ngxPermissionsElse]="elseBlock">
               
@@ -2058,7 +2325,7 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing else bl
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -2089,7 +2356,8 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing else bl
 });
 
 describe("Ngx Permissions Only Directive when no permission specified should return true", () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <ng-template [ngxPermissionsOnly]="">
                 <div>123</div>
@@ -2106,7 +2374,7 @@ describe("Ngx Permissions Only Directive when no permission specified should ret
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -2125,7 +2393,8 @@ describe("Ngx Permissions Only Directive when no permission specified should ret
 });
 
 describe("Ngx Permissions Except Directive when no permission specified should return true", () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <ng-template [ngxPermissionsExcept]="">
                 <div>123</div>
@@ -2142,7 +2411,7 @@ describe("Ngx Permissions Except Directive when no permission specified should r
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -2161,7 +2430,8 @@ describe("Ngx Permissions Except Directive when no permission specified should r
 });
 
 describe("Ngx Permissions Except Directive when no permission is empty array specified should return true", () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <ng-template [ngxPermissionsOnly]="[]">
                 <div>123</div>
@@ -2178,7 +2448,7 @@ describe("Ngx Permissions Except Directive when no permission is empty array spe
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -2198,7 +2468,8 @@ describe("Ngx Permissions Except Directive when no permission is empty array spe
 
 
 describe("Ngx Permissions Except and only Directive when no permission specified should return true", () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <ng-template [ngxPermissionsExcept]="" [ngxPermissionsOnly]="">
                 <div>123</div>
@@ -2214,7 +2485,7 @@ describe("Ngx Permissions Except and only Directive when no permission specified
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -2233,7 +2504,8 @@ describe("Ngx Permissions Except and only Directive when no permission specified
 });
 
 describe("Ngx Permissions Except and only Directive when no permission specified as array should return true", () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <ng-template [ngxPermissionsExcept]="[]" [ngxPermissionsOnly]="[]">
                 <div>123</div>
@@ -2249,7 +2521,7 @@ describe("Ngx Permissions Except and only Directive when no permission specified
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -2268,7 +2540,8 @@ describe("Ngx Permissions Except and only Directive when no permission specified
 });
 
 describe("Ngx Permissions only Directive when no permission specified as array should return true", () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <ng-template [ngxPermissionsOnly]="[]">
                 <div>123</div>
@@ -2284,7 +2557,7 @@ describe("Ngx Permissions only Directive when no permission specified as array s
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -2303,7 +2576,8 @@ describe("Ngx Permissions only Directive when no permission specified as array s
 });
 
 describe("Ngx Permissions except Directive when no permission specified as array should return true", () => {
-    @Component({selector: 'test-comp',
+    @Component({
+        selector: 'test-comp',
         template: `
             <ng-template [ngxPermissionsExcept]="[]">
                 <div>123</div>
@@ -2319,7 +2593,7 @@ describe("Ngx Permissions except Directive when no permission specified as array
     let fixture;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({ declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()] });
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;

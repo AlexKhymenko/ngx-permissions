@@ -202,7 +202,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
 
         if (isFunction(strategy)) {
             this.showTemplateBlockInView(this.templateRef);
-            (strategy as Function)(this.templateRef);
+            (strategy as Function)(this.templateRef, this.permissionsState);
             return;
         }
     }
