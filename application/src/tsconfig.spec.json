@@ -12,7 +12,7 @@
     ]
   },
   "paths": {
-    "ngx-permissions":["dist/ngx-permissions"]
+    "ngx-permissions":["../dist/ngx-permissions"]
   },
   "files": [
     "test.ts",
