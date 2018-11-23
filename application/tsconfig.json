@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "strictPropertyInitialization": false,
+    "noImplicitAny": false,
     "outDir": "./dist/out-tsc",
     "sourceMap": false,
     "declaration": false,

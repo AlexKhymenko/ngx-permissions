@@ -1,15 +1,17 @@
 {
   "name": "application",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test --preserve-symlinks",
+    "test:single": "cd application && ng test ngx-permissions --preserve-symlinks --watch=false --codeCoverage=true",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prod": "ng serve --aot --prod"
+    "prod": "ng serve --aot --prod",
+    "coverage":"cat ./application/projects/ngx-permissions/coverage/lcovonly/lcov.info | codecov"
   },
   "private": true,
   "dependencies": {
@@ -25,7 +27,7 @@
     "@angular/platform-server": "^7.0.2",
     "@angular/router": "^7.0.2",
     "core-js": "^2.5.7",
-    "rxjs": "6.0.0",
+    "rxjs": "^6.3.3",
     "rxjs-compat": "^6.3.3",
     "zone.js": "^0.8.26"
   },
@@ -38,7 +40,7 @@
     "@angular/language-service": "^7.0.2",
     "@types/jasmine": "^2.8.9",
     "@types/jasminewd2": "^2.0.5",
-    "@types/node": "^10.12.1",
+    "@types/node": "^10.12.2",
     "codelyzer": "^4.5.0",
     "enhanced-resolve": "3.3.0",
     "jasmine-core": "^3.3.0",
