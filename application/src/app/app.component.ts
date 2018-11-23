@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { NgxPermissionsConfigurationService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,16 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.permissionsService.loadPermissions(['ADMIN'])
+    // this.permissionsService.loadPermissions(['ADMIN']);
+    this.permissionsService.addPermission('ADMIN', () => {
+      // return false;
+      return new Promise<boolean>((resolve, reject) => {
+        setTimeout(() => {
+          resolve(true);
+        }, 2000);
+      })
+    })
+
   }
 
   public unAuthorized() {
