@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prod": "ng serve --aot --prod",
-    "coverage":"cat ./application/projects/ngx-permissions/coverage/lcovonly/lcov.info | codecov"
+    "coverage": "cat ./application/projects/ngx-permissions/coverage/lcovonly/lcov.info | codecov"
   },
   "private": true,
   "dependencies": {
