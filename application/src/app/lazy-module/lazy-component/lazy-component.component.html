@@ -24,5 +24,8 @@
   <div style="color: red">LAZY I Should not see it except admin</div>
 </ng-template>
 
+  <button *ngxPermissionsOnly="['ggg']; unauthorisedStrategy: 'disable'">GGG</button>
+  <button *ngxPermissionsOnly="['ggg'];">GGG</button>
+  <button *ngxPermissionsOnly="['ADMIN']">GGG</button>
 
 <div> ENd on lazy Module</div>

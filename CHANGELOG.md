@@ -1,3 +1,6 @@
+## 6.0.5
+Fix set and getting default strategies in lazy modules (https://github.com/AlexKhymenko/ngx-permissions/issues/92)
+
 ## 6.0.4
 Fix typo in ngxPermissionsExcept add more test coverage
 

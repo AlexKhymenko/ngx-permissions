@@ -32,11 +32,21 @@ export class NgxPermissionsConfigurationService {
     }
 
     public setDefaultOnAuthorizedStrategy(name: string | 'remove' | 'show'): void {
-        this.onAuthorisedDefaultStrategy = this.getDefinedStrategy(name);
+        if (this.isolate) {
+            this.onAuthorisedDefaultStrategy = this.getDefinedStrategy(name);
+        } else {
+            this.configurationStore.onAuthorisedDefaultStrategy = this.getDefinedStrategy(name);
+            this.onAuthorisedDefaultStrategy = this.configurationStore.onAuthorisedDefaultStrategy;
+        }
     }
 
     public setDefaultOnUnauthorizedStrategy(name: string | 'remove' | 'show'): void {
-        this.onUnAuthorisedDefaultStrategy = this.getDefinedStrategy(name);
+        if (this.isolate) {
+            this.onUnAuthorisedDefaultStrategy = this.getDefinedStrategy(name);
+        } else {
+            this.configurationStore.onUnAuthorisedDefaultStrategy = this.getDefinedStrategy(name);
+            this.onUnAuthorisedDefaultStrategy = this.configurationStore.onUnAuthorisedDefaultStrategy;
+        }
     }
 
     public addPermissionStrategy(key: string, func: StrategyFunction): void {
