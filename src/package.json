@@ -1,6 +1,6 @@
 {
   "name": "ngx-permissions",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/AlexKhymenko/ngx-permissions"
@@ -60,7 +60,7 @@
   "peerDependencies": {
     "@angular/core": ">=4.0.0 || >8.0.0",
     "@angular/router": ">=4.0.0 || >8.0.0",
-    "rxjs": "^6.0.0",
-    "zone.js": "^0.8.4"
+    "rxjs": ">=6.0.0 || >7.0.0",
+    "zone.js": ">=0.8.4 || >1.0.0"
   }
 }

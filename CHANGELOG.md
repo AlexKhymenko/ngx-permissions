@@ -1,3 +1,6 @@
+## 6.0.6
+Allow angular version 8 to upgrade
+
 ## 6.0.5
 Fix set and getting default strategies in lazy modules (https://github.com/AlexKhymenko/ngx-permissions/issues/92)
 
