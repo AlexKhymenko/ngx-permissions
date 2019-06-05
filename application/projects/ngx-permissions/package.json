@@ -1,8 +1,55 @@
 {
   "name": "ngx-permissions",
-  "version": "0.0.1",
+  "version": "6.0.6",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AlexKhymenko/ngx-permissions"
+  },
+  "author": {
+    "name": "Oleksandr Khymenko",
+    "email": "alexanderKhymenko@gmail.com"
+  },
+  "keywords": [
+    "angular",
+    "angular2",
+    "angular 2",
+    "angular4",
+    "angular 4",
+    "angular5",
+    "angular 5",
+    "angular 6",
+    "angular6",
+    "angular7",
+    "angular8",
+    "angularx",
+    "angular-x",
+    "ng",
+    "ngx",
+    "ng2",
+    "ng4",
+    "ng5",
+    "permissions",
+    "permission",
+    "role",
+    "roles",
+    "guard",
+    "router",
+    "ngx-router",
+    "angular2-router",
+    "angular4-router",
+    "access-control",
+    "access",
+    "acl",
+    "rbac"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlexKhymenko/ngx-permissions/issues"
+  },
   "peerDependencies": {
-    "@angular/common": ">=7.0.0",
-    "@angular/core": ">=7.0.0"
+    "@angular/core": ">=4.0.0 || >8.0.0",
+    "@angular/router": ">=4.0.0 || >8.0.0",
+    "rxjs": ">=6.0.0 || >7.0.0",
+    "zone.js": ">=0.8.4 || >1.0.0"
   }
 }

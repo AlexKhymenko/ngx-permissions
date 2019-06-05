@@ -14,8 +14,9 @@ import { InitialLoadComponent } from './initial-load/initial-load.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    NgxPermissionsModule.forRoot()
+    NgxPermissionsModule.forRoot(),
+    AppRoutingModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
