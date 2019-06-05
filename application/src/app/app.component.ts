@@ -1,5 +1,6 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { NgxPermissionsService, NgxPermissionsConfigurationService } from 'ngx-permissions';
+import { Component, OnInit } from '@angular/core';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { NgxPermissionsConfigurationService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-root',
@@ -11,19 +12,21 @@ export class AppComponent implements OnInit {
   permission: string[] = ['GUEST'];
 
 
-  constructor(private permissionsService: NgxPermissionsService,
-              private renderer2: Renderer2,
-              private ngxPermissionsConfigurationService: NgxPermissionsConfigurationService) {
+  constructor(private permissionsService: NgxPermissionsService) {
 
   }
 
   ngOnInit(): void {
-    this.permissionsService.loadPermissions(['ADMIN']);
-    this.ngxPermissionsConfigurationService.addPermissionStrategy('disable', (tF: any) => {
-      this.renderer2.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
-    });
+    // this.permissionsService.loadPermissions(['ADMIN']);
+    this.permissionsService.addPermission('ADMIN', () => {
+      // return false;
+      return new Promise<boolean>((resolve, reject) => {
+        setTimeout(() => {
+          resolve(true);
+        }, 2000);
+      })
+    })
 
-    this.ngxPermissionsConfigurationService.setDefaultOnUnauthorizedStrategy('disable');
   }
 
   public unAuthorized() {
@@ -51,6 +54,4 @@ export class AppComponent implements OnInit {
     this.permission = ['GUEST'];
     console.log(this.permission);
   }
-
-
 }
