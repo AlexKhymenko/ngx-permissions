@@ -53,7 +53,7 @@
   "bugs": {
     "url": "https://github.com/AlexKhymenko/ngx-permissions/issues"
   },
-  "main": "ngx-permissions.umd.js",
+  "main": "ngx-permissions.js",
   "module": "ngx-permissions.js",
   "jsnext:main": "ngx-permissions.js",
   "typings": "ngx-permissions.d.ts",
