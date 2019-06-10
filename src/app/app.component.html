@@ -1,0 +1,103 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{title}}!
+  </h1>
+  <img width="300" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCAyNTAgMjUwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyNTAgMjUwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7ZmlsbDojREQwMDMxO30NCgkuc3Qxe2ZpbGw6I0MzMDAyRjt9DQoJLnN0MntmaWxsOiNGRkZGRkY7fQ0KPC9zdHlsZT4NCjxnPg0KCTxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMTI1LDMwIDEyNSwzMCAxMjUsMzAgMzEuOSw2My4yIDQ2LjEsMTg2LjMgMTI1LDIzMCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAJIi8+DQoJPHBvbHlnb24gY2xhc3M9InN0MSIgcG9pbnRzPSIxMjUsMzAgMTI1LDUyLjIgMTI1LDUyLjEgMTI1LDE1My40IDEyNSwxNTMuNCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAxMjUsMzAgCSIvPg0KCTxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0xMjUsNTIuMUw2Ni44LDE4Mi42aDBoMjEuN2gwbDExLjctMjkuMmg0OS40bDExLjcsMjkuMmgwaDIxLjdoMEwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMQ0KCQlMMTI1LDUyLjF6IE0xNDIsMTM1LjRIMTA4bDE3LTQwLjlMMTQyLDEzNS40eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
+</div>
+<h2><a routerLink="/home">Only should go Home Page</a></h2>
+<h2><a routerLink="/home1">Only should not go Home Page</a></h2>
+<h2><a routerLink="/home3">Except should not go through</a></h2>
+<h2><a routerLink="/home4">Except should go through</a></h2>
+<h2><a routerLink="/dynamic/33">Dynamic routes</a></h2>
+
+<a routerLink="/lazy">Lazy module</a>
+<a routerLink="/lazy-isolate">Lazy ISOLATE</a>
+<a routerLink="/lazy-roles-isolate">Lazy ROLES ISOLATE</a>
+<a routerLink="/lazy-roles-async-isolate">Lazy ROLES ASYNC ISOLATE</a>
+
+
+<button (click)="addPermission()">Add load</button>
+<div >
+</div>
+<!-- <app-initial-load *ngxPermissionsOnly="['CHECK_LOAD']"></app-initial-load>
+
+<router-outlet></router-outlet> -->
+
+<div style="background-color: green">
+  I SHOULD SEE it :
+  <ng-template permissions [ngxPermissionsOnly]="['ADMIN']">
+    I SHOULD SEE see it only admin
+  </ng-template>
+</div>
+
+<div style="background-color: green">
+  I SHOULD SEE it 2 (
+  <ng-template [ngxPermissionsOnly]="['ADMIN']">
+    I SHOULD SEE see it only admin
+  </ng-template>
+</div>
+
+<div style="background-color: green">
+  <div *ngxPermissionsOnly="['ADMIN']">
+    I SHOULD SEE see it only admin
+  </div>
+</div>
+
+<div style="background-color: green">
+  THis USES BOTH only and except
+
+  <ng-template  [ngxPermissionsOnly]="['ADMIN']" [ngxPermissionsExcept]="'HHHH'" >
+    Usage on both only and except
+    I SHOULD SEE see it only admin
+  </ng-template>
+</div>
+
+
+<ng-template permissions [ngxPermissionsOnly]="['GUEST']">
+  <div>I will not see it only guest</div>
+</ng-template>
+
+<ng-template permissions [ngxPermissionsExcept]="['ADMINNNN']" (permissionsAuthorized)="authorized()" (permissionsUnauthorized)="unAuthorized()">
+  <div>I will see it except adminnnnnnn</div>
+</ng-template>
+
+<ng-template permissions [ngxPermissionsExcept]="['ADMIN']">
+  <div>I Should not see it except admin gggggggggg87687687687gggggggggg</div>
+</ng-template>
+
+
+<div *ngxPermissionsOnly="['ADMIN']; else a; then a2">
+  <div>Testing templatest</div>
+</div>
+
+<div *ngxPermissionsExcept="['ADMIN']; else a; then a2">
+  <div>Testing templatest234234</div>
+</div>
+
+
+<ng-template #a>
+  else block
+</ng-template>
+<ng-template #a2>
+  then block
+</ng-template>
+
+/////////////////////////////CHANGE SOMETHING////////////////////////////////////////
+
+<div>
+  <br>
+  <button (click)="changeToAdmin()">Change To Admin Permission</button>
+  <br>
+  <br>
+
+  <button (click)="changeToAnotherPermission()">Change To Admin Permission</button>
+
+  <button (click)="changeToGuest()">Change To Guest  Permission</button>
+  <br>
+  <br>
+  <button *ngxPermissionsOnly="permission">This should be visible to ADMIN or SUPERADMIN</button>
+
+  <button *ngxPermissionsOnly="[]">WTF</button>
+
+</div>

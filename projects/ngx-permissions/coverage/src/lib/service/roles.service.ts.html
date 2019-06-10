@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/lib/service/roles.service.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\index.html">All files</a> / <a href="index.html">src/lib/service</a> roles.service.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>44/44</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>23/23</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>23/23</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>42/42</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">374x</span>
+<span class="cline-any cline-yes">374x</span>
+<span class="cline-any cline-yes">374x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">374x</span>
+<span class="cline-any cline-yes">374x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">91x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">91x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">505x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">505x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">503x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">503x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">503x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">503x</span>
+<span class="cline-any cline-yes">534x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">534x</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">501x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">503x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">534x</span>
+<span class="cline-any cline-yes">503x</span>
+<span class="cline-any cline-yes">503x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">503x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">534x</span>
+<span class="cline-any cline-yes">37x</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">497x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">534x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Inject, Injectable, InjectionToken } from '@angular/core';
+&nbsp;
+import { BehaviorSubject, from, Observable, ObservableInput, of } from 'rxjs';
+import { catchError, every, first, map, mergeAll, mergeMap, switchMap } from 'rxjs/operators';
+&nbsp;
+import { NgxRole } from '../model/role.model';
+import { NgxRolesStore } from '../store/roles.store';
+import { isBoolean, isFunction, isPromise, transformStringToArray } from '../utils/utils';
+import { NgxPermissionsService } from './permissions.service';
+&nbsp;
+export const USE_ROLES_STORE = new InjectionToken('USE_ROLES_STORE');
+&nbsp;
+export type NgxRolesObject = { [name: string]: NgxRole };
+&nbsp;
+@Injectable()
+export class NgxRolesService {
+&nbsp;
+    private rolesSource: BehaviorSubject&lt;NgxRolesObject&gt;;
+&nbsp;
+    public roles$: Observable&lt;NgxRolesObject&gt;;
+&nbsp;
+    constructor(
+        @Inject(USE_ROLES_STORE) private isolate: boolean = false,
+        private rolesStore: NgxRolesStore,
+        private permissionsService: NgxPermissionsService
+    ) {
+        this.rolesSource = this.isolate ? new BehaviorSubject&lt;NgxRolesObject&gt;({}) : this.rolesStore.rolesSource;
+        this.roles$ = this.rolesSource.asObservable();
+    }
+&nbsp;
+    public addRole(name: string, validationFunction: Function | string[]) {
+        const roles = {
+            ...this.rolesSource.value,
+            [name]: {name, validationFunction}
+        };
+        this.rolesSource.next(roles);
+    }
+&nbsp;
+    public addRoles(rolesObj: { [name: string]: Function | string[] }) {
+        Object.keys(rolesObj).forEach((key, index) =&gt; {
+            this.addRole(key, rolesObj[key]);
+        });
+    }
+&nbsp;
+    public flushRoles() {
+        this.rolesSource.next({});
+    }
+&nbsp;
+    public removeRole(roleName: string) {
+        let roles = {
+            ...this.rolesSource.value
+        };
+        delete roles[roleName];
+        this.rolesSource.next(roles);
+    }
+&nbsp;
+    public getRoles() {
+        return this.rolesSource.value;
+    }
+&nbsp;
+    public getRole(name: string) {
+        return this.rolesSource.value[name];
+    }
+&nbsp;
+    public hasOnlyRoles(names: string | string[]): Promise&lt;boolean&gt; {
+        const isNamesEmpty = !names || (Array.isArray(names) &amp;&amp; names.length === 0);
+&nbsp;
+        if (isNamesEmpty) return Promise.resolve(true);
+&nbsp;
+        names = transformStringToArray(names);
+&nbsp;
+        return Promise.all([this.hasRoleKey(names), this.hasRolePermission(this.rolesSource.value, names)])
+            .then(([hasRoles, hasPermissions]: [boolean, boolean]) =&gt; {
+                return hasRoles || hasPermissions;
+            });
+    }
+&nbsp;
+    private hasRoleKey(roleName: string[]): Promise&lt;boolean&gt; {
+        const promises: Observable&lt;boolean&gt;[] = roleName.map((key) =&gt; {
+            const hasValidationFunction = !!this.rolesSource.value[key] &amp;&amp;
+                                          !!this.rolesSource.value[key].validationFunction &amp;&amp;
+                                          isFunction(this.rolesSource.value[key].validationFunction);
+&nbsp;
+            if (hasValidationFunction &amp;&amp; !isPromise(this.rolesSource.value[key].validationFunction)) {
+                const validationFunction: Function = &lt;Function&gt;this.rolesSource.value[key].validationFunction;
+&nbsp;
+                return of(null).pipe(
+                    map(() =&gt; validationFunction()),
+                    switchMap((promise: Promise&lt;boolean&gt; | boolean): ObservableInput&lt;boolean&gt; =&gt; isBoolean(promise) ?
+                        of(promise as boolean) : promise as Promise&lt;boolean&gt;),
+                    catchError(() =&gt; of(false))
+                );
+            }
+&nbsp;
+            return of(false);
+        });
+&nbsp;
+        return from(promises).pipe(
+            mergeAll(),
+            first((data: any) =&gt; data !== false, false),
+            map((data) =&gt; data !== false)
+        ).toPromise().then((data: any) =&gt; data);
+    }
+&nbsp;
+    private hasRolePermission(roles: NgxRolesObject, roleNames: string[]): Promise&lt;boolean&gt; {
+        return from(roleNames).pipe(
+            mergeMap((key) =&gt; {
+                if (roles[key] &amp;&amp; Array.isArray(roles[key].validationFunction)) {
+                    return from(&lt;string[]&gt;roles[key].validationFunction).pipe(
+                        mergeMap((permission) =&gt; this.permissionsService.hasPermission(permission)),
+                        every((hasPermissions) =&gt; hasPermissions === true)
+                    );
+                }
+&nbsp;
+                return of(false);
+            }),
+            first((hasPermission) =&gt; hasPermission === true, false)
+        ).toPromise();
+    }
+&nbsp;
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Jun 10 2019 15:21:26 GMT+0300 (Eastern European Summer Time)
+</div>
+</div>
+<script src="..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\sorter.js"></script>
+</body>
+</html>

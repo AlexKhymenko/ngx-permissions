@@ -1,3 +1,7 @@
+## 7.0.6
+Allow angular version 8 to upgrade
+
+
 ## 6.0.6
 Allow angular version 8 to upgrade
 

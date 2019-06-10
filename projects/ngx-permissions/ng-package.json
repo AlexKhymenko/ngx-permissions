@@ -1,0 +1,8 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/ngx-permissions",
+  "deleteDestPath": true,
+  "lib": {
+    "entryFile": "src/public_api.ts"
+  }
+}
