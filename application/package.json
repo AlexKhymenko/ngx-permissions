@@ -1,6 +1,6 @@
 {
   "name": "application",
-  "version": "6.0.6",
+  "version": "7.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -11,7 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prod": "ng serve --aot --prod",
-    "coverage": "cat ./application/projects/ngx-permissions/coverage/lcovonly/lcov.info | codecov"
+    "coverage": "cat ./application/projects/ngx-permissions/coverage/lcovonly/lcov.info | codecov",
+    "ivy-build": ".\\node_modules\\.bin\\ivy-ngcc -s .\\dist"
   },
   "private": true,
   "dependencies": {
@@ -34,9 +35,9 @@
     "zone.js": "^0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "0.800.1",
-    "@angular-devkit/build-ng-packagr": "^0.800.1",
-    "@angular/cli": "8.0.0",
+    "@angular-devkit/build-angular": "0.800.2",
+    "@angular-devkit/build-ng-packagr": "^0.800.2",
+    "@angular/cli": "8.0.2",
     "@angular/compiler-cli": "8.0.0",
     "@angular/core": "8.0.0",
     "@angular/language-service": "8.0.0",
@@ -53,7 +54,7 @@
     "karma-coverage-istanbul-reporter": "^1.4.3",
     "karma-jasmine": "^1.1.2",
     "karma-jasmine-html-reporter": "^1.4.0",
-    "ng-packagr": "^5.2.0",
+    "ng-packagr": "^5.3.0",
     "protractor": "^5.4.1",
     "ts-node": "~3.0.4",
     "tsickle": "0.35.0",
