@@ -75,7 +75,8 @@ Desktop.ini
 dist/*
 dist
 # Tests
-coverage/*
+/projects/ngx-permissions/coverage
+/projects/ngx-permissions/coverage/*
 
 
 
