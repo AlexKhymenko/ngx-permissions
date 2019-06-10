@@ -12,7 +12,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prod": "ng serve --aot --prod",
-    "codecov": "cat ./projects/ngx-permissions/coverage/lcov.info | codecov",
+    "codecov": "cat projects/ngx-permissions/coverage/lcov.info | codecov",
     "ivy-build": ".\\node_modules\\.bin\\ivy-ngcc -s .\\dist"
   },
   "private": true,
