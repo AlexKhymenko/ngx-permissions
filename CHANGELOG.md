@@ -1,3 +1,6 @@
+## 7.0.1
+Fix readme file
+
 ## 7.0.0
 Change build to cli and fix ivy
 
