@@ -30,6 +30,7 @@ Some functionality is missing visit [wiki-page](https://github.com/AlexKhymenko/
 - [Development](#development)
 - [License](#license)
 
+### With version 7 minimal angular version 8.0
 ### With version 5 minimal rxjs dependency 6.0
 ### With version 4 minimal rxjs dependency 5.5
 ### Version 2 for angular 4/5. Version 1 for angular 2/4
