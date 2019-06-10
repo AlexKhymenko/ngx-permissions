@@ -1,0 +1,278 @@
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+import * as tslib_1 from "tslib";
+import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { BehaviorSubject, from, of } from 'rxjs';
+import { catchError, first, map, mergeAll, switchMap } from 'rxjs/operators';
+import { NgxPermissionsStore } from '../store/permissions.store';
+import { isBoolean, isFunction, transformStringToArray } from '../utils/utils';
+/** @type {?} */
+export var USE_PERMISSIONS_STORE = new InjectionToken('USE_PERMISSIONS_STORE');
+var NgxPermissionsService = /** @class */ (function () {
+    function NgxPermissionsService(isolate, permissionsStore) {
+        if (isolate === void 0) { isolate = false; }
+        this.isolate = isolate;
+        this.permissionsStore = permissionsStore;
+        this.permissionsSource = isolate ? new BehaviorSubject({}) : permissionsStore.permissionsSource;
+        this.permissions$ = this.permissionsSource.asObservable();
+    }
+    /**
+     * Remove all permissions from permissions source
+     */
+    /**
+     * Remove all permissions from permissions source
+     * @return {?}
+     */
+    NgxPermissionsService.prototype.flushPermissions = /**
+     * Remove all permissions from permissions source
+     * @return {?}
+     */
+    function () {
+        this.permissionsSource.next({});
+    };
+    /**
+     * @param {?} permission
+     * @return {?}
+     */
+    NgxPermissionsService.prototype.hasPermission = /**
+     * @param {?} permission
+     * @return {?}
+     */
+    function (permission) {
+        if (!permission || (Array.isArray(permission) && permission.length === 0)) {
+            return Promise.resolve(true);
+        }
+        permission = transformStringToArray(permission);
+        return this.hasArrayPermission(permission);
+    };
+    /**
+     * @param {?} permissions
+     * @param {?=} validationFunction
+     * @return {?}
+     */
+    NgxPermissionsService.prototype.loadPermissions = /**
+     * @param {?} permissions
+     * @param {?=} validationFunction
+     * @return {?}
+     */
+    function (permissions, validationFunction) {
+        var _this = this;
+        /** @type {?} */
+        var newPermissions = permissions.reduce((/**
+         * @param {?} source
+         * @param {?} p
+         * @return {?}
+         */
+        function (source, p) {
+            return _this.reducePermission(source, p, validationFunction);
+        }), {});
+        this.permissionsSource.next(newPermissions);
+    };
+    /**
+     * @param {?} permission
+     * @param {?=} validationFunction
+     * @return {?}
+     */
+    NgxPermissionsService.prototype.addPermission = /**
+     * @param {?} permission
+     * @param {?=} validationFunction
+     * @return {?}
+     */
+    function (permission, validationFunction) {
+        var _this = this;
+        if (Array.isArray(permission)) {
+            /** @type {?} */
+            var permissions = permission.reduce((/**
+             * @param {?} source
+             * @param {?} p
+             * @return {?}
+             */
+            function (source, p) {
+                return _this.reducePermission(source, p, validationFunction);
+            }), this.permissionsSource.value);
+            this.permissionsSource.next(permissions);
+        }
+        else {
+            /** @type {?} */
+            var permissions = this.reducePermission(this.permissionsSource.value, permission, validationFunction);
+            this.permissionsSource.next(permissions);
+        }
+    };
+    /**
+     * @param {?} permissionName
+     * @return {?}
+     */
+    NgxPermissionsService.prototype.removePermission = /**
+     * @param {?} permissionName
+     * @return {?}
+     */
+    function (permissionName) {
+        /** @type {?} */
+        var permissions = tslib_1.__assign({}, this.permissionsSource.value);
+        delete permissions[permissionName];
+        this.permissionsSource.next(permissions);
+    };
+    /**
+     * @param {?} name
+     * @return {?}
+     */
+    NgxPermissionsService.prototype.getPermission = /**
+     * @param {?} name
+     * @return {?}
+     */
+    function (name) {
+        return this.permissionsSource.value[name];
+    };
+    /**
+     * @return {?}
+     */
+    NgxPermissionsService.prototype.getPermissions = /**
+     * @return {?}
+     */
+    function () {
+        return this.permissionsSource.value;
+    };
+    /**
+     * @private
+     * @param {?} source
+     * @param {?} name
+     * @param {?=} validationFunction
+     * @return {?}
+     */
+    NgxPermissionsService.prototype.reducePermission = /**
+     * @private
+     * @param {?} source
+     * @param {?} name
+     * @param {?=} validationFunction
+     * @return {?}
+     */
+    function (source, name, validationFunction) {
+        var _a, _b;
+        if (!!validationFunction && isFunction(validationFunction)) {
+            return tslib_1.__assign({}, source, (_a = {}, _a[name] = { name: name, validationFunction: validationFunction }, _a));
+        }
+        else {
+            return tslib_1.__assign({}, source, (_b = {}, _b[name] = { name: name }, _b));
+        }
+    };
+    /**
+     * @private
+     * @param {?} permissions
+     * @return {?}
+     */
+    NgxPermissionsService.prototype.hasArrayPermission = /**
+     * @private
+     * @param {?} permissions
+     * @return {?}
+     */
+    function (permissions) {
+        var _this = this;
+        /** @type {?} */
+        var promises = permissions.map((/**
+         * @param {?} key
+         * @return {?}
+         */
+        function (key) {
+            if (_this.hasPermissionValidationFunction(key)) {
+                /** @type {?} */
+                var immutableValue_1 = tslib_1.__assign({}, _this.permissionsSource.value);
+                /** @type {?} */
+                var validationFunction_1 = (/** @type {?} */ (_this.permissionsSource.value[key].validationFunction));
+                return of(null).pipe(map((/**
+                 * @return {?}
+                 */
+                function () {
+                    return validationFunction_1(key, immutableValue_1);
+                })), switchMap((/**
+                 * @param {?} promise
+                 * @return {?}
+                 */
+                function (promise) {
+                    /** @type {?} */
+                    var b = isBoolean(promise);
+                    if (b) {
+                        return of((/** @type {?} */ (promise)));
+                    }
+                    else {
+                        return (/** @type {?} */ (promise));
+                    }
+                })), catchError((/**
+                 * @return {?}
+                 */
+                function () { return of(false); })));
+            }
+            // check for name of the permission if there is no validation function
+            return of(!!_this.permissionsSource.value[key]);
+        }));
+        return from(promises).pipe(mergeAll(), first((/**
+         * @param {?} data
+         * @return {?}
+         */
+        function (data) {
+            /** @type {?} */
+            var r = data !== false;
+            return r;
+        }), false), map((/**
+         * @param {?} data
+         * @return {?}
+         */
+        function (data) {
+            /** @type {?} */
+            var r = data === false ? false : true;
+            return r;
+        }))).toPromise().then((/**
+         * @param {?} data
+         * @return {?}
+         */
+        function (data) {
+            return data;
+        }));
+    };
+    /**
+     * @private
+     * @param {?} key
+     * @return {?}
+     */
+    NgxPermissionsService.prototype.hasPermissionValidationFunction = /**
+     * @private
+     * @param {?} key
+     * @return {?}
+     */
+    function (key) {
+        return !!this.permissionsSource.value[key] &&
+            !!this.permissionsSource.value[key].validationFunction &&
+            isFunction(this.permissionsSource.value[key].validationFunction);
+    };
+    NgxPermissionsService.decorators = [
+        { type: Injectable }
+    ];
+    /** @nocollapse */
+    NgxPermissionsService.ctorParameters = function () { return [
+        { type: Boolean, decorators: [{ type: Inject, args: [USE_PERMISSIONS_STORE,] }] },
+        { type: NgxPermissionsStore }
+    ]; };
+    return NgxPermissionsService;
+}());
+export { NgxPermissionsService };
+if (false) {
+    /**
+     * @type {?}
+     * @private
+     */
+    NgxPermissionsService.prototype.permissionsSource;
+    /** @type {?} */
+    NgxPermissionsService.prototype.permissions$;
+    /**
+     * @type {?}
+     * @private
+     */
+    NgxPermissionsService.prototype.isolate;
+    /**
+     * @type {?}
+     * @private
+     */
+    NgxPermissionsService.prototype.permissionsStore;
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicGVybWlzc2lvbnMuc2VydmljZS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL25neC1wZXJtaXNzaW9ucy8iLCJzb3VyY2VzIjpbImxpYi9zZXJ2aWNlL3Blcm1pc3Npb25zLnNlcnZpY2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7QUFBQSxPQUFPLEVBQUUsTUFBTSxFQUFFLFVBQVUsRUFBRSxjQUFjLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFFbkUsT0FBTyxFQUFFLGVBQWUsRUFBRSxJQUFJLEVBQStCLEVBQUUsRUFBRSxNQUFNLE1BQU0sQ0FBQztBQUM5RSxPQUFPLEVBQUUsVUFBVSxFQUFFLEtBQUssRUFBRSxHQUFHLEVBQUUsUUFBUSxFQUFFLFNBQVMsRUFBWSxNQUFNLGdCQUFnQixDQUFDO0FBR3ZGLE9BQU8sRUFBRSxtQkFBbUIsRUFBRSxNQUFNLDRCQUE0QixDQUFDO0FBRWpFLE9BQU8sRUFBRSxTQUFTLEVBQUUsVUFBVSxFQUFFLHNCQUFzQixFQUFFLE1BQU0sZ0JBQWdCLENBQUM7O0FBSS9FLE1BQU0sS0FBTyxxQkFBcUIsR0FBRyxJQUFJLGNBQWMsQ0FBQyx1QkFBdUIsQ0FBQztBQUVoRjtJQU1JLCtCQUMyQyxPQUF3QixFQUN2RCxnQkFBcUM7UUFETix3QkFBQSxFQUFBLGVBQXdCO1FBQXhCLFlBQU8sR0FBUCxPQUFPLENBQWlCO1FBQ3ZELHFCQUFnQixHQUFoQixnQkFBZ0IsQ0FBcUI7UUFFN0MsSUFBSSxDQUFDLGlCQUFpQixHQUFHLE9BQU8sQ0FBQyxDQUFDLENBQUMsSUFBSSxlQUFlLENBQXVCLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQyxnQkFBZ0IsQ0FBQyxpQkFBaUIsQ0FBQztRQUN0SCxJQUFJLENBQUMsWUFBWSxHQUFHLElBQUksQ0FBQyxpQkFBaUIsQ0FBQyxZQUFZLEVBQUUsQ0FBQztJQUM5RCxDQUFDO0lBRUQ7O09BRUc7Ozs7O0lBQ0ksZ0RBQWdCOzs7O0lBQXZCO1FBQ0ksSUFBSSxDQUFDLGlCQUFpQixDQUFDLElB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LENBQUMsQ0FBQztRQUNiLENBQUMsR0FBRSxLQUFLLENBQUMsRUFDVCxHQUFHOzs7O1FBQUMsVUFBQyxJQUFJOztnQkFDQyxDQUFDLEdBQUcsSUFBSSxLQUFLLEtBQUssQ0FBQyxDQUFDLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQyxJQUFJO1lBQ3ZDLE9BQU8sQ0FBQyxDQUFDO1FBQ2IsQ0FBQyxFQUFDLENBQ0wsQ0FBQyxTQUFTLEVBQUUsQ0FBQyxJQUFJOzs7O1FBQUMsVUFBQyxJQUFTO1lBQ3pCLE9BQU8sSUFBSSxDQUFDO1FBQ2hCLENBQUMsRUFBQyxDQUFDO0lBQ1AsQ0FBQzs7Ozs7O0lBRU8sK0RBQStCOzs7OztJQUF2QyxVQUF3QyxHQUFXO1FBQy9DLE9BQU8sQ0FBQyxDQUFDLElBQUksQ0FBQyxpQkFBaUIsQ0FBQyxLQUFLLENBQUMsR0FBRyxDQUFDO1lBQ3RDLENBQUMsQ0FBQyxJQUFJLENBQUMsaUJBQWlCLENBQUMsS0FBSyxDQUFDLEdBQUcsQ0FBQyxDQUFDLGtCQUFrQjtZQUN0RCxVQUFVLENBQUMsSUFBSSxDQUFDLGlCQUFpQixDQUFDLEtBQUssQ0FBQyxHQUFHLENBQUMsQ0FBQyxrQkFBa0IsQ0FBQyxDQUFDO0lBQ3pFLENBQUM7O2dCQXBJSixVQUFVOzs7OzhDQU9GLE1BQU0sU0FBQyxxQkFBcUI7Z0JBZjVCLG1CQUFtQjs7SUE4STVCLDRCQUFDO0NBQUEsQUF0SUQsSUFzSUM7U0FySVkscUJBQXFCOzs7Ozs7SUFFOUIsa0RBQWlFOztJQUNqRSw2Q0FBc0Q7Ozs7O0lBR2xELHdDQUErRDs7Ozs7SUFDL0QsaURBQTZDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgSW5qZWN0LCBJbmplY3RhYmxlLCBJbmplY3Rpb25Ub2tlbiB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xyXG5cclxuaW1wb3J0IHsgQmVoYXZpb3JTdWJqZWN0LCBmcm9tLCBPYnNlcnZhYmxlLCBPYnNlcnZhYmxlSW5wdXQsIG9mIH0gZnJvbSAncnhqcyc7XHJcbmltcG9ydCB7IGNhdGNoRXJyb3IsIGZpcnN0LCBtYXAsIG1lcmdlQWxsLCBzd2l0Y2hNYXAsIG1lcmdlTWFwIH0gZnJvbSAncnhqcy9vcGVyYXRvcnMnO1xyXG5cclxuaW1wb3J0IHsgTmd4UGVybWlzc2lvbiB9IGZyb20gJy4uL21vZGVsL3Blcm1pc3Npb24ubW9kZWwnO1xyXG5pbXBvcnQgeyBOZ3hQZXJtaXNzaW9uc1N0b3JlIH0gZnJvbSAnLi4vc3RvcmUvcGVybWlzc2lvbnMuc3RvcmUnO1xyXG5cclxuaW1wb3J0IHsgaXNCb29sZWFuLCBpc0Z1bmN0aW9uLCB0cmFuc2Zvcm1TdHJpbmdUb0FycmF5IH0gZnJvbSAnLi4vdXRpbHMvdXRpbHMnO1xyXG5cclxuZXhwb3J0IHR5cGUgTmd4UGVybWlzc2lvbnNPYmplY3QgPSB7IFtuYW1lOiBzdHJpbmddOiBOZ3hQZXJtaXNzaW9uIH07XHJcblxyXG5leHBvcnQgY29uc3QgVVNFX1BFUk1JU1NJT05TX1NUT1JFID0gbmV3IEluamVjdGlvblRva2VuKCdVU0VfUEVSTUlTU0lPTlNfU1RPUkUnKTtcclxuXHJcbkBJbmplY3RhYmxlKClcclxuZXhwb3J0IGNsYXNzIE5neFBlcm1pc3Npb25zU2VydmljZSB7XHJcblxyXG4gICAgcHJpdmF0ZSBwZXJtaXNzaW9uc1NvdXJjZTogQmVoYXZpb3JTdWJqZWN0PE5neFBlcm1pc3Npb25zT2JqZWN0PjtcclxuICAgIHB1YmxpYyBwZXJtaXNzaW9ucyQ6IE9ic2VydmFibGU8Tmd4UGVybWlzc2lvbnNPYmplY3Q+O1xyXG5cclxuICAgIGNvbnN0cnVjdG9yKFxyXG4gICAgICAgIEBJbmplY3QoVVNFX1BFUk1JU1NJT05TX1NUT1JFKSBwcml2YXRlIGlzb2xhdGU6IGJvb2xlYW4gPSBmYWxzZSxcclxuICAgICAgICBwcml2YXRlIHBlcm1pc3Npb25zU3RvcmU6IE5neFBlcm1pc3Npb25zU3RvcmVcclxuICAgICkge1xyXG4gICAgICAgIHRoaXMucGVybWlzc2lvbnNTb3VyY2UgPSBpc29sYXRlID8gbmV3IEJlaGF2aW9yU3ViamVjdDxOZ3hQZXJtaXNzaW9uc09iamVjdD4oe30pIDogcGVybWlzc2lvbnNTdG9yZS5wZXJtaXNzaW9uc1NvdXJjZTtcclxuICAgICAgICB0aGlzLnBlcm1pc3Npb25zJCA9IHRoaXMucGVybWlzc2lvbnNTb3VyY2UuYXNPYnNlcnZhYmxlKCk7XHJcbiAgICB9XHJcblxyXG4gICAgLyoqXHJcbiAgICAgKiBSZW1vdmUgYWxsIHBlcm1pc3Npb25zIGZyb20gcGVybWlzc2lvbnMgc291cmNlXHJcbiAgICAgKi9cclxuICAgIHB1YmxpYyBmbHVzaFBlcm1pc3Npb25zKCk6IHZvaWQge1xyXG4gICAgICAgIHRoaXMucGVybWlzc2lvbnNTb3VyY2UubmV4dCh7fSk7XHJcbiAgICB9XHJcblxyXG4gICAgcHVibGljIGhhc1Blcm1pc3Npb24ocGVybWlzc2lvbjogc3RyaW5nIHwgc3RyaW5nW10pOiBQcm9taXNlPGJvb2xlYW4+IHtcclxuICAgICAgICBpZiAoIXBlcm1pc3Npb24gfHwgKEFycmF5LmlzQXJyYXkocGVybWlzc2lvbikgJiYgcGVybWlzc2lvbi5sZW5ndGggPT09IDApKSB7XHJcbiAgICAgICAgICAgIHJldHVybiBQcm9taXNlLnJlc29sdmUodHJ1ZSk7XHJcbiAgICAgICAgfVxyXG5cclxuICAgICAgICBwZXJtaXNzaW9uID0gdHJhbnNmb3JtU3RyaW5nVG9BcnJheShwZXJtaXNzaW9uKTtcclxuICAgICAgICByZXR1cm4gdGhpcy5oYXNBcnJheVBlcm1pc3Npb24ocGVybWlzc2lvbik7XHJcbiAgICB9XHJcblxyXG4gICAgcHVibGljIGxvYWRQZXJtaXNzaW9ucyhwZXJtaXNzaW9uczogc3RyaW5nW10sIHZhbGlkYXRpb25GdW5jdGlvbj86IEZ1bmN0aW9uKTogdm9pZCB7XHJcbiAgICAgICAgY29uc3QgbmV3UGVybWlzc2lvbnMgPSBwZXJtaXNzaW9ucy5yZWR1Y2UoKHNvdXJjZSwgcCkgPT5cclxuICAgICAgICAgICAgdGhpcy5yZWR1Y2VQZXJtaXNzaW9uKHNvdXJjZSwgcCwgdmFsaWRhdGlvbkZ1bmN0aW9uKVxyXG4gICAgICAgICAgICAsIHt9KTtcclxuXHJcbiAgICAgICAgdGhpcy5wZXJtaXNzaW9uc1NvdXJjZS5uZXh0KG5ld1Blcm1pc3Npb25zKTtcclxuICAgIH1cclxuXHJcbiAgICBwdWJsaWMgYWRkUGVybWlzc2lvbihwZXJtaXNzaW9uOiBzdHJpbmcgfCBzdHJpbmdbXSwgdmFsaWRhdGlvbkZ1bmN0aW9uPzogRnVuY3Rpb24pOiB2b2lkIHtcclxuICAgICAgICBpZiAoQXJyYXkuaXNBcnJheShwZXJtaXNzaW9uKSkge1xyXG4gICAgICAgICAgICBjb25zdCBwZXJtaXNzaW9ucyA9IHBlcm1pc3Npb24ucmVkdWNlKChzb3VyY2UsIHApID0+XHJcbiAgICAgICAgICAgICAgICB0aGlzLnJlZHVjZVBlcm1pc3Npb24oc291cmNlLCBwLCB2YWxpZGF0aW9uRnVuY3Rpb24pXHJcbiAgICAgICAgICAgICAgICAsIHRoaXMucGVybWlzc2lvbnNTb3VyY2UudmFsdWUpO1xyXG5cclxuICAgICAgICAgICAgdGhpcy5wZXJtaXNzaW9uc1NvdXJjZS5uZXh0KHBlcm1pc3Npb25zKTtcclxuICAgICAgICB9IGVsc2Uge1xyXG4gICAgICAgICAgICBjb25zdCBwZXJtaXNzaW9ucyA9IHRoaXMucmVkdWNlUGVybWlzc2lvbih0aGlzLnBlcm1pc3Npb25zU291cmNlLnZhbHVlLCBwZXJtaXNzaW9uLCB2YWxpZGF0aW9uRnVuY3Rpb24pO1xyXG5cclxuICAgICAgICAgICAgdGhpcy5wZXJtaXNzaW9uc1NvdXJjZS5uZXh0KHBlcm1pc3Npb25zKTtcclxuICAgICAgICB9XHJcbiAgICB9XHJcblxyXG4gICAgcHVibGljIHJlbW92ZVBlcm1pc3Npb24ocGVybWlzc2lvbk5hbWU6IHN0cmluZyk6IHZvaWQge1xyXG4gICAgICAgIGNvbnN0IHBlcm1pc3Npb25zID0ge1xyXG4gICAgICAgICAgICAuLi50aGlzLnBlcm1pc3Npb25zU291cmNlLnZhbHVlXHJcbiAgICAgICAgfTtcclxuICAgICAgICBkZWxldGUgcGVybWlzc2lvbnNbcGVybWlzc2lvbk5hbWVdO1xyXG4gICAgICAgIHRoaXMucGVybWlzc2lvbnNTb3VyY2UubmV4dChwZXJtaXNzaW9ucyk7XHJcbiAgICB9XHJcblxyXG4gICAgcHVibGljIGdldFBlcm1pc3Npb24obmFtZTogc3RyaW5nKTogTmd4UGVybWlzc2lvbiB7XHJcbiAgICAgICAgcmV0dXJuIHRoaXMucGVybWlzc2lvbnNTb3VyY2UudmFsdWVbbmFtZV07XHJcbiAgICB9XHJcblxyXG4gICAgcHVibGljIGdldFBlcm1pc3Npb25zKCk6IE5neFBlcm1pc3Npb25zT2JqZWN0IHtcclxuICAgICAgICByZXR1cm4gdGhpcy5wZXJtaXNzaW9uc1NvdXJjZS52YWx1ZTtcclxuICAgIH1cclxuXHJcbiAgICBwcml2YXRlIHJlZHVjZVBlcm1pc3Npb24oXHJcbiAgICAgICAgc291cmNlOiBOZ3hQZXJtaXNzaW9uc09iamVjdCxcclxuICAgICAgICBuYW1lOiBzdHJpbmcsXHJcbiAgICAgICAgdmFsaWRhdGlvbkZ1bmN0aW9uPzogRnVuY3Rpb25cclxuICAgICk6IE5neFBlcm1pc3Npb25zT2JqZWN0IHtcclxuICAgICAgICBpZiAoISF2YWxpZGF0aW9uRnVuY3Rpb24gJiYgaXNGdW5jdGlvbih2YWxpZGF0aW9uRnVuY3Rpb24pKSB7XHJcbiAgICAgICAgICAgIHJldHVybiB7XHJcbiAgICAgICAgICAgICAgICAuLi5zb3VyY2UsXHJcbiAgICAgICAgICAgICAgICBbbmFtZV06IHsgbmFtZSwgdmFsaWRhdGlvbkZ1bmN0aW9uIH1cclxuICAgICAgICAgICAgfTtcclxuICAgICAgICB9IGVsc2Uge1xyXG4gICAgICAgICAgICByZXR1cm4ge1xyXG4gICAgICAgICAgICAgICAgLi4uc291cmNlLFxyXG4gICAgICAgICAgICAgICAgW25hbWVdOiB7IG5hbWUgfVxyXG4gICAgICAgICAgICB9O1xyXG4gICAgICAgIH1cclxuICAgIH1cclxuXHJcbiAgICBwcml2YXRlIGhhc0FycmF5UGVybWlzc2lvbihwZXJtaXNzaW9uczogc3RyaW5nW10pOiBQcm9taXNlPGJvb2xlYW4+IHtcclxuICAgICAgICBjb25zdCBwcm9taXNlczogT2JzZXJ2YWJsZTxib29sZWFuPltdID0gcGVybWlzc2lvbnMubWFwKChrZXkpID0+IHtcclxuICAgICAgICAgICAgaWYgKHRoaXMuaGFzUGVybWlzc2lvblZhbGlkYXRpb25GdW5jdGlvbihrZXkpKSB7XHJcbiAgICAgICAgICAgICAgICBjb25zdCBpbW11dGFibGVWYWx1ZSA9IHsgLi4udGhpcy5wZXJtaXNzaW9uc1NvdXJjZS52YWx1ZSB9O1xyXG4gICAgICAgICAgICAgICAgY29uc3QgdmFsaWRhdGlvbkZ1bmN0aW9uOiBGdW5jdGlvbiA9IDxGdW5jdGlvbj50aGlzLnBlcm1pc3Npb25zU291cmNlLnZhbHVlW2tleV0udmFsaWRhdGlvbkZ1bmN0aW9uO1xyXG5cclxuICAgICAgICAgICAgICAgIHJldHVybiBvZihudWxsKS5waXBlKFxyXG4gICAgICAgICAgICAgICAgICAgIG1hcCgoKSA9PiB7XHJcbiAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiB2YWxpZGF0aW9uRnVuY3Rpb24oa2V5LCBpbW11dGFibGVWYWx1ZSlcclxuICAgICAgICAgICAgICAgICAgICB9KSxcclxuICAgICAgICAgICAgICAgICAgICBzd2l0Y2hNYXAoKHByb21pc2U6IFByb21pc2U8Ym9vbGVhbj4gfCBib29sZWFuKTogT2JzZXJ2YWJsZUlucHV0PGJvb2xlYW4+ID0+IHtcclxuICAgICAgICAgICAgICAgICAgICAgICAgdmFyIGIgPSBpc0Jvb2xlYW4ocHJvbWlzZSk7XHJcbiAgICAgICAgICAgICAgICAgICAgICAgIGlmIChiKSB7XHJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICByZXR1cm4gb2YocHJvbWlzZSBhcyBib29sZWFuKTtcclxuICAgICAgICAgICAgICAgICAgICAgICAgfVxyXG4gICAgICAgICAgICAgICAgICAgICAgICBlbHNlIHtcclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiBwcm9taXNlIGFzIFByb21pc2U8Ym9vbGVhbj5cclxuICAgICAgICAgICAgICAgICAgICAgICAgfVxyXG4gICAgICAgICAgICAgICAgICAgIH0pLFxyXG4gICAgICAgICAgICAgICAgICAgIGNhdGNoRXJyb3IoKCkgPT4gb2YoZmFsc2UpKVxyXG4gICAgICAgICAgICAgICAgKTtcclxuICAgICAgICAgICAgfVxyXG5cclxuICAgICAgICAgICAgLy8gY2hlY2sgZm9yIG5hbWUgb2YgdGhlIHBlcm1pc3Npb24gaWYgdGhlcmUgaXMgbm8gdmFsaWRhdGlvbiBmdW5jdGlvblxyXG4gICAgICAgICAgICByZXR1cm4gb2YoISF0aGlzLnBlcm1pc3Npb25zU291cmNlLnZhbHVlW2tleV0pO1xyXG4gICAgICAgIH0pO1xyXG5cclxuICAgICAgICByZXR1cm4gZnJvbShwcm9taXNlcykucGlwZShcclxuICAgICAgICAgICAgbWVyZ2VBbGwoKSxcclxuICAgICAgICAgICAgZmlyc3QoKGRhdGEpID0+IHtcclxuICAgICAgICAgICAgICAgIGNvbnN0IHIgPSBkYXRhICE9PSBmYWxzZTtcclxuICAgICAgICAgICAgICAgIHJldHVybiByO1xyXG4gICAgICAgICAgICB9LCBmYWxzZSksXHJcbiAgICAgICAgICAgIG1hcCgoZGF0YSkgPT4ge1xyXG4gICAgICAgICAgICAgICAgY29uc3QgciA9IGRhdGEgPT09IGZhbHNlID8gZmFsc2UgOiB0cnVlO1xyXG4gICAgICAgICAgICAgICAgcmV0dXJuIHI7XHJcbiAgICAgICAgICAgIH0pXHJcbiAgICAgICAgKS50b1Byb21pc2UoKS50aGVuKChkYXRhOiBhbnkpID0+IHtcclxuICAgICAgICAgICAgcmV0dXJuIGRhdGE7XHJcbiAgICAgICAgfSk7XHJcbiAgICB9XHJcblxyXG4gICAgcHJpdmF0ZSBoYXNQZXJtaXNzaW9uVmFsaWRhdGlvbkZ1bmN0aW9uKGtleTogc3RyaW5nKTogYm9vbGVhbiB7XHJcbiAgICAgICAgcmV0dXJuICEhdGhpcy5wZXJtaXNzaW9uc1NvdXJjZS52YWx1ZVtrZXldICYmXHJcbiAgICAgICAgICAgICEhdGhpcy5wZXJtaXNzaW9uc1NvdXJjZS52YWx1ZVtrZXldLnZhbGlkYXRpb25GdW5jdGlvbiAmJlxyXG4gICAgICAgICAgICBpc0Z1bmN0aW9uKHRoaXMucGVybWlzc2lvbnNTb3VyY2UudmFsdWVba2V5XS52YWxpZGF0aW9uRnVuY3Rpb24pO1xyXG4gICAgfVxyXG5cclxufVxyXG4iXX0=

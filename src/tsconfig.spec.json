@@ -1,0 +1,29 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/spec",
+    "baseUrl": "./",
+    "module": "commonjs",
+    "target": "es5",
+    "strict": false,
+    "types": [
+      "jasmine",
+      "node"
+    ]
+  },
+  "paths": {
+    "ngx-permissions":["../dist/ngx-permissions"]
+  },
+  "files": [
+    "test.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "polyfills.ts",
+    "**/*",
+    "**/*.spec.ts",
+    "./**/*.spec.ts",
+    "./**/*.d.ts",
+    "**/*.d.ts"
+  ]
+}
