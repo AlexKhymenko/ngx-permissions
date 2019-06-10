@@ -1,6 +1,5 @@
-## 7.0.6
-Allow angular version 8 to upgrade
-
+## 7.0.0
+Change build to cli and fix ivy
 
 ## 6.0.6
 Allow angular version 8 to upgrade
