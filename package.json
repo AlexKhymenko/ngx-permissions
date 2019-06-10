@@ -15,7 +15,6 @@
     "codecov": "cat projects/ngx-permissions/coverage/lcov.info | codecov",
     "ivy-build": ".\\node_modules\\.bin\\ivy-ngcc -s .\\dist"
   },
-  "private": true,
   "dependencies": {
     "@angular-devkit/core": "^7.0.3",
     "@angular-devkit/schematics": "^7.0.3",
