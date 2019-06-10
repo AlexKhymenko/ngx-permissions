@@ -6,6 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-lib": "ng build ngx-permissions",
     "test": "ng test --preserve-symlinks",
     "test:single": "ng test ngx-permissions --preserve-symlinks --watch=false --codeCoverage=true",
     "lint": "ng lint",

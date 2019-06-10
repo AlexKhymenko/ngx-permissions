@@ -73,6 +73,7 @@ Desktop.ini
 
 # Build files
 dist/*
+dist
 # Tests
 coverage/*
 
