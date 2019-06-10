@@ -1,0 +1,9 @@
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/*
+ * Public API Surface of ngx-permissions
+ */
+export { NgxPermissionsModule, NgxPermissionsAllowStubModule, NgxPermissionsRestrictStubModule, NgxRolesStore, NgxPermissionsStore, NgxPermissionsConfigurationStore, NgxPermissionsDirective, USE_PERMISSIONS_STORE, NgxPermissionsService, USE_ROLES_STORE, NgxRolesService, USE_CONFIGURATION_STORE, NgxPermissionsConfigurationService, NgxPermissionsGuard, NgxRole, NgxPermissionsAllowStubDirective, NgxPermissionsRestrictStubDirective, NgxPermissionsPredefinedStrategies } from './lib/index';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljX2FwaS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL25neC1wZXJtaXNzaW9ucy8iLCJzb3VyY2VzIjpbInB1YmxpY19hcGkudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUdBLDJkQUFjLGFBQWEsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIi8qXHJcbiAqIFB1YmxpYyBBUEkgU3VyZmFjZSBvZiBuZ3gtcGVybWlzc2lvbnNcclxuICovXHJcbmV4cG9ydCAqIGZyb20gJy4vbGliL2luZGV4JzsiXX0=

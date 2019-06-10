@@ -1,0 +1,23 @@
+{
+  "extends": "../tsconfig.json",
+  "angularCompilerOptions": {
+    "enableIvy": true
+  },
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "./",
+    "module": "es2015",
+    "strict": true,
+    "types": [],
+    "paths": {
+      "@angular/*": [
+        "../node_modules/@angular/*"
+      ],
+      "ngx-permissions":["../dist/ngx-permissions"]
+    }
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}
