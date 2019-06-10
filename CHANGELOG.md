@@ -1,5 +1,5 @@
 ## 7.0.1
-Fix readme file
+Bring back readme file in npm packages description
 
 ## 7.0.0
 Change build to cli and fix ivy
