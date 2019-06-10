@@ -7,11 +7,11 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test --preserve-symlinks",
-    "test:single": "cd application && ng test ngx-permissions --preserve-symlinks --watch=false --codeCoverage=true",
+    "test:single": "ng test ngx-permissions --preserve-symlinks --watch=false --codeCoverage=true",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prod": "ng serve --aot --prod",
-    "coverage": "cat ./application/projects/ngx-permissions/coverage/lcovonly/lcov.info | codecov",
+    "coverage": "cat ./projects/ngx-permissions/coverage/lcovonly/lcov.info | codecov",
     "ivy-build": ".\\node_modules\\.bin\\ivy-ngcc -s .\\dist"
   },
   "private": true,
