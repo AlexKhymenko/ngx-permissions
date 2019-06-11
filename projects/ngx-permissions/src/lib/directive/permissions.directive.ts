@@ -10,23 +10,19 @@ import {
     ViewContainerRef
 } from '@angular/core';
 
-import { merge, Subscription, from } from 'rxjs';
-import { skip, take, mergeAll, first, map } from 'rxjs/operators';
+import { merge, Subscription } from 'rxjs';
+import { skip, take } from 'rxjs/operators';
 
 import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategies.enum';
 import { NgxPermissionsConfigurationService, StrategyFunction } from '../service/configuration.service';
 import { NgxPermissionsService } from '../service/permissions.service';
 import { NgxRolesService } from '../service/roles.service';
-import { isBoolean, isFunction, isString, notEmptyValue, transformStringToArray } from '../utils/utils';
-import { isArray } from 'util';
-
-// Struct. to keep directive track of permissions states
-export type PermissionState = { [permission: string]: { hasPermission: boolean, hasRole: boolean } }
+import { isBoolean, isFunction, isString, notEmptyValue } from '../utils/utils';
 
 @Directive({
     selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
 })
-export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
+export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges  {
 
     @Input() ngxPermissionsOnly: string | string[];
     @Input() ngxPermissionsOnlyThen: TemplateRef<any>;
@@ -48,14 +44,13 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
     @Input() ngxPermissionsUnauthorisedStrategy: string | StrategyFunction;
     @Input() ngxPermissionsAuthorisedStrategy: string | StrategyFunction;
 
-    @Output() permissionsAuthorized = new EventEmitter<PermissionState>();
-    @Output() permissionsUnauthorized = new EventEmitter<PermissionState>();
+    @Output() permissionsAuthorized = new EventEmitter();
+    @Output() permissionsUnauthorized = new EventEmitter();
 
     private initPermissionSubscription: Subscription;
     // skip first run cause merge will fire twice
     private firstMergeUnusedRun = 1;
     private currentAuthorizedState: boolean;
-    private permissionsState: PermissionState;
 
     constructor(
         private permissionsService: NgxPermissionsService,
@@ -65,7 +60,6 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
         private changeDetector: ChangeDetectorRef,
         private templateRef: TemplateRef<any>
     ) {
-        this.permissionsState = {};
     }
 
     ngOnInit(): void {
@@ -124,44 +118,44 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
     }
 
     private validateExceptAndOnlyPermissions(): void {
-        this.getPermissions(this.ngxPermissionsExcept)
-            .then((hasPermission: boolean) => {
-                if (hasPermission) {
+        Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsExcept), this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept)])
+            .then(([hasPermission, hasRole]) => {
+                if (hasPermission || hasRole) {
                     this.handleUnauthorisedPermission(this.ngxPermissionsExceptElse || this.ngxPermissionsElse);
                     return;
                 }
-                if (!!this.ngxPermissionsOnly) throw false;
+
+                if (!!this.ngxPermissionsOnly)  throw false;
+
                 this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef);
-            })
-            .catch(() => {
+
+            }).catch(() => {
                 if (!!this.ngxPermissionsOnly) {
                     this.validateOnlyPermissions();
                 } else {
                     this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef);
                 }
-            });
+        });
     }
 
     private validateOnlyPermissions(): void {
-        // Validate permissions & store permission state
-        this.getPermissions(this.ngxPermissionsOnly)
-            .then((hasPermission: boolean) => {
-                if (hasPermission) {
+        Promise.all([this.permissionsService.hasPermission(this.ngxPermissionsOnly), this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly)])
+            .then(([hasPermissions, hasRoles]) => {
+                if (hasPermissions || hasRoles) {
                     this.handleAuthorisedPermission(this.ngxPermissionsOnlyThen || this.ngxPermissionsThen || this.templateRef);
                 } else {
                     this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
                 }
-            })
-            .catch(() => {
+            }).catch(() => {
                 this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
-            });
+        });
     }
 
     private handleUnauthorisedPermission(template: TemplateRef<any>): void {
         if (isBoolean(this.currentAuthorizedState) && !this.currentAuthorizedState) return;
 
         this.currentAuthorizedState = false;
-        this.permissionsUnauthorized.emit(this.permissionsState);
+        this.permissionsUnauthorized.emit();
 
         if (this.getUnAuthorizedStrategyInput()) {
             this.applyStrategyAccordingToStrategyType(this.getUnAuthorizedStrategyInput());
@@ -180,7 +174,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
         if (isBoolean(this.currentAuthorizedState) && this.currentAuthorizedState) return;
 
         this.currentAuthorizedState = true;
-        this.permissionsAuthorized.emit(this.permissionsState);
+        this.permissionsAuthorized.emit();
 
         if (this.getAuthorizedStrategyInput()) {
             this.applyStrategyAccordingToStrategyType(this.getAuthorizedStrategyInput());
@@ -202,7 +196,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
 
         if (isFunction(strategy)) {
             this.showTemplateBlockInView(this.templateRef);
-            (strategy as Function)(this.templateRef, this.permissionsState);
+            (strategy as Function)(this.templateRef);
             return;
         }
     }
@@ -256,67 +250,6 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
         }
         const strategy = this.configurationService.getStrategy(str);
         this.showTemplateBlockInView(this.templateRef);
-
-        strategy(this.templateRef, this.permissionsState);
-    }
-
-    /**
-     * Check permission service against parameter "neddedPermissions"
-     * then update this class property "permissionsState"
-     * 
-     * @param neddedPermissions Sets the permissions/roles to check (i.e ngxPermissionsOnly)
-     */
-    private getPermissions(neddedPermissions: string | string[]): Promise<boolean> {
-
-        // Ensure we work with array
-        var requestedPermissions: Array<string> = transformStringToArray(neddedPermissions)
-
-        // Array of promises that request permission and roles service with "permission"
-        var promises: Promise<boolean>[] = []
-
-        // Reset "permissions state" directive class property
-        this.permissionsState = {}
-
-        if (isArray(requestedPermissions)) {
-            requestedPermissions.forEach((value) => {
-                this.permissionsState[value] = { hasPermission: false, hasRole: false }
-
-                // Check if has "Permission"
-                promises.push(
-                    this.permissionsService.hasPermission(value)
-                        .then((hasPermission) => {
-                            this.permissionsState[value].hasPermission = hasPermission
-                            return hasPermission;
-                        })
-                        .catch(() => false)
-                )
-                // Check if has "Role"
-                promises.push(
-                    this.rolesService.hasOnlyRoles(value)
-                        .then((hasPermission) => {
-                            this.permissionsState[value].hasRole = hasPermission
-                            return hasPermission;
-                        })
-                        .catch(() => false)
-                )
-            })
-        }
-
-        /** 
-         * Return result :
-         * true : At least one of neededPermission exists in permission or role service (@see this.permissionsState to get a full detail on wich permission is true/false)
-         * false : none of neededPermission exists in  permission or role service
-        */
-        return from(promises).pipe(
-            mergeAll(),
-            first((hasPermission: boolean) => {
-                return hasPermission === true;
-            }, false),
-            map((hasPermission) => {
-                return hasPermission;
-            })
-        ).toPromise().then((hasPermission: boolean) => {
-            return hasPermission
-        });
+        strategy(this.templateRef);
     }
 }

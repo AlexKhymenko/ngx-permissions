@@ -1,7 +1,7 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 
 import { BehaviorSubject, from, Observable, ObservableInput, of } from 'rxjs';
-import { catchError, first, map, mergeAll, switchMap, mergeMap } from 'rxjs/operators';
+import { catchError, first, map, mergeAll, switchMap } from 'rxjs/operators';
 
 import { NgxPermission } from '../model/permission.model';
 import { NgxPermissionsStore } from '../store/permissions.store';
@@ -44,7 +44,7 @@ export class NgxPermissionsService {
 
     public loadPermissions(permissions: string[], validationFunction?: Function): void {
         const newPermissions = permissions.reduce((source, p) =>
-            this.reducePermission(source, p, validationFunction)
+                this.reducePermission(source, p, validationFunction)
             , {});
 
         this.permissionsSource.next(newPermissions);
@@ -53,7 +53,7 @@ export class NgxPermissionsService {
     public addPermission(permission: string | string[], validationFunction?: Function): void {
         if (Array.isArray(permission)) {
             const permissions = permission.reduce((source, p) =>
-                this.reducePermission(source, p, validationFunction)
+                    this.reducePermission(source, p, validationFunction)
                 , this.permissionsSource.value);
 
             this.permissionsSource.next(permissions);
@@ -88,12 +88,12 @@ export class NgxPermissionsService {
         if (!!validationFunction && isFunction(validationFunction)) {
             return {
                 ...source,
-                [name]: { name, validationFunction }
+                [name]: {name, validationFunction}
             };
         } else {
             return {
                 ...source,
-                [name]: { name }
+                [name]: {name}
             };
         }
     }
@@ -101,22 +101,13 @@ export class NgxPermissionsService {
     private hasArrayPermission(permissions: string[]): Promise<boolean> {
         const promises: Observable<boolean>[] = permissions.map((key) => {
             if (this.hasPermissionValidationFunction(key)) {
-                const immutableValue = { ...this.permissionsSource.value };
+                const immutableValue = {...this.permissionsSource.value};
                 const validationFunction: Function = <Function>this.permissionsSource.value[key].validationFunction;
 
                 return of(null).pipe(
-                    map(() => {
-                        return validationFunction(key, immutableValue)
-                    }),
-                    switchMap((promise: Promise<boolean> | boolean): ObservableInput<boolean> => {
-                        var b = isBoolean(promise);
-                        if (b) {
-                            return of(promise as boolean);
-                        }
-                        else {
-                            return promise as Promise<boolean>
-                        }
-                    }),
+                    map(() => validationFunction(key, immutableValue)),
+                    switchMap((promise: Promise<boolean> | boolean): ObservableInput<boolean> => isBoolean(promise) ?
+                        of(promise as boolean) : promise as Promise<boolean>),
                     catchError(() => of(false))
                 );
             }
@@ -127,17 +118,9 @@ export class NgxPermissionsService {
 
         return from(promises).pipe(
             mergeAll(),
-            first((data) => {
-                const r = data !== false;
-                return r;
-            }, false),
-            map((data) => {
-                const r = data === false ? false : true;
-                return r;
-            })
-        ).toPromise().then((data: any) => {
-            return data;
-        });
+            first((data) => data !== false, false),
+            map((data) => data === false ? false : true)
+        ).toPromise().then((data: any) => data);
     }
 
     private hasPermissionValidationFunction(key: string): boolean {
