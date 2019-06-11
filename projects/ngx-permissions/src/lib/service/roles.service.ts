@@ -83,9 +83,10 @@ export class NgxRolesService {
 
             if (hasValidationFunction && !isPromise(this.rolesSource.value[key].validationFunction)) {
                 const validationFunction: Function = <Function>this.rolesSource.value[key].validationFunction;
+                const immutableValue = {...this.rolesSource.value};
 
                 return of(null).pipe(
-                    map(() => validationFunction()),
+                    map(() => validationFunction(key, immutableValue)),
                     switchMap((promise: Promise<boolean> | boolean): ObservableInput<boolean> => isBoolean(promise) ?
                         of(promise as boolean) : promise as Promise<boolean>),
                     catchError(() => of(false))
