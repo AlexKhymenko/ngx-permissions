@@ -2,9 +2,8 @@ import { Inject, Injectable, InjectionToken, TemplateRef } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategies.enum';
 import { NgxPermissionsConfigurationStore } from '../store/configuration.store';
-import { PermissionState } from '../directive/permissions.directive';
 
-export type StrategyFunction = (templateRef: TemplateRef<any>, permissions?: PermissionState) => void;
+export type StrategyFunction = (templateRef?: TemplateRef<any>) => void;
 
 export type Strategy = {
     [key: string]: StrategyFunction
