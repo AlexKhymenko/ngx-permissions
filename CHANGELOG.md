@@ -1,3 +1,7 @@
+## 7.0.2
+Revert to previous system of checking permissions
+Add ability to pass parameters to rolesService(such as name and rolesState of store)
+
 ## 7.0.1
 Bring back readme file in npm packages description
 
