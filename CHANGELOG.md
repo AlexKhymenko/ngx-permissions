@@ -1,5 +1,5 @@
 ## 7.0.3
-Fix ivy build on different versions 
+Fix ivy build on different versions (https://github.com/AlexKhymenko/ngx-permissions/issues/112)
 
 ## 7.0.2
 Revert to previous system of checking permissions
