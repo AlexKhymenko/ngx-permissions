@@ -4,9 +4,15 @@
 /dist
 /tmp
 /out-tsc
+# Only exists if Bazel was run
+/bazel-out
 
 # dependencies
 /node_modules
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
 
 # IDEs and editors
 /.idea
@@ -16,6 +22,7 @@
 *.launch
 .settings/
 *.sublime-workspace
+*.iml
 
 # IDE - VSCode
 .vscode/*
@@ -23,6 +30,7 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.history/*
 
 # misc
 /.sass-cache
@@ -30,53 +38,15 @@
 /coverage
 /libpeerconnection.log
 npm-debug.log
+yarn-error.log
 testem.log
 /typings
 
-# e2e
-/e2e/*.js
-/e2e/*.map
-
 # System Files
 .DS_Store
-Thumbs.db
-
-# Node
-node_modules/*
-npm-debug.log
-
-# TypeScript
-src/*.js
-src/*.map
-src/typings.d.ts
-
-# JetBrains
-.idea
-.project
-.settings
-.idea/*
-*.iml
-
-# VS Code
-.vscode/*
-
-# Windows
+**/.DS_Store
 Thumbs.db
 Desktop.ini
 
-# Mac
-.DS_Store
-**/.DS_Store
-
 # Ngc generated files
 **/*.ngfactory.ts
-
-# Build files
-dist/*
-dist
-# Tests
-/projects/ngx-permissions/coverage
-/projects/ngx-permissions/coverage/*
-
-
-

@@ -1,18 +1,20 @@
-import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { HomeComponent } from './home/home.component';
-import { NgxPermissionsGuard } from 'ngx-permissions';
+import {ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes} from '@angular/router';
+import {NgModule} from '@angular/core';
+import {HomeComponent} from './home/home.component';
+import {NgxPermissionsGuard} from 'ngx-permissions';
 
 
 export function testPermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
   if (route.params['id'] === 42) {
-    return ['MANAGER', "UTILS"]
+    return ['MANAGER', 'UTILS'];
   } else {
-    return 'ADMIN'
+    return 'ADMIN';
   }
 }
+
 const appRoutes: Routes = [
-  { path: 'home',
+  {
+    path: 'home',
     component: HomeComponent,
     canActivate: [NgxPermissionsGuard],
     data: {
@@ -22,8 +24,8 @@ const appRoutes: Routes = [
       }
     }
   },
-
-  { path: 'home3',
+  {
+    path: 'home3',
     component: HomeComponent,
     canActivate: [NgxPermissionsGuard],
     data: {
@@ -33,7 +35,8 @@ const appRoutes: Routes = [
       }
     }
   },
-  { path: 'dynamic/:id',
+  {
+    path: 'dynamic/:id',
     component: HomeComponent,
     canActivate: [NgxPermissionsGuard],
     data: {
@@ -42,7 +45,8 @@ const appRoutes: Routes = [
       }
     }
   },
-  { path: 'home4',
+  {
+    path: 'home4',
     component: HomeComponent,
     canActivate: [NgxPermissionsGuard],
     data: {
@@ -52,7 +56,8 @@ const appRoutes: Routes = [
       }
     }
   },
-  { path: 'home1',
+  {
+    path: 'home1',
     component: HomeComponent,
     canActivate: [NgxPermissionsGuard],
     data: {
@@ -105,8 +110,6 @@ const appRoutes: Routes = [
   // { path: 'lazy-isolate', loadChildren: 'app/lazy-isolate/lazy-isolate.module#LazyIsolateModule' },
   // { path: 'lazy-roles-isolate', loadChildren: 'app/lazy-role-isolate/lazy-role-isolate.module#LazyRoleIsolateModule' },
   // { path: 'lazy-roles-async-isolate', loadChildren: 'app/lazy-roles-async-isolate/lazy-roles-async-isolate.module#LazyRolesAsyncIsolateModule' },
-
-
   {
     path: 'test',
     canActivate: [],
@@ -146,12 +149,12 @@ const appRoutes: Routes = [
       },
     ]
   },
-
   {
     path: '403',
     component: HomeComponent
   },
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(appRoutes)
