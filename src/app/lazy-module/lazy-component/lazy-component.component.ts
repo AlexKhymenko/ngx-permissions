@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxPermissionsConfigurationService } from 'ngx-permissions'
+import { NgxPermissionsConfigurationService } from 'ngx-permissions';
+
 @Component({
   selector: 'app-lazy-component',
   templateUrl: './lazy-component.component.html',
@@ -7,11 +8,11 @@ import { NgxPermissionsConfigurationService } from 'ngx-permissions'
 })
 export class LazyComponentComponent implements OnInit {
 
-  constructor(private ngxconfService: NgxPermissionsConfigurationService) { }
+  constructor(private ngxConfService: NgxPermissionsConfigurationService) { }
 
   ngOnInit() {
-    console.log(this.ngxconfService.onUnAuthorisedDefaultStrategy);
-    console.log(this.ngxconfService.getAllStrategies());
+    console.log(this.ngxConfService.onUnAuthorisedDefaultStrategy);
+    console.log(this.ngxConfService.getAllStrategies());
   }
 
 }

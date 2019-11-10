@@ -8,7 +8,7 @@ xdescribe('LazyComponentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LazyComponentComponent ]
+      declarations: [LazyComponentComponent]
     })
     .compileComponents();
   }));

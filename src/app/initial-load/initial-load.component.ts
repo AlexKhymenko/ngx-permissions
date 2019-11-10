@@ -10,7 +10,7 @@ export class InitialLoadComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('i m loged')
+    console.log('i m logged');
   }
 
 }

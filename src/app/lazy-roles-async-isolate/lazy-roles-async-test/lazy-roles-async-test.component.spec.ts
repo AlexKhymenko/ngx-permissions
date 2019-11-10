@@ -8,7 +8,7 @@ xdescribe('LazyRolesAsyncTestComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LazyRolesAsyncTestComponent ]
+      declarations: [LazyRolesAsyncTestComponent]
     })
     .compileComponents();
   }));

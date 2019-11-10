@@ -1,9 +1,6 @@
-export class NgxRole {
-    name: string;
-    validationFunction: Function | string[];
+import { ValidationFn } from './permissions-router-data.model';
 
-    constructor(name: string, validationFunction: Function | string[]) {
-        this.name = name;
-        this.validationFunction = validationFunction;
-    }
+export interface NgxRole {
+    name: string;
+    validationFunction: ValidationFn | string[];
 }

@@ -15,8 +15,8 @@ export class AsyncTestService {
   }
 
   public promiseReject() {
-    return <any>Promise.reject(() => {
+    return Promise.reject(() => {
 
-    });
+    }) as any;
   }
 }

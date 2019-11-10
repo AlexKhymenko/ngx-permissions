@@ -1,11 +1,7 @@
-import { fakeAsync, inject, TestBed } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { NgxPermissionsModule } from '../index';
-import { NgxPermissionsConfigurationService, USE_CONFIGURATION_STORE } from './configuration.service';
+import { NgxPermissionsConfigurationService } from './configuration.service';
 import { NgxPermissionsConfigurationStore } from '../store/configuration.store';
-
-const StrategiesFunction = {
-    FUNCTION: () => {},
-}
 
 describe('Configuration Service', () => {
     let localService: NgxPermissionsConfigurationService;
@@ -25,9 +21,9 @@ describe('Configuration Service', () => {
     });
 
     it ('should add configuration function', () => {
-        expect(localService.getAllStrategies()['FUNCTION']).toBeFalsy();
+        expect(localService.getAllStrategies().FUNCTION).toBeFalsy();
         localService.addPermissionStrategy('FUNCTION', () => {});
-        expect(localService.getAllStrategies()['FUNCTION']).toBeTruthy();
+        expect(localService.getAllStrategies().FUNCTION).toBeTruthy();
     });
 
     it ('should retrieve strategy function', () => {
@@ -37,12 +33,12 @@ describe('Configuration Service', () => {
     });
 
     it ('should throw an error when strategy is not defined but user tries to set it as default on authorised method', () => {
-        expect(function () { localService.setDefaultOnAuthorizedStrategy('FUNCTION')}).toThrow();
+        expect(() => localService.setDefaultOnAuthorizedStrategy('FUNCTION')).toThrow();
     });
 
 
     it ('should throw an error when strategy is not defined but user tries to set it as default on unauthorised method', () => {
-        expect(function () { localService.setDefaultOnUnauthorizedStrategy('FUNCTION')}).toThrow();
+        expect(() => localService.setDefaultOnUnauthorizedStrategy('FUNCTION')).toThrow();
     });
 
     it ('should set default unauthorised method with string', () => {
@@ -67,10 +63,12 @@ describe('Isolated configuration service', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [NgxPermissionsModule.forRoot({configurationIsolate: true})]
-        })
+        });
     });
 
-    beforeEach(inject([NgxPermissionsConfigurationService, NgxPermissionsConfigurationStore], (service: NgxPermissionsConfigurationService, store: NgxPermissionsConfigurationStore) => {
+    beforeEach(inject([NgxPermissionsConfigurationService, NgxPermissionsConfigurationStore],
+      (service: NgxPermissionsConfigurationService,
+       store: NgxPermissionsConfigurationStore) => {
         localService = service;
         localStore = store;
         localStore.onAuthorisedDefaultStrategy = 'FUNCTION';
@@ -88,5 +86,5 @@ describe('Isolated configuration service', () => {
 
     it ('should set onUnAuthorisedDefault strategy to undefined', () => {
         expect(localService.onAuthorisedDefaultStrategy).toBeFalsy();
-    })
+    });
 });

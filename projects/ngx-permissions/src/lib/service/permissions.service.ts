@@ -4,11 +4,14 @@ import { BehaviorSubject, from, Observable, ObservableInput, of } from 'rxjs';
 import { catchError, first, map, mergeAll, switchMap } from 'rxjs/operators';
 
 import { NgxPermission } from '../model/permission.model';
+import { ValidationFn } from '../model/permissions-router-data.model';
 import { NgxPermissionsStore } from '../store/permissions.store';
 
 import { isBoolean, isFunction, transformStringToArray } from '../utils/utils';
 
-export type NgxPermissionsObject = { [name: string]: NgxPermission };
+export interface NgxPermissionsObject {
+    [name: string]: NgxPermission;
+}
 
 export const USE_PERMISSIONS_STORE = new InjectionToken('USE_PERMISSIONS_STORE');
 
@@ -42,19 +45,18 @@ export class NgxPermissionsService {
         return this.hasArrayPermission(permission);
     }
 
-    public loadPermissions(permissions: string[], validationFunction?: Function): void {
-        const newPermissions = permissions.reduce((source, p) =>
-                this.reducePermission(source, p, validationFunction)
-            , {});
-
+    public loadPermissions(permissions: string[], validationFunction?: ValidationFn): void {
+        const newPermissions = permissions.reduce(
+            (source, name) => this.reducePermission(source, name, validationFunction), {}
+        );
         this.permissionsSource.next(newPermissions);
     }
 
-    public addPermission(permission: string | string[], validationFunction?: Function): void {
+    public addPermission(permission: string | string[], validationFunction?: ValidationFn): void {
         if (Array.isArray(permission)) {
-            const permissions = permission.reduce((source, p) =>
-                    this.reducePermission(source, p, validationFunction)
-                , this.permissionsSource.value);
+            const permissions = permission.reduce(
+                (source, name) => this.reducePermission(source, name, validationFunction), this.permissionsSource.value
+            );
 
             this.permissionsSource.next(permissions);
         } else {
@@ -80,29 +82,24 @@ export class NgxPermissionsService {
         return this.permissionsSource.value;
     }
 
-    private reducePermission(
-        source: NgxPermissionsObject,
-        name: string,
-        validationFunction?: Function
-    ): NgxPermissionsObject {
+    private reducePermission(source: NgxPermissionsObject, name: string, validationFunction?: ValidationFn): NgxPermissionsObject {
         if (!!validationFunction && isFunction(validationFunction)) {
             return {
                 ...source,
                 [name]: {name, validationFunction}
             };
-        } else {
-            return {
-                ...source,
-                [name]: {name}
-            };
         }
+        return {
+            ...source,
+            [name]: {name}
+        };
     }
 
     private hasArrayPermission(permissions: string[]): Promise<boolean> {
-        const promises: Observable<boolean>[] = permissions.map((key) => {
+        const promises: Observable<boolean>[] = permissions.map(key => {
             if (this.hasPermissionValidationFunction(key)) {
+                const validationFunction = this.permissionsSource.value[key].validationFunction;
                 const immutableValue = {...this.permissionsSource.value};
-                const validationFunction: Function = <Function>this.permissionsSource.value[key].validationFunction;
 
                 return of(null).pipe(
                     map(() => validationFunction(key, immutableValue)),
@@ -119,7 +116,7 @@ export class NgxPermissionsService {
         return from(promises).pipe(
             mergeAll(),
             first((data) => data !== false, false),
-            map((data) => data === false ? false : true)
+            map((data) => data !== false)
         ).toPromise().then((data: any) => data);
     }
 

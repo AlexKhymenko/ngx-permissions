@@ -2,7 +2,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { LazyComponentComponent } from './lazy-component/lazy-component.component';
-import { NgxPermissionsModule } from 'ngx-permissions';
 
 const appRoutes: Routes = [
   { path: '',
