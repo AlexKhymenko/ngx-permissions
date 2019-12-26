@@ -5,9 +5,9 @@ import { NgxPermissionsConfigurationStore } from '../store/configuration.store';
 
 export type StrategyFunction = (templateRef?: TemplateRef<any>) => void;
 
-export type Strategy = {
-    [key: string]: StrategyFunction
-};
+export interface Strategy {
+    [key: string]: StrategyFunction;
+}
 
 export const USE_CONFIGURATION_STORE = new InjectionToken('USE_CONFIGURATION_STORE');
 

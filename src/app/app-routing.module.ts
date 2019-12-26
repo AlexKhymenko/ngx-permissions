@@ -1,65 +1,69 @@
-import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
+import { NgxPermissionsGuard, NgxPermissionsRouterData } from 'ngx-permissions';
 import { HomeComponent } from './home/home.component';
-import { NgxPermissionsGuard } from 'ngx-permissions';
-
 
 export function testPermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-  if (route.params['id'] === 42) {
-    return ['MANAGER', "UTILS"]
-  } else {
-    return 'ADMIN'
-  }
+    if (route.params.id === 42) {
+        return ['MANAGER', 'UTILS'];
+    } else {
+        return 'ADMIN';
+    }
 }
+
 const appRoutes: Routes = [
-  { path: 'home',
+  {
+    path: 'home',
     component: HomeComponent,
     canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'ADMIN',
         redirectTo: '/except-should'
-      }
+      } as NgxPermissionsRouterData
     }
   },
-
-  { path: 'home3',
+  {
+    path: 'home3',
     component: HomeComponent,
     canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADMIN',
         redirectTo: '/except-should'
-      }
+      } as NgxPermissionsRouterData
     }
   },
-  { path: 'dynamic/:id',
+  {
+    path: 'dynamic/:id',
     component: HomeComponent,
     canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: testPermissions
-      }
+      } as NgxPermissionsRouterData
     }
   },
-  { path: 'home4',
+  {
+    path: 'home4',
     component: HomeComponent,
     canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         except: 'ADMINNN',
         redirectTo: '/except-should'
-      }
+      } as NgxPermissionsRouterData
     }
   },
-  { path: 'home1',
+  {
+    path: 'home1',
     component: HomeComponent,
     canActivate: [NgxPermissionsGuard],
     data: {
       permissions: {
         only: 'ADMIN1',
         redirectTo: '/except-should'
-      }
+      } as NgxPermissionsRouterData
     }
   },
   {
@@ -69,7 +73,7 @@ const appRoutes: Routes = [
     data: {
       permissions: {
         except: 'ADDDMIN'
-      }
+      } as NgxPermissionsRouterData
     }
   },
   // {
@@ -102,11 +106,12 @@ const appRoutes: Routes = [
   //   canLoad: [NgxPermissionsGuard],
   //   loadChildren: 'app/lazy-module/lazy-module.module#LazyModule'
   // },
-  // { path: 'lazy-isolate', loadChildren: 'app/lazy-isolate/lazy-isolate.module#LazyIsolateModule' },
-  // { path: 'lazy-roles-isolate', loadChildren: 'app/lazy-role-isolate/lazy-role-isolate.module#LazyRoleIsolateModule' },
-  // { path: 'lazy-roles-async-isolate', loadChildren: 'app/lazy-roles-async-isolate/lazy-roles-async-isolate.module#LazyRolesAsyncIsolateModule' },
-
-
+  // {path: 'lazy-isolate', loadChildren: 'app/lazy-isolate/lazy-isolate.module#LazyIsolateModule'},
+  // {path: 'lazy-roles-isolate', loadChildren: 'app/lazy-role-isolate/lazy-role-isolate.module#LazyRoleIsolateModule'},
+  // {
+  //       path: 'lazy-roles-async-isolate',
+  //       loadChildren: 'app/lazy-roles-async-isolate/lazy-roles-async-isolate.module#LazyRolesAsyncIsolateModule'
+  // },
   {
     path: 'test',
     canActivate: [],
@@ -125,7 +130,7 @@ const appRoutes: Routes = [
           permissions: {
             only: 'ADMsIN',
             redirectTo: '/403'
-          }
+          } as NgxPermissionsRouterData
         },
         children: [
           {
@@ -146,12 +151,12 @@ const appRoutes: Routes = [
       },
     ]
   },
-
   {
     path: '403',
     component: HomeComponent
   },
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(appRoutes)

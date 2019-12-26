@@ -8,7 +8,7 @@ xdescribe('InitialLoadComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InitialLoadComponent ]
+      declarations: [InitialLoadComponent]
     })
     .compileComponents();
   }));

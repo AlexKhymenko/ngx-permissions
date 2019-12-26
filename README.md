@@ -751,7 +751,7 @@ const appRoutes: Routes = [
 ```
 
 > :skull: **Warning**   
-> Below is presented code not AOT compatible
+> The code below is not AOT compatible
 
 ```typescript
 const appRoutes: Routes = [
@@ -776,7 +776,7 @@ const appRoutes: Routes = [
 So whenever we try access state with param `id = 42` set to true additional check for permission `manager and utils` will be made. Otherwise only `ADMIN` will be required.
 
 > :fire: **Important**   
-> Notice that function require to always return array or string of roles/permissions in order to work properly. 
+> Notice that function must always return array or string of roles/permissions in order to work properly. 
 
 Property redirectTo
 ----------------------------
@@ -788,7 +788,7 @@ Property redirectTo:
 
 ### Single redirection rule
 
-In case you want to redirect to some specific state when user is not authorized pass to `redirectTo` path of that route.
+In case you want to redirect to a specific state when the user is not authorized, set `redirectTo` path to that route.
 
 
 ```typescript
@@ -820,7 +820,7 @@ const appRoutes: Routes = [
 export class AppRoutingModule {}
 ```
 
-In order to pass additional properties like params use pass `redirectTo` as object. 
+In order to pass additional properties like params, set `redirectTo` to an object. 
 `navigationCommands` and `navigationExtras` are reserved words it corresponds to parameters passed to router.navigate function
 `navigate(commands: any[], extras: NavigationExtras): Promise<boolean>`
 
@@ -853,7 +853,7 @@ const appRoutes: Routes = [
 ````
 ## Multiple redirection rules
 
-In some situation you want to redirect user based on denied permission/role to create redirection strategies. In order to do that you have to create redirection `Object` that contain keys representing rejected permissions or roles and values implementing redirection rules.
+In case you want to redirect the user based on `denied` permission/role to create redirection strategies. In order to do that you have to create redirection `Object` that contain keys representing rejected permissions or roles and values implementing redirection rules.
  
 Redirection rules are represented by following values:
 
@@ -996,7 +996,7 @@ redirectTo: {
 Similarly to examples showing defining dynamic access to state redirection can also be defined based on any parameters of `ActivatedRouteSnapshot` and `RouterStateSnapshot`;
 
 > :bulb: **Note**   
-> Remember to always return from function state name or object.
+> Remember to always return state name or object.
 
 ```typescript 
 const appRoutes: Routes = [
@@ -1027,7 +1027,7 @@ const appRoutes: Routes = [
 ```
 
 > :fire: **Important**   
-> Above code is not AOT compatible to make it AOT compatible extract it to function
+> The code above is not AOT compatible. To make it AOT compatible extract it to a function
 
 ```typescript
 export function redirectToFunc(rejectedPermissionName: string, activateRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot) => {
@@ -1045,11 +1045,11 @@ redirectTo: redirectToFunc
 ## Implemented Guards
 
 ### Can Activate Guard
-NgxPermissionsGuard implements CanActivate interface for examples you can see above
+NgxPermissionsGuard implements CanActivate interface, see examples above.
 
 ### Can Load Guard
 
-NgxPermissionsGuard implements CanLoad Interface. Functionality is the same as with canActivate 
+NgxPermissionsGuard implements CanLoad Interface. Functionality is the same as canActivate 
 
 ```typescript
 const appRoutes: Routes = [
@@ -1106,10 +1106,10 @@ export class AppRoutingModule {}
 
 ### Can Activate Child Guard
 
-NgxPermissionsGuard implements CanLoad Interface. Functionality is the same as with canActivate 
+`NgxPermissionsGuard` implements CanLoad Interface. Functionality is the same as canActivate 
 
 > :fire: **Warning**   
-> * Need to remember that rules and data you should specify on **Child Components** not on parent component
+> * Rules and data must be specified on **Child Components** not on parent component
 
 ```typescript
 const appRoutes: Routes = [
@@ -1144,12 +1144,12 @@ const appRoutes: Routes = [
 
 ## Common use cases
 
-### Two guards when first make request for authorisation and gets permissions second checks for permissions
+### Two guards when first make request for authorization and gets permissions second checks for permissions
 
 This method only works with `angular 4.3.2` or higher see https://github.com/angular/angular/issues/15670
 
 There are a lot of times you have 2 guard one for authorisation when it makes request for permissions and second is permissions guard
-and you want them to work in chain. To make them work in chain You should use them next
+and you want them to work in chain. To make them work in chain You should use them in a following way:
 
 ```typescript
 

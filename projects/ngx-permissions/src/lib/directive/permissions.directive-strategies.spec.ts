@@ -1,36 +1,39 @@
 import { Component, Renderer2, TemplateRef } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { NgxPermissionsModule } from '../index';
-import { NgxPermissionsService } from '../service/permissions.service';
-import { NgxPermissionsConfigurationService } from '../service/configuration.service';
 import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategies.enum';
-import { NgxRolesService } from '../service/roles.service';
+import { NgxPermissionsModule } from '../index';
+import { NgxPermissionsConfigurationService } from '../service/configuration.service';
+import { NgxPermissionsService } from '../service/permissions.service';
 
 enum PermissionsTestEnum {
-    ADMIN = <any> 'ADMIN',
-    GUEST = <any> 'GUEST'
+    ADMIN = 'ADMIN' as any,
+    GUEST = 'GUEST' as any
 }
 
 describe('Permission directive angular only configuration', () => {
-    @Component({selector: 'test-comp',
-        template: `<button  *ngxPermissionsOnly="'ADMIN'"><div>123</div></button>`})
+    @Component({
+        selector: 'ngx-permissions-test-comp',
+        template: `
+            <button *ngxPermissionsOnly="'ADMIN'">
+                <div>123</div>
+            </button>`
+    })
     class TestComp {
         data: any;
     }
 
     let permissionService;
-    let permissions;
     let fixture;
     let comp;
     let configurationService: NgxPermissionsConfigurationService;
     const disable = 'disable';
     let renderer: Renderer2;
-    let correctTemplate = '<div>123</div>'
-    let disableFunction = (tF: TemplateRef<any>) => {
-          renderer.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
+    const correctTemplate = '<div>123</div>';
+    const disableFunction = (tF: TemplateRef<any>) => {
+        renderer.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
     };
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers:[Renderer2]});
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers: [Renderer2]});
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -48,7 +51,7 @@ describe('Permission directive angular only configuration', () => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.disabled).toEqual(true);
 
@@ -59,7 +62,7 @@ describe('Permission directive angular only configuration', () => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual(correctTemplate);
     }));
@@ -69,17 +72,17 @@ describe('Permission directive angular only configuration', () => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBe(null);
     }));
 
     it('Should disable component when default unauthorized method is defined', fakeAsync(() => {
         configurationService.addPermissionStrategy(disable, disableFunction);
         configurationService.setDefaultOnUnauthorizedStrategy(disable);
-        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.disabled).toEqual(true);
 
@@ -87,45 +90,50 @@ describe('Permission directive angular only configuration', () => {
 
     it ('Should show the component when predefined default unauthorized show strategy is selected', fakeAsync(() => {
         configurationService.setDefaultOnUnauthorizedStrategy(NgxPermissionsPredefinedStrategies.SHOW);
-        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual(correctTemplate);
     }));
 
     it ('Should remove the component when predefined default unauthorized remove strategy is selected', fakeAsync(() => {
         configurationService.setDefaultOnUnauthorizedStrategy(NgxPermissionsPredefinedStrategies.REMOVE);
-        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBe(null);
     }));
 });
 
 
 describe('Permission directive angular strategies configuration passed by template', () => {
-    @Component({selector: 'test-comp',
-        template: `<button  *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: 'remove'; unauthorisedStrategy: 'show'" ngxPermissionsUnAuthorisedStrategy="show"><div>123</div></button>`})
+    @Component({
+        selector: 'ngx-permissions-test-comp',
+        template: `
+            <button *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: 'remove'; unauthorisedStrategy: 'show'"
+                    ngxPermissionsUnAuthorisedStrategy="show">
+                <div>123</div>
+            </button>`
+    })
     class TestComp {
         data: any;
     }
 
     let permissionService;
-    let permissions;
     let fixture;
     let comp;
     let configurationService: NgxPermissionsConfigurationService;
     const disable = 'disable';
     let renderer: Renderer2;
-    let correctTemplate = '<div>123</div>'
-    let disableFunction = (tF: TemplateRef<any>) => {
+    const correctTemplate = '<div>123</div>';
+    const disableFunction = (tF: TemplateRef<any>) => {
         renderer.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
     };
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers:[Renderer2]});
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers: [Renderer2]});
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -140,15 +148,15 @@ describe('Permission directive angular strategies configuration passed by templa
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toEqual(null);
     }));
 
     it ('Should remove the component when predefined remove strategy is selected', fakeAsync(() => {
-        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual(correctTemplate);
     }));
@@ -157,26 +165,30 @@ describe('Permission directive angular strategies configuration passed by templa
 
 
 describe('Permission directive angular strategies configuration passed by template except', () => {
-    @Component({selector: 'test-comp',
-        template: `<button  *ngxPermissionsExcept="'ADMIN'; authorisedStrategy: 'remove'; unauthorisedStrategy: 'show'"><div>123</div></button>`})
+    @Component({
+        selector: 'ngx-permissions-test-comp',
+        template: `
+            <button *ngxPermissionsExcept="'ADMIN'; authorisedStrategy: 'remove'; unauthorisedStrategy: 'show'">
+                <div>123</div>
+            </button>`
+    })
     class TestComp {
         data: any;
 
     }
 
     let permissionService;
-    let permissions;
     let fixture;
     let comp;
     let configurationService: NgxPermissionsConfigurationService;
     const disable = 'disable';
     let renderer: Renderer2;
-    let correctTemplate = '<div>123</div>';
-    let disableFunction = (tF: TemplateRef<any>) => {
+    const correctTemplate = '<div>123</div>';
+    const disableFunction = (tF: TemplateRef<any>) => {
         renderer.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
     };
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers:[Renderer2]});
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers: [Renderer2]});
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -188,10 +200,10 @@ describe('Permission directive angular strategies configuration passed by templa
     });
 
     it ('Should hide the component when predefined hide strategy is selected', fakeAsync(() => {
-        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toEqual(null);
     }));
 
@@ -199,7 +211,7 @@ describe('Permission directive angular strategies configuration passed by templa
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN,  PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.innerHTML).toEqual(correctTemplate);
     }));
@@ -208,28 +220,33 @@ describe('Permission directive angular strategies configuration passed by templa
 
 
 describe('Permission directive angular strategies as function configuration passed by template', () => {
-    @Component({selector: 'test-comp',
-        template: `<button  *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: disabled; unauthorisedStrategy: disabled"><div>123</div></button>`})
+    @Component({
+        selector: 'ngx-permissions-test-comp',
+        template: `
+            <button *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: disabled; unauthorisedStrategy: disabled">
+                <div>123</div>
+            </button>`
+    })
     class TestComp {
         data: any;
+
         public disabled(templateRef: TemplateRef<any>) {
-            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true)
+            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true);
         }
     }
 
     let permissionService;
-    let permissions;
     let fixture;
     let comp;
     let configurationService: NgxPermissionsConfigurationService;
     const disable = 'disable';
     let renderer: Renderer2;
-    let correctTemplate = '<div>123</div>'
-    let disableFunction = (tF: TemplateRef<any>) => {
+    const correctTemplate = '<div>123</div>';
+    const disableFunction = (tF: TemplateRef<any>) => {
         renderer.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
     };
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers:[Renderer2]});
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers: [Renderer2]});
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -244,16 +261,16 @@ describe('Permission directive angular strategies as function configuration pass
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.disabled).toEqual(true);
     }));
 
     it ('Should remove the component when predefined remove strategy is selected', fakeAsync(() => {
-        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.disabled).toEqual(true);
     }));
@@ -261,28 +278,33 @@ describe('Permission directive angular strategies as function configuration pass
 });
 
 describe('Permission directive angular strategies as function configuration passed by template except permissions', () => {
-    @Component({selector: 'test-comp',
-        template: `<button  *ngxPermissionsExcept="'ADMIN'; authorisedStrategy: disabled; unauthorisedStrategy: disabled"><div>123</div></button>`})
+    @Component({
+        selector: 'ngx-permissions-test-comp',
+        template: `
+            <button *ngxPermissionsExcept="'ADMIN'; authorisedStrategy: disabled; unauthorisedStrategy: disabled">
+                <div>123</div>
+            </button>`
+    })
     class TestComp {
         data: any;
+
         public disabled(templateRef: TemplateRef<any>) {
-            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true)
+            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true);
         }
     }
 
     let permissionService;
-    let permissions;
     let fixture;
     let comp;
     let configurationService: NgxPermissionsConfigurationService;
     const disable = 'disable';
     let renderer: Renderer2;
-    let correctTemplate = '<div>123</div>'
-    let disableFunction = (tF: TemplateRef<any>) => {
+    const correctTemplate = '<div>123</div>';
+    const disableFunction = (tF: TemplateRef<any>) => {
         renderer.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
     };
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers:[Renderer2]});
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers: [Renderer2]});
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -297,16 +319,16 @@ describe('Permission directive angular strategies as function configuration pass
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.disabled).toEqual(true);
     }));
 
     it ('Should remove the component when predefined remove strategy is selected', fakeAsync(() => {
-        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.disabled).toEqual(true);
     }));
@@ -315,28 +337,33 @@ describe('Permission directive angular strategies as function configuration pass
 
 
 describe('Permission directive angular strategies as function passed in configuration except permissions', () => {
-    @Component({selector: 'test-comp',
-        template: `<button  *ngxPermissionsExcept="'ADMIN'; authorisedStrategy: 'disable'; unauthorisedStrategy: 'disable'"><div>123</div></button>`})
+    @Component({
+        selector: 'ngx-permissions-test-comp',
+        template: `
+            <button *ngxPermissionsExcept="'ADMIN'; authorisedStrategy: 'disable'; unauthorisedStrategy: 'disable'">
+                <div>123</div>
+            </button>`
+    })
     class TestComp {
         data: any;
+
         public disabled(templateRef: TemplateRef<any>) {
-            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true)
+            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true);
         }
     }
 
     let permissionService;
-    let permissions;
     let fixture;
     let comp;
     let configurationService: NgxPermissionsConfigurationService;
     const disable = 'disable';
     let renderer: Renderer2;
-    let correctTemplate = '<div>123</div>'
-    let disableFunction = (tF: TemplateRef<any>) => {
+    const correctTemplate = '<div>123</div>';
+    const disableFunction = (tF: TemplateRef<any>) => {
         renderer.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
     };
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers:[Renderer2]});
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers: [Renderer2]});
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -353,7 +380,7 @@ describe('Permission directive angular strategies as function passed in configur
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.disabled).toEqual(true);
     }));
@@ -361,10 +388,10 @@ describe('Permission directive angular strategies as function passed in configur
     it ('Should remove the component when predefined remove strategy is selected', fakeAsync(() => {
         configurationService.addPermissionStrategy(disable, disableFunction);
 
-        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.disabled).toEqual(true);
     }));
@@ -373,28 +400,33 @@ describe('Permission directive angular strategies as function passed in configur
 
 
 describe('Permission directive angular strategies as function passed in configuration except permissions', () => {
-    @Component({selector: 'test-comp',
-        template: `<button  *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: 'disable'; unauthorisedStrategy: 'disable'"><div>123</div></button>`})
+    @Component({
+        selector: 'ngx-permissions-test-comp',
+        template: `
+            <button *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: 'disable'; unauthorisedStrategy: 'disable'">
+                <div>123</div>
+            </button>`
+    })
     class TestComp {
         data: any;
+
         public disabled(templateRef: TemplateRef<any>) {
-            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true)
+            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true);
         }
     }
 
     let permissionService;
-    let permissions;
     let fixture;
     let comp;
     let configurationService: NgxPermissionsConfigurationService;
     const disable = 'disable';
     let renderer: Renderer2;
-    let correctTemplate = '<div>123</div>'
-    let disableFunction = (tF: TemplateRef<any>) => {
+    const correctTemplate = '<div>123</div>';
+    const disableFunction = (tF: TemplateRef<any>) => {
         renderer.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
     };
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers:[Renderer2]});
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers: [Renderer2]});
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -411,7 +443,7 @@ describe('Permission directive angular strategies as function passed in configur
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.disabled).toEqual(true);
     }));
@@ -419,10 +451,10 @@ describe('Permission directive angular strategies as function passed in configur
     it ('Should remove the component when predefined remove strategy is selected', fakeAsync(() => {
         configurationService.addPermissionStrategy(disable, disableFunction);
 
-        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.disabled).toEqual(true);
     }));
@@ -431,28 +463,33 @@ describe('Permission directive angular strategies as function passed in configur
 
 
 describe('test predefined strategies', () => {
-    @Component({selector: 'test-comp',
-        template: `<button  *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: 'show'; unauthorisedStrategy: 'remove'"><div>123</div></button>`})
+    @Component({
+        selector: 'ngx-permissions-test-comp',
+        template: `
+            <button *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: 'show'; unauthorisedStrategy: 'remove'">
+                <div>123</div>
+            </button>`
+    })
     class TestComp {
         data: any;
+
         public disabled(templateRef: TemplateRef<any>) {
-            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true)
+            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true);
         }
     }
 
     let permissionService;
-    let permissions;
     let fixture;
     let comp;
     let configurationService: NgxPermissionsConfigurationService;
     const disable = 'disable';
     let renderer: Renderer2;
-    let correctTemplate = '<div>123</div>'
-    let disableFunction = (tF: TemplateRef<any>) => {
+    const correctTemplate = '<div>123</div>';
+    const disableFunction = (tF: TemplateRef<any>) => {
         renderer.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
     };
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers:[Renderer2]});
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers: [Renderer2]});
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -468,17 +505,17 @@ describe('test predefined strategies', () => {
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
     }));
 
     it ('Should remove the component when predefined remove strategy is selected', fakeAsync(() => {
         configurationService.addPermissionStrategy(disable, disableFunction);
 
-        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toEqual(null);
     }));
 
@@ -486,31 +523,36 @@ describe('test predefined strategies', () => {
 
 
 describe('test predefined strategies normal behavior', () => {
-    @Component({selector: 'test-comp',
-        template: `<button  *ngxPermissionsOnly="'ADMIN';  unauthorisedStrategy: 'disable'; authorisedStrategy: 'enable'"><div>123</div></button>`})
+    @Component({
+        selector: 'ngx-permissions-test-comp',
+        template: `
+            <button *ngxPermissionsOnly="'ADMIN';  unauthorisedStrategy: 'disable'; authorisedStrategy: 'enable'">
+                <div>123</div>
+            </button>`
+    })
     class TestComp {
         data: any;
+
         public disabled(templateRef: TemplateRef<any>) {
-            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true)
+            templateRef.elementRef.nativeElement.nextSibling.setAttribute('disabled', true);
         }
     }
 
     let permissionService;
-    let permissions;
     let fixture;
     let comp;
     let configurationService: NgxPermissionsConfigurationService;
     const disable = 'disable';
     let renderer: Renderer2;
-    let correctTemplate = '<div>123</div>'
-    let disableFunction = (tF: TemplateRef<any>) => {
+    const correctTemplate = '<div>123</div>';
+    const disableFunction = (tF: TemplateRef<any>) => {
         renderer.setAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled', 'true');
     };
-    let enableFunction = (tF: TemplateRef<any>) => {
+    const enableFunction = (tF: TemplateRef<any>) => {
         renderer.removeAttribute(tF.elementRef.nativeElement.nextSibling, 'disabled');
     };
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers:[Renderer2]});
+        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()], providers: [Renderer2]});
 
         fixture = TestBed.createComponent(TestComp);
         comp = fixture.componentInstance;
@@ -526,17 +568,17 @@ describe('test predefined strategies normal behavior', () => {
         configurationService.addPermissionStrategy(disable, disableFunction);
         configurationService.addPermissionStrategy('enable', enableFunction);
 
-        permissionService.loadPermissions([ PermissionsTestEnum.GUEST]);
+        permissionService.loadPermissions([PermissionsTestEnum.GUEST]);
         detectChanges(fixture);
 
-        let content = fixture.debugElement.nativeElement.querySelector('button');
+        const content = fixture.debugElement.nativeElement.querySelector('button');
         expect(content).toBeTruthy();
         expect(content.disabled).toBe(true);
 
         permissionService.loadPermissions([PermissionsTestEnum.ADMIN, PermissionsTestEnum.GUEST]);
 
         detectChanges(fixture);
-        let content2 = fixture.debugElement.nativeElement.querySelector('button');
+        const content2 = fixture.debugElement.nativeElement.querySelector('button');
 
 
         expect(content2).toBeTruthy();
