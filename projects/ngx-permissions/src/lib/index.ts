@@ -10,9 +10,9 @@ import { NgxPermissionsRestrictStubDirective } from './testing/permissions-restr
 import { NgxPermissionsConfigurationService, USE_CONFIGURATION_STORE } from './service/configuration.service';
 import { NgxPermissionsConfigurationStore } from './store/configuration.store';
 
-export * from './store/roles.store'
-export * from './store/permissions.store'
-export * from './store/configuration.store'
+export * from './store/roles.store';
+export * from './store/permissions.store';
+export * from './store/configuration.store';
 
 export * from './directive/permissions.directive';
 
@@ -22,19 +22,19 @@ export * from './service/configuration.service';
 
 export * from './router/permissions-guard.service';
 
-export * from './model/permissions-router-data.model'
-export * from './model/role.model'
+export * from './model/permissions-router-data.model';
+export * from './model/role.model';
 
-export * from './testing/permissions-allow.directive.stub'
-export * from './testing/permissions-restrict.directive.stub'
+export * from './testing/permissions-allow.directive.stub';
+export * from './testing/permissions-restrict.directive.stub';
 
-export * from './enums/predefined-strategies.enum'
+export * from './enums/predefined-strategies.enum';
 
 export interface NgxPermissionsModuleConfig {
     // isolate the service instance, only works for lazy loaded modules or components with the "providers" property
     rolesIsolate?: boolean;
     permissionsIsolate?: boolean;
-    configurationIsolate?: boolean
+    configurationIsolate?: boolean;
 }
 
 

@@ -1,13 +1,11 @@
-import { NgxRolesService } from './roles.service';
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
-import { NgxRolesStore } from '../store/roles.store';
-import { NgxPermissionsModule } from '../index';
-import { NgxRole } from '../model/role.model';
+import { NgxPermissionsModule, ValidationFn } from '../index';
 import { NgxPermissionsService } from './permissions.service';
+import { NgxRolesService } from './roles.service';
 
 enum RoleNamesEnum {
-    ADMIN = <any>'ADMIN',
-    GUEST = <any>'GUEST'
+    ADMIN = 'ADMIN' as any,
+    GUEST = 'GUEST' as any
 }
 
 describe('Roles Service', () => {
@@ -31,25 +29,25 @@ describe('Roles Service', () => {
 
     it ('should add role to role object', () => {
         expect(localService.getRoles()[RoleNamesEnum.ADMIN]).toBeFalsy();
-        localService.addRole(<any>RoleNamesEnum.ADMIN, ['edit', 'remove']);
+        localService.addRole(RoleNamesEnum.ADMIN as any, ['edit', 'remove']);
         expect(localService.getRoles()[RoleNamesEnum.ADMIN]).toBeTruthy();
         expect(localService.getRoles()).toEqual(
             {ADMIN: {name: 'ADMIN', validationFunction: ['edit', 'remove']}}
-            )
+        );
     });
 
     it ('should remove role from role object', () => {
         expect(localService.getRoles()[RoleNamesEnum.ADMIN]).toBeFalsy();
-        localService.addRole(<any>RoleNamesEnum.ADMIN, ['edit', 'remove']);
+        localService.addRole(RoleNamesEnum.ADMIN as any, ['edit', 'remove']);
         expect(localService.getRoles()[RoleNamesEnum.ADMIN]).toBeTruthy();
-        localService.removeRole(<any>RoleNamesEnum.ADMIN);
+        localService.removeRole(RoleNamesEnum.ADMIN as any);
         expect(localService.getRoles()[RoleNamesEnum.ADMIN]).toBeFalsy();
     });
 
     it ('should remove all roles from object', () => {
         expect(Object.keys(localService.getRoles()).length).toEqual(0);
-        localService.addRole(<any>RoleNamesEnum.ADMIN, ['edit', 'remove']);
-        localService.addRole(<any>RoleNamesEnum.GUEST, ['edit', 'remove']);
+        localService.addRole(RoleNamesEnum.ADMIN as any, ['edit', 'remove']);
+        localService.addRole(RoleNamesEnum.GUEST as any, ['edit', 'remove']);
         expect(Object.keys(localService.getRoles()).length).toEqual(2);
         localService.flushRoles();
         expect(Object.keys(localService.getRoles()).length).toEqual(0);
@@ -59,21 +57,22 @@ describe('Roles Service', () => {
         expect(Object.keys(localService.getRoles()).length).toEqual(0);
         localService.addRoles({
           ADMIN: ['Nice'],
-          GUEST: ["Awesome"]
+            GUEST: ['Awesome']
         });
 
         expect(Object.keys(localService.getRoles()).length).toEqual(2);
         expect(localService.getRoles()).toEqual(
             {
-                ADMIN: {name: "ADMIN", validationFunction: ['Nice']},
-                GUEST: {name: "GUEST", validationFunction: ['Awesome']}})
+                ADMIN: {name: 'ADMIN', validationFunction: ['Nice']},
+                GUEST: {name: 'GUEST', validationFunction: ['Awesome']}
+            });
     });
 
     it ('return true when role name is present in Roles object', fakeAsync(() => {
         expect(Object.keys(localService.getRoles()).length).toEqual(0);
         localService.addRoles({
             ADMIN: ['Nice'],
-            GUEST: ["Awesome"]
+            GUEST: ['Awesome']
         });
 
         expect(Object.keys(localService.getRoles()).length).toEqual(2);
@@ -103,7 +102,7 @@ describe('Roles Service', () => {
         permissionsService.addPermission(['Nice', 'Awesome']);
         localService.addRoles({
             ADMIN: ['Nice'],
-            GUEST: ["Awesome"]
+            GUEST: ['Awesome']
         });
 
 
@@ -129,12 +128,12 @@ describe('Roles Service', () => {
 
     it('should return role when requested with has role', fakeAsync(() => {
         localService.addRole('role', () => true);
-        let role = localService.getRole('role');
+        const role = localService.getRole('role');
         expect(role.name).toBe('role');
-        expect((role.validationFunction as Function)()).toEqual(true);
+        expect((role.validationFunction as ValidationFn)()).toEqual(true);
     }));
 
-    it ('should return true when checking with empty permisssion(not specified)', fakeAsync(() => {
+    it('should return true when checking with empty permission(not specified)', fakeAsync(() => {
         localService.hasOnlyRoles('').then((data) => {
             expect(data).toEqual(true);
         });
@@ -172,7 +171,7 @@ describe('Roles Service', () => {
         localService.addRole('test', ['one', 'two']);
         localService.hasOnlyRoles('test').then((data) => {
             expect(data).toBe(true);
-        })
+        });
     }));
 
 
@@ -181,11 +180,11 @@ describe('Roles Service', () => {
         localService.addRole('test', ['one', 'two']);
         localService.hasOnlyRoles('test').then((data) => {
             expect(data).toBe(false);
-        })
+        });
     }));
 
     xit('maybe add functionality when function returns array', fakeAsync(() => {
-        localService.addRole('test', () => {return ['nice']});
+        localService.addRole('test', () => ['nice']);
         localService.hasOnlyRoles(['nice']).then((data) => {
             expect(data).toBe(true);
         });
@@ -193,9 +192,9 @@ describe('Roles Service', () => {
 });
 
 describe('Roles Service model', () => {
-   it('should create role mode', () => {
-       let roleModel = new NgxRole('role', () => true);
-       expect(roleModel.name).toBe('role');
-       expect((roleModel.validationFunction as Function)()).toBe(true);
-   })
+    it('should create role model', () => {
+        const roleModel = {name: 'role', validationFunction: () => true};
+        expect(roleModel.name).toBe('role');
+        expect(roleModel.validationFunction()).toBe(true);
+    });
 });

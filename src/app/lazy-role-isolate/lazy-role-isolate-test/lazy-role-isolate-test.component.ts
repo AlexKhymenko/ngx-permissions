@@ -19,7 +19,7 @@ export class LazyRoleIsolateTestComponent implements OnInit {
     });
 
     this.configService.setDefaultOnUnauthorizedStrategy('lol');
-    this.permissionsService.addPermission('ADMIN')
+    this.permissionsService.addPermission('ADMIN');
     this.rolesService.addRole('ADMIN', ['NICE']);
   }
 

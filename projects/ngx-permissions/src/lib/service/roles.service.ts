@@ -2,6 +2,7 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 
 import { BehaviorSubject, from, Observable, ObservableInput, of } from 'rxjs';
 import { catchError, every, first, map, mergeAll, mergeMap, switchMap } from 'rxjs/operators';
+import { ValidationFn } from '../model/permissions-router-data.model';
 
 import { NgxRole } from '../model/role.model';
 import { NgxRolesStore } from '../store/roles.store';
@@ -10,7 +11,9 @@ import { NgxPermissionsService } from './permissions.service';
 
 export const USE_ROLES_STORE = new InjectionToken('USE_ROLES_STORE');
 
-export type NgxRolesObject = { [name: string]: NgxRole };
+export interface NgxRolesObject {
+    [name: string]: NgxRole;
+}
 
 @Injectable()
 export class NgxRolesService {
@@ -28,7 +31,7 @@ export class NgxRolesService {
         this.roles$ = this.rolesSource.asObservable();
     }
 
-    public addRole(name: string, validationFunction: Function | string[]) {
+    public addRole(name: string, validationFunction: ValidationFn | string[]) {
         const roles = {
             ...this.rolesSource.value,
             [name]: {name, validationFunction}
@@ -36,7 +39,7 @@ export class NgxRolesService {
         this.rolesSource.next(roles);
     }
 
-    public addRoles(rolesObj: { [name: string]: Function | string[] }) {
+    public addRoles(rolesObj: { [name: string]: ValidationFn | string[] }) {
         Object.keys(rolesObj).forEach((key, index) => {
             this.addRole(key, rolesObj[key]);
         });
@@ -47,7 +50,7 @@ export class NgxRolesService {
     }
 
     public removeRole(roleName: string) {
-        let roles = {
+        const roles = {
             ...this.rolesSource.value
         };
         delete roles[roleName];
@@ -65,7 +68,9 @@ export class NgxRolesService {
     public hasOnlyRoles(names: string | string[]): Promise<boolean> {
         const isNamesEmpty = !names || (Array.isArray(names) && names.length === 0);
 
-        if (isNamesEmpty) return Promise.resolve(true);
+        if (isNamesEmpty) {
+            return Promise.resolve(true);
+        }
 
         names = transformStringToArray(names);
 
@@ -82,7 +87,7 @@ export class NgxRolesService {
                                           isFunction(this.rolesSource.value[key].validationFunction);
 
             if (hasValidationFunction && !isPromise(this.rolesSource.value[key].validationFunction)) {
-                const validationFunction: Function = <Function>this.rolesSource.value[key].validationFunction;
+                const validationFunction = this.rolesSource.value[key].validationFunction as ValidationFn;
                 const immutableValue = {...this.rolesSource.value};
 
                 return of(null).pipe(
@@ -107,15 +112,15 @@ export class NgxRolesService {
         return from(roleNames).pipe(
             mergeMap((key) => {
                 if (roles[key] && Array.isArray(roles[key].validationFunction)) {
-                    return from(<string[]>roles[key].validationFunction).pipe(
+                    return from(roles[key].validationFunction).pipe(
                         mergeMap((permission) => this.permissionsService.hasPermission(permission)),
-                        every((hasPermissions) => hasPermissions === true)
+                        every(hasPermission => hasPermission === true)
                     );
                 }
 
                 return of(false);
             }),
-            first((hasPermission) => hasPermission === true, false)
+            first(hasPermission => hasPermission === true, false)
         ).toPromise();
     }
 

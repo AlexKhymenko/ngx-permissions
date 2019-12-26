@@ -12,25 +12,25 @@ export class LazyRolesAsyncTestComponent implements OnInit {
   constructor(private rolesServices: NgxRolesService, private asyncTest: AsyncTestService) { }
 
   ngOnInit() {
-    this.rolesServices.addRole("ADMIN_TRUE", () => {
+    this.rolesServices.addRole('ADMIN_TRUE', () => {
       return true;
     });
 
-    this.rolesServices.addRole("ADMIN_FALSE", () => {
+    this.rolesServices.addRole('ADMIN_FALSE', () => {
       return false;
     });
 
-    this.rolesServices.addRole("ADMIN_RESOLVE_TRUE", () => {
+    this.rolesServices.addRole('ADMIN_RESOLVE_TRUE', () => {
       return this.asyncTest.promiseResolveTrue();
     });
 
-    this.rolesServices.addRole("ADMIN_RESOLVE_FALSE", () => {
+    this.rolesServices.addRole('ADMIN_RESOLVE_FALSE', () => {
       return this.asyncTest.promiseResolveFalse();
     });
 
-    this.rolesServices.addRole("ADMIN_REJECT", () => {
+    this.rolesServices.addRole('ADMIN_REJECT', () => {
       return this.asyncTest.promiseReject();
-    })
+    });
 
     console.log(this.rolesServices.getRoles());
   }

@@ -1,13 +1,12 @@
-export function isFunction(functionToCheck: any): functionToCheck is Function {
-    let getType = {};
-    return !!functionToCheck && functionToCheck instanceof Function && getType.toString.call(functionToCheck) === '[object Function]';
+export function isFunction<T>(value: any): value is T {
+    return typeof value === 'function';
 }
 
 export function isPlainObject(value: any): boolean {
     if (Object.prototype.toString.call(value) !== '[object Object]') {
         return false;
     } else {
-        let prototype = Object.getPrototypeOf(value);
+        const prototype = Object.getPrototypeOf(value);
         return prototype === null || prototype === Object.prototype;
     }
 }
@@ -24,14 +23,14 @@ export function isPromise(promise: any) {
     return Object.prototype.toString.call(promise) === '[object Promise]';
 }
 
-export function notEmptyValue(value: any): boolean {
+export function notEmptyValue(value: string | string[]): boolean {
     if (Array.isArray(value)) {
         return value.length > 0;
     }
     return !!value;
 }
 
-export function transformStringToArray(value: any): string[] {
+export function transformStringToArray(value: string | string[]): string[] {
     if (isString(value)) {
         return [value];
     }

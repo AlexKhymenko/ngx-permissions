@@ -6,7 +6,7 @@ import { NgxPermissionsService } from '../service/permissions.service';
 import { NgxPermissionsConfigurationService } from '../service/configuration.service';
 
 describe('Ngx permissions Except with default strategy and with else block then block ', () => {
-    @Component({selector: 'test-comp',
+    @Component({selector: 'ngx-permissions-test-comp',
         template: `
             <div *ngxPermissionsExcept="['FAIL_BLOCK']; else elseBlock; then thenBlock">
                 FAILED
@@ -46,20 +46,20 @@ describe('Ngx permissions Except with default strategy and with else block then 
         beforeEach(() => {
             configurationService.setDefaultOnUnauthorizedStrategy('show');
             permissionsService.addPermission('FAIL_BLOCK');
-        })
+        });
         it('should  show else block instead of applying strategy', fakeAsync(() => {
 
             detectChanges(fixture);
-            let content2 = fixture.debugElement.nativeElement.querySelector('div');
+            const content2 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content2).toBeTruthy();
             expect(content2.innerHTML.trim()).toEqual(`elseBlock`);
         }));
-    })
+    });
 
 });
 
 describe('Ngx permissions Except with default strategy without any blocks', () => {
-    @Component({selector: 'test-comp',
+    @Component({selector: 'ngx-permissions-test-comp',
         template: `
             <div *ngxPermissionsExcept="['FAIL_BLOCK'];">
                 FAILED
@@ -93,20 +93,20 @@ describe('Ngx permissions Except with default strategy without any blocks', () =
         beforeEach(() => {
             configurationService.setDefaultOnUnauthorizedStrategy('show');
             permissionsService.addPermission('FAIL_BLOCK');
-        })
+        });
         it('should  show else block instead of applying strategy', fakeAsync(() => {
 
             detectChanges(fixture);
-            let content2 = fixture.debugElement.nativeElement.querySelector('div');
+            const content2 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content2).toBeTruthy();
             expect(content2.innerHTML.trim()).toEqual(`FAILED`);
         }));
-    })
+    });
 });
 
 
 describe('Ngx permissions Except with default strategy and with else block then block ', () => {
-    @Component({selector: 'test-comp',
+    @Component({selector: 'ngx-permissions-test-comp',
         template: `
             <div *ngxPermissionsExcept="['FAIL_BLOCK']; else elseBlock; then thenBlock">
                 FAILED
@@ -146,23 +146,23 @@ describe('Ngx permissions Except with default strategy and with else block then 
         beforeEach(() => {
             configurationService.setDefaultOnUnauthorizedStrategy('show');
             permissionsService.addPermission('FAIL_BLOCK');
-        })
+        });
         it('should  show else block instead of applying default strategy', fakeAsync(() => {
 
             detectChanges(fixture);
-            let content2 = fixture.debugElement.nativeElement.querySelector('div');
+            const content2 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content2).toBeTruthy();
             expect(content2.innerHTML.trim()).toEqual(`elseBlock`);
         }));
-    })
+    });
 
 });
 
 describe('Simple ngxPermissionsExcept directive', () => {
-    @Component({selector: 'test-comp',
+    @Component({selector: 'ngx-permissions-test-comp',
         template: `
             <div *ngxPermissionsOnly="['ONLY_PERMISSION'];" (permissionsUnauthorized)="permissionsUnauthorized()">
-                
+
             </div>
         `
 
@@ -193,7 +193,7 @@ describe('Simple ngxPermissionsExcept directive', () => {
 
         beforeEach(() => {
             permissionsService.addPermission('FAIL_BLOCK');
-        })
+        });
         it('should not rerender directive', fakeAsync(() => {
             spyOn(comp, 'permissionsUnauthorized');
             detectChanges(fixture);
@@ -201,11 +201,11 @@ describe('Simple ngxPermissionsExcept directive', () => {
             detectChanges(fixture);
             expect(comp.permissionsUnauthorized).toHaveBeenCalledTimes(0);
         }));
-    })
+    });
 });
 
 describe('Ngx permissions Except with default strategy and with else block then block ', () => {
-    @Component({selector: 'test-comp',
+    @Component({selector: 'ngx-permissions-test-comp',
         template: `
             <div *ngxPermissionsExcept="['FAIL_BLOCK']; else elseBlock; then thenBlock">
                 FAILED
@@ -245,20 +245,20 @@ describe('Ngx permissions Except with default strategy and with else block then 
         beforeEach(() => {
             configurationService.setDefaultOnUnauthorizedStrategy('show');
             permissionsService.addPermission('ALLOW');
-        })
+        });
         it('should  show then block instead of applying default strategy', fakeAsync(() => {
 
             detectChanges(fixture);
-            let content2 = fixture.debugElement.nativeElement.querySelector('div');
+            const content2 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content2).toBeTruthy();
             expect(content2.innerHTML.trim()).toEqual(`thenBlock`);
         }));
-    })
+    });
 
 });
 
 describe('Ngx permissions Except when passing permissions as variable should rerender the page on permissionChange ', () => {
-    @Component({selector: 'test-comp',
+    @Component({selector: 'ngx-permissions-test-comp',
         template: `
             <ng-container *ngxPermissionsExcept="permissions">
                 <div>123</div>
@@ -268,7 +268,7 @@ describe('Ngx permissions Except when passing permissions as variable should rer
     })
     class TestComp {
         data: any;
-        permissions = "EXCEPT"
+        permissions = 'EXCEPT';
     }
 
     let rolesService;
@@ -292,28 +292,28 @@ describe('Ngx permissions Except when passing permissions as variable should rer
 
         beforeEach(() => {
             permissionsService.addPermission('EXCEPT');
-        })
+        });
         it('should  show then block instead of applying default strategy', fakeAsync(() => {
             detectChanges(fixture);
 
-            let content3 = fixture.debugElement.nativeElement.querySelector('div');
+            const content3 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content3).toEqual(null);
 
 
-            comp.permissions = "ALLOW";
+            comp.permissions = 'ALLOW';
             detectChanges(fixture);
-            let content2 = fixture.debugElement.nativeElement.querySelector('div');
+            const content2 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content2).toBeTruthy();
             expect(content2.innerHTML.trim()).toEqual(`123`);
 
         }));
-    })
+    });
 
 });
 
 
 describe('Ngx permissions when chaning variable to undefined  ', () => {
-    @Component({selector: 'test-comp',
+    @Component({selector: 'ngx-permissions-test-comp',
         template: `
             <ng-container *ngxPermissionsExcept="permissions">
                 <div>123</div>
@@ -323,7 +323,7 @@ describe('Ngx permissions when chaning variable to undefined  ', () => {
     })
     class TestComp {
         data: any;
-        permissions = "EXCEPT"
+        permissions = 'EXCEPT';
     }
 
     let rolesService;
@@ -347,27 +347,27 @@ describe('Ngx permissions when chaning variable to undefined  ', () => {
 
         beforeEach(() => {
             permissionsService.addPermission('EXCEPT');
-        })
+        });
         it('should  show the component', fakeAsync(() => {
             detectChanges(fixture);
 
-            let content3 = fixture.debugElement.nativeElement.querySelector('div');
+            const content3 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content3).toEqual(null);
 
 
             comp.permissions = undefined;
             detectChanges(fixture);
-            let content2 = fixture.debugElement.nativeElement.querySelector('div');
+            const content2 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content2).toBeTruthy();
             expect(content2.innerHTML.trim()).toEqual(`123`);
 
         }));
-    })
+    });
 
 });
 
 describe('Ngx permissions Only when passing permissions as variable should rerender the page ', () => {
-    @Component({selector: 'test-comp',
+    @Component({selector: 'ngx-permissions-test-comp',
         template: `
             <ng-container *ngxPermissionsOnly="permissions">
                 <div>123</div>
@@ -377,7 +377,7 @@ describe('Ngx permissions Only when passing permissions as variable should reren
     })
     class TestComp {
         data: any;
-        permissions= "ALLOW"
+        permissions = 'ALLOW';
     }
 
     let rolesService;
@@ -401,25 +401,25 @@ describe('Ngx permissions Only when passing permissions as variable should reren
 
         beforeEach(() => {
             permissionsService.addPermission('ALLOW');
-        })
+        });
         it('show and then hide content', fakeAsync(() => {
 
             detectChanges(fixture);
-            let content2 = fixture.debugElement.nativeElement.querySelector('div');
+            const content2 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content2).toBeTruthy();
             expect(content2.innerHTML.trim()).toEqual(`123`);
 
-            comp.permissions = "DONT_ALLOW";
+            comp.permissions = 'DONT_ALLOW';
             detectChanges(fixture);
-            let content3 = fixture.debugElement.nativeElement.querySelector('div');
+            const content3 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content3).toEqual(null);
         }));
-    })
+    });
 
 });
 
 describe('Ngx permissions Only when passing undefined it should show the component ', () => {
-    @Component({selector: 'test-comp',
+    @Component({selector: 'ngx-permissions-test-comp',
         template: `
             <ng-container *ngxPermissionsOnly="permissions">
                 <div>123</div>
@@ -429,7 +429,7 @@ describe('Ngx permissions Only when passing undefined it should show the compone
     })
     class TestComp {
         data: any;
-        permissions= "ALLOW"
+        permissions = 'ALLOW';
     }
 
     let rolesService;
@@ -453,20 +453,20 @@ describe('Ngx permissions Only when passing undefined it should show the compone
 
         beforeEach(() => {
             permissionsService.addPermission('DONT_ALLOW');
-        })
+        });
         it('show and then hide content', fakeAsync(() => {
             detectChanges(fixture);
-            let content3 = fixture.debugElement.nativeElement.querySelector('div');
+            const content3 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content3).toEqual(null);
 
 
             comp.permissions = undefined;
             detectChanges(fixture);
-            let content2 = fixture.debugElement.nativeElement.querySelector('div');
+            const content2 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content2).toBeTruthy();
             expect(content2.innerHTML.trim()).toEqual(`123`);
         }));
-    })
+    });
 
 });
 

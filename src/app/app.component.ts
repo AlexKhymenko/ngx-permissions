@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { NgxPermissionsConfigurationService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-root',
@@ -24,8 +23,8 @@ export class AppComponent implements OnInit {
         setTimeout(() => {
           resolve(true);
         }, 2000);
-      })
-    })
+      });
+    });
 
   }
 
@@ -34,7 +33,7 @@ export class AppComponent implements OnInit {
   }
 
   public authorized() {
-    console.log('authorizes')
+    console.log('authorizes');
   }
 
   public addPermission() {

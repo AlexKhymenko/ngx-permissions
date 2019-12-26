@@ -1,13 +1,10 @@
-
-
-import { NgxPermissionsService } from './permissions.service';
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 import { NgxPermissionsModule } from '../index';
-import { NgxPermission } from '../model/permission.model';
+import { NgxPermissionsService } from './permissions.service';
 
 enum PermissionsNamesEnum {
-    ADMIN = <any>'ADMIN',
-    GUEST = <any>'GUEST'
+    ADMIN = 'ADMIN' as any,
+    GUEST = 'GUEST' as any
 }
 
 describe('Permissions Service', () => {
@@ -27,23 +24,23 @@ describe('Permissions Service', () => {
     });
 
     it ('should add permission to permission object', () => {
-        expect(localService.getPermission(<any>PermissionsNamesEnum.ADMIN)).toBeFalsy();
-        localService.addPermission(<any>PermissionsNamesEnum.ADMIN);
-        expect(localService.getPermission(<any>PermissionsNamesEnum.ADMIN)).toBeTruthy();
-    })
+        expect(localService.getPermission(PermissionsNamesEnum.ADMIN as any)).toBeFalsy();
+        localService.addPermission(PermissionsNamesEnum.ADMIN as any);
+        expect(localService.getPermission(PermissionsNamesEnum.ADMIN as any)).toBeTruthy();
+    });
     //
     it ('should remove permission from role object', () => {
         expect(localService.getPermissions()[PermissionsNamesEnum.ADMIN]).toBeFalsy();
-        localService.addPermission(<any>PermissionsNamesEnum.ADMIN, );
+        localService.addPermission(PermissionsNamesEnum.ADMIN as any, );
         expect(localService.getPermissions()[PermissionsNamesEnum.ADMIN]).toBeTruthy();
-        localService.removePermission(<any>PermissionsNamesEnum.ADMIN);
+        localService.removePermission(PermissionsNamesEnum.ADMIN as any);
         expect(localService.getPermissions()[PermissionsNamesEnum.ADMIN]).toBeFalsy();
     });
 
     it ('should remove all permisssions from object', () => {
         expect(Object.keys(localService.getPermissions()).length).toEqual(0);
-        localService.addPermission(<any>PermissionsNamesEnum.ADMIN, );
-        localService.addPermission(<any>PermissionsNamesEnum.GUEST, );
+        localService.addPermission(PermissionsNamesEnum.ADMIN as any, );
+        localService.addPermission(PermissionsNamesEnum.GUEST as any, );
         expect(Object.keys(localService.getPermissions()).length).toEqual(2);
         localService.flushPermissions();
         expect(Object.keys(localService.getPermissions()).length).toEqual(0);
@@ -51,18 +48,18 @@ describe('Permissions Service', () => {
 
     it ('should add multiple permissions', () => {
         expect(Object.keys(localService.getPermissions()).length).toEqual(0);
-        localService.addPermission([<any>PermissionsNamesEnum.ADMIN, PermissionsNamesEnum.GUEST]);
+        localService.addPermission([PermissionsNamesEnum.ADMIN as any, PermissionsNamesEnum.GUEST]);
 
         expect(Object.keys(localService.getPermissions()).length).toEqual(2);
         expect(localService.getPermissions()).toEqual(
             {
-                ADMIN: {name: "ADMIN"},
-                GUEST: {name: "GUEST"}});
+                ADMIN: {name: 'ADMIN'},
+                GUEST: {name: 'GUEST'}});
     });
 
     it ('return true when permission name is present in permissions object', fakeAsync(() => {
         expect(Object.keys(localService.getPermissions()).length).toEqual(0);
-        localService.addPermission([<any>PermissionsNamesEnum.ADMIN, PermissionsNamesEnum.GUEST]);
+        localService.addPermission([PermissionsNamesEnum.ADMIN as any, PermissionsNamesEnum.GUEST]);
 
         expect(Object.keys(localService.getPermissions()).length).toEqual(2);
         localService.hasPermission('ADMIN').then((data) => {
@@ -83,31 +80,31 @@ describe('Permissions Service', () => {
 
     it ('return true when role permission function return true', fakeAsync(() => {
         expect(Object.keys(localService.getPermissions()).length).toEqual(0);
-        localService.addPermission(<any>PermissionsNamesEnum.ADMIN, () => {
-            return true
+        localService.addPermission(PermissionsNamesEnum.ADMIN as any, () => {
+            return true;
         });
         expect(Object.keys(localService.getPermissions()).length).toEqual(1);
         localService.hasPermission('ADMIN').then((data) => {
             expect(data).toEqual(true);
         });
 
-        localService.addPermission(<any>PermissionsNamesEnum.GUEST, () => {
-            return false
+        localService.addPermission(PermissionsNamesEnum.GUEST as any, () => {
+            return false;
         });
         expect(Object.keys(localService.getPermissions()).length).toEqual(2);
         localService.hasPermission('GUEST').then((data) => {
             expect(data).toEqual(false);
         });
 
-        localService.addPermission(<any>'TEST1', () => {
-            return Promise.resolve(true)
+        localService.addPermission('TEST1' as any, () => {
+            return Promise.resolve(true);
         });
         expect(Object.keys(localService.getPermissions()).length).toEqual(3);
         localService.hasPermission('TEST1').then((data) => {
             expect(data).toEqual(true);
         });
-        localService.addPermission(<any>'TEST2', () => {
-            return Promise.resolve(false)
+        localService.addPermission('TEST2' as any, () => {
+            return Promise.resolve(false);
         });
         expect(Object.keys(localService.getPermissions()).length).toEqual(4);
         localService.hasPermission('TEST2').then((data) => {
@@ -125,8 +122,8 @@ describe('Permissions Service', () => {
 
     it ('return true when role permissions[array] function return true', fakeAsync(() => {
         expect(Object.keys(localService.getPermissions()).length).toEqual(0);
-        localService.addPermission(<any>[PermissionsNamesEnum.ADMIN], () => {
-            return true
+        localService.addPermission([PermissionsNamesEnum.ADMIN] as any, () => {
+            return true;
         });
         expect(Object.keys(localService.getPermissions()).length).toEqual(1);
 
@@ -134,31 +131,31 @@ describe('Permissions Service', () => {
             expect(data).toEqual(true);
         });
 
-        localService.addPermission(<any>[PermissionsNamesEnum.GUEST], () => {
-            return false
+        localService.addPermission([PermissionsNamesEnum.GUEST] as any, () => {
+            return false;
         });
         expect(Object.keys(localService.getPermissions()).length).toEqual(2);
         localService.hasPermission('GUEST').then((data) => {
             expect(data).toEqual(false);
         });
 
-        localService.addPermission(<any>['TEST1'], () => {
-            return Promise.resolve(true)
+        localService.addPermission(['TEST1'] as any, () => {
+            return Promise.resolve(true);
         });
         expect(Object.keys(localService.getPermissions()).length).toEqual(3);
         localService.hasPermission('TEST1').then((data) => {
             expect(data).toEqual(true);
         });
-        localService.addPermission(<any>['TEST9'], () => {
-            return Promise.resolve(false)
+        localService.addPermission(['TEST9'] as any, () => {
+            return Promise.resolve(false);
         });
         expect(Object.keys(localService.getPermissions()).length).toEqual(4);
         localService.hasPermission(['TEST9']).then((data) => {
             expect(data).toEqual(false);
         });
 
-        localService.addPermission(<any>['TEST11'], (name, store) => {
-            return Promise.resolve(false)
+        localService.addPermission(['TEST11'] as any, (name, store) => {
+            return Promise.resolve(false);
         });
 
 
@@ -173,11 +170,11 @@ describe('Permissions Service', () => {
 
     it ('return call function with name and store in array', fakeAsync(() => {
 
-        localService.addPermission(<any>['TEST11'], (n, store) => {
+        localService.addPermission(['TEST11'] as any, (n, store) => {
             expect(n).toEqual('TEST11');
             expect(n).toEqual('TEST11');
-            expect(store['TEST11']).toBeTruthy();
-            return Promise.resolve(n)
+            expect(store.TEST11).toBeTruthy();
+            return Promise.resolve(n);
         });
         expect(Object.keys(localService.getPermissions()).length).toEqual(1);
         localService.hasPermission(['TEST11']).then((data) => {
@@ -186,11 +183,11 @@ describe('Permissions Service', () => {
     }));
 
     it ('return call function with name and store in string', fakeAsync(() => {
-        localService.addPermission(<any>['TEST11'], (n, store) => {
+        localService.addPermission(['TEST11'] as any, (n, store) => {
             expect(n).toEqual('TEST11');
             expect(n).toEqual('TEST11');
-            expect(store['TEST11']).toBeTruthy();
-            return Promise.resolve(true)
+            expect(store.TEST11).toBeTruthy();
+            return Promise.resolve(true);
         });
         expect(Object.keys(localService.getPermissions()).length).toEqual(1);
         localService.hasPermission('TEST11').then((data) => {
@@ -202,21 +199,21 @@ describe('Permissions Service', () => {
         localService.hasPermission('').then((data) => {
             expect(data).toEqual(true);
         });
-    }))
+    }));
 
     it('should return true when called with empty array', fakeAsync(() => {
         localService.hasPermission([]).then((data) => {
             expect(data).toEqual(true);
         });
-    }))
+    }));
 });
 
 
 
 describe('Permissions Service model', () => {
-    it('should create role mode', () => {
-        let permission = new NgxPermission('permission', () => true);
+    it('should create permission model', () => {
+        const permission = {name: 'permission', validationFunction: () => true};
         expect(permission.name).toBe('permission');
-        expect((permission.validationFunction as Function)()).toBe(true);
-    })
+        expect(permission.validationFunction()).toBe(true);
+    });
 });
