@@ -50,3 +50,6 @@ Desktop.ini
 
 # Ngc generated files
 **/*.ngfactory.ts
+
+
+projects/ngx-permissions/coverage
