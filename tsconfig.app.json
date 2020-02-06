@@ -1,8 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "angularCompilerOptions": {
-    "enableIvy": true
-  },
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "types": []
@@ -13,9 +10,5 @@
   ],
   "include": [
     "src/**/*.d.ts"
-  ],
-  "exclude": [
-    "src/test.ts",
-    "src/**/*.spec.ts"
   ]
 }
