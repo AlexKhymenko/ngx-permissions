@@ -22,7 +22,7 @@
       "ngx-permissions": [
         "dist/ngx-permissions"
       ],
-      "test/*": [
+      "ngx-permissions/*": [
         "dist/ngx-permissions/*"
       ]
     }
