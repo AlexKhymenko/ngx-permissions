@@ -256,17 +256,17 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges  {
             this.ngxPermissionsUnauthorisedStrategy;
     }
 
-    private applyStrategy(str: any) {
-        if (str === NgxPermissionsPredefinedStrategies.SHOW) {
+    private applyStrategy(name: string) {
+        if (name === NgxPermissionsPredefinedStrategies.SHOW) {
             this.showTemplateBlockInView(this.templateRef);
             return;
         }
 
-        if (str === NgxPermissionsPredefinedStrategies.REMOVE) {
+        if (name === NgxPermissionsPredefinedStrategies.REMOVE) {
             this.viewContainer.clear();
             return;
         }
-        const strategy = this.configurationService.getStrategy(str);
+        const strategy = this.configurationService.getStrategy(name);
         this.showTemplateBlockInView(this.templateRef);
         strategy(this.templateRef);
     }

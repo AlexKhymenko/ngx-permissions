@@ -23,6 +23,6 @@ export declare type RedirectToFn =
 
 export declare type NavigationCommandsFn = (route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) => any[];
 export declare type NavigationExtrasFn = (route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) => NavigationExtras;
-export declare type ValidationFn = ((name?: string, store?: any) => Promise<string> | Promise<boolean> | boolean | string[]);
+export declare type ValidationFn = ((name?: string, store?: any) => Promise<void | string | boolean> | boolean | string[]);
 
 export const DEFAULT_REDIRECT_KEY = 'default';
