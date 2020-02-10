@@ -48,7 +48,7 @@ export interface NgxPermissionsModuleConfig {
     ]
 })
 export class NgxPermissionsModule {
-    static forRoot(config: NgxPermissionsModuleConfig = {}): ModuleWithProviders {
+    static forRoot(config: NgxPermissionsModuleConfig = {}): ModuleWithProviders<NgxPermissionsModule> {
         return {
             ngModule: NgxPermissionsModule,
             providers: [
@@ -66,7 +66,7 @@ export class NgxPermissionsModule {
         };
     }
 
-    static forChild(config: NgxPermissionsModuleConfig = {}): ModuleWithProviders {
+    static forChild(config: NgxPermissionsModuleConfig = {}): ModuleWithProviders<NgxPermissionsModule> {
         return {
             ngModule: NgxPermissionsModule,
             providers: [

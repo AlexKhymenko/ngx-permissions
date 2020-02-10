@@ -22,7 +22,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -45,7 +45,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -139,7 +138,7 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/ngx-permissions/ng-package.prod.json"
+              "tsConfig": "projects/ngx-permissions/tsconfig.lib.prod.json"
             }
           }
         },

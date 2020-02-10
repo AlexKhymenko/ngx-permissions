@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgxPermissionsModule } from '../index';
-import { NgxRolesService } from '../service/roles.service';
 import { NgxPermissionsService } from '../service/permissions.service';
 import { NgxPermissionsConfigurationService } from '../service/configuration.service';
 
 describe('Ngx permissions Except with default strategy and with else block then block ', () => {
-    @Component({selector: 'ngx-permissions-test-comp',
+    @Component({
+        selector: 'ngx-permissions-test-comp',
         template: `
             <div *ngxPermissionsExcept="['FAIL_BLOCK']; else elseBlock; then thenBlock">
                 FAILED
@@ -18,27 +18,21 @@ describe('Ngx permissions Except with default strategy and with else block then 
                 <div>thenBlock</div>
             </ng-template>
         `
-
     })
-    class TestComp {
+    class TestComponent {
         data: any;
     }
 
-    let rolesService;
-    let permissionsService;
+    let permissionsService: NgxPermissionsService;
     let configurationService: NgxPermissionsConfigurationService;
-    let fixture;
-    let comp;
+    let fixture: ComponentFixture<TestComponent>;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgxPermissionsModule.forRoot()]});
 
-        fixture = TestBed.createComponent(TestComp);
-        comp = fixture.componentInstance;
+        fixture = TestBed.createComponent(TestComponent);
 
-        rolesService = fixture.debugElement.injector.get(NgxRolesService);
         permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
         configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
-
     });
 
     describe('Given user does have permissions', () => {
@@ -55,37 +49,31 @@ describe('Ngx permissions Except with default strategy and with else block then 
             expect(content2.innerHTML.trim()).toEqual(`elseBlock`);
         }));
     });
-
 });
 
 describe('Ngx permissions Except with default strategy without any blocks', () => {
-    @Component({selector: 'ngx-permissions-test-comp',
+    @Component({
+        selector: 'ngx-permissions-test-comp',
         template: `
             <div *ngxPermissionsExcept="['FAIL_BLOCK'];">
                 FAILED
             </div>
         `
-
     })
-    class TestComp {
+    class TestComponent {
         data: any;
     }
 
-    let rolesService;
-    let permissionsService;
+    let permissionsService: NgxPermissionsService;
     let configurationService: NgxPermissionsConfigurationService;
-    let fixture;
-    let comp;
+    let fixture: ComponentFixture<TestComponent>;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgxPermissionsModule.forRoot()]});
 
-        fixture = TestBed.createComponent(TestComp);
-        comp = fixture.componentInstance;
+        fixture = TestBed.createComponent(TestComponent);
 
-        rolesService = fixture.debugElement.injector.get(NgxRolesService);
         permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
         configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
-
     });
 
     describe('Given user does have permissions', () => {
@@ -106,7 +94,8 @@ describe('Ngx permissions Except with default strategy without any blocks', () =
 
 
 describe('Ngx permissions Except with default strategy and with else block then block ', () => {
-    @Component({selector: 'ngx-permissions-test-comp',
+    @Component({
+        selector: 'ngx-permissions-test-comp',
         template: `
             <div *ngxPermissionsExcept="['FAIL_BLOCK']; else elseBlock; then thenBlock">
                 FAILED
@@ -118,27 +107,21 @@ describe('Ngx permissions Except with default strategy and with else block then 
                 <div>thenBlock</div>
             </ng-template>
         `
-
     })
-    class TestComp {
+    class TestComponent {
         data: any;
     }
 
-    let rolesService;
-    let permissionsService;
+    let permissionsService: NgxPermissionsService;
     let configurationService: NgxPermissionsConfigurationService;
-    let fixture;
-    let comp;
+    let fixture: ComponentFixture<TestComponent>;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgxPermissionsModule.forRoot()]});
 
-        fixture = TestBed.createComponent(TestComp);
-        comp = fixture.componentInstance;
+        fixture = TestBed.createComponent(TestComponent);
 
-        rolesService = fixture.debugElement.injector.get(NgxRolesService);
         permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
         configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
-
     });
 
     describe('Given user does have permissions', () => {
@@ -155,38 +138,33 @@ describe('Ngx permissions Except with default strategy and with else block then 
             expect(content2.innerHTML.trim()).toEqual(`elseBlock`);
         }));
     });
-
 });
 
 describe('Simple ngxPermissionsExcept directive', () => {
-    @Component({selector: 'ngx-permissions-test-comp',
+    @Component({
+        selector: 'ngx-permissions-test-comp',
         template: `
-            <div *ngxPermissionsOnly="['ONLY_PERMISSION'];" (permissionsUnauthorized)="permissionsUnauthorized()">
+            <div *ngxPermissionsOnly="['ONLY_PERMISSION'];">
 
             </div>
         `
-
     })
-    class TestComp {
+    class TestComponent {
         data: any;
     }
 
-    let rolesService;
-    let permissionsService;
-    let configurationService: NgxPermissionsConfigurationService;
-    let fixture;
+    let permissionsService: NgxPermissionsService;
+    let fixture: ComponentFixture<TestComponent>;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgxPermissionsModule.forRoot()]});
 
-        fixture = TestBed.createComponent(TestComp);
+        fixture = TestBed.createComponent(TestComponent);
         comp = fixture.componentInstance;
-        comp.permissionsUnauthorized = () => {};
+        comp.permissionsUnauthorized = () => {
+        };
 
-        rolesService = fixture.debugElement.injector.get(NgxRolesService);
         permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
-        configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
-
     });
 
     describe('Given user does NOT have permissions', () => {
@@ -205,7 +183,8 @@ describe('Simple ngxPermissionsExcept directive', () => {
 });
 
 describe('Ngx permissions Except with default strategy and with else block then block ', () => {
-    @Component({selector: 'ngx-permissions-test-comp',
+    @Component({
+        selector: 'ngx-permissions-test-comp',
         template: `
             <div *ngxPermissionsExcept="['FAIL_BLOCK']; else elseBlock; then thenBlock">
                 FAILED
@@ -217,27 +196,21 @@ describe('Ngx permissions Except with default strategy and with else block then 
                 <div>thenBlock</div>
             </ng-template>
         `
-
     })
-    class TestComp {
+    class TestComponent {
         data: any;
     }
 
-    let rolesService;
-    let permissionsService;
+    let permissionsService: NgxPermissionsService;
     let configurationService: NgxPermissionsConfigurationService;
-    let fixture;
-    let comp;
+    let fixture: ComponentFixture<TestComponent>;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgxPermissionsModule.forRoot()]});
 
-        fixture = TestBed.createComponent(TestComp);
-        comp = fixture.componentInstance;
+        fixture = TestBed.createComponent(TestComponent);
 
-        rolesService = fixture.debugElement.injector.get(NgxRolesService);
         permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
         configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
-
     });
 
     describe('Given user doesnt have permissions', () => {
@@ -254,38 +227,32 @@ describe('Ngx permissions Except with default strategy and with else block then 
             expect(content2.innerHTML.trim()).toEqual(`thenBlock`);
         }));
     });
-
 });
 
 describe('Ngx permissions Except when passing permissions as variable should rerender the page on permissionChange ', () => {
-    @Component({selector: 'ngx-permissions-test-comp',
+    @Component({
+        selector: 'ngx-permissions-test-comp',
         template: `
             <ng-container *ngxPermissionsExcept="permissions">
                 <div>123</div>
             </ng-container>
         `
-
     })
-    class TestComp {
+    class TestComponent {
         data: any;
         permissions = 'EXCEPT';
     }
 
-    let rolesService;
-    let permissionsService;
-    let configurationService: NgxPermissionsConfigurationService;
-    let fixture;
+    let permissionsService: NgxPermissionsService;
+    let fixture: ComponentFixture<TestComponent>;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgxPermissionsModule.forRoot()]});
 
-        fixture = TestBed.createComponent(TestComp);
+        fixture = TestBed.createComponent(TestComponent);
         comp = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(NgxRolesService);
         permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
-        configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
-
     });
 
     describe('Given user doesnt have permissions', () => {
@@ -308,7 +275,6 @@ describe('Ngx permissions Except when passing permissions as variable should rer
 
         }));
     });
-
 });
 
 
@@ -319,28 +285,22 @@ describe('Ngx permissions when chaning variable to undefined  ', () => {
                 <div>123</div>
             </ng-container>
         `
-
     })
-    class TestComp {
+    class TestComponent {
         data: any;
         permissions = 'EXCEPT';
     }
 
-    let rolesService;
-    let permissionsService;
-    let configurationService: NgxPermissionsConfigurationService;
-    let fixture;
-    let comp;
+    let permissionsService: NgxPermissionsService;
+    let fixture: ComponentFixture<TestComponent>;
+    let testComponent: TestComponent;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgxPermissionsModule.forRoot()]});
 
-        fixture = TestBed.createComponent(TestComp);
-        comp = fixture.componentInstance;
+        fixture = TestBed.createComponent(TestComponent);
+        testComponent = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(NgxRolesService);
         permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
-        configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
-
     });
 
     describe('Given user doesnt have permissions', () => {
@@ -355,7 +315,7 @@ describe('Ngx permissions when chaning variable to undefined  ', () => {
             expect(content3).toEqual(null);
 
 
-            comp.permissions = undefined;
+            testComponent.permissions = undefined;
             detectChanges(fixture);
             const content2 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content2).toBeTruthy();
@@ -363,38 +323,32 @@ describe('Ngx permissions when chaning variable to undefined  ', () => {
 
         }));
     });
-
 });
 
 describe('Ngx permissions Only when passing permissions as variable should rerender the page ', () => {
-    @Component({selector: 'ngx-permissions-test-comp',
+    @Component({
+        selector: 'ngx-permissions-test-comp',
         template: `
             <ng-container *ngxPermissionsOnly="permissions">
                 <div>123</div>
             </ng-container>
         `
-
     })
-    class TestComp {
+    class TestComponent {
         data: any;
         permissions = 'ALLOW';
     }
 
-    let rolesService;
-    let permissionsService;
-    let configurationService: NgxPermissionsConfigurationService;
-    let fixture;
-    let comp;
+    let permissionsService: NgxPermissionsService;
+    let fixture: ComponentFixture<TestComponent>;
+    let testComponent: TestComponent;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgxPermissionsModule.forRoot()]});
 
-        fixture = TestBed.createComponent(TestComp);
-        comp = fixture.componentInstance;
+        fixture = TestBed.createComponent(TestComponent);
+        testComponent = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(NgxRolesService);
         permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
-        configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
-
     });
 
     describe('Given user does have permissions', () => {
@@ -409,44 +363,38 @@ describe('Ngx permissions Only when passing permissions as variable should reren
             expect(content2).toBeTruthy();
             expect(content2.innerHTML.trim()).toEqual(`123`);
 
-            comp.permissions = 'DONT_ALLOW';
+            testComponent.permissions = 'DONT_ALLOW';
             detectChanges(fixture);
             const content3 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content3).toEqual(null);
         }));
     });
-
 });
 
 describe('Ngx permissions Only when passing undefined it should show the component ', () => {
-    @Component({selector: 'ngx-permissions-test-comp',
+    @Component({
+        selector: 'ngx-permissions-test-comp',
         template: `
             <ng-container *ngxPermissionsOnly="permissions">
                 <div>123</div>
             </ng-container>
         `
-
     })
-    class TestComp {
+    class TestComponent {
         data: any;
         permissions = 'ALLOW';
     }
 
-    let rolesService;
-    let permissionsService;
-    let configurationService: NgxPermissionsConfigurationService;
-    let fixture;
-    let comp;
+    let permissionsService: NgxPermissionsService;
+    let fixture: ComponentFixture<TestComponent>;
+    let testComponent: TestComponent;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp], imports: [NgxPermissionsModule.forRoot()]});
+        TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgxPermissionsModule.forRoot()]});
 
-        fixture = TestBed.createComponent(TestComp);
-        comp = fixture.componentInstance;
+        fixture = TestBed.createComponent(TestComponent);
+        testComponent = fixture.componentInstance;
 
-        rolesService = fixture.debugElement.injector.get(NgxRolesService);
         permissionsService = fixture.debugElement.injector.get(NgxPermissionsService);
-        configurationService = fixture.debugElement.injector.get(NgxPermissionsConfigurationService);
-
     });
 
     describe('Given user does have permissions', () => {
@@ -460,18 +408,14 @@ describe('Ngx permissions Only when passing undefined it should show the compone
             expect(content3).toEqual(null);
 
 
-            comp.permissions = undefined;
+            testComponent.permissions = undefined;
             detectChanges(fixture);
             const content2 = fixture.debugElement.nativeElement.querySelector('div');
             expect(content2).toBeTruthy();
             expect(content2.innerHTML.trim()).toEqual(`123`);
         }));
     });
-
 });
-
-
-
 
 
 function detectChanges(fixture) {
