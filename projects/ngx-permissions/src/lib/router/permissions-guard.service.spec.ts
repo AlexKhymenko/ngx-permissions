@@ -23,6 +23,7 @@ describe('Permissions guard only', () => {
         spyOn(fakeRouter, 'navigate');
 
         service.addPermission('ADMIN');
+        service.addPermission('ADMIN_CONTEXT', (name, store, context) => context === true);
         permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
     }));
 
@@ -38,6 +39,30 @@ describe('Permissions guard only', () => {
         }};
         (permissionGuard.canActivate(testRoute, {} as RouterStateSnapshot) as any).then((data) => {
             expect(data).toEqual(true);
+        });
+    }));
+
+    it ('should return true when only fulfils, with context', fakeAsync(() => {
+        testRoute = { data: {
+            permissions: {
+                only: 'ADMIN_CONTEXT',
+                context: true
+            }
+        }};
+        (permissionGuard.canActivate(testRoute, {} as RouterStateSnapshot) as any).then((data) => {
+            expect(data).toEqual(true);
+        });
+    }));
+
+    it ('should return false when only doesnt match, with context', fakeAsync(() => {
+        testRoute = { data: {
+            permissions: {
+                only: 'ADMIN_CONTEXT',
+                context: false
+            }
+        }};
+        (permissionGuard.canActivate(testRoute, {} as RouterStateSnapshot) as any).then((data) => {
+            expect(data).toEqual(false);
         });
     }));
 

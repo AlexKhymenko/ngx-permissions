@@ -46,6 +46,8 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges  {
     @Input() ngxPermissionsUnauthorisedStrategy: string | StrategyFunction;
     @Input() ngxPermissionsAuthorisedStrategy: string | StrategyFunction;
 
+    @Input() ngxPermissionsContext: any;
+
     @Output() permissionsAuthorized = new EventEmitter();
     @Output() permissionsUnauthorized = new EventEmitter();
 
@@ -152,7 +154,10 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges  {
 
     private validateOnlyPermissions(): void {
         Promise
-            .all([this.permissionsService.hasPermission(this.ngxPermissionsOnly), this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly)])
+            .all([
+                this.permissionsService.hasPermission(this.ngxPermissionsOnly, this.ngxPermissionsContext),
+                this.rolesService.hasOnlyRoles(this.ngxPermissionsOnly)
+            ])
             .then(([hasPermissions, hasRoles]) => {
                 if (hasPermissions || hasRoles) {
                     this.handleAuthorisedPermission(this.ngxPermissionsOnlyThen || this.ngxPermissionsThen || this.templateRef);

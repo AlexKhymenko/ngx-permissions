@@ -36,13 +36,13 @@ export class NgxPermissionsService {
         this.permissionsSource.next({});
     }
 
-    public hasPermission(permission: string | string[]): Promise<boolean> {
+    public hasPermission(permission: string | string[], context?: any): Promise<boolean> {
         if (!permission || (Array.isArray(permission) && permission.length === 0)) {
             return Promise.resolve(true);
         }
 
         permission = transformStringToArray(permission);
-        return this.hasArrayPermission(permission);
+        return this.hasArrayPermission(permission, context);
     }
 
     public loadPermissions(permissions: string[], validationFunction?: ValidationFn): void {
@@ -95,14 +95,14 @@ export class NgxPermissionsService {
         };
     }
 
-    private hasArrayPermission(permissions: string[]): Promise<boolean> {
+    private hasArrayPermission(permissions: string[], context?: any): Promise<boolean> {
         const promises: Observable<boolean>[] = permissions.map(key => {
             if (this.hasPermissionValidationFunction(key)) {
                 const validationFunction = this.permissionsSource.value[key].validationFunction;
                 const immutableValue = {...this.permissionsSource.value};
 
                 return of(null).pipe(
-                    map(() => validationFunction(key, immutableValue)),
+                    map(() => validationFunction(key, immutableValue, context)),
                     switchMap((promise: Promise<boolean> | boolean): ObservableInput<boolean> => isBoolean(promise) ?
                         of(promise as boolean) : promise as Promise<boolean>),
                     catchError(() => of(false))

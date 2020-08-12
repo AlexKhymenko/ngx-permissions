@@ -168,6 +168,40 @@ describe('Permissions Service', () => {
         // });
     }));
 
+    it ('return true when role permission with context function return true', fakeAsync(() => {
+        expect(Object.keys(localService.getPermissions()).length).toEqual(0);
+        localService.addPermission(PermissionsNamesEnum.ADMIN as any, (name, store, context) => {
+            return context;
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(1);
+        localService.hasPermission('ADMIN', true).then((data) => {
+            expect(data).toEqual(true);
+        });
+
+        localService.addPermission(PermissionsNamesEnum.GUEST as any, (name, store, context) => {
+            return false && context;
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(2);
+        localService.hasPermission('GUEST', true).then((data) => {
+            expect(data).toEqual(false);
+        });
+
+        localService.addPermission('TEST1' as any, (name, store, context) => {
+            return Promise.resolve(context);
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(3);
+        localService.hasPermission('TEST1', true).then((data) => {
+            expect(data).toEqual(true);
+        });
+        localService.addPermission('TEST2' as any, (name, store, context) => {
+            return Promise.resolve(context);
+        });
+        expect(Object.keys(localService.getPermissions()).length).toEqual(4);
+        localService.hasPermission('TEST2', false).then((data) => {
+            expect(data).toEqual(false);
+        });
+    }));
+
     it ('return call function with name and store in array', fakeAsync(() => {
 
         localService.addPermission(['TEST11'] as any, (n, store) => {
