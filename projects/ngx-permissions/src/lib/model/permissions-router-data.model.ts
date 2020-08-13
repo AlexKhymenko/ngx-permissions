@@ -14,6 +14,7 @@ export interface NgxRedirectToNavigationParameters {
 
 export declare type OnlyFn = (route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) => string | string[];
 export declare type ExceptFn = (route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) => string | string[];
+export declare type ContextFn = (route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) => string | string[];
 
 export declare type RedirectTo =
     string

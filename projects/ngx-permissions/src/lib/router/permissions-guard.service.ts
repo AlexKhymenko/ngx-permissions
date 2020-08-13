@@ -21,6 +21,7 @@ import {
     NgxPermissionsRouterData,
     NgxRedirectToNavigationParameters,
     OnlyFn,
+    ContextFn,
     RedirectTo,
     RedirectToFn
 } from '../model/permissions-router-data.model';
@@ -79,9 +80,10 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
         const except = isFunction<ExceptFn>(permissions.except)
             ? permissions.except(route, state)
             : transformStringToArray(permissions.except);
+        const context = isFunction<ContextFn>(permissions.context)
+            ? permissions.context(route, state)
+            : transformStringToArray(permissions.context);
         const redirectTo = permissions.redirectTo;
-        const context = permissions.context;
-
 
         return {
             only,
