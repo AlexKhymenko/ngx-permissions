@@ -7,13 +7,14 @@
     "start": "ng serve",
     "prod": "ng serve --aot --prod",
     "build": "ng build",
-    "build-lib": "ng build ngx-permissions",
+    "build-lib": "ng build ngx-permissions --prod",
     "test": "ng test --preserve-symlinks",
     "test:single": "ng test ngx-permissions --preserve-symlinks --watch=false --codeCoverage=true",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "codecov": "cat coverage/ngx-permissions/lcov.info | codecov",
-    "ivy-build": ".\\node_modules\\.bin\\ivy-ngcc -s .\\dist"
+    "ivy-build": ".\\node_modules\\.bin\\ivy-ngcc -s .\\dist",
+    "pub": "npm run build-lib && cd dist/ngx-permissions && npm publish"
   },
   "dependencies": {
     "@angular/animations": "^10.0.0",
