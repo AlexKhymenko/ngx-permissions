@@ -1,3 +1,7 @@
+## 8.1.0
+Add support for loading roles with permissions at the same time
+Add remove roles with permissions at the same time
+
 ## 7.0.3
 Fix ivy build on different versions (https://github.com/AlexKhymenko/ngx-permissions/issues/112)
 
