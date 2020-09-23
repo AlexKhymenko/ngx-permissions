@@ -183,6 +183,50 @@ describe('Roles Service', () => {
         });
     }));
 
+    it('should add permissions to roles automatically', fakeAsync(() => {
+        localService.addRoleWithPermissions('test', ['one', 'two']);
+        localService.hasOnlyRoles('test').then((data) => {
+            expect(data).toBe(true);
+        });
+    }));
+
+    it('should remove roles and permissions add the same time', fakeAsync(() => {
+        localService.addRoleWithPermissions('test', ['one', 'two']);
+        localService.hasOnlyRoles('test').then((data) => {
+            expect(data).toBe(true);
+        });
+    }));
+
+    it('should remove all permissions and roles', fakeAsync(() => {
+        expect(Object.keys(localService.getRoles()).length).toEqual(0);
+        localService.addRoleWithPermissions(RoleNamesEnum.ADMIN as any, ['edit', 'remove']);
+        localService.addRoleWithPermissions(RoleNamesEnum.GUEST as any, ['edit1', 'remove2']);
+        expect(Object.keys(localService.getRoles()).length).toEqual(2);
+        expect(Object.keys(permissionsService.getPermissions()).length).toEqual(4);
+        localService.flushRolesAndPermissions();
+        expect(Object.keys(localService.getRoles()).length).toEqual(0);
+        expect(Object.keys(permissionsService.getPermissions()).length).toEqual(0);
+    }));
+
+
+    it('should add multiple roles with permissions', fakeAsync(() => {
+        expect(Object.keys(localService.getRoles()).length).toEqual(0);
+        localService.addRolesWithPermissions({
+            ADMIN: ['Nice'],
+            GUEST: ['Awesome', 'Another awesome']
+        });
+
+        expect(Object.keys(localService.getRoles()).length).toEqual(2);
+        expect(localService.getRoles()).toEqual(
+            {
+                ADMIN: {name: 'ADMIN', validationFunction: ['Nice']},
+                GUEST: {name: 'GUEST', validationFunction: ['Awesome', 'Another awesome']}
+            });
+
+        expect(Object.keys(localService.getRoles()).length).toEqual(2);
+        expect(Object.keys(permissionsService.getPermissions()).length).toEqual(3);
+    }));
+
     xit('maybe add functionality when function returns array', fakeAsync(() => {
         localService.addRole('test', () => ['nice']);
         localService.hasOnlyRoles(['nice']).then((data) => {

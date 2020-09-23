@@ -1,6 +1,6 @@
 {
   "name": "application",
-  "version": "8.0.0",
+  "version": "8.1.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -51,6 +51,6 @@
     "ts-node": "~8.3.0",
     "tslint": "~5.18.0",
     "typescript": "3.9.6",
-    "codecov": "~3.6.5"
+    "codecov": "~3.7.1"
   }
 }
