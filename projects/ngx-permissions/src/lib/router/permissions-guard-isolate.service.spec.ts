@@ -218,7 +218,7 @@ class RootRolesComponent {
 class ParentLazyRolesLoadedComponent {
 }
 
-function getLazyRolesLoadedModule(importedModule: ModuleWithProviders) {
+function getLazyRolesLoadedModule(importedModule: ModuleWithProviders<any>) {
     @Component({selector: 'ngx-permissions-lazy', template: 'lazy-loaded-child'})
     class ChildLazyLoadedComponent {
         constructor(public permissions: NgxRolesService) {

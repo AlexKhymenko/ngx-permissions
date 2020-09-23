@@ -10,7 +10,7 @@ Permission and roles based access control for your angular(angular 2,4,5,6,7,8+)
 [![npm version](https://badge.fury.io/js/ngx-permissions.svg)](https://badge.fury.io/js/ngx-permissions)
 
 ## Documentation and examples
-
+Documentation here is outdated please visit [wiki-page](https://github.com/AlexKhymenko/ngx-permissions/wiki).
 To see better structured documentation go to [wiki-page](https://github.com/AlexKhymenko/ngx-permissions/wiki).  
 In `one month` the detailed functionality description will be available only on wiki page.
 

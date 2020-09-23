@@ -39,14 +39,30 @@ export class NgxRolesService {
         this.rolesSource.next(roles);
     }
 
+    public addRoleWithPermissions(name: string, permissions: string[]) {
+        this.permissionsService.addPermission(permissions);
+        this.addRole(name, permissions);
+    }
+
     public addRoles(rolesObj: { [name: string]: ValidationFn | string[] }) {
         Object.keys(rolesObj).forEach((key, index) => {
             this.addRole(key, rolesObj[key]);
         });
     }
 
+    public addRolesWithPermissions(rolesObj: { [name: string]: string[] }) {
+        Object.keys(rolesObj).forEach((key, index) => {
+            this.addRoleWithPermissions(key, rolesObj[key]);
+        });
+    }
+
     public flushRoles() {
         this.rolesSource.next({});
+    }
+
+    public flushRolesAndPermissions() {
+        this.flushRoles();
+        this.permissionsService.flushPermissions();
     }
 
     public removeRole(roleName: string) {
