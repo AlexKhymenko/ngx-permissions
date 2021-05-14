@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LazyRolesAsyncTestComponent } from './lazy-roles-async-test.component';
 
@@ -6,7 +6,7 @@ xdescribe('LazyRolesAsyncTestComponent', () => {
   let component: LazyRolesAsyncTestComponent;
   let fixture: ComponentFixture<LazyRolesAsyncTestComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [LazyRolesAsyncTestComponent]
     })
