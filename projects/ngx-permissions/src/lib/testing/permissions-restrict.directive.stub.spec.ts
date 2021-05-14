@@ -10,15 +10,15 @@ describe('Permissions restrict stub testing only original template', () => {
                 <div>123</div>
             </ng-template>`
     })
-    class TestComp {
+    class TestComponent {
         data: any;
     }
 
     let fixture: any;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp, NgxPermissionsRestrictStubDirective]});
-        fixture = TestBed.createComponent(TestComp);
+        TestBed.configureTestingModule({declarations: [TestComponent, NgxPermissionsRestrictStubDirective]});
+        fixture = TestBed.createComponent(TestComponent);
         comp = fixture.componentInstance;
     });
 
