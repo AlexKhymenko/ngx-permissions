@@ -1,11 +1,11 @@
-import { NgxPermissionsService } from '../service/permissions.service';
+import {NgxPermissionsService} from '../service/permissions.service';
 import {Component, ModuleWithProviders, NgModule, NgModuleFactoryLoader} from '@angular/core';
-import { Route, Router, RouterModule } from '@angular/router';
-import { Location } from '@angular/common';
-import { ComponentFixture, fakeAsync, getTestBed, inject, TestBed, tick } from '@angular/core/testing';
-import { RouterTestingModule, SpyNgModuleFactoryLoader } from '@angular/router/testing';
-import { NgxPermissionsModule } from '../index';
-import { NgxRolesService } from '../service/roles.service';
+import {Route, Router, RouterModule} from '@angular/router';
+import {Location} from '@angular/common';
+import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
+import {RouterTestingModule, SpyNgModuleFactoryLoader} from '@angular/router/testing';
+import {NgxPermissionsModule} from '../index';
+import {NgxRolesService} from '../service/roles.service';
 
 @Component({
     selector: 'ngx-permissions-root',
@@ -86,8 +86,7 @@ describe('module', () => {
             loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootComponent);
-            const injector = getTestBed();
-            const permissionsService: NgxPermissionsService = injector.get(NgxPermissionsService);
+            const permissionsService: NgxPermissionsService = TestBed.inject(NgxPermissionsService);
 
             permissionsService.hasPermission('ADMIN').then((data) => {
                 expect(data).toBe(false);
@@ -116,8 +115,7 @@ describe('module', () => {
             loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootComponent);
-            const injector = getTestBed();
-            const permissionsService: NgxPermissionsService = injector.get(NgxPermissionsService);
+            const permissionsService: NgxPermissionsService = TestBed.inject(NgxPermissionsService);
 
             permissionsService.hasPermission('ADMIN').then((data) => {
                 expect(data).toBe(false);
@@ -146,8 +144,7 @@ describe('module', () => {
             loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootComponent);
-            const injector = getTestBed();
-            const permissionsService = injector.get(NgxPermissionsService);
+            const permissionsService = TestBed.inject(NgxPermissionsService);
 
             permissionsService.hasPermission('ADMIN').then((data) => {
                 expect(data).toBe(false);
@@ -164,7 +161,8 @@ describe('module', () => {
             // the constructor of the ChildLazyLoadedComponent didn't overwrote the "ADMIN" key of the root NgxPermissionsService
             permissionsService.hasPermission('ADMIN').then((data) => {
                 expect(data).toBe(false);
-            });        }))
+            });
+        }))
     );
 
     it('should create 2 instances of the service when lazy loaded using forChild and isolate true', fakeAsync(inject(
@@ -174,8 +172,7 @@ describe('module', () => {
             loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootComponent);
-            const injector = getTestBed();
-            const permissionsService = injector.get(NgxPermissionsService);
+            const permissionsService = TestBed.inject(NgxPermissionsService);
 
             permissionsService.hasPermission('ADMIN').then((data) => {
                 expect(data).toBe(false);
@@ -264,8 +261,7 @@ describe('Role module', () => {
             loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootRolesComponent);
-            const injector = getTestBed();
-            const rolesService: NgxRolesService = injector.get(NgxRolesService);
+            const rolesService: NgxRolesService = TestBed.inject(NgxRolesService);
 
             rolesService.hasOnlyRoles('ADMIN').then((data) => {
                 expect(data).toBe(false);
@@ -294,8 +290,7 @@ describe('Role module', () => {
             loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootRolesComponent);
-            const injector = getTestBed();
-            const rolesService = injector.get(NgxRolesService);
+            const rolesService = TestBed.inject(NgxRolesService);
 
             rolesService.hasOnlyRoles('ADMIN').then((data) => {
                 expect(data).toBe(false);
@@ -312,7 +307,8 @@ describe('Role module', () => {
             // the constructor of the ChildLazyLoadedComponent didn't overwrote the "ADMIN" key of the root PermissionsService
             rolesService.hasOnlyRoles('ADMIN').then((data) => {
                 expect(data).toBe(false);
-            });        }))
+            });
+        }))
     );
 
     it('should create 2 instances of the service when lazy loaded using forChild and isolate true', fakeAsync(inject(
@@ -322,8 +318,7 @@ describe('Role module', () => {
             loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootRolesComponent);
-            const injector = getTestBed();
-            const rolesService = injector.get(NgxRolesService);
+            const rolesService = TestBed.inject(NgxRolesService);
 
             rolesService.hasOnlyRoles('ADMIN').then((data) => {
                 expect(data).toBe(false);
