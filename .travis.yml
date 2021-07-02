@@ -1,7 +1,7 @@
 language: node_js
 sudo: true
 node_js:
-- '14.17.2'
+- '14.17.1'
 
 script: npm run test:single
 
