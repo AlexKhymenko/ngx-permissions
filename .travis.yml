@@ -1,12 +1,12 @@
 language: node_js
 sudo: true
 node_js:
-- '12.14.0'
+- '14.17.0'
 
 script: npm run test:single
 
 addons:
-  chrome: stable
+  chrome: beta
 
 
 before_script:
