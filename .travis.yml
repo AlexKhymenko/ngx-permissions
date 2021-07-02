@@ -8,11 +8,11 @@ script: npm run test:single
 addons:
   chrome: stable
 
+before_install:
+    - # start your web application and listen on `localhost`
+    - "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --headless --disable-gpu --remote-debugging-port=9222 http://localhost &"
+    ⋮
 
-before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3
 
 notifications:
   email: false
