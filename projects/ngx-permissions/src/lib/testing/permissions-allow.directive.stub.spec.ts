@@ -10,15 +10,15 @@ describe('Permissions stub testing only original template', () => {
                 <div>123</div>
             </ng-template>`
     })
-    class TestComp {
+    class TestComponent {
         data: any;
     }
 
     let fixture: any;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp, NgxPermissionsAllowStubDirective]});
-        fixture = TestBed.createComponent(TestComp);
+        TestBed.configureTestingModule({declarations: [TestComponent, NgxPermissionsAllowStubDirective]});
+        fixture = TestBed.createComponent(TestComponent);
         comp = fixture.componentInstance;
     });
 
@@ -39,15 +39,15 @@ describe('Permissions stub testing except template', () => {
                 <div>123</div>
             </ng-template>`
     })
-    class TestComp {
+    class TestComponent {
         data: any;
     }
 
     let fixture: any;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp, NgxPermissionsAllowStubDirective]});
-        fixture = TestBed.createComponent(TestComp);
+        TestBed.configureTestingModule({declarations: [TestComponent, NgxPermissionsAllowStubDirective]});
+        fixture = TestBed.createComponent(TestComponent);
         comp = fixture.componentInstance;
     });
 
@@ -75,15 +75,15 @@ describe('Permissions stub testing only then template', () => {
             </ng-template>
         `
     })
-    class TestComp {
+    class TestComponent {
         data: any;
     }
 
     let fixture: any;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp, NgxPermissionsAllowStubDirective]});
-        fixture = TestBed.createComponent(TestComp);
+        TestBed.configureTestingModule({declarations: [TestComponent, NgxPermissionsAllowStubDirective]});
+        fixture = TestBed.createComponent(TestComponent);
         comp = fixture.componentInstance;
     });
 
@@ -111,15 +111,15 @@ describe('Permissions stub testing except then template', () => {
             </ng-template>
         `
     })
-    class TestComp {
+    class TestComponent {
         data: any;
     }
 
     let fixture: any;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComp, NgxPermissionsAllowStubDirective]});
-        fixture = TestBed.createComponent(TestComp);
+        TestBed.configureTestingModule({declarations: [TestComponent, NgxPermissionsAllowStubDirective]});
+        fixture = TestBed.createComponent(TestComponent);
         comp = fixture.componentInstance;
     });
 

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxPermissionsAllowStubDirective } from 'ngx-permissions';
 
 import { IsolateComponent } from './isolate.component';
@@ -7,7 +7,7 @@ describe('IsolateComponent', () => {
   let component: IsolateComponent;
   let fixture: ComponentFixture<IsolateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
         declarations: [IsolateComponent, NgxPermissionsAllowStubDirective],
         imports: []
