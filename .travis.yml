@@ -23,6 +23,8 @@ notifications:
 after_success:
 - npm run codecov
 
+services:
+    - xvfb
 
 dist: xenial
 
