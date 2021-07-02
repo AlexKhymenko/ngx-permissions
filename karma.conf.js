@@ -35,8 +35,8 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/ngx-permissions'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
+        { type: 'lcov' },
+
       ]
     },
     reporters: ['progress', 'kjhtml'],
