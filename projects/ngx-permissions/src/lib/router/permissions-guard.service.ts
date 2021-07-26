@@ -27,6 +27,7 @@ import {
 import { NgxPermissionsService } from '../service/permissions.service';
 import { NgxRolesService } from '../service/roles.service';
 import { isFunction, isPlainObject, transformStringToArray } from '../utils/utils';
+import {NgxPermissionsConfigurationService} from "../service/configuration.service";
 
 export interface NgxPermissionsData {
     only?: string | string[];
@@ -37,7 +38,10 @@ export interface NgxPermissionsData {
 @Injectable()
 export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChild {
 
-    constructor(private permissionsService: NgxPermissionsService, private rolesService: NgxRolesService, private router: Router) {
+    constructor(private permissionsService: NgxPermissionsService,
+                private rolesService: NgxRolesService,
+                private router: Router,
+                private configurationService: NgxPermissionsConfigurationService,) {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
@@ -276,7 +280,8 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
             if (isFunction<RedirectToFn>(permissions.redirectTo)) {
                 this.redirectToAnotherRoute(permissions.redirectTo, route, state, failedPermission);
             } else {
-                this.redirectToAnotherRoute(permissions.redirectTo[DEFAULT_REDIRECT_KEY], route, state, failedPermission);
+                const defaultRedirection = permissions.redirectTo[DEFAULT_REDIRECT_KEY] || this.configurationService.defaultRedirectTo
+                this.redirectToAnotherRoute(defaultRedirection, route, state, failedPermission);
             }
         }
     }

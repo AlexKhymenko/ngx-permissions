@@ -1,7 +1,7 @@
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgxPermissionsModule } from '../index';
+import {NgxPermissionsConfigurationService, NgxPermissionsModule} from '../index';
 import { NgxPermissionsService } from '../service/permissions.service';
 import { NgxRolesService } from '../service/roles.service';
 import { NgxPermissionsGuard } from './permissions-guard.service';
@@ -16,7 +16,7 @@ describe('Permissions guard only', () => {
             imports: [NgxPermissionsModule.forRoot()]
         });
     });
-    beforeEach(inject([NgxPermissionsService, NgxRolesService], (service: NgxPermissionsService, rolesService: NgxRolesService) => {
+    beforeEach(inject([NgxPermissionsService, NgxRolesService, NgxPermissionsConfigurationService], (service: NgxPermissionsService, rolesService: NgxRolesService, configurationService: NgxPermissionsConfigurationService) => {
         fakeRouter = {
             navigate: () => {
             }
@@ -24,7 +24,7 @@ describe('Permissions guard only', () => {
         spyOn(fakeRouter, 'navigate');
 
         service.addPermission('ADMIN');
-        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
+        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router, configurationService);
     }));
 
     it('should create an instance', () => {
@@ -124,7 +124,7 @@ describe('Permissions guard Except', () => {
             imports: [NgxPermissionsModule.forRoot()]
         });
     });
-    beforeEach(inject([NgxPermissionsService, NgxRolesService], (service: NgxPermissionsService, rolesService: NgxRolesService) => {
+    beforeEach(inject([NgxPermissionsService, NgxRolesService, NgxPermissionsConfigurationService], (service: NgxPermissionsService, rolesService: NgxRolesService, configurationService: NgxPermissionsConfigurationService) => {
         fakeRouter = {
             navigate: () => {
             }
@@ -132,7 +132,7 @@ describe('Permissions guard Except', () => {
         spyOn(fakeRouter, 'navigate');
 
         service.addPermission('MANAGER');
-        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
+        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router, configurationService);
     }));
 
     it('should create an instance', () => {
@@ -234,7 +234,7 @@ describe('Permissions guard Except and only together', () => {
             imports: [NgxPermissionsModule.forRoot()]
         });
     });
-    beforeEach(inject([NgxPermissionsService, NgxRolesService], (service: NgxPermissionsService, rolesService: NgxRolesService) => {
+    beforeEach(inject([NgxPermissionsService, NgxRolesService, NgxPermissionsConfigurationService], (service: NgxPermissionsService, rolesService: NgxRolesService, configurationService: NgxPermissionsConfigurationService) => {
         fakeRouter = {
             navigate: () => {
             }
@@ -242,7 +242,7 @@ describe('Permissions guard Except and only together', () => {
         spyOn(fakeRouter, 'navigate');
 
         service.addPermission('MANAGER');
-        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
+        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router, configurationService);
     }));
 
     it('should create an instance', () => {
@@ -351,8 +351,8 @@ describe('Permissions guard use only dynamically', () => {
         });
     });
     beforeEach(inject(
-        [NgxPermissionsService, NgxRolesService],
-        (service: NgxPermissionsService, rolesService: NgxRolesService, router: Router) => {
+        [NgxPermissionsService, NgxRolesService, NgxPermissionsConfigurationService],
+        (service: NgxPermissionsService, rolesService: NgxRolesService, configurationService: NgxPermissionsConfigurationService, router: Router) => {
             fakeRouter = {
                 navigate: () => {
                 }
@@ -361,7 +361,7 @@ describe('Permissions guard use only dynamically', () => {
             service.addPermission('MANAGER');
             // fakeRouter = router;
             spyOn(fakeRouter, 'navigate');
-            permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
+            permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router, configurationService);
         }));
 
     it('should create an instance', () => {
@@ -498,8 +498,8 @@ describe('Permissions guard test redirectTo path parameters dynamically', () => 
         });
     });
     beforeEach(inject(
-        [NgxPermissionsService, NgxRolesService],
-        (service: NgxPermissionsService, rolesService: NgxRolesService, router: Router) => {
+        [NgxPermissionsService, NgxRolesService, NgxPermissionsConfigurationService],
+        (service: NgxPermissionsService, rolesService: NgxRolesService, configurationService: NgxPermissionsConfigurationService, router: Router) => {
             fakeRouter = {
                 navigate: () => {
                 }
@@ -508,7 +508,7 @@ describe('Permissions guard test redirectTo path parameters dynamically', () => 
             service.addPermission('MANAGER');
             // fakeRouter = router;
             spyOn(fakeRouter, 'navigate');
-            permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
+            permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router, configurationService);
         }));
 
     it('should create an instance', () => {
@@ -603,7 +603,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
             imports: [NgxPermissionsModule.forRoot()]
         });
     });
-    beforeEach(inject([NgxPermissionsService, NgxRolesService], (service: NgxPermissionsService, rolesService: NgxRolesService) => {
+    beforeEach(inject([NgxPermissionsService, NgxRolesService, NgxPermissionsConfigurationService], (service: NgxPermissionsService, rolesService: NgxRolesService, configurationService: NgxPermissionsConfigurationService) => {
         fakeRouter = {
             navigate: () => {
             }
@@ -613,7 +613,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule', () =
         fakeService = service;
         // fakeRouter = router;
         spyOn(fakeRouter, 'navigate');
-        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
+        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router, configurationService);
     }));
 
     it('should create an instance', () => {
@@ -904,7 +904,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
             imports: [NgxPermissionsModule.forRoot()]
         });
     });
-    beforeEach(inject([NgxPermissionsService, NgxRolesService], (service: NgxPermissionsService, rolesService: NgxRolesService) => {
+    beforeEach(inject([NgxPermissionsService, NgxRolesService, NgxPermissionsConfigurationService], (service: NgxPermissionsService, rolesService: NgxRolesService, configurationService: NgxPermissionsConfigurationService) => {
         fakeRouter = {
             navigate: () => {
             }
@@ -914,7 +914,7 @@ describe('Permissions guard test redirectTo path multiple redirectionRule permis
         fakeService = service;
         // fakeRouter = router;
         spyOn(fakeRouter, 'navigate');
-        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
+        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router, configurationService);
     }));
 
     it('should create an instance', () => {
@@ -1088,7 +1088,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
             imports: [NgxPermissionsModule.forRoot()]
         });
     });
-    beforeEach(inject([NgxPermissionsService, NgxRolesService], (service: NgxPermissionsService, rolesService: NgxRolesService) => {
+    beforeEach(inject([NgxPermissionsService, NgxRolesService, NgxPermissionsConfigurationService], (service: NgxPermissionsService, rolesService: NgxRolesService, configurationService: NgxPermissionsConfigurationService) => {
         fakeRouter = {
             navigate: () => {
             }
@@ -1098,7 +1098,7 @@ describe('Permissions guard test redirectTo path dynamic redirectionRule permiss
         fakeService = service;
         // fakeRouter = router;
         spyOn(fakeRouter, 'navigate');
-        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
+        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router, configurationService);
     }));
 
     it('should create an instance', () => {
@@ -1319,7 +1319,7 @@ describe('Permissions guard test redirectTo as function', () => {
             imports: [NgxPermissionsModule.forRoot()]
         });
     });
-    beforeEach(inject([NgxPermissionsService, NgxRolesService], (service: NgxPermissionsService, rolesService: NgxRolesService) => {
+    beforeEach(inject([NgxPermissionsService, NgxRolesService, NgxPermissionsConfigurationService], (service: NgxPermissionsService, rolesService: NgxRolesService, configurationService: NgxPermissionsConfigurationService) => {
         fakeRouter = {
             navigate: () => {
             }
@@ -1329,7 +1329,7 @@ describe('Permissions guard test redirectTo as function', () => {
         fakeService = service;
         // fakeRouter = router;
         spyOn(fakeRouter, 'navigate');
-        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router);
+        permissionGuard = new NgxPermissionsGuard(service, rolesService, fakeRouter as Router, configurationService);
     }));
 
     it('should create an instance', () => {
