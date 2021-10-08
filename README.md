@@ -18,6 +18,8 @@ In `one month` the detailed functionality description will be available only on 
 ## Demo
 You can test library in [Plunker](https://plnkr.co/edit/n6Wa6hXg0JzI6e050wBt?p=preview)
 
+## YouTube
+I'm working on tutorial for the library will add more video with time. This is my first videos [YouTube](https://www.youtube.com/playlist?list=PLHw3vRAUIqUOLqBpoR-eYvZxiPGPh18y5)
 
 ## Support
 If You have chance please support on patreon for more open source ideas  [![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DalexKhymenko%26type%3Dpatrons&style=flat)](https://patreon.com/alexKhymenko)
