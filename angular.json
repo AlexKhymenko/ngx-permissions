@@ -126,7 +126,7 @@
               "tsConfig": "projects/ngx-permissions/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/lib/tsconfig.lib.json"
+              "tsConfig": "projects/ngx-permissions/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"

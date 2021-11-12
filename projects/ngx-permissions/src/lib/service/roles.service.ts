@@ -128,7 +128,7 @@ export class NgxRolesService {
         return from(roleNames).pipe(
             mergeMap((key) => {
                 if (roles[key] && Array.isArray(roles[key].validationFunction)) {
-                    return from(roles[key].validationFunction).pipe(
+                    return from(<string[]>roles[key].validationFunction).pipe(
                         mergeMap((permission) => this.permissionsService.hasPermission(permission)),
                         every(hasPermission => hasPermission === true)
                     );
