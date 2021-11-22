@@ -1,9 +1,9 @@
 import {NgxPermissionsService} from '../service/permissions.service';
-import {Component, ModuleWithProviders, NgModule, NgModuleFactoryLoader} from '@angular/core';
+import {Component, ModuleWithProviders, NgModule} from '@angular/core';
 import {Route, Router, RouterModule} from '@angular/router';
 import {Location} from '@angular/common';
 import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
-import {RouterTestingModule, SpyNgModuleFactoryLoader} from '@angular/router/testing';
+import {RouterTestingModule} from '@angular/router/testing';
 import {NgxPermissionsModule} from '../index';
 import {NgxRolesService} from '../service/roles.service';
 
@@ -80,10 +80,9 @@ describe('module', () => {
     });
 
     it('should work when lazy loaded using forChild', fakeAsync(inject(
-        [Router, Location, NgModuleFactoryLoader],
-        (router: Router, location: Location, loader: SpyNgModuleFactoryLoader) => {
+        [Router, Location],
+        (router: Router, location: Location) => {
             const LoadedModule = getLazyLoadedModule(NgxPermissionsModule.forChild());
-            loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootComponent);
             const permissionsService: NgxPermissionsService = TestBed.inject(NgxPermissionsService);
@@ -92,7 +91,7 @@ describe('module', () => {
                 expect(data).toBe(false);
             });
 
-            router.resetConfig([{path: 'lazy', loadChildren: 'expected'}]);
+            router.resetConfig([{path: 'lazy', loadChildren: () => Promise.resolve(LoadedModule)}]);
 
             router.navigateByUrl('/lazy/loaded/child');
             advance(fixture);
@@ -109,10 +108,9 @@ describe('module', () => {
     );
 
     it('should work when loaded using just Module', fakeAsync(inject(
-        [Router, Location, NgModuleFactoryLoader],
-        (router: Router, location: Location, loader: SpyNgModuleFactoryLoader) => {
+        [Router, Location],
+        (router: Router, location: Location) => {
             const LoadedModule = getLazyLoadedModule(NgxPermissionsModule);
-            loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootComponent);
             const permissionsService: NgxPermissionsService = TestBed.inject(NgxPermissionsService);
@@ -121,7 +119,7 @@ describe('module', () => {
                 expect(data).toBe(false);
             });
 
-            router.resetConfig([{path: 'lazy', loadChildren: 'expected'}]);
+            router.resetConfig([{path: 'lazy', loadChildren: () => Promise.resolve(LoadedModule)}]);
 
             router.navigateByUrl('/lazy/loaded/child');
             advance(fixture);
@@ -138,10 +136,9 @@ describe('module', () => {
     );
 
     it('should create 2 instances of the service when lazy loaded using forRoot', fakeAsync(inject(
-        [Router, Location, NgModuleFactoryLoader],
-        (router: Router, location: Location, loader: SpyNgModuleFactoryLoader) => {
+        [Router, Location],
+        (router: Router, location: Location) => {
             const LoadedModule = getLazyLoadedModule(NgxPermissionsModule.forRoot());
-            loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootComponent);
             const permissionsService = TestBed.inject(NgxPermissionsService);
@@ -149,7 +146,7 @@ describe('module', () => {
             permissionsService.hasPermission('ADMIN').then((data) => {
                 expect(data).toBe(false);
             });
-            router.resetConfig([{path: 'lazy', loadChildren: 'expected'}]);
+            router.resetConfig([{path: 'lazy', loadChildren: () => Promise.resolve(LoadedModule)}]);
 
             router.navigateByUrl('/lazy/loaded/child');
             advance(fixture);
@@ -166,10 +163,9 @@ describe('module', () => {
     );
 
     it('should create 2 instances of the service when lazy loaded using forChild and isolate true', fakeAsync(inject(
-        [Router, Location, NgModuleFactoryLoader],
-        (router: Router, location: Location, loader: SpyNgModuleFactoryLoader) => {
+        [Router, Location],
+        (router: Router, location: Location) => {
             const LoadedModule = getLazyLoadedModule(NgxPermissionsModule.forChild({permissionsIsolate: true}));
-            loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootComponent);
             const permissionsService = TestBed.inject(NgxPermissionsService);
@@ -177,7 +173,7 @@ describe('module', () => {
             permissionsService.hasPermission('ADMIN').then((data) => {
                 expect(data).toBe(false);
             });
-            router.resetConfig([{path: 'lazy', loadChildren: 'expected'}]);
+            router.resetConfig([{path: 'lazy', loadChildren: () => Promise.resolve(LoadedModule)}]);
 
             router.navigateByUrl('/lazy/loaded/child');
             advance(fixture);
@@ -255,10 +251,9 @@ describe('Role module', () => {
     });
 
     it('should work when lazy loaded using forChild', fakeAsync(inject(
-        [Router, Location, NgModuleFactoryLoader],
-        (router: Router, location: Location, loader: SpyNgModuleFactoryLoader) => {
+        [Router, Location],
+        (router: Router, location: Location) => {
             const LoadedModule = getLazyRolesLoadedModule(NgxPermissionsModule.forChild());
-            loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootRolesComponent);
             const rolesService: NgxRolesService = TestBed.inject(NgxRolesService);
@@ -267,7 +262,7 @@ describe('Role module', () => {
                 expect(data).toBe(false);
             });
 
-            router.resetConfig([{path: 'lazy', loadChildren: 'expected'}]);
+            router.resetConfig([{path: 'lazy', loadChildren: () => Promise.resolve(LoadedModule)}]);
 
             router.navigateByUrl('/lazy/loaded/child');
             advance(fixture);
@@ -284,10 +279,9 @@ describe('Role module', () => {
     );
 
     it('should create 2 instances of the service when lazy loaded using forRoot', fakeAsync(inject(
-        [Router, Location, NgModuleFactoryLoader],
-        (router: Router, location: Location, loader: SpyNgModuleFactoryLoader) => {
+        [Router, Location],
+        (router: Router, location: Location) => {
             const LoadedModule = getLazyRolesLoadedModule(NgxPermissionsModule.forRoot());
-            loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootRolesComponent);
             const rolesService = TestBed.inject(NgxRolesService);
@@ -295,7 +289,7 @@ describe('Role module', () => {
             rolesService.hasOnlyRoles('ADMIN').then((data) => {
                 expect(data).toBe(false);
             });
-            router.resetConfig([{path: 'lazy', loadChildren: 'expected'}]);
+            router.resetConfig([{path: 'lazy', loadChildren: () => Promise.resolve(LoadedModule)}]);
 
             router.navigateByUrl('/lazy/loaded/child');
             advance(fixture);
@@ -312,10 +306,9 @@ describe('Role module', () => {
     );
 
     it('should create 2 instances of the service when lazy loaded using forChild and isolate true', fakeAsync(inject(
-        [Router, Location, NgModuleFactoryLoader],
-        (router: Router, location: Location, loader: SpyNgModuleFactoryLoader) => {
+        [Router, Location],
+        (router: Router, location: Location) => {
             const LoadedModule = getLazyRolesLoadedModule(NgxPermissionsModule.forChild({rolesIsolate: true}));
-            loader.stubbedModules = {expected: LoadedModule};
 
             const fixture = createRoot(router, RootRolesComponent);
             const rolesService = TestBed.inject(NgxRolesService);
@@ -323,7 +316,7 @@ describe('Role module', () => {
             rolesService.hasOnlyRoles('ADMIN').then((data) => {
                 expect(data).toBe(false);
             });
-            router.resetConfig([{path: 'lazy', loadChildren: 'expected'}]);
+            router.resetConfig([{path: 'lazy', loadChildren: () => Promise.resolve(LoadedModule)}]);
 
             router.navigateByUrl('/lazy/loaded/child');
             advance(fixture);
