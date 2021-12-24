@@ -24,6 +24,8 @@ I'm working on tutorial for the library will add more video with time. This is m
 ## Support
 If You have chance please support on patreon for more open source ideas  [![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DalexKhymenko%26type%3Dpatrons&style=flat)](https://patreon.com/alexKhymenko)
 
+Or on buy me a coffee [![BuyMeACoffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/alexKhymenko)
+
 ## Table of contents
 
 Some functionality is missing visit [wiki-page](https://github.com/AlexKhymenko/ngx-permissions/wiki)
