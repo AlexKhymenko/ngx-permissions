@@ -39,6 +39,7 @@ Some functionality is missing visit [wiki-page](https://github.com/AlexKhymenko/
 - [Development](#development)
 - [License](#license)
 
+### Library Version 13 minimal angular 13.
 ### With version 7 minimal angular version 8.0
 ### With version 5 minimal rxjs dependency 6.0
 ### With version 4 minimal rxjs dependency 5.5
