@@ -2,6 +2,11 @@
 
 Permission and roles based access control for your angular(angular 2,4,5,6,7,8+) applications(AOT, lazy modules compatible)
 
+## Disclaimer
+```diff
+- This library is prohibited to use with russians projects
+```
+
 
 ##
 
