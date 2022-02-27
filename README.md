@@ -4,7 +4,7 @@ Permission and roles based access control for your angular(angular 2,4,5,6,7,8+)
 
 ## Disclaimer
 ```diff
-- This library is prohibited to use with russians projects
+- This library is PROHIBITED to use with russians projects or russians
 ```
 
 
