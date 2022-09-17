@@ -37,7 +37,7 @@ describe('Permissions Service', () => {
         expect(localService.getPermissions()[PermissionsNamesEnum.ADMIN]).toBeFalsy();
     });
 
-    it ('should remove all permisssions from object', () => {
+    it ('should remove all permissions from object', () => {
         expect(Object.keys(localService.getPermissions()).length).toEqual(0);
         localService.addPermission(PermissionsNamesEnum.ADMIN as any, );
         localService.addPermission(PermissionsNamesEnum.GUEST as any, );

@@ -53,7 +53,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
     }
 
     private hasPermissions(route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
-        const routeDataPermissions = !!route && route.data ? (route.data.permissions as NgxPermissionsRouterData) : {};
+        const routeDataPermissions = !!route && route.data ? (route.data['permissions'] as NgxPermissionsRouterData) : {};
         const permissions = this.transformPermission(routeDataPermissions, route, state);
 
         if (this.isParameterAvailable(permissions.except)) {
