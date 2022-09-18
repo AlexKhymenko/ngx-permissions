@@ -1,6 +1,6 @@
 {
   "name": "ngx-permissions",
-  "version": "13.0.1",
+  "version": "14.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/AlexKhymenko/ngx-permissions"

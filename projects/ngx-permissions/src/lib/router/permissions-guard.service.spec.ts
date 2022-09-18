@@ -354,7 +354,7 @@ describe('Permissions guard use only dynamically', () => {
         testRoute = { data: {
             permissions: {
                 only: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
-                   if (route.data.path.includes(44)) {
+                   if (route.data['path'].includes(44)) {
                        return ['MANAGER'];
                    } else {
                        return 'notManager';
@@ -372,7 +372,7 @@ describe('Permissions guard use only dynamically', () => {
         testRoute = { data: {
             permissions: {
                 except: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
-                    if (route.data.path.includes('doesntInclude')) {
+                    if (route.data['path'].includes('doesntInclude')) {
                         return ['MANAGER'];
                     } else {
                         return 'notManager';
@@ -390,14 +390,14 @@ describe('Permissions guard use only dynamically', () => {
         testRoute = { data: {
             permissions: {
                 except: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
-                    if (route.data.path.includes('doesntInclude')) {
+                    if (route.data['path'].includes('doesntInclude')) {
                         return ['MANAGER'];
                     } else {
                         return 'notManager';
                     }
                 },
                 only: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
-                    if (route.data.path.includes('44')) {
+                    if (route.data['path'].includes('44')) {
                         return ['MANAGER'];
                     } else {
                         return 'notManager';
@@ -415,14 +415,14 @@ describe('Permissions guard use only dynamically', () => {
         testRoute = { data: {
             permissions: {
                 except: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
-                    if (route.data.path.includes('doesntInclude')) {
+                    if (route.data['path'].includes('doesntInclude')) {
                         return ['MANAGER'];
                     } else {
                         return 'notManager';
                     }
                 },
                 only: (route: ActivatedRouteSnapshot, awesome: RouterStateSnapshot) => {
-                    if (route.data.path.includes('gg')) {
+                    if (route.data['path'].includes('gg')) {
                         return ['MANAGER'];
                     } else {
                         return 'notManager';

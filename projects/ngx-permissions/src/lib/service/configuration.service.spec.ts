@@ -21,9 +21,9 @@ describe('Configuration Service', () => {
     });
 
     it ('should add configuration function', () => {
-        expect(localService.getAllStrategies().FUNCTION).toBeFalsy();
+        expect(localService.getAllStrategies()['FUNCTION']).toBeFalsy();
         localService.addPermissionStrategy('FUNCTION', () => {});
-        expect(localService.getAllStrategies().FUNCTION).toBeTruthy();
+        expect(localService.getAllStrategies()['FUNCTION']).toBeTruthy();
     });
 
     it ('should retrieve strategy function', () => {

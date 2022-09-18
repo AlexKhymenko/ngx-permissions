@@ -73,11 +73,11 @@ export class NgxRolesService {
         this.rolesSource.next(roles);
     }
 
-    public getRoles() {
+    public getRoles(): NgxRolesObject {
         return this.rolesSource.value;
     }
 
-    public getRole(name: string) {
+    public getRole(name: string): NgxRole | undefined  {
         return this.rolesSource.value[name];
     }
 

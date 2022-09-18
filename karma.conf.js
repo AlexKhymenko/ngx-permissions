@@ -30,13 +30,11 @@ module.exports = function (config) {
               flags: ['--no-sandbox']
           }
       },
-
       coverageReporter: {
       dir: require('path').join(__dirname, './coverage/ngx-permissions'),
       subdir: '.',
       reporters: [
-        { type: 'lcov' },
-
+        { type: 'lcov' }
       ]
     },
     reporters: ['progress', 'kjhtml'],
@@ -44,7 +42,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-      browsers: ['Chrome', 'ChromeHeadless', 'ChromeHeadlessNoSandbox'],
+    browsers: ['Chrome', 'ChromeHeadless', 'ChromeHeadlessNoSandbox'],
     singleRun: false,
     restartOnFileChange: true
   });

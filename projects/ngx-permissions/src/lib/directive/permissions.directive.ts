@@ -71,8 +71,8 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges  {
 
 
     ngOnChanges(changes: SimpleChanges): void {
-        const onlyChanges = changes.ngxPermissionsOnly;
-        const exceptChanges = changes.ngxPermissionsExcept;
+        const onlyChanges = changes['ngxPermissionsOnly'];
+        const exceptChanges = changes['ngxPermissionsExcept'];
         if (onlyChanges || exceptChanges) {
             // Due to bug when you pass empty array
             if (onlyChanges && onlyChanges.firstChange) {

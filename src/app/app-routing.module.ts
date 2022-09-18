@@ -4,7 +4,7 @@ import { NgxPermissionsGuard, NgxPermissionsRouterData } from 'ngx-permissions';
 import { HomeComponent } from './home/home.component';
 
 export function testPermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (route.params.id === 42) {
+    if (route.params['id'] === 42) {
         return ['MANAGER', 'UTILS'];
     } else {
         return 'ADMIN';
