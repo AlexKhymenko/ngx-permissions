@@ -48,10 +48,9 @@
     "url": "https://github.com/AlexKhymenko/ngx-permissions/issues"
   },
   "peerDependencies": {
-      "@angular/core": ">=13 || >16",
-      "@angular/router": ">=13 || >16",
-      "rxjs": ">=7 || >9",
-      "zone.js": ">=0.11.4 || >0.12"
+      "@angular/core": ">=13 || >18",
+      "@angular/router": ">=13 || >18",
+      "rxjs": ">=7 || >11"
   },
   "dependencies": {
     "tslib": "^2.1.0"
