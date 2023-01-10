@@ -2,10 +2,10 @@ import { Directive, EventEmitter, Input, OnInit, Output, TemplateRef, ViewContai
 import { StrategyFunction } from '../service/configuration.service';
 
 @Directive({
-    selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
+    standalone: true,
+    selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]',
 })
 export class NgxPermissionsRestrictStubDirective implements OnInit {
-
     @Input() ngxPermissionsOnly: string | string[];
     @Input() ngxPermissionsOnlyThen: TemplateRef<any>;
     @Input() ngxPermissionsOnlyElse: TemplateRef<any>;
@@ -20,7 +20,9 @@ export class NgxPermissionsRestrictStubDirective implements OnInit {
     @Input() ngxPermissionsOnlyAuthorisedStrategy: string | StrategyFunction;
     @Input() ngxPermissionsOnlyUnauthorisedStrategy: string | StrategyFunction;
 
-    @Input() ngxPermissionsExceptUnauthorisedStrategy: string | StrategyFunction;
+    @Input() ngxPermissionsExceptUnauthorisedStrategy:
+        | string
+        | StrategyFunction;
     @Input() ngxPermissionsExceptAuthorisedStrategy: string | StrategyFunction;
 
     @Input() ngxPermissionsUnauthorisedStrategy: string | StrategyFunction;
@@ -29,23 +31,23 @@ export class NgxPermissionsRestrictStubDirective implements OnInit {
     @Output() permissionsAuthorized = new EventEmitter();
     @Output() permissionsUnauthorized = new EventEmitter();
 
-
     constructor(private viewContainer: ViewContainerRef) {}
-
 
     ngOnInit(): void {
         this.viewContainer.clear();
         if (this.getUnAuthorizedTemplate()) {
-            this.viewContainer.createEmbeddedView(this.getUnAuthorizedTemplate());
+            this.viewContainer.createEmbeddedView(
+                this.getUnAuthorizedTemplate()
+            );
         }
         this.permissionsUnauthorized.emit();
     }
 
-
     private getUnAuthorizedTemplate() {
-        return this.ngxPermissionsOnlyElse ||
+        return (
+            this.ngxPermissionsOnlyElse ||
             this.ngxPermissionsExceptElse ||
-            this.ngxPermissionsElse;
+            this.ngxPermissionsElse
+        );
     }
-
 }

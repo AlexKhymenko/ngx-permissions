@@ -5,10 +5,9 @@ import { NgxPermissionsRestrictStubDirective } from './permissions-restrict.dire
 describe('Permissions restrict stub testing only original template', () => {
     @Component({
         selector: 'ngx-permissions-test-comp',
-        template: `
-            <ng-template [ngxPermissionsOnly]="'ADMIN'">
-                <div>123</div>
-            </ng-template>`
+        template: ` <ng-template [ngxPermissionsOnly]="'ADMIN'">
+            <div>123</div>
+        </ng-template>`,
     })
     class TestComponent {
         data: any;
@@ -17,7 +16,10 @@ describe('Permissions restrict stub testing only original template', () => {
     let fixture: any;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComponent, NgxPermissionsRestrictStubDirective]});
+        TestBed.configureTestingModule({
+            declarations: [TestComponent],
+            imports: [NgxPermissionsRestrictStubDirective],
+        });
         fixture = TestBed.createComponent(TestComponent);
         comp = fixture.componentInstance;
     });
@@ -26,25 +28,25 @@ describe('Permissions restrict stub testing only original template', () => {
         detectChanges(fixture);
         const content = fixture.debugElement.nativeElement.querySelector('div');
         expect(content).toEqual(null);
-
     }));
 });
-
-
 
 describe('Permissions stub testing only then template', () => {
     @Component({
         selector: 'ngx-permissions-test-comp',
         template: `
-            <div *ngxPermissionsOnly="['THEN_BLOCK']; else elseBlock; then thenBlock">
-            </div>
+            <div
+                *ngxPermissionsOnly="
+                    ['THEN_BLOCK'];
+                    else elseBlock;
+                    then: thenBlock
+                "
+            ></div>
             <ng-template #elseBlock>
                 <div>123</div>
             </ng-template>
-            <ng-template #thenBlock>
-                then block
-            </ng-template>
-        `
+            <ng-template #thenBlock> then block </ng-template>
+        `,
     })
     class TestComponent {
         data: any;
@@ -53,12 +55,15 @@ describe('Permissions stub testing only then template', () => {
     let fixture: ComponentFixture<TestComponent>;
     let comp;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComponent, NgxPermissionsRestrictStubDirective]});
+        TestBed.configureTestingModule({
+            declarations: [TestComponent],
+            imports: [NgxPermissionsRestrictStubDirective],
+        });
         fixture = TestBed.createComponent(TestComponent);
         comp = fixture.componentInstance;
     });
 
-    it ('Should show else component', fakeAsync(() => {
+    it('Should show else component', fakeAsync(() => {
         detectChanges(fixture);
         const content = fixture.debugElement.nativeElement.querySelector('div');
 
@@ -67,23 +72,24 @@ describe('Permissions stub testing only then template', () => {
     }));
 });
 
-
 describe('Permission stub directive should not show when providing authorised strategy functions', () => {
     @Component({
         selector: 'ngx-permissions-test-comp',
         template: `
             <div
-                *ngxPermissionsOnly="['THEN_BLOCK']; else elseBlock; then thenBlock;
-                authorisedStrategy: 'disable';
-                unauthorisedStrategy: 'enable'">
-            </div>
+                *ngxPermissionsOnly="
+                    ['THEN_BLOCK'];
+                    else elseBlock;
+                    then: thenBlock;
+                    authorisedStrategy: 'disable';
+                    unauthorisedStrategy: 'enable'
+                "
+            ></div>
             <ng-template #elseBlock>
                 <div>123</div>
             </ng-template>
-            <ng-template #thenBlock>
-                then block
-            </ng-template>
-        `
+            <ng-template #thenBlock> then block </ng-template>
+        `,
     })
     class TestComponent {
         data: any;
@@ -92,7 +98,10 @@ describe('Permission stub directive should not show when providing authorised st
     let fixture: ComponentFixture<TestComponent>;
     let component;
     beforeEach(() => {
-        TestBed.configureTestingModule({declarations: [TestComponent, NgxPermissionsRestrictStubDirective]});
+        TestBed.configureTestingModule({
+            declarations: [TestComponent],
+            imports: [NgxPermissionsRestrictStubDirective],
+        });
         fixture = TestBed.createComponent(TestComponent);
         component = fixture.componentInstance;
     });
