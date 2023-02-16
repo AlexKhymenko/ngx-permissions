@@ -44,7 +44,33 @@ describe('Permissions guard only', () => {
         });
     }));
 
+    it('should return true when only fulfils canMatchTest', fakeAsync(() => {
+        testRoute = {
+            data: {
+                permissions: {
+                    only: 'ADMIN'
+                }
+            }
+        };
+        ((permissionGuard.canMatch(testRoute) as any) as any).then((data) => {
+            expect(data).toEqual(true);
+        });
+    }));
+
     it('should return false when only doesnt match', fakeAsync(() => {
+        testRoute = {
+            data: {
+                permissions: {
+                    only: 'DOESNT MATCH'
+                }
+            }
+        };
+        (permissionGuard.canLoad(testRoute) as any).then((data) => {
+            expect(data).toEqual(false);
+        });
+    }));
+
+    it('should return false when only doesnt match canMatchTest', fakeAsync(() => {
         testRoute = {
             data: {
                 permissions: {

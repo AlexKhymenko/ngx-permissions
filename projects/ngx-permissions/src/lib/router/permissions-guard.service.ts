@@ -3,7 +3,7 @@ import {
     ActivatedRouteSnapshot,
     CanActivate,
     CanActivateChild,
-    CanLoad,
+    CanLoad, CanMatch,
     NavigationExtras,
     Route,
     Router,
@@ -35,7 +35,7 @@ export interface NgxPermissionsData {
 }
 
 @Injectable()
-export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChild {
+export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChild, CanMatch {
 
     constructor(private permissionsService: NgxPermissionsService, private rolesService: NgxRolesService, private router: Router) {
     }
@@ -49,6 +49,10 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
     }
 
     canLoad(route: Route): boolean | Observable<boolean> | Promise<boolean> {
+        return this.hasPermissions(route);
+    }
+
+    canMatch(route: Route): boolean | Observable<boolean> | Promise<boolean> {
         return this.hasPermissions(route);
     }
 
