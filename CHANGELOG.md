@@ -1,3 +1,6 @@
+## 14.1.0
+Add canMatch guard functionality
+
 ## 14.0.0
 Upgrade for angular 14
 Fix get permission to return also undefined
