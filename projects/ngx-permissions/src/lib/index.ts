@@ -83,10 +83,8 @@ export class NgxPermissionsModule {
 }
 
 @NgModule({
-    imports: [],
-    declarations: [
-        NgxPermissionsAllowStubDirective
-    ],
+    imports: [NgxPermissionsAllowStubDirective],
+    declarations: [],
     exports: [
         NgxPermissionsAllowStubDirective
     ]
@@ -96,9 +94,9 @@ export class NgxPermissionsAllowStubModule {
 
 
 @NgModule({
-    imports: [],
+    imports: [NgxPermissionsRestrictStubDirective],
     declarations: [
-        NgxPermissionsRestrictStubDirective
+
     ],
     exports: [
         NgxPermissionsRestrictStubDirective
