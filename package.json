@@ -1,6 +1,6 @@
 {
   "name": "application",
-  "version": "14.1.0",
+  "version": "15.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",

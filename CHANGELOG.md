@@ -1,3 +1,6 @@
+## 15.0.0
+Make stub directives standalone
+
 ## 14.1.0
 Add canMatch guard functionality
 
