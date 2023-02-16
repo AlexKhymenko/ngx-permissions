@@ -95,9 +95,7 @@ export class NgxPermissionsAllowStubModule {
 
 @NgModule({
     imports: [NgxPermissionsRestrictStubDirective],
-    declarations: [
-
-    ],
+    declarations: [],
     exports: [
         NgxPermissionsRestrictStubDirective
     ]
