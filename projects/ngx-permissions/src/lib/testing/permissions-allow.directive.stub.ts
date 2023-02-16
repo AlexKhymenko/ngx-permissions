@@ -2,10 +2,10 @@ import { Directive, EventEmitter, Input, OnInit, Output, TemplateRef, ViewContai
 import { StrategyFunction } from '../service/configuration.service';
 
 @Directive({
-    selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
+    standalone: true,
+    selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]',
 })
 export class NgxPermissionsAllowStubDirective implements OnInit {
-
     @Input() ngxPermissionsOnly: string | string[];
     @Input() ngxPermissionsOnlyThen: TemplateRef<any>;
     @Input() ngxPermissionsOnlyElse: TemplateRef<any>;
@@ -20,7 +20,9 @@ export class NgxPermissionsAllowStubDirective implements OnInit {
     @Input() ngxPermissionsOnlyAuthorisedStrategy: string | StrategyFunction;
     @Input() ngxPermissionsOnlyUnauthorisedStrategy: string | StrategyFunction;
 
-    @Input() ngxPermissionsExceptUnauthorisedStrategy: string | StrategyFunction;
+    @Input() ngxPermissionsExceptUnauthorisedStrategy:
+        | string
+        | StrategyFunction;
     @Input() ngxPermissionsExceptAuthorisedStrategy: string | StrategyFunction;
 
     @Input() ngxPermissionsUnauthorisedStrategy: string | StrategyFunction;
@@ -29,10 +31,10 @@ export class NgxPermissionsAllowStubDirective implements OnInit {
     @Output() permissionsAuthorized = new EventEmitter();
     @Output() permissionsUnauthorized = new EventEmitter();
 
-
-    constructor(private viewContainer: ViewContainerRef,
-                private templateRef: TemplateRef<any>) {}
-
+    constructor(
+        private viewContainer: ViewContainerRef,
+        private templateRef: TemplateRef<any>
+    ) {}
 
     ngOnInit(): void {
         this.viewContainer.clear();
@@ -40,12 +42,12 @@ export class NgxPermissionsAllowStubDirective implements OnInit {
         this.permissionsUnauthorized.emit();
     }
 
-
     private getAuthorizedTemplate() {
-        return this.ngxPermissionsOnlyThen ||
+        return (
+            this.ngxPermissionsOnlyThen ||
             this.ngxPermissionsExceptThen ||
             this.ngxPermissionsThen ||
-            this.templateRef;
+            this.templateRef
+        );
     }
-
 }
