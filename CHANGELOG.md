@@ -1,3 +1,6 @@
+## 15.1.0
+Update to Angular 15
+
 ## 15.0.0
 Make stub directives standalone
 
