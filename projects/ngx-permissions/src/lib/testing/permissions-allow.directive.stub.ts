@@ -39,7 +39,7 @@ export class NgxPermissionsAllowStubDirective implements OnInit {
     ngOnInit(): void {
         this.viewContainer.clear();
         this.viewContainer.createEmbeddedView(this.getAuthorizedTemplate());
-        this.permissionsUnauthorized.emit();
+        this.permissionsAuthorized.emit();
     }
 
     private getAuthorizedTemplate() {
