@@ -2,6 +2,7 @@ import { Inject, Injectable, InjectionToken, TemplateRef } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NgxPermissionsPredefinedStrategies } from '../enums/predefined-strategies.enum';
 import { NgxPermissionsConfigurationStore } from '../store/configuration.store';
+import {RedirectTo, RedirectToFn} from "../model/permissions-router-data.model";
 
 export type StrategyFunction = (templateRef?: TemplateRef<any>) => void;
 
@@ -19,6 +20,8 @@ export class NgxPermissionsConfigurationService {
     public onAuthorisedDefaultStrategy: string | undefined;
     public onUnAuthorisedDefaultStrategy: string | undefined;
 
+    public defaultRedirectTo: RedirectTo | RedirectToFn | undefined;
+
     constructor(
         @Inject(USE_CONFIGURATION_STORE) private isolate: boolean = false,
         private configurationStore: NgxPermissionsConfigurationStore
@@ -29,6 +32,7 @@ export class NgxPermissionsConfigurationService {
         this.onAuthorisedDefaultStrategy = this.isolate ? undefined : this.configurationStore.onAuthorisedDefaultStrategy;
         this.onUnAuthorisedDefaultStrategy = this.isolate ? undefined : this.configurationStore.onUnAuthorisedDefaultStrategy;
 
+        this.defaultRedirectTo = this.isolate ? undefined : this.configurationStore.defaultRedirectTo;
     }
 
     public setDefaultOnAuthorizedStrategy(name: string | 'remove' | 'show'): void {
