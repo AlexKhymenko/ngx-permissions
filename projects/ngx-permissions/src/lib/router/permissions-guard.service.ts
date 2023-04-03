@@ -21,6 +21,7 @@ import {
     NgxPermissionsRouterData,
     NgxRedirectToNavigationParameters,
     OnlyFn,
+    ContextFn,
     RedirectTo,
     RedirectToFn
 } from '../model/permissions-router-data.model';
@@ -32,6 +33,7 @@ export interface NgxPermissionsData {
     only?: string | string[];
     except?: string | string[];
     redirectTo?: RedirectTo | RedirectToFn;
+    context?: any;
 }
 
 @Injectable()
@@ -82,13 +84,16 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
         const except = isFunction<ExceptFn>(permissions.except)
             ? permissions.except(route, state)
             : transformStringToArray(permissions.except);
+        const context = isFunction<ContextFn>(permissions.context)
+            ? permissions.context(route, state)
+            : transformStringToArray(permissions.context);
         const redirectTo = permissions.redirectTo;
-
 
         return {
             only,
             except,
-            redirectTo
+            redirectTo,
+            context,
         };
     }
 
@@ -114,7 +119,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
                 .pipe(
                     mergeMap(permissionsExcept => {
                         return forkJoin([
-                            this.permissionsService.hasPermission(permissionsExcept),
+                            this.permissionsService.hasPermission(permissionsExcept, permissions.context),
                             this.rolesService.hasOnlyRoles(permissionsExcept)
                         ]).pipe(
                             tap(hasPermissions => {
@@ -145,7 +150,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
         }
 
         return Promise.all([
-            this.permissionsService.hasPermission(permissions.except),
+            this.permissionsService.hasPermission(permissions.except, permissions.context),
             this.rolesService.hasOnlyRoles(permissions.except)
         ]).then(([hasPermission, hasRoles]) => {
             if (hasPermission || hasRoles) {
@@ -227,7 +232,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
             .pipe(
                 mergeMap(permissionsOnly => {
                     return forkJoin([
-                        this.permissionsService.hasPermission(permissionsOnly),
+                        this.permissionsService.hasPermission(permissionsOnly, permissions.context),
                         this.rolesService.hasOnlyRoles(permissionsOnly)
                     ]).pipe(
                         tap(hasPermissions => {
@@ -299,7 +304,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
         };
 
         return Promise.all([
-            this.permissionsService.hasPermission(permissions.only),
+            this.permissionsService.hasPermission(permissions.only, permissions.context),
             this.rolesService.hasOnlyRoles(permissions.only)
         ]).then(([hasPermission, hasRole]) => {
             if (hasPermission || hasRole) {
