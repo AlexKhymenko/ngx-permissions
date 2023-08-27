@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, Input, OnInit, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, EventEmitter, inject, Input, OnInit, Output, TemplateRef, ViewContainerRef } from '@angular/core';
 import { StrategyFunction } from '../service/configuration.service';
 
 @Directive({
@@ -31,10 +31,8 @@ export class NgxPermissionsAllowStubDirective implements OnInit {
     @Output() permissionsAuthorized = new EventEmitter();
     @Output() permissionsUnauthorized = new EventEmitter();
 
-    constructor(
-        private viewContainer: ViewContainerRef,
-        private templateRef: TemplateRef<any>
-    ) {}
+    private viewContainer = inject(ViewContainerRef);
+    private templateRef = inject(TemplateRef<any>);
 
     ngOnInit(): void {
         this.viewContainer.clear();

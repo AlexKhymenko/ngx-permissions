@@ -8,6 +8,11 @@
     "strict": false,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
+    "paths": {
+      "ngx-permissions": [
+        "dist/ngx-permissions"
+      ]
+    },
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
@@ -22,12 +27,7 @@
     "lib": [
       "ES2022",
       "dom"
-    ],
-    "paths": {
-      "ngx-permissions": [
-        "dist/ngx-permissions"
-      ]
-    },
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

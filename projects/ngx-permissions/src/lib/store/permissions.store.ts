@@ -7,7 +7,4 @@ export class NgxPermissionsStore {
     public permissionsSource = new BehaviorSubject<{}>({});
     public permissions$: Observable<{}> = this.permissionsSource.asObservable();
 
-    constructor() {
-    }
-
 }

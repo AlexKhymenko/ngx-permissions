@@ -25,7 +25,7 @@ export class NgxPermissionsService {
         @Inject(USE_PERMISSIONS_STORE) private isolate: boolean = false,
         private permissionsStore: NgxPermissionsStore
     ) {
-        this.permissionsSource = isolate ? new BehaviorSubject<NgxPermissionsObject>({}) : permissionsStore.permissionsSource;
+        this.permissionsSource = this.isolate ? new BehaviorSubject<NgxPermissionsObject>({}) : this.permissionsStore.permissionsSource;
         this.permissions$ = this.permissionsSource.asObservable();
     }
 
