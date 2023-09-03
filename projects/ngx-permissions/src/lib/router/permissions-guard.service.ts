@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
     ActivatedRouteSnapshot,
-    CanActivate,
-    CanActivateChild,
-    CanLoad, CanMatch,
+    CanActivateChildFn,
+    CanActivateFn,
+    CanMatchFn,
     NavigationExtras,
     Route,
     Router,
-    RouterStateSnapshot
+    RouterStateSnapshot,
+    UrlSegment
 } from '@angular/router';
 
 import { forkJoin, from, Observable, of } from 'rxjs';
@@ -34,8 +35,19 @@ export interface NgxPermissionsData {
     redirectTo?: RedirectTo | RedirectToFn;
 }
 
+export const ngxPermissionsGuard: CanActivateFn | CanActivateChildFn | CanMatchFn = (route: ActivatedRouteSnapshot | Route, state: RouterStateSnapshot | UrlSegment[]) => {
+    const permissionsGuard = inject(NgxPermissionsGuard);
+    if (state instanceof RouterStateSnapshot) {
+        return permissionsGuard.hasPermissions(route, state);
+    }
+    return permissionsGuard.hasPermissions(route);
+}
+
+/**
+ * @deprecated Use {@link ngxPermissionsGuard} instead
+ */
 @Injectable()
-export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChild, CanMatch {
+export class NgxPermissionsGuard {
 
     constructor(private permissionsService: NgxPermissionsService, private rolesService: NgxRolesService, private router: Router) {
     }
@@ -56,7 +68,7 @@ export class NgxPermissionsGuard implements CanActivate, CanLoad, CanActivateChi
         return this.hasPermissions(route);
     }
 
-    private hasPermissions(route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
+    hasPermissions(route: ActivatedRouteSnapshot | Route, state?: RouterStateSnapshot) {
         const routeDataPermissions = !!route && route.data ? (route.data['permissions'] as NgxPermissionsRouterData) : {};
         const permissions = this.transformPermission(routeDataPermissions, route, state);
 

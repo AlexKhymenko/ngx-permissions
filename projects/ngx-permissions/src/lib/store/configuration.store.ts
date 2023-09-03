@@ -11,7 +11,4 @@ export class NgxPermissionsConfigurationStore {
     public onAuthorisedDefaultStrategy: string | undefined;
     public onUnAuthorisedDefaultStrategy: string | undefined;
 
-    constructor() {
-    }
-
 }

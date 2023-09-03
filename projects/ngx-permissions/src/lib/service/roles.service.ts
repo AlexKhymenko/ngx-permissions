@@ -77,7 +77,7 @@ export class NgxRolesService {
         return this.rolesSource.value;
     }
 
-    public getRole(name: string): NgxRole | undefined  {
+    public getRole(name: string): NgxRole | undefined {
         return this.rolesSource.value[name];
     }
 

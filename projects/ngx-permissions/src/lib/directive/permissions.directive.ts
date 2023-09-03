@@ -2,6 +2,7 @@ import {
     ChangeDetectorRef,
     Directive,
     EventEmitter,
+    inject,
     Input,
     OnChanges,
     OnDestroy,
@@ -24,7 +25,7 @@ import { isBoolean, isFunction, isString, notEmptyValue } from '../utils/utils';
 @Directive({
     selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
 })
-export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges  {
+export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
 
     @Input() ngxPermissionsOnly: string | string[];
     @Input() ngxPermissionsOnlyThen: TemplateRef<any>;
@@ -54,15 +55,12 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges  {
     private firstMergeUnusedRun = 1;
     private currentAuthorizedState: boolean;
 
-    constructor(
-        private permissionsService: NgxPermissionsService,
-        private configurationService: NgxPermissionsConfigurationService,
-        private rolesService: NgxRolesService,
-        private viewContainer: ViewContainerRef,
-        private changeDetector: ChangeDetectorRef,
-        private templateRef: TemplateRef<any>
-    ) {
-    }
+    private readonly permissionsService = inject(NgxPermissionsService);
+    private readonly configurationService = inject(NgxPermissionsConfigurationService);
+    private readonly rolesService = inject(NgxRolesService);
+    private readonly viewContainer = inject(ViewContainerRef);
+    private readonly changeDetector = inject(ChangeDetectorRef);
+    private readonly templateRef = inject(TemplateRef<any>);
 
     ngOnInit(): void {
         this.viewContainer.clear();
@@ -126,8 +124,8 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges  {
     private validateExceptAndOnlyPermissions(): void {
         Promise
             .all([
-              this.permissionsService.hasPermission(this.ngxPermissionsExcept),
-              this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept)
+                this.permissionsService.hasPermission(this.ngxPermissionsExcept),
+                this.rolesService.hasOnlyRoles(this.ngxPermissionsExcept)
             ])
             .then(([hasPermission, hasRole]) => {
                 if (hasPermission || hasRole) {
@@ -147,7 +145,7 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges  {
                 } else {
                     this.handleAuthorisedPermission(this.ngxPermissionsExceptThen || this.ngxPermissionsThen || this.templateRef);
                 }
-        });
+            });
     }
 
     private validateOnlyPermissions(): void {
@@ -160,9 +158,9 @@ export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges  {
                     this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
                 }
             })
-          .catch(() => {
+            .catch(() => {
                 this.handleUnauthorisedPermission(this.ngxPermissionsOnlyElse || this.ngxPermissionsElse);
-        });
+            });
     }
 
     private handleUnauthorisedPermission(template: TemplateRef<any>): void {

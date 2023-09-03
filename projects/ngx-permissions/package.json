@@ -1,6 +1,6 @@
 {
   "name": "ngx-permissions",
-  "version": "15.1.0",
+  "version": "16.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/AlexKhymenko/ngx-permissions"
@@ -53,6 +53,7 @@
       "rxjs": ">=7 || >11"
   },
   "dependencies": {
-    "tslib": "^2.1.0"
-  }
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
 }
