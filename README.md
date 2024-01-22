@@ -51,12 +51,16 @@ Some functionality is missing visit [wiki-page](https://github.com/AlexKhymenko/
 - [Development](#development)
 - [License](#license)
 
-### Library Version 13 minimal angular 13.
-### With version 7 minimal angular version 8.0
-### With version 5 minimal rxjs dependency 6.0
-### With version 4 minimal rxjs dependency 5.5
-### Version 2 for angular 4/5. Version 1 for angular 2/4
+## Compatibility matrix
 
+| Library Version | Angular Version | RxJS Version   |
+|------------------|------------------|----------------|
+| 13               | >13.0.0         | -              |
+| 7                | >8.0.0 < 9.0.0  | -              |
+| 5                | -               | >6.0.0 < 7.0.0 |
+| 4                | -               | >5.5.0 < 6.0.0 |
+| 2                | >4.0.0 < 6.0.0  | -              |
+| 1                | >2.0.0 < 4.0.0  | -              |
 
 
 ## Installation
