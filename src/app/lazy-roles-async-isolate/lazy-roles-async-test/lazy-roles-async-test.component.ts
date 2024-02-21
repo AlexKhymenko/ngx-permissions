@@ -5,7 +5,7 @@ import { AsyncTestService } from '../async-test.service';
 @Component({
   selector: 'app-lazy-roles-async-test',
   templateUrl: './lazy-roles-async-test.component.html',
-  styleUrls: ['./lazy-roles-async-test.component.css']
+  styleUrls: ['./lazy-roles-async-test.component.scss']
 })
 export class LazyRolesAsyncTestComponent implements OnInit {
 

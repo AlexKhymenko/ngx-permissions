@@ -4,7 +4,7 @@ import { NgxPermissionsConfigurationService } from 'ngx-permissions';
 @Component({
   selector: 'app-lazy-component',
   templateUrl: './lazy-component.component.html',
-  styleUrls: ['./lazy-component.component.css']
+  styleUrls: ['./lazy-component.component.scss']
 })
 export class LazyComponentComponent implements OnInit {
 

@@ -4,7 +4,7 @@ import { NgxRolesService, NgxPermissionsConfigurationService, NgxPermissionsServ
 @Component({
   selector: 'app-lazy-role-isolate-test',
   templateUrl: './lazy-role-isolate-test.component.html',
-  styleUrls: ['./lazy-role-isolate-test.component.css']
+  styleUrls: ['./lazy-role-isolate-test.component.scss']
 })
 export class LazyRoleIsolateTestComponent implements OnInit {
 
