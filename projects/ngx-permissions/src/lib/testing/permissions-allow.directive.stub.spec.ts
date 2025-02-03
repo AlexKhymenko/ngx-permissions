@@ -8,6 +8,7 @@ describe('Permissions stub testing only original template', () => {
         template: ` <ng-template [ngxPermissionsExcept]="'ADMIN'">
             <div>123</div>
         </ng-template>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -39,6 +40,7 @@ describe('Permissions stub testing except template', () => {
         template: ` <ng-template [ngxPermissionsExcept]="'ADMIN'">
             <div>123</div>
         </ng-template>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -82,6 +84,7 @@ describe('Permissions stub testing only then template', () => {
                 <div>123</div>
             </ng-template>
         `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -125,6 +128,7 @@ describe('Permissions stub testing except then template', () => {
                 <div>123</div>
             </ng-template>
         `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -170,6 +174,7 @@ describe('Permission stub directive should show when providing authorised strate
                 <div>123</div>
             </ng-template>
         `,
+        standalone: false
     })
     class TestComponent {
         data: any;

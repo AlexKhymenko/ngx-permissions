@@ -16,7 +16,8 @@ describe('Permission directive angular only configuration', () => {
         template: `
             <button *ngxPermissionsOnly="'ADMIN'">
                 <div>123</div>
-            </button>`
+            </button>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -109,7 +110,8 @@ describe('Permission directive angular strategies configuration passed by templa
         template: `
             <button *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: 'remove'; unauthorisedStrategy: 'show'">
                 <div>123</div>
-            </button>`
+            </button>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -151,7 +153,8 @@ describe('Permission directive angular strategies configuration passed by templa
         template: `
             <button *ngxPermissionsExcept="'ADMIN'; authorisedStrategy: 'remove'; unauthorisedStrategy: 'show'">
                 <div>123</div>
-            </button>`
+            </button>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -194,7 +197,8 @@ describe('Permission directive angular strategies as function configuration pass
         template: `
             <button *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: disabled; unauthorisedStrategy: disabled">
                 <div>123</div>
-            </button>`
+            </button>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -239,7 +243,8 @@ describe('Permission directive angular strategies as function configuration pass
         template: `
             <button *ngxPermissionsExcept="'ADMIN'; authorisedStrategy: disabled; unauthorisedStrategy: disabled">
                 <div>123</div>
-            </button>`
+            </button>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -285,7 +290,8 @@ describe('Permission directive angular strategies as function passed in configur
         template: `
             <button *ngxPermissionsExcept="'ADMIN'; authorisedStrategy: 'disable'; unauthorisedStrategy: 'disable'">
                 <div>123</div>
-            </button>`
+            </button>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -344,7 +350,8 @@ describe('Permission directive angular strategies as function passed in configur
         template: `
             <button *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: 'disable'; unauthorisedStrategy: 'disable'">
                 <div>123</div>
-            </button>`
+            </button>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -403,7 +410,8 @@ describe('test predefined strategies', () => {
         template: `
             <button *ngxPermissionsOnly="'ADMIN'; authorisedStrategy: 'show'; unauthorisedStrategy: 'remove'">
                 <div>123</div>
-            </button>`
+            </button>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -459,7 +467,8 @@ describe('test predefined strategies normal behavior', () => {
         template: `
             <button *ngxPermissionsOnly="'ADMIN';  unauthorisedStrategy: 'disable'; authorisedStrategy: 'enable'">
                 <div>123</div>
-            </button>`
+            </button>`,
+        standalone: false
     })
     class TestComponent {
         data: any;

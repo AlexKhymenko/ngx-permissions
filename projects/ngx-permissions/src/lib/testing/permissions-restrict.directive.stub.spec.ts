@@ -8,6 +8,7 @@ describe('Permissions restrict stub testing only original template', () => {
         template: ` <ng-template [ngxPermissionsOnly]="'ADMIN'">
             <div>123</div>
         </ng-template>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -47,6 +48,7 @@ describe('Permissions stub testing only then template', () => {
             </ng-template>
             <ng-template #thenBlock> then block </ng-template>
         `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -90,6 +92,7 @@ describe('Permission stub directive should not show when providing authorised st
             </ng-template>
             <ng-template #thenBlock> then block </ng-template>
         `,
+        standalone: false
     })
     class TestComponent {
         data: any;

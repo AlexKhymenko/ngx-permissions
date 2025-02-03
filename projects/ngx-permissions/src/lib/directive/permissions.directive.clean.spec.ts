@@ -17,7 +17,8 @@ describe('Ngx permissions Except with default strategy and with else block then 
             <ng-template #thenBlock>
                 <div>thenBlock</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -58,7 +59,8 @@ describe('Ngx permissions Except with default strategy without any blocks', () =
             <div *ngxPermissionsExcept="['FAIL_BLOCK'];">
                 FAILED
             </div>
-        `
+            `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -106,8 +108,9 @@ describe('Ngx permissions Except with default strategy and with else block then 
             <ng-template #thenBlock>
                 <div>thenBlock</div>
             </ng-template>
-        `
-    })
+            `,
+        standalone: false
+})
     class TestComponent {
         data: any;
     }
@@ -147,7 +150,8 @@ describe('Simple ngxPermissionsExcept directive', () => {
             <div *ngxPermissionsOnly="['ONLY_PERMISSION'];">
 
             </div>
-        `
+            `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -195,7 +199,8 @@ describe('Ngx permissions Except with default strategy and with else block then 
             <ng-template #thenBlock>
                 <div>thenBlock</div>
             </ng-template>
-        `
+            `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -236,7 +241,8 @@ describe('Ngx permissions Except when passing permissions as variable should rer
             <ng-container *ngxPermissionsExcept="permissions">
                 <div>123</div>
             </ng-container>
-        `
+            `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -279,12 +285,14 @@ describe('Ngx permissions Except when passing permissions as variable should rer
 
 
 describe('Ngx permissions when chaning variable to undefined  ', () => {
-    @Component({selector: 'ngx-permissions-test-comp',
+    @Component({
+        selector: 'ngx-permissions-test-comp',
         template: `
             <ng-container *ngxPermissionsExcept="permissions">
                 <div>123</div>
             </ng-container>
-        `
+            `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -332,7 +340,8 @@ describe('Ngx permissions Only when passing permissions as variable should reren
             <ng-container *ngxPermissionsOnly="permissions">
                 <div>123</div>
             </ng-container>
-        `
+            `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -378,7 +387,8 @@ describe('Ngx permissions Only when passing undefined it should show the compone
             <ng-container *ngxPermissionsOnly="permissions">
                 <div>123</div>
             </ng-container>
-        `
+            `,
+        standalone: false
     })
     class TestComponent {
         data: any;

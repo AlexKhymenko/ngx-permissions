@@ -2,9 +2,10 @@ import { Component, OnInit, Renderer2, TemplateRef } from '@angular/core';
 import { NgxRolesService, NgxPermissionsConfigurationService, NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
-  selector: 'app-lazy-role-isolate-test',
-  templateUrl: './lazy-role-isolate-test.component.html',
-  styleUrls: ['./lazy-role-isolate-test.component.scss']
+    selector: 'app-lazy-role-isolate-test',
+    templateUrl: './lazy-role-isolate-test.component.html',
+    styleUrls: ['./lazy-role-isolate-test.component.scss'],
+    standalone: false
 })
 export class LazyRoleIsolateTestComponent implements OnInit {
 
