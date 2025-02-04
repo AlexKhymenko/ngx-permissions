@@ -23,7 +23,8 @@ import { NgxRolesService } from '../service/roles.service';
 import { isBoolean, isFunction, isString, notEmptyValue } from '../utils/utils';
 
 @Directive({
-    selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]'
+    selector: '[ngxPermissionsOnly],[ngxPermissionsExcept]',
+    standalone: false
 })
 export class NgxPermissionsDirective implements OnInit, OnDestroy, OnChanges {
 

@@ -22,7 +22,8 @@ describe('Permission directive angular except', () => {
         template: `
             <ng-template [ngxPermissionsExcept]="'ADMIN'">
                 <div>123</div>
-            </ng-template>`
+            </ng-template>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -105,7 +106,8 @@ describe('Permission directive angular only', () => {
         template: `
             <ng-template [ngxPermissionsOnly]="'ADMIN'">
                 <div>123</div>
-            </ng-template>`
+            </ng-template>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -175,7 +177,8 @@ describe('Permission directive angular roles only', () => {
         template: `
             <ng-template [ngxPermissionsOnly]="'ADMIN'">
                 <div>123</div>
-            </ng-template>`
+            </ng-template>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -262,7 +265,8 @@ describe('Permission directive angular roles only array', () => {
         template: `
             <ng-template [ngxPermissionsOnly]="['ADMIN', 'GUEST']">
                 <div>123</div>
-            </ng-template>`
+            </ng-template>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -342,7 +346,8 @@ describe('Permission directive angular roles except', () => {
         template: `
             <ng-template [ngxPermissionsExcept]="'ADMIN'">
                 <div>123</div>
-            </ng-template>`
+            </ng-template>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -419,7 +424,8 @@ describe('Permission directive angular roles except array', () => {
         template: `
             <ng-template [ngxPermissionsExcept]="['ADMIN', 'GUEST']">
                 <div>123</div>
-            </ng-template>`
+            </ng-template>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -498,7 +504,8 @@ describe('Permission directive angular testing different selectors *permmisionsO
         template: `
             <div *ngxPermissionsOnly="['ADMIN']">
                 <div>123</div>
-            </div>`
+            </div>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -549,7 +556,8 @@ describe('Permission directive angular testing different selectors *permmisionsE
         template: `
             <div *ngxPermissionsExcept="['ADMIN']">
                 <div>123</div>
-            </div>`
+            </div>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -594,7 +602,8 @@ describe('Permission directive angular testing different async functions in role
         template: `
             <div *ngxPermissionsOnly="'ADMIN'">
                 <div>123</div>
-            </div>`
+            </div>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -672,7 +681,8 @@ describe('Permission directive angular testing different async functions in role
         template: `
             <div *ngxPermissionsOnly="['ADMIN','GUEST']">
                 <div>123</div>
-            </div>`
+            </div>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -875,7 +885,8 @@ describe('Permission directive angular testing different async functions in perm
         template: `
             <div *ngxPermissionsOnly="['ADMIN','GUEST']">
                 <div>123</div>
-            </div>`
+            </div>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1123,7 +1134,8 @@ describe('Permission directive angular testing different async functions in perm
         template: `
             <div *ngxPermissionsOnly="'ADMIN'">
                 <div>123</div>
-            </div>`
+            </div>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1351,7 +1363,8 @@ describe('Permission  directive angular testing  different only and accept toget
         template: `
             <ng-template ngxPermissionsOnly="ADMIN" ngxPermissionsExcept="MANAGER">
                 <div>123</div>
-            </ng-template>`
+            </ng-template>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1446,7 +1459,8 @@ describe('Permission  directive angular testing  different only and accept toget
         template: `
             <ng-template [ngxPermissionsOnly]="['ADMIN', 'GUEST']" [ngxPermissionsExcept]="['MANAGER']">
                 <div>123</div>
-            </ng-template>`
+            </ng-template>`,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1540,7 +1554,8 @@ describe('Permission  directive angular testing  different only and accept toget
             <ng-template [ngxPermissionsOnly]="['ADMIN', 'GUEST']" [ngxPermissionsExcept]="['MANAGER']">
                 <div>123</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1636,7 +1651,8 @@ describe('ngxPermissionsOnly Directive testing else block', () => {
             <ng-template #thenBlock>
                 <div>thenBlock</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1694,7 +1710,8 @@ describe('ngxPermissionsOnly Directive testing then block', () => {
             <ng-template #thenBlock>
                 <div>thenBlock</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1733,7 +1750,8 @@ describe('ngxPermissionsExcept Directive testing else block', () => {
             <ng-template #thenBlock>
                 thenBlock
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1790,7 +1808,8 @@ describe('ngxPermissionsExcept Directive testing then block', () => {
             <ng-template #thenBlock>
                 <div>thenBlock</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1824,7 +1843,8 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing then bl
             <ng-template #thenBlock>
                 <div>thenBlock</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1874,7 +1894,8 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing else bl
             <ng-template #thenBlock>
                 <div>thenBlock</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1928,7 +1949,8 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing then bl
             <ng-template #thenBlock>
                 <div>thenBlock</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -1978,7 +2000,8 @@ describe('ngxPermissionsExcept Directive with ngxPermissionsOnly testing else bl
             <ng-template #thenBlock>
                 <div>thenBlock</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -2022,7 +2045,8 @@ describe('Ngx Permissions Only Directive when no permission specified should ret
             <ng-template [ngxPermissionsOnly]="">
                 <div>123</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -2050,7 +2074,8 @@ describe('Ngx Permissions Except Directive when no permission specified should r
             <ng-template [ngxPermissionsExcept]="">
                 <div>123</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -2078,7 +2103,8 @@ describe('Ngx Permissions Except Directive when no permission is empty array spe
             <ng-template [ngxPermissionsOnly]="[]">
                 <div>123</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -2106,7 +2132,8 @@ describe('Ngx Permissions Except and only Directive when no permission specified
             <ng-template [ngxPermissionsExcept]="" [ngxPermissionsOnly]="">
                 <div>123</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -2134,7 +2161,8 @@ describe('Ngx Permissions Except and only Directive when no permission specified
             <ng-template [ngxPermissionsExcept]="[]" [ngxPermissionsOnly]="[]">
                 <div>123</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -2162,7 +2190,8 @@ describe('Ngx Permissions only Directive when no permission specified as array s
             <ng-template [ngxPermissionsOnly]="[]">
                 <div>123</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;
@@ -2190,7 +2219,8 @@ describe('Ngx Permissions except Directive when no permission specified as array
             <ng-template [ngxPermissionsExcept]="[]">
                 <div>123</div>
             </ng-template>
-        `
+        `,
+        standalone: false
     })
     class TestComponent {
         data: any;

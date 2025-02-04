@@ -10,7 +10,8 @@ import {NgxRolesService} from '../service/roles.service';
 @Component({
     selector: 'ngx-permissions-root',
     template: `
-        <router-outlet></router-outlet>`
+        <router-outlet></router-outlet>`,
+    standalone: false
 })
 class RootComponent {
     constructor(public permissions: NgxPermissionsService) {
@@ -22,13 +23,17 @@ class RootComponent {
 
 @Component({
     selector: 'ngx-permissions-lazy',
-    template: 'lazy-loaded-parent [<router-outlet></router-outlet>]'
+    template: 'lazy-loaded-parent [<router-outlet></router-outlet>]',
+    standalone: false
 })
 class ParentLazyLoadedComponent {
 }
 
 function getLazyLoadedModule(importedModule: any) {
-    @Component({selector: 'ngx-permissions-lazy', template: 'lazy-loaded-child'})
+    @Component({
+    selector: 'ngx-permissions-lazy', template: 'lazy-loaded-child',
+    standalone: false
+})
     class ChildLazyLoadedComponent {
         constructor(public permissions: NgxPermissionsService) {
             permissions.addPermission('ADMIN', () => {
@@ -194,7 +199,8 @@ describe('module', () => {
 @Component({
     selector: 'ngx-permissions-root-roles',
     template: `
-        <router-outlet></router-outlet>`
+        <router-outlet></router-outlet>`,
+    standalone: false
 })
 class RootRolesComponent {
     constructor(public roleService: NgxRolesService) {
@@ -206,13 +212,17 @@ class RootRolesComponent {
 
 @Component({
     selector: 'ngx-permissions-lazy',
-    template: 'lazy-loaded-parent [<router-outlet></router-outlet>]'
+    template: 'lazy-loaded-parent [<router-outlet></router-outlet>]',
+    standalone: false
 })
 class ParentLazyRolesLoadedComponent {
 }
 
 function getLazyRolesLoadedModule(importedModule: ModuleWithProviders<any>) {
-    @Component({selector: 'ngx-permissions-lazy', template: 'lazy-loaded-child'})
+    @Component({
+    selector: 'ngx-permissions-lazy', template: 'lazy-loaded-child',
+    standalone: false
+})
     class ChildLazyLoadedComponent {
         constructor(public permissions: NgxRolesService) {
             permissions.addRole('ADMIN', () => {

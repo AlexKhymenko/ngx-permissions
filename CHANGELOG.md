@@ -1,3 +1,12 @@
+## 19.0.0
+Update to Angular 19
+
+## 17.1.0
+Update to Angular 17
+
+## 16.0.0
+Update to Angular 16
+
 ## 15.1.0
 Update to Angular 15
 

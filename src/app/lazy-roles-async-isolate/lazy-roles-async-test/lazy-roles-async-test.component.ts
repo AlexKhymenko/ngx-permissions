@@ -3,9 +3,10 @@ import { NgxRolesService } from 'ngx-permissions';
 import { AsyncTestService } from '../async-test.service';
 
 @Component({
-  selector: 'app-lazy-roles-async-test',
-  templateUrl: './lazy-roles-async-test.component.html',
-  styleUrls: ['./lazy-roles-async-test.component.scss']
+    selector: 'app-lazy-roles-async-test',
+    templateUrl: './lazy-roles-async-test.component.html',
+    styleUrls: ['./lazy-roles-async-test.component.scss'],
+    standalone: false
 })
 export class LazyRolesAsyncTestComponent implements OnInit {
 

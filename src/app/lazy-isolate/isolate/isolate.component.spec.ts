@@ -9,8 +9,8 @@ describe('IsolateComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-        declarations: [IsolateComponent, NgxPermissionsAllowStubDirective],
-        imports: []
+        declarations: [IsolateComponent],
+        imports: [NgxPermissionsAllowStubDirective]
     })
     .compileComponents();
   }));

@@ -1,6 +1,6 @@
 {
   "name": "ngx-permissions",
-  "version": "17.1.0",
+  "version": "19.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/AlexKhymenko/ngx-permissions"
@@ -48,8 +48,8 @@
     "url": "https://github.com/AlexKhymenko/ngx-permissions/issues"
   },
   "peerDependencies": {
-      "@angular/core": ">=13 || >18",
-      "@angular/router": ">=13 || >18",
+      "@angular/core": ">=13 || >19",
+      "@angular/router": ">=13 || >19",
       "rxjs": ">=7 || >11"
   },
   "dependencies": {
