@@ -1,20 +1,6 @@
 # ngx-permissions
 
-Permission and roles based access control for your angular(angular 2,4,5,6,7,8+) applications(AOT, lazy modules compatible)
-
-## Disclaimer
-```diff
-- This library is PROHIBITED to use with russians projects or russians or belarusians 
-```
-We are against any forms of discrimination. We respect sanctions. We don’t support agressors
-
-reason https://9gag.com/gag/a41zRvw and many more
-
-If You can help Ukrainian army https://bank.gov.ua/en/about/support-the-armed-forces
-
-Humanitarian aid https://bank.gov.ua/en/about/humanitarian-aid-to-ukraine
-
-Any help is welcomed.
+Permission and roles based access control for your angular(angular 2,4,5,6,19,20+) applications(AOT, lazy modules compatible)
 
 ##
 
