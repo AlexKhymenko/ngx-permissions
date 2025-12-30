@@ -93,7 +93,25 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 })
 export class AppModule { }
 ```
-
+If you are using angular above 19 
+```typescript
+    import {
+        ApplicationConfig,
+        importProvidersFrom,
+        provideZoneChangeDetection,
+    } from '@angular/core';
+    import { NgxPermissionsModule } from 'ngx-permissions';
+    
+    export const appConfig: ApplicationConfig = {
+    providers: [
+            provideZoneChangeDetection({ eventCoalescing: true }),
+            provideHttpClient(),
+            provideRouter(routes),
+            provideAnimationsAsync(),
+            importProvidersFrom(NgxPermissionsModule.forRoot()),
+        ],
+    };
+````
 SharedModule
 
 If you use a SharedModule that you import in multiple other feature modules, you can export the NgxPermissionsModule to make sure you don't have to import it in every module.
