@@ -11,7 +11,7 @@ import {
     UrlSegment
 } from '@angular/router';
 
-import { forkJoin, from, Observable, of } from 'rxjs';
+import { firstValueFrom, forkJoin, from, Observable, of } from 'rxjs';
 import { first, mergeMap, tap } from 'rxjs/operators';
 
 import {
@@ -122,38 +122,39 @@ export class NgxPermissionsGuard {
         ) {
             let failedPermission = '';
 
-            return from(permissions.except)
-                .pipe(
-                    mergeMap(permissionsExcept => {
-                        return forkJoin([
-                            this.permissionsService.hasPermission(permissionsExcept),
-                            this.rolesService.hasOnlyRoles(permissionsExcept)
-                        ]).pipe(
-                            tap(hasPermissions => {
-                                const dontHavePermissions = hasPermissions.every(hasPermission => hasPermission === false);
+            return firstValueFrom(
+                from(permissions.except)
+                    .pipe(
+                        mergeMap(permissionsExcept => {
+                            return forkJoin([
+                                this.permissionsService.hasPermission(permissionsExcept),
+                                this.rolesService.hasOnlyRoles(permissionsExcept)
+                            ]).pipe(
+                                tap(hasPermissions => {
+                                    const dontHavePermissions = hasPermissions.every(hasPermission => hasPermission === false);
 
-                                if (!dontHavePermissions) {
-                                    failedPermission = permissionsExcept;
-                                }
-                            })
-                        );
-                    }),
-                    first(hasPermissions => hasPermissions.some(hasPermission => hasPermission === true), false),
-                    mergeMap(isAllFalse => {
-                        if (!!failedPermission) {
-                            this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
+                                    if (!dontHavePermissions) {
+                                        failedPermission = permissionsExcept;
+                                    }
+                                })
+                            );
+                        }),
+                        first(hasPermissions => hasPermissions.some(hasPermission => hasPermission === true), false),
+                        mergeMap(isAllFalse => {
+                            if (!!failedPermission) {
+                                this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
 
-                            return of(false);
-                        }
+                                return of(false);
+                            }
 
-                        if (!isAllFalse && permissions.only) {
-                            return this.onlyRedirectCheck(permissions, route, state);
-                        }
+                            if (!isAllFalse && permissions.only) {
+                                return this.onlyRedirectCheck(permissions, route, state);
+                            }
 
-                        return of(!isAllFalse);
-                    })
-                )
-                .toPromise();
+                            return of(!isAllFalse);
+                        })
+                    )
+            );
         }
 
         return Promise.all([
@@ -235,49 +236,50 @@ export class NgxPermissionsGuard {
     ): Promise<boolean> {
         let failedPermission = '';
 
-        return from(permissions.only)
-            .pipe(
-                mergeMap(permissionsOnly => {
-                    return forkJoin([
-                        this.permissionsService.hasPermission(permissionsOnly),
-                        this.rolesService.hasOnlyRoles(permissionsOnly)
-                    ]).pipe(
-                        tap(hasPermissions => {
-                            const failed = hasPermissions.every(hasPermission => hasPermission === false);
+        return firstValueFrom(
+            from(permissions.only)
+                .pipe(
+                    mergeMap(permissionsOnly => {
+                        return forkJoin([
+                            this.permissionsService.hasPermission(permissionsOnly),
+                            this.rolesService.hasOnlyRoles(permissionsOnly)
+                        ]).pipe(
+                            tap(hasPermissions => {
+                                const failed = hasPermissions.every(hasPermission => hasPermission === false);
 
-                            if (failed) {
-                                failedPermission = permissionsOnly;
+                                if (failed) {
+                                    failedPermission = permissionsOnly;
+                                }
+                            })
+                        );
+                    }),
+                    first(hasPermissions => {
+                            if (isFunction<RedirectToFn>(permissions.redirectTo)) {
+                                return hasPermissions.some(hasPermission => hasPermission === true);
                             }
-                        })
-                    );
-                }),
-                first(hasPermissions => {
-                        if (isFunction<RedirectToFn>(permissions.redirectTo)) {
-                            return hasPermissions.some(hasPermission => hasPermission === true);
-                        }
 
-                        return hasPermissions.every(hasPermission => hasPermission === false);
-                    },
-                    false),
-                mergeMap(
-                    (pass: boolean): Observable<boolean> => {
-                        if (isFunction<RedirectToFn>(permissions.redirectTo)) {
-                            if (pass) {
-                                return of(true);
+                            return hasPermissions.every(hasPermission => hasPermission === false);
+                        },
+                        false),
+                    mergeMap(
+                        (pass: boolean): Observable<boolean> => {
+                            if (isFunction<RedirectToFn>(permissions.redirectTo)) {
+                                if (pass) {
+                                    return of(true);
+                                } else {
+                                    this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
+                                    return of(false);
+                                }
                             } else {
-                                this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
-                                return of(false);
+                                if (!!failedPermission) {
+                                    this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
+                                }
+                                return of(!pass);
                             }
-                        } else {
-                            if (!!failedPermission) {
-                                this.handleRedirectOfFailedPermission(permissions, failedPermission, route, state);
-                            }
-                            return of(!pass);
                         }
-                    }
+                    )
                 )
-            )
-            .toPromise();
+        );
     }
 
     private handleRedirectOfFailedPermission(

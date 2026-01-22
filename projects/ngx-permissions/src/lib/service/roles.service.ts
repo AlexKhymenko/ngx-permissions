@@ -1,6 +1,6 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 
-import { BehaviorSubject, from, Observable, ObservableInput, of } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, from, Observable, ObservableInput, of } from 'rxjs';
 import { catchError, every, first, map, mergeAll, mergeMap, switchMap } from 'rxjs/operators';
 import { ValidationFn } from '../model/permissions-router-data.model';
 
@@ -117,27 +117,31 @@ export class NgxRolesService {
             return of(false);
         });
 
-        return from(promises).pipe(
-            mergeAll(),
-            first((data: any) => data !== false, false),
-            map((data) => data !== false)
-        ).toPromise().then((data: any) => data);
+        return firstValueFrom(
+            from(promises).pipe(
+                mergeAll(),
+                first((data: any) => data !== false, false),
+                map((data) => data !== false)
+            )
+        );
     }
 
     private hasRolePermission(roles: NgxRolesObject, roleNames: string[]): Promise<boolean> {
-        return from(roleNames).pipe(
-            mergeMap((key) => {
-                if (roles[key] && Array.isArray(roles[key].validationFunction)) {
-                    return from(<string[]>roles[key].validationFunction).pipe(
-                        mergeMap((permission) => this.permissionsService.hasPermission(permission)),
-                        every(hasPermission => hasPermission === true)
-                    );
-                }
+        return firstValueFrom(
+            from(roleNames).pipe(
+                mergeMap((key) => {
+                    if (roles[key] && Array.isArray(roles[key].validationFunction)) {
+                        return from(<string[]>roles[key].validationFunction).pipe(
+                            mergeMap((permission) => this.permissionsService.hasPermission(permission)),
+                            every(hasPermission => hasPermission === true)
+                        );
+                    }
 
-                return of(false);
-            }),
-            first(hasPermission => hasPermission === true, false)
-        ).toPromise();
+                    return of(false);
+                }),
+                first(hasPermission => hasPermission === true, false)
+            )
+        );
     }
 
 }

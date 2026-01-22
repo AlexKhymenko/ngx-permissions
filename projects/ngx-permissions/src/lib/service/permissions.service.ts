@@ -1,6 +1,6 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 
-import { BehaviorSubject, from, Observable, ObservableInput, of } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, from, Observable, ObservableInput, of } from 'rxjs';
 import { catchError, first, map, mergeAll, switchMap } from 'rxjs/operators';
 
 import { NgxPermission } from '../model/permission.model';
@@ -113,11 +113,13 @@ export class NgxPermissionsService {
             return of(!!this.permissionsSource.value[key]);
         });
 
-        return from(promises).pipe(
-            mergeAll(),
-            first((data) => data !== false, false),
-            map((data) => data !== false)
-        ).toPromise().then((data: any) => data);
+        return firstValueFrom(
+            from(promises).pipe(
+                mergeAll(),
+                first((data) => data !== false, false),
+                map((data) => data !== false)
+            )
+        );
     }
 
     private hasPermissionValidationFunction(key: string): boolean {

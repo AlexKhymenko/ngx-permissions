@@ -1,3 +1,6 @@
+## 20.0.0
+Update to Angular 20
+
 ## 19.0.0
 Update to Angular 19
 

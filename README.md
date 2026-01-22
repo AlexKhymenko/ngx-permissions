@@ -42,7 +42,8 @@ Some functionality is missing visit [wiki-page](https://github.com/AlexKhymenko/
 
 | Library Version | Angular Version | RxJS Version   |
 |-----------------|-----------------|----------------|
-| 19              | >19.0.0         | -              |
+| 20              | >=20.0.0        | -              |
+| 19              | >19.0.0 <20.0.0 | -              |
 | 13              | >13.0.0         | -              |
 | 7               | >8.0.0 < 13.0.0 | -              |
 | 5               | >4.0.0 < 8.0.0  | >6.0.0         |
@@ -93,7 +94,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 })
 export class AppModule { }
 ```
-If you are using angular above 19 
+If you are using angular 20 or above 
 ```typescript
     import {
         ApplicationConfig,
